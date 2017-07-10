@@ -28816,11 +28816,12 @@
 	  RANGE_SLIDER_NO_MAX_TEXT: 'No Max',
 	  RECEIVE_POSTS_ACTION: 'RECEIVE_POSTS',
 	  REQUEST_POSTS_ACTION: 'REQUEST_POSTS',
+	  REQUEST_SEARCH_RESULTS_POSTS_ACTION: 'REQUEST_SEARCH_RESULTS_POSTS_ACTION',
 	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
-	  SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION',
+	  SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'SET_PROPERTIES_MODAL_LOCAL_FILTER',
 	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
-	  SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
+	  RECEIVE_SEARCH_RESULTS_POSTS_ACTION: 'RECEIVE_SEARCH_RESULTS_POSTS',
 	  SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
 	  SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
 	  SET_USER_DATA_ACTION: 'SET_USER_DATA',
@@ -87482,7 +87483,7 @@
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
-	var _SearchFilterDescriptionText = __webpack_require__(748);
+	var _SearchFilterDescriptionText = __webpack_require__(625);
 
 	var _SearchFilterDescriptionText2 = _interopRequireDefault(_SearchFilterDescriptionText);
 
@@ -87518,6 +87519,7 @@
 	    allQueryParams: allQueryParams,
 	    front_page_post_content: ownProps.front_page_post_content,
 	    query: _lodash2.default.get(state, 'searchResults.query', []),
+	    isFetching: _lodash2.default.get(state, 'searchResults.isFetching', []),
 	    displayedResults: _lodash2.default.get(state, 'searchResults.displayedResults', []),
 	    searchQueryParams: allQueryParams[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
 	    mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
@@ -87535,9 +87537,10 @@
 	    },
 
 	    standardSearch: function standardSearch(params) {
+	      dispatch((0, _index.requestSearchResultsPosts)());
 	      _Api2.default.makeStandardPropertySearch(params, function (query, response) {
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
-	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), false));
+	          dispatch((0, _index.receiveSearchResultsPosts)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), false));
 	        } else {
 	          console.log('query with params returned no data');
 	        }
@@ -87545,16 +87548,17 @@
 	    },
 	    doSearchWithQuery: function doSearchWithQuery(query, append) {
 	      var url = _Api2.default.getPropertySearchRequestURL();
+	      dispatch((0, _index.requestSearchResultsPosts)());
 	      _Api2.default.search(url, query, function (response) {
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
-	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), append));
+	          dispatch((0, _index.receiveSearchResultsPosts)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), append));
 	        } else {
 	          console.log('query with standard query returned no data');
 	        }
 	      });
 	    },
 	    resetSearchResults: function resetSearchResults() {
-	      dispatch((0, _index.setSearchResults)({}, [], 0));
+	      dispatch((0, _index.receiveSearchResultsPosts)({}, [], 0));
 	    }
 	  };
 	};
@@ -87637,14 +87641,15 @@
 
 	      var _props = this.props,
 	          allQueryParams = _props.allQueryParams,
-	          searchQueryParams = _props.searchQueryParams,
 	          displayedResults = _props.displayedResults,
 	          front_page_post_content = _props.front_page_post_content,
+	          isFetching = _props.isFetching,
 	          location = _props.location,
 	          mapSearchResultsLoading = _props.mapSearchResultsLoading,
 	          openPropertiesModal = _props.openPropertiesModal,
 	          propertiesModalOpen = _props.propertiesModalOpen,
-	          results = _props.results;
+	          results = _props.results,
+	          searchQueryParams = _props.searchQueryParams;
 
 	      var filters = _qs2.default.parse(window.location.search.replace('?', ''));
 	      var propertyTypes = location.query['wpp_search[property_types]'];
@@ -87694,6 +87699,7 @@
 	              }),
 	              _react2.default.createElement(_SearchResultListing2.default, {
 	                allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
+	                isFetching: isFetching,
 	                properties: displayedResults,
 	                seeMoreHandler: this.seeMoreHandler.bind(this),
 	                selectedProperty: filters.selected_property,
@@ -87763,6 +87769,7 @@
 	MapSearchResults.propTypes = {
 	  doSearchWithQuery: _propTypes2.default.func.isRequired,
 	  front_page_post_content: _propTypes2.default.array.isRequired,
+	  isFetching: _propTypes2.default.bool.isRequired,
 	  location: _propTypes2.default.object,
 	  mapSearchResultsLoading: _propTypes2.default.bool.isRequired,
 	  params: _propTypes2.default.object,
@@ -87780,7 +87787,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.toggleLocationModalSearchMode = exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.receiveLocationModalPosts = exports.requestLocationModalPosts = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
+	exports.toggleLocationModalSearchMode = exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.receiveSearchResultsPosts = exports.requestSearchResultsPosts = exports.receiveLocationModalPosts = exports.requestLocationModalPosts = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
 
 	var _lib = __webpack_require__(294);
 
@@ -87840,9 +87847,15 @@
 	  };
 	};
 
-	var setSearchResults = exports.setSearchResults = function setSearchResults(query, searchResults, total, append) {
+	var requestSearchResultsPosts = exports.requestSearchResultsPosts = function requestSearchResultsPosts() {
 	  return {
-	    type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
+	    type: _lib.Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION
+	  };
+	};
+
+	var receiveSearchResultsPosts = exports.receiveSearchResultsPosts = function receiveSearchResultsPosts(query, searchResults, total, append) {
+	  return {
+	    type: _lib.Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION,
 	    append: append,
 	    query: query,
 	    searchResults: searchResults,
@@ -94582,7 +94595,7 @@
 	  }, {
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      return this.props.properties !== nextProps.properties || this.props.selectedProperty !== nextProps.selectedProperty || nextState.loading !== this.state.loading;
+	      return this.props.properties !== nextProps.properties || this.props.selectedProperty !== nextProps.selectedProperty || this.props.isFetching !== nextProps.isFetching || nextState.loading !== this.state.loading;
 	    }
 	  }, {
 	    key: 'render',
@@ -94590,49 +94603,59 @@
 	      var _this2 = this;
 
 	      var _props = this.props,
+	          isFetching = _props.isFetching,
 	          properties = _props.properties,
 	          selectedProperty = _props.selectedProperty,
 	          total = _props.total;
 
+	      var classNames = [];
+	      classNames.push(_lib.Lib.THEME_CLASSES_PREFIX + 'listing-wrap');
+	      if (isFetching) {
+	        classNames.push(_lib.Lib.THEME_CLASSES_PREFIX + 'loading-overlay');
+	      }
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-wrap", ref: function ref(r) {
-	            return _this2.listingWrapElement = r;
-	          } },
+	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row', ref: function ref(r) {
-	              return _this2.searchResultLisintElement = r;
+	          { className: classNames.join(' '), ref: function ref(r) {
+	              return _this2.listingWrapElement = r;
 	            } },
-	          properties.map(function (p, i) {
-	            var item = {
-	              address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
-	              location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
-	              baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
-	              beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
-	              city: _lodash2.default.get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
-	              gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
-	                return media.url;
-	              }),
-	              id: p._id,
-	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', 0),
-	              lots_size: _lodash2.default.get(p, '_source.post_meta.rets_lot_size_area', 0),
-	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
-	              post_name: _lodash2.default.get(p, '_source.post_name', 0),
-	              post_type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
-	              type: _lodash2.default.get(bundle, 'property_types.' + _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''), 'Other'),
-	              relative_permalink: _lodash2.default.get(p, '_source.permalink', ''),
-	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', ''),
-	              zip: _lodash2.default.get(p, '_source.post_meta.rets_postal_code[0]', '')
-	            };
-	            return _react2.default.createElement(
-	              'div',
-	              { className: 'col-12 col-sm-6 col-xl-4', key: i },
-	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i, highlighted: selectedProperty === p._id, ref: function ref(r) {
-	                  return _this2.properties[p._id] = r;
-	                } })
-	            );
-	          })
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row', ref: function ref(r) {
+	                return _this2.searchResultLisintElement = r;
+	              } },
+	            properties.map(function (p, i) {
+	              var item = {
+	                address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
+	                location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
+	                baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
+	                beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
+	                city: _lodash2.default.get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
+	                gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
+	                  return media.url;
+	                }),
+	                id: p._id,
+	                living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', 0),
+	                lots_size: _lodash2.default.get(p, '_source.post_meta.rets_lot_size_area', 0),
+	                price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
+	                post_name: _lodash2.default.get(p, '_source.post_name', 0),
+	                post_type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
+	                type: _lodash2.default.get(bundle, 'property_types.' + _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''), 'Other'),
+	                relative_permalink: _lodash2.default.get(p, '_source.permalink', ''),
+	                thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', ''),
+	                zip: _lodash2.default.get(p, '_source.post_meta.rets_postal_code[0]', '')
+	              };
+	              return _react2.default.createElement(
+	                'div',
+	                { className: 'col-12 col-sm-6 col-xl-4', key: i },
+	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i, highlighted: selectedProperty === p._id, ref: function ref(r) {
+	                    return _this2.properties[p._id] = r;
+	                  } })
+	              );
+	            })
+	          )
 	        ),
 	        this.props.allowPagination ? _react2.default.createElement(
 	          'div',
@@ -101354,7 +101377,121 @@
 
 
 /***/ }),
-/* 625 */,
+/* 625 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _lib = __webpack_require__(294);
+
+	var _Util = __webpack_require__(296);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SearchFilterDescription = function (_Component) {
+	  _inherits(SearchFilterDescription, _Component);
+
+	  function SearchFilterDescription() {
+	    _classCallCheck(this, SearchFilterDescription);
+
+	    return _possibleConstructorReturn(this, (SearchFilterDescription.__proto__ || Object.getPrototypeOf(SearchFilterDescription)).apply(this, arguments));
+	  }
+
+	  _createClass(SearchFilterDescription, [{
+	    key: 'getMainText',
+	    value: function getMainText(props) {
+	      var bathrooms = props.bathrooms,
+	          bedrooms = props.bedrooms,
+	          saleType = props.saleType,
+	          total = props.total,
+	          price = props.price;
+
+	      var text = '';
+	      text += 'There are ' + total + ' homes for ' + saleType;
+	      if (price && !(price.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
+	        text += ' that are priced';
+	        if (price.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	          text += ' more than ' + _Util2.default.formatPriceValue(price.start) + ' ';
+	        } else if (price.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	          text += ' less than ' + _Util2.default.formatPriceValue(price.to) + ' ';
+	        } else {
+	          text += ' between ' + _Util2.default.formatPriceValue(price.start) + ' and ' + _Util2.default.formatPriceValue(price.to);
+	        }
+	      }
+
+	      if (bedrooms) {
+	        text += ' with ' + bedrooms + ' or more bedrooms';
+	      }
+	      if (bathrooms) {
+	        var prefix = bedrooms ? ' and' : ' with';
+	        text += prefix + ' ' + bathrooms + ' or more bathrooms';
+	      }
+	      return text;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var headText = 'Homes for ' + this.props.saleType;
+
+	      var mainText = this.getMainText(this.props);
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h1',
+	            null,
+	            headText
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            mainText
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SearchFilterDescription;
+	}(_react.Component);
+
+	SearchFilterDescription.propTypes = {
+	  bathrooms: _propTypes2.default.number,
+	  bedrooms: _propTypes2.default.number,
+	  price: _propTypes2.default.object,
+	  saleType: _propTypes2.default.string.isRequired,
+	  total: _propTypes2.default.number
+	};
+	;
+
+	exports.default = SearchFilterDescription;
+
+/***/ }),
 /* 626 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -107858,11 +107995,11 @@
 	var _lib = __webpack_require__(294);
 
 	var searchResults = function searchResults() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isFetching: false };
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case _lib.Lib.SET_SEARCH_RESULTS_ACTION:
+	    case _lib.Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION:
 	      var displayedResults = [];
 	      if (action.append) {
 	        displayedResults = state.displayedResults.concat(action.searchResults);
@@ -107871,9 +108008,14 @@
 	      }
 	      return Object.assign({}, state, {
 	        displayedResults: displayedResults,
+	        isFetching: false,
 	        query: action.query,
 	        searchResults: action.searchResults,
 	        totalProps: action.totalProps
+	      });
+	    case _lib.Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:
+	      return Object.assign({}, state, {
+	        isFetching: true
 	      });
 	    default:
 	      return state;
@@ -111339,128 +111481,6 @@
 
 	module.exports = getPrototype;
 
-
-/***/ }),
-/* 743 */,
-/* 744 */,
-/* 745 */,
-/* 746 */,
-/* 747 */,
-/* 748 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _propTypes = __webpack_require__(185);
-
-	var _propTypes2 = _interopRequireDefault(_propTypes);
-
-	var _lib = __webpack_require__(294);
-
-	var _Util = __webpack_require__(296);
-
-	var _Util2 = _interopRequireDefault(_Util);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SearchFilterDescription = function (_Component) {
-	  _inherits(SearchFilterDescription, _Component);
-
-	  function SearchFilterDescription() {
-	    _classCallCheck(this, SearchFilterDescription);
-
-	    return _possibleConstructorReturn(this, (SearchFilterDescription.__proto__ || Object.getPrototypeOf(SearchFilterDescription)).apply(this, arguments));
-	  }
-
-	  _createClass(SearchFilterDescription, [{
-	    key: 'getMainText',
-	    value: function getMainText(props) {
-	      var bathrooms = props.bathrooms,
-	          bedrooms = props.bedrooms,
-	          saleType = props.saleType,
-	          total = props.total,
-	          price = props.price;
-
-	      var text = '';
-	      console.log('price');
-	      console.log(price);
-	      text += 'There are ' + total + ' homes for ' + saleType;
-	      if (price && !(price.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
-	        text += ' that are priced';
-	        if (price.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
-	          text += ' more than ' + _Util2.default.formatPriceValue(price.start) + ' ';
-	        } else if (price.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-	          text += ' less than ' + _Util2.default.formatPriceValue(price.to) + ' ';
-	        } else {
-	          text += ' between ' + _Util2.default.formatPriceValue(price.start) + ' and ' + _Util2.default.formatPriceValue(price.to);
-	        }
-	      }
-
-	      if (bedrooms) {
-	        text += ' with ' + bedrooms + ' or more bedrooms';
-	      }
-	      if (bathrooms) {
-	        var prefix = bedrooms ? ' and' : ' with';
-	        text += prefix + ' ' + bathrooms + ' or more bathrooms';
-	      }
-	      return text;
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var headText = 'Homes for ' + this.props.saleType;
-
-	      var mainText = this.getMainText(this.props);
-	      return _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'h1',
-	            null,
-	            headText
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            mainText
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return SearchFilterDescription;
-	}(_react.Component);
-
-	SearchFilterDescription.propTypes = {
-	  bathrooms: _propTypes2.default.number,
-	  bedrooms: _propTypes2.default.number,
-	  price: _propTypes2.default.object,
-	  saleType: _propTypes2.default.string.isRequired,
-	  total: _propTypes2.default.number
-	};
-	;
-
-	exports.default = SearchFilterDescription;
 
 /***/ })
 /******/ ])));

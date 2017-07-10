@@ -21,8 +21,6 @@ class SearchFilterDescription extends Component {
       price
     } = props;
     let text = '';
-    console.log('price');
-    console.log(price);
     text += `There are ${total} homes for ${saleType}`;
     if (price && !(price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
       text += ` that are priced`;

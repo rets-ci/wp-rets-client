@@ -56,9 +56,15 @@ export const receiveLocationModalPosts = (posts) => {
   }
 }
 
-export const setSearchResults = (query, searchResults, total, append) => {
+export const requestSearchResultsPosts = () => {
   return {
-    type: Lib.SET_SEARCH_RESULTS_ACTION,
+    type: Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION
+  }
+};
+
+export const receiveSearchResultsPosts = (query, searchResults, total, append) => {
+  return {
+    type: Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION,
     append: append,
     query: query,
     searchResults: searchResults,

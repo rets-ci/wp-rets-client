@@ -1,7 +1,8 @@
 import Api from '../../containers/Api.jsx';
 import {
   openPropertiesModal,
-  setSearchResults,
+  receiveSearchResultsPosts,
+  requestSearchResultsPosts,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
 import Map from './Map.jsx';
@@ -11,7 +12,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import SearchResultListing from './components/SearchResultListing.jsx';
+import SearchResultListing from './SearchResultListing.jsx';
 import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
@@ -25,6 +26,7 @@ const mapStateToProps = (state, ownProps) => {
     allQueryParams: allQueryParams,
     front_page_post_content: ownProps.front_page_post_content,
     query: _.get(state, 'searchResults.query', []),
+    isFetching: _.get(state, 'searchResults.isFetching', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
     mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
@@ -42,9 +44,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     standardSearch: (params) => {
+      dispatch(requestSearchResultsPosts());
       Api.makeStandardPropertySearch(params, (query, response) => {
         if (_.get(response, 'hits.total', null)) {
-          dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
+          dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
         } else {
           console.log('query with params returned no data');
         }
@@ -52,16 +55,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     doSearchWithQuery: (query, append) => {
       let url = Api.getPropertySearchRequestURL();
+      dispatch(requestSearchResultsPosts());
       Api.search(url, query, response => {
         if (_.get(response, 'hits.total', null)) {
-          dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
+          dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {
           console.log('query with standard query returned no data');
         }
       });
     },
     resetSearchResults: () => {
-      dispatch(setSearchResults({}, [], 0));
+      dispatch(receiveSearchResultsPosts({}, [], 0));
     }
   };
 };
@@ -70,6 +74,7 @@ class MapSearchResults extends Component {
   static propTypes = {
     doSearchWithQuery: PropTypes.func.isRequired,
     front_page_post_content: PropTypes.array.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     location: PropTypes.object,
     mapSearchResultsLoading: PropTypes.bool.isRequired,
     params: PropTypes.object,
@@ -137,14 +142,15 @@ class MapSearchResults extends Component {
   render() {
     let {
       allQueryParams,
-      searchQueryParams,
       displayedResults,
       front_page_post_content,
+      isFetching,
       location,
       mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
-      results
+      results,
+      searchQueryParams
     } = this.props;
     let filters = qs.parse(window.location.search.replace('?', ''));
     let propertyTypes = location.query['wpp_search[property_types]'];
@@ -177,6 +183,7 @@ class MapSearchResults extends Component {
             />
             <SearchResultListing
               allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+              isFetching={isFetching}
               properties={displayedResults}
               seeMoreHandler={this.seeMoreHandler.bind(this)}
               selectedProperty={filters.selected_property}
