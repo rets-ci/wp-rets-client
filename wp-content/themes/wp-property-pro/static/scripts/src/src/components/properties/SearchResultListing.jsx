@@ -48,7 +48,7 @@ class SearchResultListing extends Component {
       let node = findDOMNode(this.properties[propertyId]);
       node.scrollIntoView({ behaviour: 'smooth' });
     }
-  }asd
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     return (this.props.properties !== nextProps.properties) ||

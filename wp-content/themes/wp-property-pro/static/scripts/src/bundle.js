@@ -28047,27 +28047,28 @@
 	      id = _data$_source.ID,
 	      post_date = _data$_source.post_date,
 	      post_content = _data$_source.post_content,
-	      _data$_source$post_me = _data$_source.post_meta,
-	      rets_list_price = _data$_source$post_me.rets_list_price,
-	      rets_living_area = _data$_source$post_me.rets_living_area,
-	      rets_lot_size_area = _data$_source$post_me.rets_lot_size_area,
-	      baths = _data$_source$post_me.rets_total_baths,
-	      rets_postal_code = _data$_source$post_me.rets_postal_code,
-	      rets_year_built = _data$_source$post_me.rets_year_built,
-	      beds = _data$_source$post_me.beds,
+	      post_meta = _data$_source.post_meta,
 	      post_modified = _data$_source.post_modified,
 	      post_title = _data$_source.post_title,
-	      _data$_source$tax_inp = _data$_source.tax_input,
-	      rets_city = _data$_source$tax_inp.rets_city,
-	      rets_middle_school = _data$_source$tax_inp.rets_middle_school,
-	      rets_high_school = _data$_source$tax_inp.rets_high_school,
-	      rets_state = _data$_source$tax_inp.rets_state,
-	      _data$_source$tax_inp2 = _data$_source$tax_inp.wpp_location,
-	      wpp_location_subdivision = _data$_source$tax_inp2.wpp_location_subdivision,
-	      wpp_location_city = _data$_source$tax_inp2.wpp_location_city,
-	      elementary_school = _data$_source$tax_inp.wpp_schools.elementary_school,
+	      tax_input = _data$_source.tax_input,
 	      wpp_media = _data$_source.wpp_media;
 
+
+	  var rets_list_price = _.get(post_meta, 'rets_list_price', null);
+	  var rets_living_area = _.get(post_meta, 'rets_living_area', null);
+	  var rets_lot_size_area = _.get(post_meta, 'rets_lot_size_area', null);
+	  var baths = _.get(post_meta, 'rets_total_baths', null);
+	  var rets_postal_code = _.get(post_meta, 'rets_postal_code', null);
+	  var rets_year_built = _.get(post_meta, 'rets_year_built', null);
+	  var beds = _.get(post_meta, 'beds', null);
+
+	  var rets_city = _.get(tax_input, 'rets_city', null);
+	  var rets_middle_school = _.get(tax_input, 'rets_middle_school', null);
+	  var rets_high_school = _.get(tax_input, 'rets_high_school', null);
+	  var rets_state = _.get(tax_input, 'rets_state', null);
+	  var wpp_location_subdivision = _.get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
+	  var wpp_location_city = _.get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
+	  var elementary_school = _.get(tax_input, 'rets_state.wpp_schools.elementary_school', null);
 
 	  var images = wpp_media.map(function (w) {
 	    return w.url;
@@ -28128,8 +28129,7 @@
 	          }
 	        };
 	        var url = 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=1';
-	        _Api2.default.search(url, query, function (data) {
-
+	        _Api2.default.search(url, query, function (err, data) {
 	          if (!_.get(data, 'hits.hits[0]', null)) {
 	            _this2.setState({ property: false });
 	          } else {
@@ -28347,7 +28347,7 @@
 	      var rows = [];
 
 	      if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
-	        callback(rows);
+	        callback(null, rows);
 	        return;
 	      }
 
@@ -28389,7 +28389,10 @@
 	      Api.makeRequest({
 	        'url': Api.getPropertySearchRequestURL(0),
 	        'query': body
-	      }, function (response) {
+	      }, function (err, response) {
+	        if (err) {
+	          return callback(err);
+	        }
 	        var rows = [];
 	        for (var aggregationKey in aggregationsFields) {
 
@@ -28471,7 +28474,7 @@
 	          rows.push(data);
 	        }
 
-	        callback(rows);
+	        callback(null, rows);
 	      });
 	    }
 	  }, {
@@ -28508,7 +28511,10 @@
 	        'query': {
 	          data: JSON.stringify(body)
 	        }
-	      }, function (response) {
+	      }, function (err, response) {
+	        if (err) {
+	          return callback(err);
+	        }
 	        var responseAggs = _lodash2.default.get(response, 'aggregations');
 
 	        for (var i in responseAggs) {
@@ -28554,7 +28560,7 @@
 	          }
 	        }
 
-	        callback(rows);
+	        callback(null, rows);
 	      });
 	    }
 	  }, {
@@ -28741,8 +28747,8 @@
 
 	      var query = this.createESSearchQuery(searchParams);
 	      var url = this.getPropertySearchRequestURL();
-	      this.search(url, query, function (response) {
-	        callback(query, response);
+	      this.search(url, query, function (err, response) {
+	        callback(err, query, response);
 	      });
 	    }
 	  }, {
@@ -28761,11 +28767,27 @@
 	        contentType: 'application/json',
 	        data: _lodash2.default.get(data, 'query'),
 	        error: function error(jqXHR, textStatus) {
-	          console.log('error occured while retrieving data: ', textStatus);
+	          var errorMsg = '';
+	          if (jqXHR.status === 0) {
+	            errorMsg = "Couldn't establish a connection.";
+	          } else if (jqXHR.status == 404) {
+	            errorMsg = "Requested page not found. [404]";
+	          } else if (jqXHR.status == 500) {
+	            errorMsg = "Internal Server Error [500].";
+	          } else if (exception === 'parsererror') {
+	            errorMsg = "Requested JSON parse failed.";
+	          } else if (exception === 'timeout') {
+	            errorMsg = "Time out error.";
+	          } else if (exception === 'abort') {
+	            errorMsg = "Ajax request aborted.";
+	          } else {
+	            errorMsg = "Uncaught Error.\n" + jqXHR.responseText;
+	          }
+	          callback(errorMsg);
 	        },
 	        success: function success(response) {
 	          if (typeof callback !== 'undefined') {
-	            callback(response);
+	            callback(null, response);
 	          } else {
 	            console.log('Missing callback');
 	          }
@@ -28805,6 +28827,7 @@
 	  },
 	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER',
 	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER',
+	  ERROR_MESSAGE: 'ERROR_MESSAGE',
 	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
 	  EXTENSION_DELIMITER: '.',
 	  INIT_MENU_ACTION: 'INIT_MENU',
@@ -28814,9 +28837,12 @@
 	  PROPERTY_PER_PAGE: 18,
 	  RANGE_SLIDER_NO_MIN_TEXT: 'No Min',
 	  RANGE_SLIDER_NO_MAX_TEXT: 'No Max',
-	  RECEIVE_POSTS_ACTION: 'RECEIVE_POSTS',
-	  REQUEST_POSTS_ACTION: 'REQUEST_POSTS',
-	  REQUEST_SEARCH_RESULTS_POSTS_ACTION: 'REQUEST_SEARCH_RESULTS_POSTS_ACTION',
+	  RECEIVE_LOCATION_MODAL_POSTS_ACTION: 'RECEIVE_LOCATION_MODAL_POSTS',
+	  RESET_ERROR_MESSAGE: 'RESET_ERROR_MESSAGE',
+	  REQUEST_LOCATION_MODAL_POSTS_ACTION: 'REQUEST_LOCATION_MODAL_POSTS',
+	  REQUEST_LOCATION_MODAL_RESET_FETCHING_ACTION: 'REQUEST_LOCATION_MODAL_RESET_FETCHING',
+	  REQUEST_SEARCH_RESULTS_POSTS_ACTION: 'REQUEST_SEARCH_RESULTS_POSTS',
+	  REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS_ACTION: 'REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS',
 	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
 	  SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'SET_PROPERTIES_MODAL_LOCAL_FILTER',
@@ -87455,6 +87481,10 @@
 
 	var _index = __webpack_require__(552);
 
+	var _ErrorMessage = __webpack_require__(744);
+
+	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
+
 	var _Map = __webpack_require__(553);
 
 	var _Map2 = _interopRequireDefault(_Map);
@@ -87517,6 +87547,7 @@
 	  var allQueryParams = ownProps.location.query ? _qs2.default.parse(ownProps.location.query) : {};
 	  return {
 	    allQueryParams: allQueryParams,
+	    errorMessage: state.errorMessage,
 	    front_page_post_content: ownProps.front_page_post_content,
 	    query: _lodash2.default.get(state, 'searchResults.query', []),
 	    isFetching: _lodash2.default.get(state, 'searchResults.isFetching', []),
@@ -87536,9 +87567,16 @@
 	      dispatch((0, _index.openPropertiesModal)(open));
 	    },
 
-	    standardSearch: function standardSearch(params) {
+	    standardSearch: function standardSearch(errorMessage, params) {
 	      dispatch((0, _index.requestSearchResultsPosts)());
-	      _Api2.default.makeStandardPropertySearch(params, function (query, response) {
+	      _Api2.default.makeStandardPropertySearch(params, function (err, query, response) {
+	        if (err) {
+	          dispatch((0, _index.requestSearchResultsPostsResetFetching)());
+	          return dispatch((0, _index.raiseErrorMessage)(err));
+	        }
+	        if (!err && errorMessage) {
+	          dispatch(resetErrorMessage());
+	        }
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.receiveSearchResultsPosts)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), false));
 	        } else {
@@ -87546,10 +87584,18 @@
 	        }
 	      });
 	    },
-	    doSearchWithQuery: function doSearchWithQuery(query, append) {
+
+	    doSearchWithQuery: function doSearchWithQuery(errorMessage, query, append) {
 	      var url = _Api2.default.getPropertySearchRequestURL();
 	      dispatch((0, _index.requestSearchResultsPosts)());
-	      _Api2.default.search(url, query, function (response) {
+	      _Api2.default.search(url, query, function (err, response) {
+	        if (err) {
+	          dispatch((0, _index.requestSearchResultsPostsResetFetching)());
+	          return dispatch((0, _index.raiseErrorMessage)(err));
+	        }
+	        if (!err && errorMessage) {
+	          dispatch(resetErrorMessage());
+	        }
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.receiveSearchResultsPosts)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), append));
 	        } else {
@@ -87600,13 +87646,13 @@
 	    value: function seeMoreHandler() {
 	      var modifiedQuery = this.props.query;
 	      modifiedQuery.from = this.props.displayedResults.length;
-	      this.props.doSearchWithQuery(modifiedQuery, true);
+	      this.props.doSearchWithQuery(this.props.errorMessage, modifiedQuery, true);
 	    }
 	  }, {
 	    key: 'applyQueryFilters',
 	    value: function applyQueryFilters() {
 	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
-	      this.props.standardSearch(searchFilters);
+	      this.props.standardSearch(this.props.errorMEssage, searchFilters);
 	    }
 	  }, {
 	    key: 'clickMobileSwitcherHandler',
@@ -87641,6 +87687,7 @@
 
 	      var _props = this.props,
 	          allQueryParams = _props.allQueryParams,
+	          errorMessage = _props.errorMessage,
 	          displayedResults = _props.displayedResults,
 	          front_page_post_content = _props.front_page_post_content,
 	          isFetching = _props.isFetching,
@@ -87697,14 +87744,14 @@
 	                saleType: searchFilters.sale_type,
 	                total: this.props.resultsTotal
 	              }),
-	              _react2.default.createElement(_SearchResultListing2.default, {
+	              this.props.displayedResults.length ? _react2.default.createElement(_SearchResultListing2.default, {
 	                allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
 	                isFetching: isFetching,
 	                properties: displayedResults,
 	                seeMoreHandler: this.seeMoreHandler.bind(this),
 	                selectedProperty: filters.selected_property,
 	                total: this.props.resultsTotal
-	              })
+	              }) : errorMessage ? _react2.default.createElement(_ErrorMessage2.default, { message: errorMessage }) : null
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -87787,7 +87834,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.toggleLocationModalSearchMode = exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.receiveSearchResultsPosts = exports.requestSearchResultsPosts = exports.receiveLocationModalPosts = exports.requestLocationModalPosts = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
+	exports.toggleLocationModalSearchMode = exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.receiveSearchResultsPosts = exports.requestSearchResultsPostsResetFetching = exports.requestSearchResultsPosts = exports.receiveLocationModalPosts = exports.requestLocationModalPosts = exports.requestLocationModalResetFetching = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.resetErrorMessage = exports.raiseErrorMessage = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
 
 	var _lib = __webpack_require__(294);
 
@@ -87802,6 +87849,19 @@
 	  return {
 	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION,
 	    termFilter: termFilter
+	  };
+	};
+
+	var raiseErrorMessage = exports.raiseErrorMessage = function raiseErrorMessage(error) {
+	  return {
+	    type: _lib.Lib.ERROR_MESSAGE,
+	    error: error
+	  };
+	};
+
+	var resetErrorMessage = exports.resetErrorMessage = function resetErrorMessage() {
+	  return {
+	    type: _lib.Lib.RESET_ERROR_MESSAGE
 	  };
 	};
 
@@ -87834,15 +87894,21 @@
 	  };
 	};
 
+	var requestLocationModalResetFetching = exports.requestLocationModalResetFetching = function requestLocationModalResetFetching() {
+	  return {
+	    type: _lib.Lib.REQUEST_LOCATION_MODAL_RESET_FETCHING_ACTION
+	  };
+	};
+
 	var requestLocationModalPosts = exports.requestLocationModalPosts = function requestLocationModalPosts() {
 	  return {
-	    type: _lib.Lib.REQUEST_POSTS_ACTION
+	    type: _lib.Lib.REQUEST_LOCATION_MODAL_POSTS_ACTION
 	  };
 	};
 
 	var receiveLocationModalPosts = exports.receiveLocationModalPosts = function receiveLocationModalPosts(posts) {
 	  return {
-	    type: _lib.Lib.RECEIVE_POSTS_ACTION,
+	    type: _lib.Lib.RECEIVE_LOCATION_MODAL_POSTS_ACTION,
 	    posts: posts
 	  };
 	};
@@ -87850,6 +87916,12 @@
 	var requestSearchResultsPosts = exports.requestSearchResultsPosts = function requestSearchResultsPosts() {
 	  return {
 	    type: _lib.Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION
+	  };
+	};
+
+	var requestSearchResultsPostsResetFetching = exports.requestSearchResultsPostsResetFetching = function requestSearchResultsPostsResetFetching() {
+	  return {
+	    type: _lib.Lib.REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS_ACTION
 	  };
 	};
 
@@ -88373,7 +88445,8 @@
 	    },
 	    updateResultCount: function updateResultCount(filters) {
 	      dispatch((0, _index.setPropertiesModalResultCountLoading)(true));
-	      _Api2.default.makeStandardPropertySearch(filters, function (query, response) {
+	      _Api2.default.makeStandardPropertySearch(filters, function (err, query, response) {
+	        // we are ignoring handling the error here intentionally as the error is handled as soon as the modal is closed
 	        dispatch((0, _index.setPropertiesModalResultCountLoading)(false));
 	        dispatch((0, _index.updatePropertiesModalResultCount)(_.get(response, 'hits.total', null)));
 	      });
@@ -94059,6 +94132,10 @@
 
 	var _index = __webpack_require__(552);
 
+	var _ErrorMessage = __webpack_require__(744);
+
+	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
+
 	var _propTypes = __webpack_require__(185);
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -94106,6 +94183,7 @@
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  var localFilters = state.propertiesModal.localFilters;
 	  return {
+	    errorMessage: state.errorMessage,
 	    isFetching: state.locationModal.isFetching,
 	    open: state.locationModal ? state.locationModal.open : false,
 	    localFilters: localFilters,
@@ -94124,7 +94202,7 @@
 	      dispatch((0, _index.openLocationModal)(false));
 	    },
 
-	    searchHandler: function searchHandler(term, saleType, propertyTypes) {
+	    searchHandler: function searchHandler(term, saleType, propertyTypes, errorMessage) {
 
 	      var searchParams = {
 	        term: term,
@@ -94133,16 +94211,30 @@
 	      };
 	      // reset the searchProps
 	      dispatch((0, _index.requestLocationModalPosts)());
-	      _Api2.default.autocompleteQuery(searchParams, function (rows) {
+	      _Api2.default.autocompleteQuery(searchParams, function (err, rows) {
+	        if (err) {
+	          dispatch((0, _index.requestLocationModalResetFetching)());
+	          return dispatch((0, _index.raiseErrorMessage)(err));
+	        }
+	        if (!err && errorMessage) {
+	          dispatch((0, _index.resetErrorMessage)());
+	        }
 	        dispatch((0, _index.receiveLocationModalPosts)(rows));
 	      });
 	    },
-	    topQuery: function topQuery() {
+	    topQuery: function topQuery(errorMessage) {
 	      // reset the searchProps
 	      dispatch((0, _index.requestLocationModalPosts)());
 	      _Api2.default.topQuery({
 	        size: _lib.Lib.TOP_AGGREGATIONS_COUNT
-	      }, function (rows) {
+	      }, function (err, rows) {
+	        if (err) {
+	          dispatch((0, _index.requestLocationModalResetFetching)());
+	          return dispatch((0, _index.raiseErrorMessage)(err));
+	        }
+	        if (!err && errorMessage) {
+	          dispatch((0, _index.resetErrorMessage)());
+	        }
 	        dispatch((0, _index.receiveLocationModalPosts)(rows));
 	      });
 	    },
@@ -94179,7 +94271,7 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if (this.props.open !== nextProps.open) {
-	        this.props.topQuery();
+	        this.props.topQuery(nextProps.errorMessage);
 	      }
 	    }
 	  }, {
@@ -94234,9 +94326,9 @@
 
 	      var val = this.state.searchValue;
 	      if (!val) {
-	        this.props.topQuery();
+	        this.props.topQuery(this.props.errorMessage);
 	      } else {
-	        this.props.searchHandler(val, _lodash2.default.get(this.props, 'saleType', ''), _lodash2.default.get(this.props, 'propertyTypes', ''));
+	        this.props.searchHandler(val, _lodash2.default.get(this.props, 'saleType', ''), _lodash2.default.get(this.props, 'propertyTypes', ''), this.props.errorMessage);
 	      }
 	    }
 	  }, {
@@ -94269,6 +94361,7 @@
 	      var _this2 = this;
 
 	      var _props = this.props,
+	          errorMessage = _props.errorMessage,
 	          isFetching = _props.isFetching,
 	          searchResults = _props.searchResults,
 	          searchType = _props.searchType,
@@ -94408,7 +94501,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
-	                !resultsElements.length ? isFetching ? _react2.default.createElement(_LoadingAccordion2.default, null) : _react2.default.createElement(
+	                !resultsElements.length ? isFetching ? _react2.default.createElement(_LoadingAccordion2.default, null) : errorMessage ? _react2.default.createElement(_ErrorMessage2.default, { message: errorMessage }) : _react2.default.createElement(
 	                  'p',
 	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'gentle-error' },
 	                  'Nothing to show. Please try a different search'
@@ -101503,6 +101596,16 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _index = __webpack_require__(552);
+
+	var _Api = __webpack_require__(293);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
+	var _ErrorMessage = __webpack_require__(744);
+
+	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
+
 	var _Footer = __webpack_require__(627);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
@@ -101514,6 +101617,8 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(241);
 
 	var _Header = __webpack_require__(633);
 
@@ -101551,6 +101656,20 @@
 	  showSpinner: false
 	});
 
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    errorMessage: state.errorMessage
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    raiseError: function raiseError(msg) {
+	      dispatch((0, _index.raiseErrorMessage)(msg));
+	    }
+	  };
+	};
+
 	var PageLayout = function (_Component) {
 	  _inherits(PageLayout, _Component);
 
@@ -101571,25 +101690,23 @@
 	      // Get page content query
 	      var self = this;
 	      _nprogress2.default.start();
-	      jQuery.ajax({
-	        url: url,
-	        type: 'GET',
-	        data: {
+	      _Api2.default.makeRequest({
+	        query: {
 	          pageType: 'json'
 	        },
-	        dataType: 'json',
-	        success: function success(data) {
-	          if (_lodash2.default.get(data, 'post', null)) {
-	            _nprogress2.default.done();
-	            document.title = _lodash2.default.get(data, 'page_title', '');
-	            self.setState({
-	              front_page_post_content: data.front_page_post_content,
-	              post: data.post
-	            });
-	          }
-	        },
-	        error: function error(jqXHR, textStatus, errorThrown) {
-	          console.log(textStatus, errorThrown);
+	        url: url
+	      }, function (err, data) {
+	        if (err) {
+	          _nprogress2.default.done();
+	          return self.props.raiseError(err);
+	        }
+	        if (_lodash2.default.get(data, 'post', null)) {
+	          _nprogress2.default.done();
+	          document.title = _lodash2.default.get(data, 'page_title', '');
+	          self.setState({
+	            front_page_post_content: data.front_page_post_content,
+	            post: data.post
+	          });
 	        }
 	      });
 	    }
@@ -101616,13 +101733,14 @@
 	      var _this2 = this;
 
 	      var _props = this.props,
+	          errorMessage = _props.errorMessage,
 	          children = _props.children,
 	          location = _props.location;
 
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
-	        Object.keys(this.state.post).length ? _react2.default.createElement(
+	        !errorMessage ? Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
@@ -101635,7 +101753,7 @@
 	            });
 	          }),
 	          _react2.default.createElement(_Footer2.default, null)
-	        ) : null
+	        ) : null : _react2.default.createElement(_ErrorMessage2.default, { message: errorMessage })
 	      );
 	    }
 	  }]);
@@ -101646,8 +101764,9 @@
 	PageLayout.propTypes = {
 	  children: _propTypes2.default.object.isRequired
 	};
-	exports.default = PageLayout;
 	;
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PageLayout);
 
 /***/ }),
 /* 627 */
@@ -107737,6 +107856,10 @@
 	    value: true
 	});
 
+	var _errorMessage = __webpack_require__(743);
+
+	var _errorMessage2 = _interopRequireDefault(_errorMessage);
+
 	var _reactRouterRedux = __webpack_require__(287);
 
 	var _redux = __webpack_require__(250);
@@ -107792,6 +107915,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var propertyProApp = (0, _redux.combineReducers)({
+	    errorMessage: _errorMessage2.default,
 	    mapState: _map2.default,
 	    locationModal: _locationModal2.default,
 	    propertiesModal: _propertiesModal2.default,
@@ -107881,7 +108005,7 @@
 	var _lib = __webpack_require__(294);
 
 	var locationModal = function locationModal() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isFetching: false, open: false, modifyType: null, searchMode: false, items: [] };
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { errorMessage: null, isFetching: false, open: false, modifyType: null, searchMode: false, items: [] };
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -107894,12 +108018,16 @@
 	      return Object.assign({}, state, {
 	        searchMode: action.searchMode
 	      });
-	    case _lib.Lib.REQUEST_POSTS_ACTION:
+	    case _lib.Lib.REQUEST_LOCATION_MODAL_POSTS_ACTION:
 	      return Object.assign({}, state, {
 	        isFetching: true,
 	        items: []
 	      });
-	    case _lib.Lib.RECEIVE_POSTS_ACTION:
+	    case _lib.Lib.REQUEST_LOCATION_MODAL_RESET_FETCHING_ACTION:
+	      return Object.assign({}, state, {
+	        isFetching: false
+	      });
+	    case _lib.Lib.RECEIVE_LOCATION_MODAL_POSTS_ACTION:
 	      return Object.assign({}, state, {
 	        isFetching: false,
 	        items: action.posts
@@ -108016,6 +108144,13 @@
 	    case _lib.Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:
 	      return Object.assign({}, state, {
 	        isFetching: true
+	      });
+	    case _lib.Lib.REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS_ACTION:
+	      return Object.assign({}, state, {
+	        isFetching: false,
+	        displayedResults: [],
+	        searchResults: [],
+	        totalProps: 0
 	      });
 	    default:
 	      return state;
@@ -111481,6 +111616,108 @@
 
 	module.exports = getPrototype;
 
+
+/***/ }),
+/* 743 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _lib = __webpack_require__(294);
+
+	var errorMessage = function errorMessage() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	  var action = arguments[1];
+	  var type = action.type,
+	      error = action.error;
+
+	  if (type === _lib.Lib.RESET_ERROR_MESSAGE) {
+	    return null;
+	  } else if (error && _lib.Lib.ERROR_MESSAGE) {
+	    return error;
+	  }
+	  return state;
+	};
+
+	exports.default = errorMessage;
+
+/***/ }),
+/* 744 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _lib = __webpack_require__(294);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ErrorMessage = function (_Component) {
+	  _inherits(ErrorMessage, _Component);
+
+	  function ErrorMessage() {
+	    _classCallCheck(this, ErrorMessage);
+
+	    return _possibleConstructorReturn(this, (ErrorMessage.__proto__ || Object.getPrototypeOf(ErrorMessage)).apply(this, arguments));
+	  }
+
+	  _createClass(ErrorMessage, [{
+	    key: 'refresh',
+	    value: function refresh() {
+	      window.location.reload();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var message = this.props.message;
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'error-message-container' },
+	        _react2.default.createElement(
+	          'p',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'gentle-error' },
+	          this.props.message
+	        ),
+	        _react2.default.createElement(
+	          'a',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'refresh-link', href: '#', onClick: this.refresh },
+	          'Reload page'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ErrorMessage;
+	}(_react.Component);
+
+	ErrorMessage.propTypes = {
+	  message: _propTypes2.default.string.isRequired
+	};
+	exports.default = ErrorMessage;
 
 /***/ })
 /******/ ])));

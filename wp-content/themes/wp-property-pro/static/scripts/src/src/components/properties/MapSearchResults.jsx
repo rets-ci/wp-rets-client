@@ -1,10 +1,13 @@
 import Api from '../../containers/Api.jsx';
 import {
   openPropertiesModal,
+  raiseErrorMessage,
   receiveSearchResultsPosts,
+  requestSearchResultsPostsResetFetching,
   requestSearchResultsPosts,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
+import ErrorMessage from '../ErrorMessage.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
@@ -24,6 +27,7 @@ const mapStateToProps = (state, ownProps) => {
   let allQueryParams = ownProps.location.query ? qs.parse(ownProps.location.query) : {};
   return {
     allQueryParams: allQueryParams,
+    errorMessage: state.errorMessage,
     front_page_post_content: ownProps.front_page_post_content,
     query: _.get(state, 'searchResults.query', []),
     isFetching: _.get(state, 'searchResults.isFetching', []),
@@ -43,9 +47,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openPropertiesModal(open));
     },
 
-    standardSearch: (params) => {
+    standardSearch: (errorMessage, params) => {
       dispatch(requestSearchResultsPosts());
-      Api.makeStandardPropertySearch(params, (query, response) => {
+      Api.makeStandardPropertySearch(params, (err, query, response) => {
+        if (err) {
+          dispatch(requestSearchResultsPostsResetFetching());
+          return dispatch(raiseErrorMessage(err));
+        }
+        if (!err && errorMessage) {
+          dispatch(resetErrorMessage());
+        }
         if (_.get(response, 'hits.total', null)) {
           dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
         } else {
@@ -53,10 +64,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         }
       });
     },
-    doSearchWithQuery: (query, append) => {
+
+    doSearchWithQuery: (errorMessage, query, append) => {
       let url = Api.getPropertySearchRequestURL();
       dispatch(requestSearchResultsPosts());
-      Api.search(url, query, response => {
+      Api.search(url, query, (err, response) => {
+        if (err) {
+          dispatch(requestSearchResultsPostsResetFetching());
+          return dispatch(raiseErrorMessage(err));
+        }
+        if (!err && errorMessage) {
+          dispatch(resetErrorMessage());
+        }
         if (_.get(response, 'hits.total', null)) {
           dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {
@@ -107,12 +126,12 @@ class MapSearchResults extends Component {
   seeMoreHandler() {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
-    this.props.doSearchWithQuery(modifiedQuery, true);
+    this.props.doSearchWithQuery(this.props.errorMessage, modifiedQuery, true);
   }
 
   applyQueryFilters() {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
-    this.props.standardSearch(searchFilters);
+    this.props.standardSearch(this.props.errorMEssage, searchFilters);
   }
 
   clickMobileSwitcherHandler(mapDisplay) {
@@ -142,6 +161,7 @@ class MapSearchResults extends Component {
   render() {
     let {
       allQueryParams,
+      errorMessage,
       displayedResults,
       front_page_post_content,
       isFetching,
@@ -181,14 +201,24 @@ class MapSearchResults extends Component {
               saleType={searchFilters.sale_type}
               total={this.props.resultsTotal}
             />
-            <SearchResultListing
-              allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
-              isFetching={isFetching}
-              properties={displayedResults}
-              seeMoreHandler={this.seeMoreHandler.bind(this)}
-              selectedProperty={filters.selected_property}
-              total={this.props.resultsTotal}
-              />
+            {this.props.displayedResults.length
+              ?
+                <SearchResultListing
+                  allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+                  isFetching={isFetching}
+                  properties={displayedResults}
+                  seeMoreHandler={this.seeMoreHandler.bind(this)}
+                  selectedProperty={filters.selected_property}
+                  total={this.props.resultsTotal}
+                />
+              :
+                (errorMessage
+                  ?
+                  <ErrorMessage message={errorMessage} />
+                  : null
+                )
+                
+            }
           </div>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>

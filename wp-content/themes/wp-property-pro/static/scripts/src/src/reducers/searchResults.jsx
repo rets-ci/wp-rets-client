@@ -20,6 +20,13 @@ const searchResults = (state = {isFetching: false}, action) => {
       return Object.assign({}, state, {
         isFetching: true
       });
+    case Lib.REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS_ACTION:
+      return Object.assign({}, state, {
+        isFetching: false,
+        displayedResults: [],
+        searchResults: [],
+        totalProps: 0
+      });
     default:
       return state
   }
