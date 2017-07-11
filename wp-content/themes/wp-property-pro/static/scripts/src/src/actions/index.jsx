@@ -14,6 +14,15 @@ export const deletePropertiesModalTermLocalFilter = termFilter => {
   }
 };
 
+export const raiseErrorMessage = (error) => ({
+  type: Lib.ERROR_MESSAGE,
+  error: error
+});
+
+export const resetErrorMessage = () => ({
+  type: Lib.RESET_ERROR_MESSAGE
+});
+
 export const openLocationModal = (open, modifyType) => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
@@ -43,22 +52,40 @@ export const setSearchProps = (searchProps) => {
   }
 };
 
+export const requestLocationModalResetFetching = () => {
+  return {
+    type: Lib.REQUEST_LOCATION_MODAL_RESET_FETCHING_ACTION
+  }
+};
+
 export const requestLocationModalPosts = () => {
   return {
-    type: Lib.REQUEST_POSTS_ACTION
+    type: Lib.REQUEST_LOCATION_MODAL_POSTS_ACTION
   }
 }
 
 export const receiveLocationModalPosts = (posts) => {
   return {
-    type: Lib.RECEIVE_POSTS_ACTION,
+    type: Lib.RECEIVE_LOCATION_MODAL_POSTS_ACTION,
     posts: posts
   }
 }
 
-export const setSearchResults = (query, searchResults, total, append) => {
+export const requestSearchResultsPosts = () => {
   return {
-    type: Lib.SET_SEARCH_RESULTS_ACTION,
+    type: Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION
+  }
+};
+
+export const requestSearchResultsPostsResetFetching = () => {
+  return {
+    type: Lib.REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS_ACTION
+  }
+};
+
+export const receiveSearchResultsPosts = (query, searchResults, total, append) => {
+  return {
+    type: Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION,
     append: append,
     query: query,
     searchResults: searchResults,

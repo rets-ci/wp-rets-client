@@ -138,7 +138,7 @@ class Api {
     let rows = [];
 
     if (!params.term || params.term.length < Lib.MIN_SEARCH_KEY_LENGTH) {
-      callback(rows);
+      callback(null, rows);
       return;
     }
 
@@ -180,7 +180,8 @@ class Api {
     Api.makeRequest({
       'url': Api.getPropertySearchRequestURL(0),
       'query': body
-    }, function (response) {
+    }, function (err, response) {
+      if (err) { return callback(err); }
       let rows = [];
       for (let aggregationKey in aggregationsFields) {
 
@@ -263,7 +264,7 @@ class Api {
         rows.push(data);
       }
 
-      callback(rows);
+      callback(null, rows);
     });
   }
 
@@ -304,7 +305,8 @@ class Api {
       'query': {
         data: JSON.stringify(body)
       }
-    }, function (response) {
+    }, function (err, response) {
+      if (err) { return callback(err); }
       let responseAggs = _.get(response, 'aggregations');
 
       for (let i in responseAggs) {
@@ -351,7 +353,7 @@ class Api {
         }
       }
 
-      callback(rows);
+      callback(null, rows);
     });
   }
 
@@ -570,8 +572,8 @@ class Api {
       
       let query = this.createESSearchQuery(searchParams);
       let url = this.getPropertySearchRequestURL();
-      this.search(url, query, response => {
-        callback(query, response);
+      this.search(url, query, (err, response) => {
+        callback(err, query, response);
       });
   }
 
@@ -589,11 +591,27 @@ class Api {
       contentType: 'application/json',
       data: _.get(data, 'query'),
       error: (jqXHR, textStatus) => {
-        console.log('error occured while retrieving data: ', textStatus);
+        let errorMsg = '';
+        if (jqXHR.status === 0) {
+          errorMsg = "Couldn't establish a connection.";
+        } else if (jqXHR.status == 404) {
+          errorMsg = "Requested page not found. [404]";
+        } else if (jqXHR.status == 500) {
+          errorMsg = "Internal Server Error [500].";
+        } else if (exception === 'parsererror') {
+          errorMsg = "Requested JSON parse failed.";
+        } else if (exception === 'timeout') {
+          errorMsg = "Time out error.";
+        } else if (exception === 'abort') {
+          errorMsg = "Ajax request aborted.";
+        } else {
+          errorMsg = "Uncaught Error.\n" + jqXHR.responseText;
+        }
+        callback(errorMsg);
       },
       success: response => {
         if (typeof callback !== 'undefined') {
-          callback(response);
+          callback(null, response);
         } else {
           console.log('Missing callback');
         }

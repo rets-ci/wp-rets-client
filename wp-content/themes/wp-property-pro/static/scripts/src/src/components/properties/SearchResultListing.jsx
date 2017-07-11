@@ -51,20 +51,28 @@ class SearchResultListing extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (this.props.properties !== nextProps.properties) || (this.props.selectedProperty !== nextProps.selectedProperty) || (nextState.loading !== this.state.loading);
+    return (this.props.properties !== nextProps.properties) ||
+      (this.props.selectedProperty !== nextProps.selectedProperty) ||
+      (this.props.isFetching !== nextProps.isFetching) ||
+      (nextState.loading !== this.state.loading);
   }
 
   render() {
     let {
+      isFetching,
       properties,
       selectedProperty,
       total
     } = this.props;
+    let classNames = [];
+    classNames.push(Lib.THEME_CLASSES_PREFIX + 'listing-wrap');
+    if (isFetching) { classNames.push(Lib.THEME_CLASSES_PREFIX + 'loading-overlay'); }
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "listing-wrap"} ref={(r) => this.listingWrapElement = r}>
-        <div className="row" ref={(r) => this.searchResultLisintElement = r}>
-          {
-            properties.map((p, i) => {
+      <div>
+        <div className={classNames.join(' ')} ref={(r) => this.listingWrapElement = r}>
+          <div className="row" ref={(r) => this.searchResultLisintElement = r}>
+            {
+              properties.map((p, i) => {
                 let item = {
                   address: _.get(p, '_source.post_meta.rets_address', ''),
                   location: _.get(p, '_source.post_meta.wpp_location_pin', []),
@@ -88,8 +96,9 @@ class SearchResultListing extends Component {
                     <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i} highlighted={selectedProperty === p._id} ref={(r) => this.properties[p._id] = r} />
                   </div>
                 );
-              }
-            )}
+                }
+              )}
+          </div>
         </div>
         {this.props.allowPagination ?
           <div className={Lib.THEME_CLASSES_PREFIX + "search-result-container"}>

@@ -1299,6 +1299,10 @@ p.propertypro-gentle-error {
     text-align: center;
 }
 
+.propertypro-error-message-container {
+    text-align: center;
+}
+
 /* User Search Modal -> Advanced Search Filter */
 .propertypro-advanced-filter {
     display: block;
@@ -1783,6 +1787,7 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-listing-wrap {
+    position: relative;
     padding: 1rem;
 }
 
@@ -2230,7 +2235,7 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-category-card .propertypro-category-card-content ul li:active a, .propertypro-category-card .propertypro-category-card-content ul li:focus a,
-.propertypro-category-card .propertypro-category-card-content ul li:hover a {
+.propertypro-category-card .propertypro-category-card-content ul li:hover a, .propertypro-refresh-link:hover, .propertypro-refresh-link:active, .propertypro-refresh-link:focus {
     color: #d03528;
     cursor: pointer;
 }
@@ -2500,6 +2505,19 @@ p.propertypro-gentle-error {
     border-color: #d6dee3;
     background-color: #d6dee3;
     color: #b6bec4;
+}
+
+.propertypro-loading-overlay:after {
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    content: " ";
+    z-index: 9;
+    opacity: .9;
 }
 
 /*-----------------------------------------------------------------------------------*/
