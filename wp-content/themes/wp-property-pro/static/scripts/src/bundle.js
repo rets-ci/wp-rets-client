@@ -101593,7 +101593,7 @@
 
 	      var text = '';
 	      if (total && saleType) {
-	        text += 'There are ' + total + ' homes for ' + saleType;
+	        text += 'There are ' + total + ' homes for ' + saleType + ' in this area';
 	      }
 	      if (price && !(price.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
 	        text += ' that are priced';
