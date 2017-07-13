@@ -15,12 +15,12 @@ export const deletePropertiesModalTermLocalFilter = termFilter => {
 };
 
 export const raiseErrorMessage = (error) => ({
-  type: Lib.ERROR_MESSAGE,
+  type: Lib.ERROR_MESSAGE_ACTION,
   error: error
 });
 
 export const resetErrorMessage = () => ({
-  type: Lib.RESET_ERROR_MESSAGE
+  type: Lib.RESET_ERROR_MESSAGE_ACTION
 });
 
 export const openLocationModal = (open, modifyType) => {

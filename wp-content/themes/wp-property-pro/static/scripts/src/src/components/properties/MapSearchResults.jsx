@@ -57,11 +57,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         if (!err && errorMessage) {
           dispatch(resetErrorMessage());
         }
-        if (_.get(response, 'hits.total', null)) {
-          dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
-        } else {
-          console.log('query with params returned no data');
-        }
+        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
       });
     },
 
@@ -76,11 +72,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         if (!err && errorMessage) {
           dispatch(resetErrorMessage());
         }
-        if (_.get(response, 'hits.total', null)) {
-          dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
-        } else {
-          console.log('query with standard query returned no data');
-        }
+        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
       });
     },
     resetSearchResults: () => {
@@ -201,6 +193,7 @@ class MapSearchResults extends Component {
               saleType={searchFilters.sale_type}
               total={this.props.resultsTotal}
             />
+            
             {this.props.displayedResults.length
               ?
                 <SearchResultListing
@@ -214,8 +207,14 @@ class MapSearchResults extends Component {
               :
                 (errorMessage
                   ?
-                  <ErrorMessage message={errorMessage} />
-                  : null
+                    <ErrorMessage message={errorMessage} />
+                  :
+                    (
+                      !isFetching ?
+                        <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
+                      : 
+                      null
+                    )
                 )
                 
             }

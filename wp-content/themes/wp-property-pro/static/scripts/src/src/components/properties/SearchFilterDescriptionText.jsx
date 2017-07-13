@@ -21,7 +21,9 @@ class SearchFilterDescription extends Component {
       price
     } = props;
     let text = '';
-    text += `There are ${total} homes for ${saleType}`;
+    if (total && saleType) {
+      text += `There are ${total} homes for ${saleType} in this area`;
+    }
     if (price && !(price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
       text += ` that are priced`;
       if (price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT) {

@@ -1294,13 +1294,14 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 p.propertypro-gentle-error {
-    font-size: 1.5rem;
+    padding: .5rem 1.5rem;
+    font-size: 1.2rem;
     color: #414141;
-    text-align: center;
+    text-align: left;
 }
 
 .propertypro-error-message-container {
-    text-align: center;
+    text-align: left;
 }
 
 /* User Search Modal -> Advanced Search Filter */
