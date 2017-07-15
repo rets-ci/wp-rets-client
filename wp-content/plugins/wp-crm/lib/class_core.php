@@ -50,14 +50,6 @@ class WP_CRM_Core {
     //** Hook in lower init */
     add_action( 'init', array( $this, 'init_lower' ), 100 );
 
-    if ( empty($wpdb->crm_log) ) {
-      $wpdb->crm_log = $wpdb->base_prefix . 'crm_log';
-    }
-
-    if ( empty($wpdb->crm_log_meta) ) {
-      $wpdb->crm_log_meta = $wpdb->crm_log . '_meta';
-    }
-
   }
 
   /**
@@ -93,6 +85,7 @@ class WP_CRM_Core {
   
 
     wp_register_script( 'google-jsapi', 'https://www.google.com/jsapi' );
+    wp_register_script( 'recaptcha', 'https://www.google.com/recaptcha/api.js?onload=crm_recaptcha_onload&render=explicit' );
     wp_register_script( 'wp-crm-jquery-cookie', ud_get_wp_crm()->path( 'lib/third-party/jquery.smookie.js', 'url' ), array( 'jquery' ), '1.7.3' );
     wp_register_script( 'swfobject', ud_get_wp_crm()->path( 'lib/third-party/swfobject.js', 'url' ), array( 'jquery' ) );
     wp_register_script( 'wp-crm-data-tables', ud_get_wp_crm()->path( 'lib/third-party/dataTables/jquery.dataTables.min.js', 'url' ), array( 'jquery' ) );
@@ -431,6 +424,22 @@ class WP_CRM_Core {
       $contextual_help[ 'General Help' ][ ] = '<p>' . __( 'You will see graphics for all attributes from your data tab which have Dropdown or Checkbox Data Input and filled at least in 2 users profiles.', ud_get_wp_crm()->domain ) . '</p>';
     }
 
+    $contextual_help[ 'General Help' ][ ] = '<h3>' . sprintf(__( '<a href="%s">Google reCAPTCHA</a>', ud_get_wp_crm()->domain ), "https://www.google.com/recaptcha/intro/") . '</h3>';
+    $contextual_help[ 'General Help' ][ ] = '<p>' . __( 'To use recaptcha you need to get <b>Browser key</b> and <b>Server key</b>.', ud_get_wp_crm()->domain ) . '</p>';
+    $contextual_help[ 'General Help' ][ ] = '<h4>' . __( 'To use existing keys:', ud_get_wp_crm()->domain ) . '</h4>';
+    $contextual_help[ 'General Help' ][ ] = '<ol>';
+    $contextual_help[ 'General Help' ][ ] = '<li>' . sprintf(__( 'Go to reCAPTCHA admin panel by clicking <a href="%s">here</a>.', ud_get_wp_crm()->domain ), "https://www.google.com/recaptcha/admin#list") . '</li>';
+    $contextual_help[ 'General Help' ][ ] = '<li>' . __( 'Select site from <b>Your reCAPTCHA sites</b> section.', ud_get_wp_crm()->domain ) . '</li>';
+    $contextual_help[ 'General Help' ][ ] = '<li>' . __( 'Copy the <b>Site key</b> and <b>Secret key</b> to the <b>reCAPTCHA keys</b> in <b>Main</b> tab of <b>Settings page</b>.', ud_get_wp_crm()->domain ) . '</li>';
+    $contextual_help[ 'General Help' ][ ] = '</ol>';
+
+    $contextual_help[ 'General Help' ][ ] = '<h4>' . __( 'To create new keys:', ud_get_wp_crm()->domain ) . '</h4>';
+    $contextual_help[ 'General Help' ][ ] = '<ol>';
+    $contextual_help[ 'General Help' ][ ] = '<li>' . sprintf(__( 'Go to reCAPTCHA admin panel by clicking <a href="%s">here</a>.', ud_get_wp_crm()->domain ), "https://www.google.com/recaptcha/admin") . '</li>';
+    $contextual_help[ 'General Help' ][ ] = '<li>' . __( 'Fill up the form on <b>Register a new site</b> section and click <b>Register</b>.', ud_get_wp_crm()->domain ) . '</li>';
+    $contextual_help[ 'General Help' ][ ] = '<li>' . __( 'Copy the <b>Site key</b> and <b>Secret key</b> to the <b>reCAPTCHA keys</b> in <b>Main</b> tab of <b>Settings page</b>.', ud_get_wp_crm()->domain ) . '</li>';
+    $contextual_help[ 'General Help' ][ ] = '</ol>';
+    
     $contextual_help[ 'Shortcode Forms' ][ ] = '<h3>' . __( 'Shortcode Forms', ud_get_wp_crm()->domain ) . '</h3>';
     $contextual_help[ 'Shortcode Forms' ][ ] = '<p>' . __( 'Shortcode Forms, which can be used for contact forms, or profile editing, are setup here, and then inserted using a shortcode into a page, or a widget. The available shortcode form attributes are taken from the WP-CRM attributes, and when filled out by a user, are mapped over directly into their profile. User profiles are created based on the e-mail address, if one does not already exist, for keeping track of users. ', ud_get_wp_crm()->domain ) . '</p>';
 
@@ -440,9 +449,10 @@ class WP_CRM_Core {
     $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'require_login_for_existing_users = [ <b>true</b> | false ]', ud_get_wp_crm()->domain ) . '</p>';
     $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'use_current_user = [ <b>true</b> | false ]', ud_get_wp_crm()->domain ) . '</p>';
     $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'success_message = "<i>custom text</i>"  &mdash; default value is "', ud_get_wp_crm()->domain ) . __( 'Your message has been sent. Thank you.', ud_get_wp_crm()->domain ) . '".</p>';
-    $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'submit_text = "<i>custom text</i>"  &mdash; default value is "', ud_get_wp_crm()->domain ) . __( 'Submit', ud_get_wp_crm()->domain ) . " " . ud_get_wp_crm()->domain . '".</p>';
+    $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'submit_text = "<i>custom text</i>"  &mdash; default value is "', ud_get_wp_crm()->domain ) . __( 'Submit', ud_get_wp_crm()->domain ) . '".</p>';
     $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'js_callback_function = "<i>custom_function_name</i>"  &mdash; default value is "', ud_get_wp_crm()->domain ) . __( 'false', ud_get_wp_crm()->domain ) . '".</p>';
     $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'js_validation_function = "<i>custom_function_name</i>"  &mdash; default value is "', ud_get_wp_crm()->domain ) . __( 'false', ud_get_wp_crm()->domain ) . '".</p>';
+    $contextual_help[ 'Shortcode Forms' ][ ] = '<p> - ' . __( 'redirect_url = "<i>url</i>"  &mdash; redirect to another page after submission complete.', ud_get_wp_crm()->domain ) . '</p>';
 
     $contextual_help[ 'Shortcode Forms' ][ ] = '<p>' . __( 'For example, <b>[wp_crm_form form=example_from display_notes=true success_message="Your message was successfully sent!" submit_text="Send message!"]</b>', ud_get_wp_crm()->domain ) . '</p>';
 
@@ -687,6 +697,8 @@ class WP_CRM_Core {
   static function overview_columns( $columns = false ) {
     global $wp_crm;
 
+    //$columns[ 'wp_crm_cb' ] =  '<input type="checkbox" name="select-all-users" class="select-all-users" />';
+    $columns[ 'cb' ] =  '<input type="checkbox" name="select-all-users" class="select-all-users" />';
     $columns[ 'wp_crm_user_card' ] = __( 'Information', ud_get_wp_crm()->domain );
 
     if ( !empty( $wp_crm[ 'data_structure' ] ) && is_array( $wp_crm[ 'data_structure' ][ 'attributes' ] ) ) {

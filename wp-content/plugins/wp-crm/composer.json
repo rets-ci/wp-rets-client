@@ -22,7 +22,8 @@
     "usabilitydynamics/lib-ui": "0.3.4",
     "usabilitydynamics/lib-utility": "0.3.7",
     "usabilitydynamics/lib-wp-bootstrap": "1.2.1",
-    "usabilitydynamics/lib-ud-api-client": "1.1.5.1"
+    "usabilitydynamics/lib-ud-api-client": "1.1.5.1",
+    "google/recaptcha": "~1.1"
   },
   "require-dev": {
     "codeclimate/php-test-reporter": "dev-master"
@@ -43,6 +44,22 @@
   },
   "extra": {
     "featureFlags": [
+      {
+        "name": "Pipeline",
+        "option": "enable_rest_api",
+        "constant": "WP_CRM_PIPELINE",
+        "description": "Exposes Pipeline options.",
+        "since": "1.2.0",
+        "enabled": true
+      },
+      {
+        "name": "REST API",
+        "option": "enable_rest_api",
+        "constant": "WP_CRM_REST_API",
+        "description": "Exposes RESTFul API.",
+        "since": "1.2.0",
+        "enabled": true
+      },
       {
         "name": "Google Visualization",
         "option": "enable_google_visualization",
@@ -72,6 +89,14 @@
         "option": "disable_dashboard_splash_page",
         "constant": "WP_CRM_DISABLE_DASHBOARD_SPLASH",
         "description": "UD splash disabled.",
+        "since": "1.1.0",
+        "enabled": true
+      },
+      {
+        "name": "Network Mood",
+        "option": "enable_network_mood",
+        "constant": "ENABLE_NETWORK_MOOD",
+        "description": "Enable Multisite.",
         "since": "1.1.0",
         "enabled": true
       }

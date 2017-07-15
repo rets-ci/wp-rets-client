@@ -13,6 +13,66 @@
 class WP_CRM_F {
 
   /**
+   * WP_CRM_F::generate_schema_for_form();
+   *
+   * @param $form
+   * @param array $options
+   * @return array
+   */
+  static public function generate_schema_for_form( $form, $options = array() ) {
+    global $wp_crm;
+
+    $_schema = array(
+      'title' => $form['title'],
+      'type' => 'object',
+      'properties' => array(),
+      'required' => array()
+    );
+
+    foreach( (array) $form['fields'] as $_index => $_field ) {
+
+      $_attribute = $wp_crm[ 'data_structure' ][ 'attributes' ][ $_field ];
+
+      $_fieldData = array(
+        'title' => $_attribute['title'] ,
+        'description' => $_attribute['description'],
+        'type' => $_attribute['input_type'],
+        'enum' => array(),
+        'order' => $_index,
+        //'x-group' => $_attribute['group'],
+        //'x-note' => $_attribute['note'],
+        'uniqueItems' => false
+      );
+
+      //die( '<pre>' . print_r( $_fieldData, true ) . '</pre>' );
+      if( isset( $_attribute['required'] ) && $_attribute['required'] === 'true' ) {
+        $_schema['required'][] = $_field ;
+      }
+
+      //echo( '<pre>' . print_r( $_attribute['option_keys'], true ) . '</pre>' );
+
+      foreach( $_attribute['option_labels'] as $_key => $_value ) {
+        $_fieldData['enum'][ $_key ] = $_value;
+      }
+      //echo( '<pre>' . print_r( $_schema['properties'][$_field]['enum'], true ) . '</pre>' );
+
+      //die( '<pre>' . print_r( $_fieldData, true ) . '</pre>' );
+
+      //$_fieldData = array_filter( $_fieldData );
+
+      $_fieldData['order'] = $_index;
+
+      $_schema['properties'][$_field] = $_fieldData;
+
+
+
+    }
+
+    return $_schema;
+
+  }
+
+  /**
    * Build and returns shortcode-form configuraiton object.
    *
    * - show_all - returns all fields, not just those that are actually enabled for this particualar form.
@@ -50,7 +110,7 @@ class WP_CRM_F {
     }
 
     // If the standard "Message Field" is used, add it to attributes for this form.
-    if( $formData[ 'message_field' ] === 'on' ) {
+    if( isset( $formData[ 'message_field' ] ) && $formData[ 'message_field' ] === 'on' ) {
 
       if( array_search( '_message_field', $formData[ 'fields' ] ) !== false ) {
         $_attributes[ '_message_field' ] = array( 'title' => isset( $_field_labels[ '_message_field' ] ) ? $_field_labels['_message_field' ] : 'Message', 'input_type' => 'textarea' );
@@ -1740,6 +1800,25 @@ class WP_CRM_F {
         }
 
         break;
+      case 'trash_user':
+
+        if ( WP_CRM_F::current_user_can_manage_crm() ) {
+
+          $user_id_arr = $object_id;
+
+          foreach($user_id_arr as $user_id){
+			  if ($user_id) {
+				$return['message'] .=" user is ".$user_id;
+				wp_delete_user($user_id);
+			  }
+		  }
+
+          $return['success'] = 'true';
+          $return['message'] .= __( 'in trash users User trashed.', ud_get_wp_crm()->domain );
+          $return['action'] = 'hide_element';
+        }
+
+        break;
 
       default:
         $return = apply_filters('wp_crm_quick_action', array(
@@ -2558,6 +2637,8 @@ class WP_CRM_F {
         $wp_crm['configuration']['overview_table_options']['main_view'] = array('display_name', 'user_email');
         $wp_crm['configuration']['default_sender_email'] = "CRM <$assumed_email>";
         $wp_crm['configuration']['primary_user_attribute'] = 'display_name';
+        $wp_crm['configuration']['recaptcha_site_key'] = '';
+        $wp_crm['configuration']['recaptcha_secret_key'] = '';
 
         $wp_crm['wp_crm_contact_system_data']['example_form']['title'] = __('Example Shortcode Form', ud_get_wp_crm()->domain);
         $wp_crm['wp_crm_contact_system_data']['example_form']['full_shortcode'] = '[wp_crm_form form=example_contact_form]';
@@ -2702,50 +2783,65 @@ class WP_CRM_F {
    * @uses $wpdb
    *
    */
-  static function maybe_install_tables() {
+  static function maybe_install_tables($blog_ids = array()) {
     global $wpdb;
+    $sites = array('');
+    if(!empty($blog_ids))
+      $sites = $blog_ids;
 
-    if ( empty($wpdb->crm_log) ) {
-      $wpdb->crm_log = $wpdb->base_prefix . 'crm_log';
-    }
-
-    if ( empty($wpdb->crm_log_meta) ) {
-      $wpdb->crm_log_meta = $wpdb->crm_log . '_meta';
+    if(function_exists('get_sites') && empty($blog_ids)){
+      $sites = get_sites();
+    } 
+    elseif(function_exists('wp_get_sites') && empty($blog_ids)){
+      $sites = wp_get_sites();
     }
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-    $sql = "CREATE TABLE {$wpdb->crm_log} (
-      id mediumint(9) NOT NULL AUTO_INCREMENT,
-      object_id mediumint(9) NOT NULL,
-      object_type VARCHAR(11),
-      user_id mediumint(9) NOT NULL,
-      action VARCHAR(255),
-      attribute VARCHAR(255),
-      value VARCHAR(255),
-      msgno VARCHAR(255),
-      email_to VARCHAR(255),
-      email_from VARCHAR(255),
-      subject VARCHAR(255),
-      text TEXT,
-      email_references VARCHAR(255),
-      time DATETIME,
-      other VARCHAR(255),
-      UNIQUE KEY id (id)
-    );";
-    
-    dbDelta($sql);
+    foreach ($sites as $key => $site) {
+      $site = (object) $site;
 
-    $sql = "CREATE TABLE {$wpdb->crm_log_meta} (
-      meta_id mediumint(9) NOT NULL AUTO_INCREMENT,
-      message_id mediumint(9) NOT NULL,
-      meta_key VARCHAR(255),
-      meta_group VARCHAR(255),
-      meta_value TEXT,
-      UNIQUE KEY id (meta_id)
-    );";
+      if( is_multisite() && isset($site->blog_id)) {
+        switch_to_blog( $site->blog_id );
+      }
 
-    dbDelta($sql);
+      $sql = "CREATE TABLE {$wpdb->crm_log} (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        object_id mediumint(9) NOT NULL,
+        object_type VARCHAR(11),
+        user_id mediumint(9) NOT NULL,
+        action VARCHAR(255),
+        attribute VARCHAR(255),
+        value VARCHAR(255),
+        msgno VARCHAR(255),
+        email_to VARCHAR(255),
+        email_from VARCHAR(255),
+        subject VARCHAR(255),
+        text TEXT,
+        email_references VARCHAR(255),
+        time DATETIME,
+        other VARCHAR(255),
+        UNIQUE KEY id (id)
+      );";
+      
+      dbDelta($sql);
+      
+      $sql = "CREATE TABLE {$wpdb->crm_log_meta} (
+        meta_id mediumint(9) NOT NULL AUTO_INCREMENT,
+        message_id mediumint(9) NOT NULL,
+        meta_key VARCHAR(255),
+        meta_group VARCHAR(255),
+        meta_value TEXT,
+        UNIQUE KEY id (meta_id)
+      );";
+
+      dbDelta($sql);
+
+      if( is_multisite()) {
+        restore_current_blog();
+      }
+    }
+
   }
 
   /**
@@ -2772,7 +2868,7 @@ class WP_CRM_F {
 
     $user_filter = ( !empty($_REQUEST['user_id']) && is_numeric( $_REQUEST['user_id'] ) ) ? " object_id={$_REQUEST['user_id']} " : '1';
 
-    $output = '';
+    $output = array();
 
     switch ($current_screen->id) {
       case 'crm_page_wp_crm_add_new':
@@ -2976,7 +3072,7 @@ class WP_CRM_F {
     $args['time'] = date('Y-m-d H:i:s', $time_stamp);
 
     //** Insert event. We double-check $wpdb->crm_log exists in case this function is called very early */
-    $wpdb->insert($wpdb->crm_log ? $wpdb->crm_log : $wpdb->base_prefix . 'crm_log', array(
+    $wpdb->insert($wpdb->crm_log, array(
         'object_id' => isset($args['object_id'])?$args['object_id']:'',
         'object_type' => isset($args['object_type'])?$args['object_type']:'',
         'user_id' => isset($args['user_id'])?$args['user_id']:'',
@@ -3405,6 +3501,10 @@ class WP_CRM_F {
           <?php
           foreach ($metabox['args']['fields'] as $slug => $attribute):
             $row_classes = array();
+
+            if($attribute['input_type'] == 'recaptcha'){
+              continue;
+            }
             // To avoid undefined warning.
             $post[$slug] = isset($post[$slug])?$post[$slug]:'';
             $row_classes[] = (@$attribute['has_options'] ? 'wp_crm_has_options' : 'wp_crm_no_options');
@@ -3533,6 +3633,21 @@ class WP_CRM_F {
       }
     }
     return $max_level;
+  }
+
+  static function reCaptchaVerify($gRecaptchaResponse){
+    global $wp_crm;
+    if(!$secret = $wp_crm['configuration']['recaptcha_secret_key'])
+      return false;
+    $cpost = new ReCaptcha\RequestMethod\WpRecaptchaPost();
+    $recaptcha = new \ReCaptcha\ReCaptcha($secret, $cpost);
+    // Make the call to verify the response and also pass the user's IP address
+    $resp = $recaptcha->verify($gRecaptchaResponse, $_SERVER['REMOTE_ADDR']);
+    if ($resp->isSuccess()) {
+      return true;
+    } else {
+      return $resp->getErrorCodes();
+    }
   }
 
 

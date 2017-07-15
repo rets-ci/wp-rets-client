@@ -4,9 +4,9 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-crm/
  * Description: This plugin is intended to significantly improve user management, easily create contact forms, and keep track of incoming shortcode form messages.
  * Author: Usability Dynamics, Inc.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Requires at least: 4.0
- * Tested up to: 4.7
+ * Tested up to: 4.8
  * Text Domain: wp-crm
  * Author URI: https://www.usabilitydynamics.com
  * GitHub Plugin URI: wp-crm/wp-crm
@@ -20,7 +20,7 @@
 
 /** Plugin Version */
 if ( !defined( 'WP_CRM_Version' ) ) {
-  define('WP_CRM_Version', '1.1.0');
+  define('WP_CRM_Version', '1.2.0');
 }
 
 /** Path for Includes */
@@ -30,6 +30,21 @@ if ( !defined( 'WP_CRM_Cache' ) ) {
 /** Path for Includes */
 if ( !defined( 'wp_crm_Path' ) ) {
   define( 'wp_crm_Path', plugin_dir_path( __FILE__ ) );
+}
+
+/*
+ * Setting crm_log and crm_log_meta table name with prefix.
+ * This will avoid redundency leter.
+ *
+*/
+add_action( 'switch_blog', 'wp_crm_wpdb_table_name' );
+wp_crm_wpdb_table_name();
+function wp_crm_wpdb_table_name($blog = null, $prev_blog_id = null) {
+  global $wpdb;
+  $wpdb->crm_log = $wpdb->prefix . 'crm_log';
+  $wpdb->crm_log_meta = $wpdb->crm_log . '_meta';
+  $wpdb->tables[] = $wpdb->crm_log;
+  $wpdb->tables[] = $wpdb->crm_log_meta;
 }
 
 if( !function_exists( 'ud_get_wp_crm' ) ) {
