@@ -579,8 +579,8 @@ class Api {
 
   static makeRequest(data, callback) {
 
-    if (_.isEmpty(_.get(data, 'url', null)) || _.isEmpty(_.get(data, 'query', null))) {
-      console.log('Missing url or query object');
+    if (_.isEmpty(_.get(data, 'url', null))) {
+      console.log('Missing url');
       return false;
     }
 
@@ -589,7 +589,7 @@ class Api {
       dataType: 'json',
       type: 'GET',
       contentType: 'application/json',
-      data: _.get(data, 'query'),
+      data: _.get(data, 'query', null),
       error: (jqXHR, textStatus) => {
         let errorMsg = '';
         if (jqXHR.status === 0) {

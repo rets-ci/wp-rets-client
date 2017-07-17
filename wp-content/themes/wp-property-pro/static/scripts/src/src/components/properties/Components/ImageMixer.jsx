@@ -66,8 +66,8 @@ class ImageMixer extends Component {
     let LightboxImages = images.map(i => ({
       src: i
     }));
-    let imagesSubset = images.slice(0, 5);
-    imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 600, 600);
+    let imagesSubset = images.slice(0, 8);
+    imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 460, 460);
     let loadingContainer = (<LoadingCircle containerHeight="600px" verticallyCentered={true} />);
     return (
       <Preload
@@ -79,21 +79,18 @@ class ImageMixer extends Component {
         resolveOnError={true}
         mountChildren={true}
         >
-          <div className={`d-flex flex-row ${Lib.THEME_CLASSES_PREFIX}image-mixer`} onClick={this.imageMixerClicked.bind(this)}>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}img-container-height-600`}>
-              <img src={imagesSubset[0] || ""} />
+          <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer`} onClick={this.imageMixerClicked.bind(this)}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}large-img-container`}>
+              <img src={imagesSubset[0] || ""} width="600" height="600" />
             </div>
-            <div>
-              <div className={`${Lib.THEME_CLASSES_PREFIX}img-container-height-300`}>
-                <img src={imagesSubset[1] || ""} />
-              </div>
-              <div className={`${Lib.THEME_CLASSES_PREFIX}img-container-height-300`}>
-                <img src={imagesSubset[2] || ""} />
-              </div>
-            </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}img-container-height-300`}>
-              <img src={imagesSubset[3] || ""} />
-              <img src={imagesSubset[4] || ""} />
+            <div className={`${Lib.THEME_CLASSES_PREFIX}wrap`}>
+              {imagesSubset.slice(1, 8).map(i =>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer-box`}>
+                  <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer-boxInner`}>
+                    <img src={i} width="460" height="460" />
+                  </div>
+                </div>
+              )}
             </div>
             <Lightbox
               currentImage={this.state.currentLightboxImage}
