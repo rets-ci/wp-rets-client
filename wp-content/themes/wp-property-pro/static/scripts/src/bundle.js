@@ -28158,7 +28158,7 @@
 	SingleContainer.propTypes = {
 	  post: function post(props, propName, componentName) {
 	    var errors = [];
-	    if (props.psot && !props.post.post_id) {
+	    if (props.post && !props.post.post_id) {
 	      errors.push('Post ID not defined');
 	    }
 	    return errors.length ? new Error(errors.join(', ')) : null;
@@ -28755,8 +28755,8 @@
 	    key: 'makeRequest',
 	    value: function makeRequest(data, callback) {
 
-	      if (_lodash2.default.isEmpty(_lodash2.default.get(data, 'url', null)) || _lodash2.default.isEmpty(_lodash2.default.get(data, 'query', null))) {
-	        console.log('Missing url or query object');
+	      if (_lodash2.default.isEmpty(_lodash2.default.get(data, 'url', null))) {
+	        console.log('Missing url');
 	        return false;
 	      }
 
@@ -28765,7 +28765,7 @@
 	        dataType: 'json',
 	        type: 'GET',
 	        contentType: 'application/json',
-	        data: _lodash2.default.get(data, 'query'),
+	        data: _lodash2.default.get(data, 'query', null),
 	        error: function error(jqXHR, textStatus) {
 	          var errorMsg = '';
 	          if (jqXHR.status === 0) {
@@ -82672,8 +82672,8 @@
 	          src: i
 	        };
 	      });
-	      var imagesSubset = images.slice(0, 5);
-	      imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 600, 600);
+	      var imagesSubset = images.slice(0, 8);
+	      imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 460, 460);
 	      var loadingContainer = _react2.default.createElement(_LoadingCircle2.default, { containerHeight: '600px', verticallyCentered: true });
 	      return _react2.default.createElement(
 	        _reactPreload2.default,
@@ -82688,31 +82688,26 @@
 	        },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'd-flex flex-row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'image-mixer', onClick: this.imageMixerClicked.bind(this) },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'image-mixer', onClick: this.imageMixerClicked.bind(this) },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-600' },
-	            _react2.default.createElement('img', { src: imagesSubset[0] || "" })
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'large-img-container' },
+	            _react2.default.createElement('img', { src: imagesSubset[0] || "", width: '600', height: '600' })
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            null,
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
-	              _react2.default.createElement('img', { src: imagesSubset[1] || "" })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
-	              _react2.default.createElement('img', { src: imagesSubset[2] || "" })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
-	            _react2.default.createElement('img', { src: imagesSubset[3] || "" }),
-	            _react2.default.createElement('img', { src: imagesSubset[4] || "" })
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'wrap' },
+	            imagesSubset.slice(1, 8).map(function (i) {
+	              return _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'image-mixer-box' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'image-mixer-boxInner' },
+	                  _react2.default.createElement('img', { src: i, width: '460', height: '460' })
+	                )
+	              );
+	            })
 	          ),
 	          _react2.default.createElement(_reactImages2.default, {
 	            currentImage: this.state.currentLightboxImage,
@@ -102865,7 +102860,10 @@
 	    numberOfFilters = termFilters.length;
 	    delete filters['term'];
 	  }
-	  delete filters['bedrooms'];
+	  var filtersToDelete = ['bedrooms', 'property_types', 'sale_type', 'geoCoordinates'];
+	  filtersToDelete.forEach(function (d) {
+	    delete filters[d];
+	  });
 	  numberOfFilters += Object.keys(filters).length;
 	  return numberOfFilters;
 	};
@@ -103143,7 +103141,7 @@
 	            sqftElement,
 	            lotSizeElement,
 	            propertyTypeElement,
-	            _react2.default.createElement(
+	            mobileViewFilterNumber(filters) ? _react2.default.createElement(
 	              'span',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter hidden-lg-up' },
 	              _react2.default.createElement(
@@ -103158,7 +103156,7 @@
 	                ),
 	                mobileViewFilterNumber(filters)
 	              )
-	            ),
+	            ) : null,
 	            _react2.default.createElement(
 	              'span',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter hidden-md-down' },

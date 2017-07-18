@@ -64,7 +64,7 @@ class SingleContainer extends Component {
   static propTypes = {
     post: (props, propName, componentName) => {
       let errors = [];
-      if (props.psot && !props.post.post_id) { errors.push('Post ID not defined'); }
+      if (props.post && !props.post.post_id) { errors.push('Post ID not defined'); }
       return errors.length ? new Error(errors.join(', ')) : null; 
     }
   }
