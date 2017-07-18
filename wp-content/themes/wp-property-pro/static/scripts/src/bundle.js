@@ -94773,7 +94773,7 @@
 	      }
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-wrap-container' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: classNames.join(' '), ref: function ref(r) {
@@ -101642,7 +101642,7 @@
 
 	SearchFilterDescription.propTypes = {
 	  bathrooms: _propTypes2.default.number,
-	  bedrooms: _propTypes2.default.number,
+	  bedrooms: _propTypes2.default.string,
 	  price: _propTypes2.default.object,
 	  saleType: _propTypes2.default.string.isRequired,
 	  total: _propTypes2.default.number
@@ -102256,7 +102256,7 @@
 	  } else if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
 	    var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
 	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { front_page_post_content: front_page_post_content, openUserPanel: openUserPanel, searchFilters: searchFilters });
-	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search";
+	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search col-md-12";
 
 	    if (saleTypesPanelOpen) {
 	      sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
@@ -103728,7 +103728,7 @@
 	  return _react2.default.createElement(
 	    'section',
 	    {
-	      className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel row " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
+	      className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel col-md-12 " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
 	      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(event) {

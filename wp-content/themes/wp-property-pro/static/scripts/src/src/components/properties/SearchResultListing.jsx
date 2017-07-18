@@ -68,7 +68,7 @@ class SearchResultListing extends Component {
     classNames.push(Lib.THEME_CLASSES_PREFIX + 'listing-wrap');
     if (isFetching) { classNames.push(Lib.THEME_CLASSES_PREFIX + 'loading-overlay'); }
     return (
-      <div>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container`}>
         <div className={classNames.join(' ')} ref={(r) => this.listingWrapElement = r}>
           <div className="row" ref={(r) => this.searchResultLisintElement = r}>
             {

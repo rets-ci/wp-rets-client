@@ -72,10 +72,6 @@ html, body {
     height: 100%;
 }
 
-.propertypro-page-layout-container, .propertypro-page-layout-container-inner, .propertypro-search-map-container {
-    height: 100%;
-}
-
 /** Toolbar **/
 
 .propertypro-toolbar.propertypro-header-default,
@@ -1684,19 +1680,13 @@ p.propertypro-gentle-error {
 
 .propertypro-map-container {
     min-height: 600px;
-    height: 100%;
+    height: 50rem;
 }
 
 .propertypro-search-map-container {
     position: relative;
     backface-visibility: hidden;
     will-change: overflow;
-}
-
-.propertypro-search-map,
-.propertypro-search-map-section,
-.propertypro-search-map {
-    height: 100%;
 }
 
 .propertypro-search-map-container .propertypro-search-map-mobile-navigation {
@@ -1785,6 +1775,11 @@ p.propertypro-gentle-error {
     font-size: 1.050rem;
     line-height: 1.5rem;
     margin: 0;
+}
+
+.propertypro-listing-wrap-container {
+    height: 42rem;
+    overflow-y: scroll;
 }
 
 .propertypro-listing-wrap {
