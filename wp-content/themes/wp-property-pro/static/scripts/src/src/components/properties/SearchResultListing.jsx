@@ -68,7 +68,7 @@ class SearchResultListing extends Component {
     classNames.push(Lib.THEME_CLASSES_PREFIX + 'listing-wrap');
     if (isFetching) { classNames.push(Lib.THEME_CLASSES_PREFIX + 'loading-overlay'); }
     return (
-      <div>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container`}>
         <div className={classNames.join(' ')} ref={(r) => this.listingWrapElement = r}>
           <div className="row" ref={(r) => this.searchResultLisintElement = r}>
             {
@@ -103,18 +103,21 @@ class SearchResultListing extends Component {
         {this.props.allowPagination ?
           <div className={Lib.THEME_CLASSES_PREFIX + "search-result-container"}>
             <div className={Lib.THEME_CLASSES_PREFIX + "search-result-inner-container"}>
-              {this.state.loading ?
+               {this.state.loading ?
                 <LoadingCircle />
-                : null}
-              <p>Showing {this.props.properties.length} out of {total} results</p>
-              {!this.state.loading ?
-                <Waypoint
-                  onEnter={() => {
-                    this.setState({loading: true});
-                    this.props.seeMoreHandler();
-                  }}
-                />
-              : null}
+                : null} 
+               <p>Showing {this.props.properties.length} out of {total} results</p> 
+               {!this.state.loading ?
+                <div>
+                  <Waypoint
+                    onEnter={() => {
+                      this.setState({loading: true});
+                      this.props.seeMoreHandler();
+                    }}
+                  />
+                  <p>Getting results...</p>
+                </div>
+              : null} 
             </div>
           </div>
           : null}
