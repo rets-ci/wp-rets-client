@@ -102682,7 +102682,7 @@
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "header-search-container container-fluid" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "header-search-container" },
 	        _react2.default.createElement(
 	          'div',
 	          { className: containerClasses },
