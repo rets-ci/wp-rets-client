@@ -94831,12 +94831,21 @@
 	              total,
 	              ' results'
 	            ),
-	            !this.state.loading ? _react2.default.createElement(_reactWaypoint2.default, {
-	              onEnter: function onEnter() {
-	                _this2.setState({ loading: true });
-	                _this2.props.seeMoreHandler();
-	              }
-	            }) : null
+	            !this.state.loading ? _react2.default.createElement(
+	              'div',
+	              null,
+	              _react2.default.createElement(_reactWaypoint2.default, {
+	                onEnter: function onEnter() {
+	                  _this2.setState({ loading: true });
+	                  _this2.props.seeMoreHandler();
+	                }
+	              }),
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                'Getting results...'
+	              )
+	            ) : null
 	          )
 	        ) : null
 	      );

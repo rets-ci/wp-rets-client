@@ -103,18 +103,21 @@ class SearchResultListing extends Component {
         {this.props.allowPagination ?
           <div className={Lib.THEME_CLASSES_PREFIX + "search-result-container"}>
             <div className={Lib.THEME_CLASSES_PREFIX + "search-result-inner-container"}>
-              {this.state.loading ?
+               {this.state.loading ?
                 <LoadingCircle />
-                : null}
-              <p>Showing {this.props.properties.length} out of {total} results</p>
-              {!this.state.loading ?
-                <Waypoint
-                  onEnter={() => {
-                    this.setState({loading: true});
-                    this.props.seeMoreHandler();
-                  }}
-                />
-              : null}
+                : null} 
+               <p>Showing {this.props.properties.length} out of {total} results</p> 
+               {!this.state.loading ?
+                <div>
+                  <Waypoint
+                    onEnter={() => {
+                      this.setState({loading: true});
+                      this.props.seeMoreHandler();
+                    }}
+                  />
+                  <p>Getting results...</p>
+                </div>
+              : null} 
             </div>
           </div>
           : null}
