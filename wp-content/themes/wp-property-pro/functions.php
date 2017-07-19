@@ -14,6 +14,10 @@ if (class_exists('\UsabilityDynamics\PropertyPro\Config')) {
   $config = new \UsabilityDynamics\PropertyPro\Config();
 }
 
+if (class_exists('\UsabilityDynamics\PropertyPro\API')) {
+  $api = new \UsabilityDynamics\PropertyPro\API();
+}
+
 // If Bootstrap class not found, we must fail, unless we are administrating.
 if (!class_exists('UsabilityDynamics\PropertyPro\Bootstrap') && !is_admin()) {
   wp_die('<h2>Fatal Error</h2><p>Missing UsabilityDynamics\PropertyPro\Bootstrap class.</p>');

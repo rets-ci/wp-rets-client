@@ -30,6 +30,7 @@ class ComposerStaticInitd3aa6d80791543093ce78f0192117160
         'UsabilityDynamics\\Model\\Post' => __DIR__ . '/..' . '/usabilitydynamics/lib-model/lib/models/class-post.php',
         'UsabilityDynamics\\Model\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-model/lib/class-model-utility.php',
         'UsabilityDynamics\\PropertyPro' => __DIR__ . '/../..' . '/lib/classes/class-property-pro.php',
+        'UsabilityDynamics\\PropertyPro\\API' => __DIR__ . '/../..' . '/lib/classes/class-api.php',
         'UsabilityDynamics\\PropertyPro\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
         'UsabilityDynamics\\PropertyPro\\Config' => __DIR__ . '/../..' . '/lib/classes/class-config.php',
         'UsabilityDynamics\\PropertyPro\\Customizer' => __DIR__ . '/../..' . '/lib/classes/class-customizer.php',
