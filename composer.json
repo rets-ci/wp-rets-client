@@ -64,6 +64,8 @@
     "settings": {
       "QM_DB_EXPENSIVE": 0.90,
       "QM_HIDE_SELF": true,
+      "WPP_FEATURE_FLAG_SETTINGS_V2": true,
+      "WP_PROPERTY_SETTINGS_SEARCH": true,
       "WPP_FEATURE_FLAG_WPP_LISTING_STATUS": true,
       "WPP_FEATURE_FLAG_WPP_LISTING_TYPE": true,
       "WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY": true,
