@@ -6,6 +6,7 @@ import {Lib} from '../../lib.jsx';
 let defaultIcon = {
   url: bundle.static_images_url + 'oval-3-25.png',
 };
+
 let selectedIcon = {
   url: bundle.static_images_url + 'oval-selected-3-25.png'
 };
@@ -84,7 +85,7 @@ export default class Map extends Component {
     // calculate the initial coordinates based on geo bounds from the URL or the properties
     let centerPoint;
     if (currentGeoBounds) {
-      centerPoint = this.calculateGeoRectangleCenterPoint(currentGeoBounds.ne.lat, currentGeoBounds.ne.lon, currentGeoBounds.sw.lat, currentGeoBounds.swLon);
+      centerPoint = this.calculateGeoRectangleCenterPoint(currentGeoBounds.ne.lat, currentGeoBounds.ne.lon, currentGeoBounds.sw.lat, currentGeoBounds.sw.Lon);
     } else if (properties && properties.length) {
       centerPoint = {
         lat: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[0] : 0,
