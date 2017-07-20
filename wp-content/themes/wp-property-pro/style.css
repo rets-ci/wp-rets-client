@@ -1293,11 +1293,10 @@ p.propertypro-gentle-error {
     padding: .5rem 1.5rem;
     font-size: 1.2rem;
     color: #414141;
-    text-align: left;
 }
 
 .propertypro-error-message-container {
-    text-align: left;
+    text-align: center;
 }
 
 /* User Search Modal -> Advanced Search Filter */
@@ -1903,6 +1902,7 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-image-mixer {
+    background: #eceeef;
     overflow: hidden;
 }
 
