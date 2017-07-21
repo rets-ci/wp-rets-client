@@ -20,9 +20,10 @@ class WPSEO_Link_Type_Classifier {
 	 * @param string $base_url The base url to set.
 	 */
 	public function __construct( $base_url ) {
-		$this->base_host = parse_url( $base_url, PHP_URL_HOST );
 
-		$base_path = parse_url( $base_url, PHP_URL_PATH );
+		$this->base_host = WPSEO_Link_Utils::get_url_part( $base_url, 'host' );
+
+		$base_path = WPSEO_Link_Utils::get_url_part( $base_url, 'path' );
 		if ( $base_path ) {
 			$this->base_path = trailingslashit( $base_path );
 		}
@@ -36,7 +37,12 @@ class WPSEO_Link_Type_Classifier {
 	 * @return string Returns outbound or internal.
 	 */
 	public function classify( $link ) {
-		$url_parts = parse_url( $link );
+		$url_parts = wp_parse_url( $link );
+
+		// Because parse_url may return false.
+		if ( ! is_array( $url_parts ) ) {
+			$url_parts = array();
+		}
 
 		if ( $this->contains_protocol( $url_parts ) && $this->is_external_link( $url_parts ) ) {
 			return WPSEO_Link::TYPE_EXTERNAL;
