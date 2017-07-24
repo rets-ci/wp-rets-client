@@ -363,6 +363,7 @@ namespace UsabilityDynamics {
         /** Get blog post some data */
         $post_title = get_post_field('post_title', $blog_post_id);
         $post_content = get_post_field('post_content', $blog_post_id);
+        $params['post']['post_url'] = get_category_link($category_id);
 
         if ($category_id) {
           $category = get_category($category_id);
@@ -403,6 +404,8 @@ namespace UsabilityDynamics {
 
         /** Get current term */
         $term = get_queried_object();
+
+        $params['post']['post_url'] = get_term_link($term->term_id);
 
         /** @var Post $rand_posts
          *  Rand post related with current term of child for get thumbnail
