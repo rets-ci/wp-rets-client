@@ -36,3 +36,10 @@ if (class_exists('SiteOrigin_Widget')) {
   require_once get_template_directory() . '/lib/widgets/property-pro-callout/property_pro_callout.php';
   require_once get_template_directory() . '/lib/widgets/property-pro-tour/property_pro_tour.php';
 }
+
+/**
+ * WP CLI Commands
+ */
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+  require_once( get_template_directory() . '/bin/wp-cli.php' );
+}
