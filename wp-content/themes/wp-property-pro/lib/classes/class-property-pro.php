@@ -363,7 +363,8 @@ namespace UsabilityDynamics {
         /** Get blog post some data */
         $post_title = get_post_field('post_title', $blog_post_id);
         $post_content = get_post_field('post_content', $blog_post_id);
-        $params['post']['post_url'] = get_category_link($category_id);
+        $category_link = get_category_link($category_id);
+        $params['post']['post_url'] = $category_link ? $category_link : get_permalink($blog_post_id);
 
         if ($category_id) {
           $category = get_category($category_id);
