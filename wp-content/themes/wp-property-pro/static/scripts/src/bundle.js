@@ -88092,6 +88092,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _lodash = __webpack_require__(295);
+
 	var _propTypes = __webpack_require__(185);
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -88164,7 +88166,7 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      if (nextProps.properties !== this.props.properties) {
+	      if (!(0, _lodash.isEqual)(nextProps.properties, this.props.properties)) {
 	        if (!this.state.dragMode) {
 	          var coordinates = this.getInitialCoordinates(null, nextProps.properties);
 	          this.setMapCoordinates(coordinates);
@@ -88682,7 +88684,7 @@
 	        'Land': ['location', 'lotSize', 'price']
 	      };
 	      if (!filtersSaleTypeMap[saleType]) {
-	        console.log('saletype ' + saleType + ' was not recognized, properties modal filters might work properly');
+	        // console.log(`saletype ${saleType} was not recognized, properties modal filters might work properly`);
 	        return false;
 	      }
 	      return filtersSaleTypeMap[saleType].indexOf(filter) >= 0;

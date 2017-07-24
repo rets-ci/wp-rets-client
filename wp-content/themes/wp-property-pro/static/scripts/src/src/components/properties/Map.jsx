@@ -1,3 +1,4 @@
+import {isEqual} from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Util from '../Util.jsx';
@@ -52,7 +53,7 @@ export default class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.properties !== this.props.properties) {
+    if (!isEqual(nextProps.properties, this.props.properties)) {
       if (!this.state.dragMode) {
         let coordinates = this.getInitialCoordinates(null, nextProps.properties);
         this.setMapCoordinates(coordinates);
@@ -117,7 +118,7 @@ export default class Map extends Component {
   }
 
   setPropertyMarkers(properties) {
-    properties.forEach((p) => {
+    properties.forEach(p => {
       let loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
       let marker = new window.google.maps.Marker({
         icon: defaultIcon,
