@@ -21,7 +21,9 @@
       "wp_debug_display": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "db_name": "www.reddoorcompany.com/latest-v3",
+      "EP_HOST": "https://api-reddoorcompany-com-develop-maxim.c.rabbitci.com/v5/elasticsearch",
       "EP_INDEX_NAME": "mocha-test",
+      "WP_HTTP_BLOCK_EXTERNAL": false,
       "WP_PROPERTY_LAYOUTS": true
     },
     "settings_develop-v3-local": {
@@ -94,7 +96,7 @@
       "__WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": true,
       "RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET": true,
       "WP_HTTP_BLOCK_EXTERNAL": true,
-      "WP_ACCESSIBLE_HOSTS": "api.wpcloud.io,realty-ci-api-realty-ci-production.c.rabbit.ci,api.realty.ci,c.rabbit.ci,www.usabilitydynamics.com,,api.usabilitydynamics.com,api.rets.ci,api.wordpress.org,downloads.wordpress.org",
+      "WP_ACCESSIBLE_HOSTS": "api.wpcloud.io,realty-ci-api-realty-ci-production.c.rabbit.ci,api.realty.ci,c.rabbit.ci,www.usabilitydynamics.com,,api.usabilitydynamics.com,api.rets.ci,api.wordpress.org,downloads.wordpress.org,api.reddoorcompany.com",
 
       "_UD_RETSCI_AJAX_API_URL": "https://rets-ci-api-rets-ci-v0-5-0.c.rabbit.ci/",
       "_WPP_API_URL_STANDARDS": "https://usabilitydynamics-node-product-api-staging.c.rabbit.ci/property/standard/v1",
