@@ -42,7 +42,6 @@ wp saved-search put-mapping
 
 **Note!** Main index must exist to run the command. Also, it's good to index properties before create Saved Search index, since the mapping may be updated on indexing new data. In other case error may be occurred. 
 
-
 ### Saved Search Percolator
 
 The following CURL request is example of Saved Search Percolator object:
