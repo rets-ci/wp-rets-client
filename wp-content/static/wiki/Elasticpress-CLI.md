@@ -182,7 +182,7 @@ curl -X PUT \
 }'
 ```
 
-To percolate the property:
+To percolate the property `5908107`, which tied to just added Saved Search:
 
 ```
 curl -X POST \
@@ -196,6 +196,26 @@ curl -X POST \
       "index": "mocha-test",
       "type": "post",
       "id": 5908107
+    }
+  }
+}'
+```
+
+To percolate the property `9273045`, which DOES NOT tied to just added Saved Search:
+
+```
+curl -X POST \
+  https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100/mocha-test-search/_search \
+  -H 'cache-control: no-cache' \
+  -H 'postman-token: 6feea984-cb35-3fed-bdd6-ecd9317ac79c' \
+  -d '{
+  "query": {
+    "percolate": {
+      "field": "query",
+      "document_type": "doctype",
+      "index": "mocha-test",
+      "type": "post",
+      "id": 9273045
     }
   }
 }'
