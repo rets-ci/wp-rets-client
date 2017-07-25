@@ -88684,7 +88684,7 @@
 	        'Land': ['location', 'lotSize', 'price']
 	      };
 	      if (!filtersSaleTypeMap[saleType]) {
-	        // console.log(`saletype ${saleType} was not recognized, properties modal filters might work properly`);
+	        console.log('saletype ' + saleType + ' was not recognized, properties modal filters might work properly');
 	        return false;
 	      }
 	      return filtersSaleTypeMap[saleType].indexOf(filter) >= 0;
@@ -101732,7 +101732,8 @@
 	__webpack_require__(644);
 
 	_nprogress2.default.configure({
-	  showSpinner: false
+	  showSpinner: false,
+	  template: '<div class="' + _lib.Lib.THEME_CLASSES_PREFIX + 'bar bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
 	});
 
 	var mapStateToProps = function mapStateToProps(state) {
