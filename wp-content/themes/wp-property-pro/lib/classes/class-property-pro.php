@@ -152,7 +152,7 @@ namespace UsabilityDynamics {
         array_pop($property_single_url_array);
 
         if($property_single_url_array)
-          $property_single_url = implode('/', $property_single_url_array);
+          $property_single_url = array_pop($property_single_url_array);
       }
 
       /** Get property types */
