@@ -1,0 +1,33 @@
+{
+  "message": "Sample Collaborators",
+  "data": [
+    {
+      "user_id": 3,
+      "collaborators": [
+        {
+          "collaborator_id": 2,
+          "collaboration_type": "CO-BUYER",
+          "email": "tracie.arnold@gmail.com",
+          "name": "Tracie Arnold"
+        },
+        {
+          "collaborator_id": 3,
+          "collaboration_type": "FRIEND",
+          "email": "tracie.arnold@gmail.com",
+          "name": "Tracie Arnold"
+        }
+      ]
+    },
+    {
+      "user_id": 4,
+      "collaborators": [
+        {
+          "collaborator_id": 4,
+          "collaboration_type": "AGENT",
+          "email": "kerem.suer@gmail.com",
+          "name": "Kerem Suer"
+        }
+      ]
+    }
+  ]
+}
