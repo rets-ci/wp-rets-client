@@ -392,7 +392,8 @@ namespace UsabilityDynamics {
                     'ID' => $item->ID,
                     'title' => $item->title,
                     'url' => $item->url,
-                    'relative_url' => str_replace(home_url(), "", $item->url)
+                    'relative_url' => str_replace(home_url(), "", $item->url),
+                    'classes' => $item->classes
                   ];
                 }, wp_get_nav_menu_items(get_theme_mod('property_pro_blog_subnavigation_menu')))
               ]
