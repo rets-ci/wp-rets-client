@@ -419,7 +419,6 @@ html, body {
 }
 
 .propertypro-listing-carousel {
-    width: 87em;
     margin-bottom: 5rem;
 }
 
@@ -553,8 +552,6 @@ ul.propertypro-listing-info-box li:last-child {
 }
 
 .propertypro-card-homepage {
-    width: 25rem !important;
-    height: 24.375rem !important;
 }
 
 .propertypro-card-img {

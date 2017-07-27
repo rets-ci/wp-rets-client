@@ -17,11 +17,21 @@ export default class DefaultLayout extends Component {
 
   componentDidMount() {
     this.swiper = Swiper.init(this.swiperElement, {
-      // centeredSlides: window.innerWidth >= Lib.MOBILE_WIDTH,
-      slidesPerView: 'auto',
       nextButton: this.swiperElementNext,
       prevButton: this.swiperElementPrev,
-      spaceBetween: 20
+      slidesPerView: 3,
+      slidesPerGroup: 3,
+      spaceBetween: 20,
+      breakpoints: {
+        // 992: {
+        //   slidesPerView: 2,
+        //   slidesPerGroup: 2,
+        // },
+        768: {
+          slidesPerView: 1,
+          slidesPerGroup: 1,
+        }
+      },
     });
   }
 
