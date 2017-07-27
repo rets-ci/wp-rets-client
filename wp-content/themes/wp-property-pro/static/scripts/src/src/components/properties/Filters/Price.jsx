@@ -53,7 +53,7 @@ class Price extends Component {
         start: 500,
         to: 3000
       },
-      Sale: {
+      Buy: {
         start: 150000,
         to: 400000
       }
@@ -77,7 +77,7 @@ class Price extends Component {
       max = 1000000;
       formatter = sliderFormatter(min, max);
       step = 25000;
-    } else if (saleType === 'Sale') {
+    } else if (saleType === 'Buy') {
       min = 25000;
       max = 1000000;
       formatter = sliderFormatter(min, max);

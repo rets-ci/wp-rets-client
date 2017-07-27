@@ -110,10 +110,11 @@ class Util extends React.Component {
   }
 
   static getSearchTypeParameters(options) {
-
+    // Hack for changing Sale to Buy in dropdown options
+    // TODO: ideally this should be done in the server-side and send down to the client to not pollute the client-side code
     let labels = Object.keys(options).map(o => {
       let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
-      return labelsArr[0];
+      return labelsArr[0] === 'Sale' ? 'Buy' : labelsArr[0];
     });
     let saleTypes = Object.keys(options).map(o => {
       let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);

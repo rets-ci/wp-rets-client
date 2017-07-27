@@ -391,9 +391,10 @@ class Api {
     }
 
     if (params.sale_type) {
+      let saleType = params.sale_type.toLowerCase() === 'buy' ? 'sale' : params.sale_type.toLowerCase();
       query.bool.must.push({
         "term": {
-          "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
+          "terms.wpp_listing_status.slug": 'for-' + saleType
         }
       });
     }

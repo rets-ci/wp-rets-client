@@ -45,7 +45,7 @@ class LotSize extends Component {
         start: 1,
         to: 3
       },
-      Sale: {
+      Buy: {
         start: 1,
         to: 3
       },
@@ -58,7 +58,7 @@ class LotSize extends Component {
     let min;
     let max;
     let step;
-    if (saleType === 'Sale' || saleType === 'Rent' || saleType === 'Commercial') {
+    if (saleType === 'Buy' || saleType === 'Rent' || saleType === 'Commercial') {
       step = 0.25;
       min = 0.25;
       max = 10;
