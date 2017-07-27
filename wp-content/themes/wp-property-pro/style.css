@@ -896,6 +896,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 2rem;
 }
 
+.propertypro-widget-tour .propertypro-headtitle p.propertypro-padded-on-desktop {
+    padding: 0 1rem;
+}
+
 .propertypro-widget-inner {
     position: absolute;
     width: 100%;
@@ -1774,6 +1778,7 @@ p.propertypro-gentle-error {
     font-size: 1.050rem;
     line-height: 1.5rem;
     margin: 0;
+    padding: 0 20rem;
 }
 
 .propertypro-listing-wrap-container {
@@ -2622,6 +2627,10 @@ p.propertypro-gentle-error {
         left: 0;
         bottom: 0;
         width: 50%;
+    }
+
+    .propertypro-widget-tour .propertypro-headtitle p.propertypro-padded-on-desktop {
+        padding: 0 20rem;
     }
 }
 

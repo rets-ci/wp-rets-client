@@ -81130,7 +81130,7 @@ var DefaultLayout = function DefaultLayout(_ref) {
           ) : null,
           _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
             'p',
-            null,
+            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'padded-on-desktop' },
             item.subtitle
           ) : null
         ),
