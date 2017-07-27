@@ -45,8 +45,8 @@ namespace UsabilityDynamics {
         }, 100);
       }
 
-      $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
-      $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
+      $this->_stylesDir = get_template_directory_uri() . '/static/styles';
+      $this->_scriptsDir = get_template_directory_uri() . '/static/scripts';
 
       /** Enables Customizer for Options. */
       $this->property_pro_customizer();
