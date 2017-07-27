@@ -57,6 +57,22 @@
       "WP_PROPERTY_LAYOUTS": false,
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
+    "settings_develop-v3-ash": {
+      "wp_debug_log": true,
+      "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "db_name": "www.reddoorcompany.com/latest-v3",
+      "WP_PROPERTY_LAYOUTS": false,
+      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
+    },
+    "settings_develop-v3-rumen": {
+      "wp_debug_log": true,
+      "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "db_name": "www.reddoorcompany.com/latest-v3",
+      "WP_PROPERTY_LAYOUTS": false,
+      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
+    },
     "settings_production": {
       "db_name": "www.reddoorcompany.com.v2",
       "WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1"
