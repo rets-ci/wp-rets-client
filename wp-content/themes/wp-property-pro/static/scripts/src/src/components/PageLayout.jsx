@@ -17,7 +17,8 @@ import _ from 'lodash';
 require('nprogress-css');
 
 nprogress.configure({
-  showSpinner: false
+  showSpinner: false,
+  template: `<div class="${Lib.THEME_CLASSES_PREFIX}bar bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>`
 });
 
 const mapStateToProps = state => {
