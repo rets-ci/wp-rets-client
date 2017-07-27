@@ -3071,6 +3071,14 @@ p.propertypro-gentle-error {
         padding: 0;
     }
 
+    .propertypro-card-homepage {
+        box-sizing: border-box;
+    }
+
+    .propertypro-card-homepage, .propertypro-card-homepage .propertypro-card-img img {
+        border-radius: 0px;
+    }
+
     .propertypro-listing-control-nav {
         margin: 1.875rem 0 0;
     }
