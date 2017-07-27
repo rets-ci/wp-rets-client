@@ -23,11 +23,11 @@ export default class DefaultLayout extends Component {
       slidesPerGroup: 3,
       spaceBetween: 20,
       breakpoints: {
-        // 992: {
-        //   slidesPerView: 2,
-        //   slidesPerGroup: 2,
-        // },
         768: {
+          slidesPerView: 2,
+          slidesPerGroup: 2,
+        },
+        640: {
           slidesPerView: 1,
           slidesPerGroup: 1,
         }
