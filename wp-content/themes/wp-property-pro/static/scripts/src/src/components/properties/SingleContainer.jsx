@@ -9,32 +9,28 @@ let singlePropertyData = (data) => {
     ID: id,
     post_date,
     post_content,
-    post_meta: {
-      rets_list_price,
-      rets_living_area,
-      rets_lot_size_area,
-      rets_total_baths: baths,
-      rets_postal_code,
-      rets_year_built,
-      beds
-    },
+    post_meta,
     post_modified,
     post_title,
-    tax_input: {
-      rets_city,
-      rets_middle_school,
-      rets_high_school,
-      rets_state,
-      wpp_location: {
-        wpp_location_subdivision,
-        wpp_location_city
-      },
-      wpp_schools: {
-        elementary_school
-      }
-    },
+    tax_input,
     wpp_media
   } = data._source;
+
+  let rets_list_price = _.get(post_meta, 'rets_list_price', null);
+  let rets_living_area = _.get(post_meta, 'rets_living_area', null);
+  let rets_lot_size_area = _.get(post_meta, 'rets_lot_size_area', null);
+  let baths  = _.get(post_meta, 'rets_total_baths', null);
+  let rets_postal_code = _.get(post_meta, 'rets_postal_code', null);
+  let rets_year_built = _.get(post_meta, 'rets_year_built', null);
+  let beds = _.get(post_meta, 'beds', null);
+
+  let rets_city = _.get(tax_input, 'rets_city', null);
+  let rets_middle_school = _.get(tax_input, 'rets_middle_school', null);
+  let rets_high_school = _.get(tax_input, 'rets_high_school', null);
+  let rets_state = _.get(tax_input, 'rets_state', null);
+  let wpp_location_subdivision = _.get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
+  let wpp_location_city = _.get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
+  let elementary_school = _.get(tax_input, 'rets_state.wpp_schools.elementary_school', null);
 
   let images = wpp_media.map(w => w.url);
 
@@ -68,7 +64,7 @@ class SingleContainer extends Component {
   static propTypes = {
     post: (props, propName, componentName) => {
       let errors = [];
-      if (props.psot && !props.post.post_id) { errors.push('Post ID not defined'); }
+      if (props.post && !props.post.post_id) { errors.push('Post ID not defined'); }
       return errors.length ? new Error(errors.join(', ')) : null; 
     }
   }
@@ -96,8 +92,7 @@ class SingleContainer extends Component {
         }
       };
       let url = 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=1';
-      Api.search(url, query, data => {
-
+      Api.search(url, query, (err, data) => {
         if (!_.get(data, 'hits.hits[0]', null)) {
           this.setState({property: false});
         } else {

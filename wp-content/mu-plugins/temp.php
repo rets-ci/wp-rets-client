@@ -1,5 +1,17 @@
 <?php
 
+// disables WPP scripts on front-end. Adds the wpp localized var to "bundle" so its available.
+add_action( 'wp_enqueue_scripts', function() {
+  // we re-purpose the WPP 'wpp' instance as a localization of the "bundle", added by theme.
+  // wp_localize_script( 'bundle', 'wpp', array( 'instance' =>  apply_filters( 'wpp::localization::instance', WPP_Core::get_instance() ) ) );
+}, 100);
+
+add_action( 'wp_enqueue_scripts', function() {
+  // wp_dequeue_script('wp-property-global');
+  // wp_dequeue_script('google-analytics');
+}, 200);
+
+
 add_action('admin_init', function() {
 
   if( function_exists( 'add_term_ordering_support' ) ) {

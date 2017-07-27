@@ -26,7 +26,10 @@ let mobileViewFilterNumber = filterParam => {
     numberOfFilters = termFilters.length;
     delete filters['term'];
   }
-  delete filters['bedrooms'];
+  let filtersToDelete = ['bedrooms', 'property_types', 'sale_type', 'geoCoordinates'];
+  filtersToDelete.forEach(d => {
+    delete filters[d];
+  });
   numberOfFilters += Object.keys(filters).length;
   return numberOfFilters;
 };
@@ -272,12 +275,14 @@ class searchFilters extends Component {
             {sqftElement}
             {lotSizeElement}
             {propertyTypeElement}
-            <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-lg-up`}>
-              <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-                <span>+</span>
-                {mobileViewFilterNumber(filters)}
-              </a>
-            </span>
+            {mobileViewFilterNumber(filters) ?
+              <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-lg-up`}>
+                <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+                  <span>+</span>
+                  {mobileViewFilterNumber(filters)}
+                </a>
+              </span>
+            : null}
             <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-md-down`}>
               <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
                 <span>+</span>

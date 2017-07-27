@@ -14,6 +14,10 @@ if (class_exists('\UsabilityDynamics\PropertyPro\Config')) {
   $config = new \UsabilityDynamics\PropertyPro\Config();
 }
 
+if (class_exists('\UsabilityDynamics\PropertyPro\API')) {
+  $api = new \UsabilityDynamics\PropertyPro\API();
+}
+
 // If Bootstrap class not found, we must fail, unless we are administrating.
 if (!class_exists('UsabilityDynamics\PropertyPro\Bootstrap') && !is_admin()) {
   wp_die('<h2>Fatal Error</h2><p>Missing UsabilityDynamics\PropertyPro\Bootstrap class.</p>');
@@ -31,4 +35,11 @@ if (class_exists('SiteOrigin_Widget')) {
   require_once get_template_directory() . '/lib/widgets/property-pro-testimonials/property_pro_testimonials.php';
   require_once get_template_directory() . '/lib/widgets/property-pro-callout/property_pro_callout.php';
   require_once get_template_directory() . '/lib/widgets/property-pro-tour/property_pro_tour.php';
+}
+
+/**
+ * WP CLI Commands
+ */
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+  require_once( get_template_directory() . '/bin/wp-cli.php' );
 }

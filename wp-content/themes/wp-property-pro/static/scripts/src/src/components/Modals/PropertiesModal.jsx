@@ -126,7 +126,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     updateResultCount(filters) {
       dispatch(setPropertiesModalResultCountLoading(true));
-      Api.makeStandardPropertySearch(filters, (query, response) => {
+      Api.makeStandardPropertySearch(filters, (err, query, response) => {
+        // we are ignoring handling the error here intentionally as the error is handled as soon as the modal is closed
         dispatch(setPropertiesModalResultCountLoading(false));
         dispatch(updatePropertiesModalResultCount(_.get(response, 'hits.total', null)));
       });

@@ -1,3 +1,4 @@
+import errorMessage from './errorMessage.jsx';
 import {routerReducer} from 'react-router-redux';
 import {combineReducers} from 'redux';
 import headerSearch from './headerSearch.jsx';
@@ -14,6 +15,7 @@ import testimonialsCarouselState from './testimonialsCarousel.jsx';
 import blogPostsState from './blogPosts.jsx';
 
 const propertyProApp = combineReducers({
+    errorMessage,
     mapState,
     locationModal,
     propertiesModal,

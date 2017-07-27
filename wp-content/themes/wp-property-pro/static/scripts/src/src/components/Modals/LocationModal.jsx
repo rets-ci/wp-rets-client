@@ -1,10 +1,14 @@
 import {
   openLocationModal,
   setSearchProps,
+  raiseErrorMessage,
   receiveLocationModalPosts,
+  resetErrorMessage,
+  requestLocationModalResetFetching,
   requestLocationModalPosts,
   updatePropertiesModalLocalFilter
 } from '../../actions/index.jsx';
+import ErrorMessage from '../ErrorMessage.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -19,6 +23,7 @@ import Util from '../Util.jsx';
 const mapStateToProps = (state, ownProps) => {
   let localFilters = state.propertiesModal.localFilters;
   return {
+    errorMessage: state.errorMessage,
     isFetching: state.locationModal.isFetching,
     open: state.locationModal ? state.locationModal.open : false,
     localFilters: localFilters,
@@ -37,7 +42,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openLocationModal(false));
     },
 
-    searchHandler: (term, saleType, propertyTypes) => {
+    searchHandler: (term, saleType, propertyTypes, errorMessage) => {
 
       let searchParams = {
         term: term,
@@ -47,18 +52,32 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       // reset the searchProps
       dispatch(requestLocationModalPosts());
       Api.autocompleteQuery(searchParams,
-        function (rows) {
+        function (err, rows) {
+          if (err) {
+            dispatch(requestLocationModalResetFetching());
+            return dispatch(raiseErrorMessage(err));
+          }
+          if (!err && errorMessage) {
+            dispatch(resetErrorMessage());
+          }
           dispatch(receiveLocationModalPosts(rows));
         }
       );
     },
-    topQuery: () => {
+    topQuery: errorMessage => {
       // reset the searchProps
       dispatch(requestLocationModalPosts());
       Api.topQuery({
           size: Lib.TOP_AGGREGATIONS_COUNT
         },
-        function (rows) {
+        function (err, rows) {
+          if (err) {
+            dispatch(requestLocationModalResetFetching());
+            return dispatch(raiseErrorMessage(err));
+          }
+          if (!err && errorMessage) {
+            dispatch(resetErrorMessage());
+          }
           dispatch(receiveLocationModalPosts(rows));
         }
       );
@@ -88,7 +107,7 @@ class LocationModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open) {
-      this.props.topQuery();
+      this.props.topQuery(nextProps.errorMessage);
     }
   }
 
@@ -142,9 +161,9 @@ class LocationModal extends Component {
 
     let val = this.state.searchValue;
     if (!val) {
-      this.props.topQuery();
+      this.props.topQuery(this.props.errorMessage);
     } else {
-      this.props.searchHandler(val, _.get(this.props, 'saleType', ''), _.get(this.props, 'propertyTypes', ''));
+      this.props.searchHandler(val, _.get(this.props, 'saleType', ''), _.get(this.props, 'propertyTypes', ''), this.props.errorMessage);
     }
   }
 
@@ -172,6 +191,7 @@ class LocationModal extends Component {
 
   render() {
     let {
+      errorMessage,
       isFetching,
       searchResults,
       searchType,
@@ -213,7 +233,7 @@ class LocationModal extends Component {
     let placeholder = 'Address, City, Zip, or Neighborhood.';
     let inputClasses = 'form-control';
     if (window.innerWidth < Lib.MOBILE_WIDTH) {
-      placeholder = 'Address, City, Zip.';
+      placeholder = '';
       inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}with-padding`
     }
 
@@ -268,7 +288,13 @@ class LocationModal extends Component {
             <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
               <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
                 {!resultsElements.length ?
-                  (isFetching ? <LoadingAccordion /> : <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>) :
+                  (isFetching ?
+                    <LoadingAccordion /> :
+                    (errorMessage ?
+                      <ErrorMessage message={errorMessage} />
+                    :
+                      <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>)
+                    ):
                   resultsElements
                 }
               </div>

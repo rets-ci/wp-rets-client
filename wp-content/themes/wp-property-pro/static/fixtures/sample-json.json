@@ -1,0 +1,6 @@
+{
+  "test": "hello",
+  "more": [
+    {"type": "data"}
+  ]
+}

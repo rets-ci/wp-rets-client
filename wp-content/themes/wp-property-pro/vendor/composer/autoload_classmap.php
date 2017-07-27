@@ -19,6 +19,7 @@ return array(
     'UsabilityDynamics\\Model\\Post' => $vendorDir . '/usabilitydynamics/lib-model/lib/models/class-post.php',
     'UsabilityDynamics\\Model\\Utility' => $vendorDir . '/usabilitydynamics/lib-model/lib/class-model-utility.php',
     'UsabilityDynamics\\PropertyPro' => $baseDir . '/lib/classes/class-property-pro.php',
+    'UsabilityDynamics\\PropertyPro\\API' => $baseDir . '/lib/classes/class-api.php',
     'UsabilityDynamics\\PropertyPro\\Bootstrap' => $baseDir . '/lib/classes/class-bootstrap.php',
     'UsabilityDynamics\\PropertyPro\\Config' => $baseDir . '/lib/classes/class-config.php',
     'UsabilityDynamics\\PropertyPro\\Customizer' => $baseDir . '/lib/classes/class-customizer.php',

@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         term: term
       };
       let url = Api.getPropertySearchRequestURL();
-      Api.search(url, params, function (response) {
+      Api.search(url, params, function (err, response) {
         dispatch(setMapProps(response.hits.hits.length ? response.hits.hits : []));
       });
     }

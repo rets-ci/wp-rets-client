@@ -1,9 +1,13 @@
 import Api from '../../containers/Api.jsx';
 import {
   openPropertiesModal,
-  setSearchResults,
+  raiseErrorMessage,
+  receiveSearchResultsPosts,
+  requestSearchResultsPostsResetFetching,
+  requestSearchResultsPosts,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
+import ErrorMessage from '../ErrorMessage.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
@@ -12,6 +16,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import SearchResultListing from './SearchResultListing.jsx';
+import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
@@ -22,8 +27,10 @@ const mapStateToProps = (state, ownProps) => {
   let allQueryParams = ownProps.location.query ? qs.parse(ownProps.location.query) : {};
   return {
     allQueryParams: allQueryParams,
+    errorMessage: state.errorMessage,
     front_page_post_content: ownProps.front_page_post_content,
     query: _.get(state, 'searchResults.query', []),
+    isFetching: _.get(state, 'searchResults.isFetching', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
     mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
@@ -40,27 +47,36 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openPropertiesModal(open));
     },
 
-    standardSearch: (params) => {
-      Api.makeStandardPropertySearch(params, (query, response) => {
-        if (_.get(response, 'hits.total', null)) {
-          dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
-        } else {
-          console.log('query with params returned no data');
+    standardSearch: (errorMessage, params) => {
+      dispatch(requestSearchResultsPosts());
+      Api.makeStandardPropertySearch(params, (err, query, response) => {
+        if (err) {
+          dispatch(requestSearchResultsPostsResetFetching());
+          return dispatch(raiseErrorMessage(err));
         }
+        if (!err && errorMessage) {
+          dispatch(resetErrorMessage());
+        }
+        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
       });
     },
-    doSearchWithQuery: (query, append) => {
+
+    doSearchWithQuery: (errorMessage, query, append) => {
       let url = Api.getPropertySearchRequestURL();
-      Api.search(url, query, response => {
-        if (_.get(response, 'hits.total', null)) {
-          dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
-        } else {
-          console.log('query with standard query returned no data');
+      dispatch(requestSearchResultsPosts());
+      Api.search(url, query, (err, response) => {
+        if (err) {
+          dispatch(requestSearchResultsPostsResetFetching());
+          return dispatch(raiseErrorMessage(err));
         }
+        if (!err && errorMessage) {
+          dispatch(resetErrorMessage());
+        }
+        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
       });
     },
     resetSearchResults: () => {
-      dispatch(setSearchResults({}, [], 0));
+      dispatch(receiveSearchResultsPosts({}, [], 0));
     }
   };
 };
@@ -69,6 +85,7 @@ class MapSearchResults extends Component {
   static propTypes = {
     doSearchWithQuery: PropTypes.func.isRequired,
     front_page_post_content: PropTypes.array.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     location: PropTypes.object,
     mapSearchResultsLoading: PropTypes.bool.isRequired,
     params: PropTypes.object,
@@ -101,12 +118,12 @@ class MapSearchResults extends Component {
   seeMoreHandler() {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
-    this.props.doSearchWithQuery(modifiedQuery, true);
+    this.props.doSearchWithQuery(this.props.errorMessage, modifiedQuery, true);
   }
 
   applyQueryFilters() {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
-    this.props.standardSearch(searchFilters);
+    this.props.standardSearch(this.props.errorMEssage, searchFilters);
   }
 
   clickMobileSwitcherHandler(mapDisplay) {
@@ -136,14 +153,16 @@ class MapSearchResults extends Component {
   render() {
     let {
       allQueryParams,
-      searchQueryParams,
+      errorMessage,
       displayedResults,
       front_page_post_content,
+      isFetching,
       location,
       mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
-      results
+      results,
+      searchQueryParams
     } = this.props;
     let filters = qs.parse(window.location.search.replace('?', ''));
     let propertyTypes = location.query['wpp_search[property_types]'];
@@ -167,22 +186,38 @@ class MapSearchResults extends Component {
           </div>
           <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
           <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
-            <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-              <div>
-                <h1>Homes for {searchFilters.sale_type}</h1>
-                <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced
-                  between
-                  $250,000 and $500,00
-                  with three to five betweens and two to three bathrooms.</p>
-              </div>
-            </div>
-            <SearchResultListing
-              allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
-              properties={displayedResults}
-              seeMoreHandler={this.seeMoreHandler.bind(this)}
-              selectedProperty={filters.selected_property}
+            <SearchFilterDescriptionText
+              bathrooms={searchFilters.bathrooms}
+              bedrooms={searchFilters.bedrooms}
+              price={searchFilters.price}
+              saleType={searchFilters.sale_type}
               total={this.props.resultsTotal}
-              />
+            />
+            
+            {this.props.displayedResults.length
+              ?
+                <SearchResultListing
+                  allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+                  isFetching={isFetching}
+                  properties={displayedResults}
+                  seeMoreHandler={this.seeMoreHandler.bind(this)}
+                  selectedProperty={filters.selected_property}
+                  total={this.props.resultsTotal}
+                />
+              :
+                (errorMessage
+                  ?
+                    <ErrorMessage message={errorMessage} />
+                  :
+                    (
+                      !isFetching ?
+                        <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
+                      : 
+                      null
+                    )
+                )
+                
+            }
           </div>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>

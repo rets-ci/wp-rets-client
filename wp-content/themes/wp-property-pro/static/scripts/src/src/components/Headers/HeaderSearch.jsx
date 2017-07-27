@@ -61,7 +61,7 @@ class HeaderSearch extends Component {
     }
     let saleType = searchFilters['sale_type'];
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container container-fluid"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
         <div className={containerClasses}>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Buy')}>

@@ -30,7 +30,7 @@ const UserPanelContent = ({panelOpen, closeUserPanel}) => {
 
   return (
     <section
-      className={Lib.THEME_CLASSES_PREFIX + "user-panel row " + (panelOpen ? Lib.THEME_CLASSES_PREFIX + "on" : "")}>
+      className={Lib.THEME_CLASSES_PREFIX + "user-panel col-md-12 " + (panelOpen ? Lib.THEME_CLASSES_PREFIX + "on" : "")}>
       <a href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel"} onClick={(event) => {
         closeUserPanel();
         event.preventDefault();

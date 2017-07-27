@@ -45,8 +45,8 @@ namespace UsabilityDynamics {
         }, 100);
       }
 
-      $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
-      $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
+      $this->_stylesDir = get_template_directory_uri() . '/static/styles';
+      $this->_scriptsDir = get_template_directory_uri() . '/static/scripts';
 
       /** Enables Customizer for Options. */
       $this->property_pro_customizer();
@@ -104,7 +104,9 @@ namespace UsabilityDynamics {
       wp_enqueue_style('bootstrap', $this->_stylesDir . '/src/bootstrap.min.css');
       wp_enqueue_style('style', get_stylesheet_uri());
 
-      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
+      // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
+      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ));
+
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
@@ -150,7 +152,7 @@ namespace UsabilityDynamics {
         array_pop($property_single_url_array);
 
         if($property_single_url_array)
-          $property_single_url = implode('/', $property_single_url_array);
+          $property_single_url = array_pop($property_single_url_array);
       }
 
       /** Get property types */
@@ -361,6 +363,8 @@ namespace UsabilityDynamics {
         /** Get blog post some data */
         $post_title = get_post_field('post_title', $blog_post_id);
         $post_content = get_post_field('post_content', $blog_post_id);
+        $category_link = get_category_link($category_id);
+        $params['post']['post_url'] = $category_link ? $category_link : get_permalink($blog_post_id);
 
         if ($category_id) {
           $category = get_category($category_id);
@@ -388,7 +392,8 @@ namespace UsabilityDynamics {
                     'ID' => $item->ID,
                     'title' => $item->title,
                     'url' => $item->url,
-                    'relative_url' => str_replace(home_url(), "", $item->url)
+                    'relative_url' => str_replace(home_url(), "", $item->url),
+                    'classes' => $item->classes
                   ];
                 }, wp_get_nav_menu_items(get_theme_mod('property_pro_blog_subnavigation_menu')))
               ]
@@ -401,6 +406,8 @@ namespace UsabilityDynamics {
 
         /** Get current term */
         $term = get_queried_object();
+
+        $params['post']['post_url'] = get_term_link($term->term_id);
 
         /** @var Post $rand_posts
          *  Rand post related with current term of child for get thumbnail
