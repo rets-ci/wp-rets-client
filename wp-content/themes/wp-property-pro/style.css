@@ -3103,6 +3103,7 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-widget-inner {
+        position: relative;
         margin-top: -9.375rem;
     }
 
