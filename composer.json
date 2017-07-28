@@ -41,11 +41,9 @@
     "settings_latest-v3": {
       "wp_debug_log": true,
       "wp_debug_display": true,
-      "wp_siteurl": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci",
-      "wp_home": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci",
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "db_name": "www.reddoorcompany.com/latest-v3",
-      "WP_PROPERTY_LAYOUTS": true,
+      "WP_PROPERTY_LAYOUTS": false,
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_develop-dmitry": {
