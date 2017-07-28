@@ -88071,15 +88071,15 @@
 	      var searchFilters = filters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
 	      var elementToShow = _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map h-100' },
 	        _react2.default.createElement(_LocationModal2.default, null),
 	        _react2.default.createElement(_PropertiesModal2.default, { front_page_post_content: front_page_post_content, open: propertiesModalOpen }),
 	        _react2.default.createElement(
 	          'section',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-section row no-gutters' },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-section row no-gutters h-100' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-sm-4 ' + (!this.state.mapDisplay ? "hidden-xs-down" : "") },
+	            { className: 'col-sm-4 h-100 ' + (!this.state.mapDisplay ? "hidden-xs-down" : "") },
 	            _react2.default.createElement(
 	              'div',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -88181,7 +88181,7 @@
 	      );
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map-container" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map-container h-100" },
 	        elementToShow
 	      );
 	    }
@@ -88711,7 +88711,7 @@
 	    value: function render() {
 	      var _this4 = this;
 
-	      return _react2.default.createElement('div', { id: _lib.Lib.THEME_CLASSES_PREFIX + "Map", className: _lib.Lib.THEME_CLASSES_PREFIX + "map-container", ref: function ref(r) {
+	      return _react2.default.createElement('div', { id: _lib.Lib.THEME_CLASSES_PREFIX + "Map", ref: function ref(r) {
 	          return _this4.mapElement = r;
 	        } });
 	    }
@@ -95162,7 +95162,7 @@
 	      }
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-wrap-container' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-wrap-container h-100' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: classNames.join(' '), ref: function ref(r) {
@@ -95222,19 +95222,15 @@
 	            ),
 	            !this.state.loading ? _react2.default.createElement(
 	              'div',
-	              null,
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'waypoint-container' },
 	              _react2.default.createElement(_reactWaypoint2.default, {
 	                onEnter: function onEnter() {
 	                  _this2.setState({ loading: true });
 	                  _this2.props.seeMoreHandler();
 	                }
-	              }),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Getting results...'
-	              )
-	            ) : null
+	              })
+	            ) : null,
+	            _react2.default.createElement('p', null)
 	          )
 	        ) : null
 	      );
@@ -102213,10 +102209,10 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container h-100" },
 	        !errorMessage ? Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { front_page_post_content: _lodash2.default.get(this.state, 'front_page_post_content', null), location: location }),
 	          _react2.default.Children.map(children, function (child, i) {

@@ -192,7 +192,7 @@ export default class Map extends Component {
 
   render() {
     return (
-      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} className={Lib.THEME_CLASSES_PREFIX+"map-container"} ref={(r) => this.mapElement = r} ></div>
+      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} ref={(r) => this.mapElement = r} ></div>
     );
   }
 };

@@ -174,11 +174,11 @@ class MapSearchResults extends Component {
     let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     let elementToShow = (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
         <LocationModal />
         <PropertiesModal front_page_post_content={front_page_post_content} open={propertiesModalOpen} />
-        <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
-          <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
+        <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
+          <div className={`col-sm-4 h-100 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
             <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
               { this.state.noticeDisplay && !!displayedResults.length &&
                 <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
@@ -251,7 +251,7 @@ class MapSearchResults extends Component {
       </div>
     );
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
         {elementToShow}
       </div>
     )
