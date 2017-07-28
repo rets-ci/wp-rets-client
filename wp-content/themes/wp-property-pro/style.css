@@ -1695,10 +1695,6 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-search-map-container .propertypro-search-map-mobile-navigation {
-    bottom: 0;
-    position: fixed;
-    display: block;
-    width: 100%;
     background-color: #ffffff;
     box-shadow: 0 0.1rem 0.5rem #000;
 }

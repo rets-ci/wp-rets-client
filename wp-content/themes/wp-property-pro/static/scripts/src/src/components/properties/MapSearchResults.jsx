@@ -227,8 +227,8 @@ class MapSearchResults extends Component {
             }
           </div>
           </div>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
-            <nav className="navbar navbar-toggleable-md">
+          <div>
+            <nav className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation navbar navbar-toggleable-md fixed-bottom hidden-sm-up`}>
               <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
                 <ul
                   className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
