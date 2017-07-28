@@ -26410,15 +26410,19 @@
 	        return false;
 	      }
 
+	      var query = _lodash2.default.get(data, 'query', null);
+
+	      // @TODO Temporary hack for changing ElasticPress index
+	      if (_lodash2.default.get(data, 'url').indexOf('newSearch') != -1 && !_lodash2.default.isEmpty(_lodash2.default.get(bundle, 'ep_index_name', null))) {
+	        query.custom_ep_index = _lodash2.default.get(bundle, 'ep_index_name');
+	      }
+
 	      jQuery.ajax({
 	        url: _lodash2.default.get(data, 'url'),
 	        dataType: 'json',
 	        type: 'GET',
 	        contentType: 'text/plain',
-	        headers: {
-	          'X-CUSTOM-EP-INDEX': _lodash2.default.get(bundle, 'ep_index_name', '')
-	        },
-	        data: _lodash2.default.get(data, 'query', null),
+	        data: query,
 	        error: function error(jqXHR, textStatus) {
 	          var errorMsg = '';
 	          if (jqXHR.status === 0) {
@@ -89904,7 +89908,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(false) {
+		if(true) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 

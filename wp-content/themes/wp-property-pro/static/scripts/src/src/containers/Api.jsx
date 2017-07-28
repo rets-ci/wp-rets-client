@@ -181,7 +181,9 @@ class Api {
       'url': Api.getPropertySearchRequestURL(0),
       'query': body
     }, function (err, response) {
-      if (err) { return callback(err); }
+      if (err) {
+        return callback(err);
+      }
       let rows = [];
       for (let aggregationKey in aggregationsFields) {
 
@@ -306,7 +308,9 @@ class Api {
         data: JSON.stringify(body)
       }
     }, function (err, response) {
-      if (err) { return callback(err); }
+      if (err) {
+        return callback(err);
+      }
       let responseAggs = _.get(response, 'aggregations');
 
       for (let i in responseAggs) {
@@ -494,7 +498,7 @@ class Api {
         }
       });
     }
-    
+
     query = JSON.stringify(query);
 
     let size = params.size || 500;
@@ -561,21 +565,21 @@ class Api {
 
   static makeStandardPropertySearch(params, callback) {
     let {
-        property_types,
-        geoCoordinates
-      } = params;
-      let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
-      let searchParams = {
-        ...params,
-        property_types: pt,
-        size: Lib.PROPERTY_PER_PAGE
-      };
-      
-      let query = this.createESSearchQuery(searchParams);
-      let url = this.getPropertySearchRequestURL();
-      this.search(url, query, (err, response) => {
-        callback(err, query, response);
-      });
+      property_types,
+      geoCoordinates
+    } = params;
+    let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
+    let searchParams = {
+      ...params,
+      property_types: pt,
+      size: Lib.PROPERTY_PER_PAGE
+    };
+
+    let query = this.createESSearchQuery(searchParams);
+    let url = this.getPropertySearchRequestURL();
+    this.search(url, query, (err, response) => {
+      callback(err, query, response);
+    });
   }
 
   static makeRequest(data, callback) {
@@ -585,15 +589,19 @@ class Api {
       return false;
     }
 
+    let query = _.get(data, 'query', null);
+
+    // @TODO Temporary hack for changing ElasticPress index
+    if (_.get(data, 'url').indexOf('newSearch') != -1 && !_.isEmpty(_.get(bundle, 'ep_index_name', null))) {
+      query.custom_ep_index = _.get(bundle, 'ep_index_name');
+    }
+
     jQuery.ajax({
       url: _.get(data, 'url'),
       dataType: 'json',
       type: 'GET',
       contentType: 'text/plain',
-      headers: {
-        'X-CUSTOM-EP-INDEX': _.get(bundle, 'ep_index_name', '')
-      },
-      data: _.get(data, 'query', null),
+      data: query,
       error: (jqXHR, textStatus) => {
         let errorMsg = '';
         if (jqXHR.status === 0) {
