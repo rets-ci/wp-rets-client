@@ -21,8 +21,8 @@
       "wp_debug_log": true,
       "wp_debug_display": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "db_name": "www.reddoorcompany.com/latest-v3",
-      "EP_INDEX_NAME": "mocha-test",
+      "db_name": "www.reddoorcompany.com/latest-v3-1",
+      "EP_INDEX_NAME": "latest-v3-1-site-id",
       "WP_PROPERTY_LAYOUTS": true,
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
