@@ -22303,10 +22303,11 @@ var Util = function (_React$Component) {
   }, {
     key: 'getSearchTypeParameters',
     value: function getSearchTypeParameters(options) {
-
+      // Hack for changing Sale to Buy in dropdown options
+      // TODO: ideally this should be done in the server-side and send down to the client to not pollute the client-side code
       var labels = Object.keys(options).map(function (o) {
         var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
-        return labelsArr[0];
+        return labelsArr[0] === 'Sale' ? 'Buy' : labelsArr[0];
       });
       var saleTypes = Object.keys(options).map(function (o) {
         var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
@@ -27589,9 +27590,10 @@ var Api = function () {
       }
 
       if (params.sale_type) {
+        var saleType = params.sale_type.toLowerCase() === 'buy' ? 'sale' : params.sale_type.toLowerCase();
         query.bool.must.push({
           "term": {
-            "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
+            "terms.wpp_listing_status.slug": 'for-' + saleType
           }
         });
       }
@@ -78044,7 +78046,7 @@ var LotSize = function (_Component) {
           start: 1,
           to: 3
         },
-        Sale: {
+        Buy: {
           start: 1,
           to: 3
         },
@@ -78057,7 +78059,7 @@ var LotSize = function (_Component) {
       var min = void 0;
       var max = void 0;
       var step = void 0;
-      if (saleType === 'Sale' || saleType === 'Rent' || saleType === 'Commercial') {
+      if (saleType === 'Buy' || saleType === 'Rent' || saleType === 'Commercial') {
         step = 0.25;
         min = 0.25;
         max = 10;
@@ -78182,7 +78184,7 @@ var Price = function (_Component) {
           start: 500,
           to: 3000
         },
-        Sale: {
+        Buy: {
           start: 150000,
           to: 400000
         }
@@ -78206,7 +78208,7 @@ var Price = function (_Component) {
         max = 1000000;
         formatter = sliderFormatter(min, max);
         step = 25000;
-      } else if (saleType === 'Sale') {
+      } else if (saleType === 'Buy') {
         min = 25000;
         max = 1000000;
         formatter = sliderFormatter(min, max);
@@ -78314,7 +78316,7 @@ var SQFT = function (_Component) {
           to = _props.to;
 
       var defaults = {
-        Sale: {
+        Buy: {
           start: 1000,
           to: 4000
         },
@@ -78327,7 +78329,7 @@ var SQFT = function (_Component) {
       var min = void 0;
       var max = void 0;
       var step = void 0;
-      if (saleType === 'Sale' || saleType === 'Rent') {
+      if (saleType === 'Buy' || saleType === 'Rent') {
         step = 500;
         min = 500;
         max = 10000;
