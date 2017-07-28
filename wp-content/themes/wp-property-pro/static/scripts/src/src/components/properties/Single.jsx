@@ -63,12 +63,12 @@ class Single extends Component {
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []} />
-        <div className="jumbotron">
+        <div className="jumbotron py-5 mb-5">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h4>{post_title}</h4>
-                <h6 className="card-subtitle mb-2 text-muted">{rets_city ? rets_city + "," : null} {rets_state} {rets_postal_code}</h6>
+                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{post_title}</h4>
+                <h6 className="mb-3 text-muted">{rets_city ? rets_city + "," : null} {rets_state} {rets_postal_code}</h6>
                 <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>
                   <li>{rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>
                   {beds ?
@@ -94,13 +94,17 @@ class Single extends Component {
             </div>
           </div>
         </div>
+
+
         <div className="container">
           <div className="row">
-            <div className="col-md-12">
-              <p className="text-muted">{renderHTML(post_content)}</p>
+            <div className="col-md-12 mb-5">
+              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>{renderHTML(post_content)}</p>
             </div>
           </div>
-          <div className="row mb-4">
+
+
+          <div className="row mb-5">
             <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
               <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Last Checked</p>
               <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>1 minute ago</p>
@@ -118,22 +122,50 @@ class Single extends Component {
               </div>
             }
           </div>
-          <h5 className="mb-4">Property Highlights</h5>
-          <PropertyHighlights
-            elementary_school={elementary_school}
-            rets_high_school={rets_high_school}
-            rets_middle_school={rets_middle_school}
-            rets_year_built={rets_year_built}
-            wpp_location_city={wpp_location_city}
-            wpp_location_subdivision={wpp_location_subdivision}
-           />
-          <h5 className="mb-4">Property Details for {post_title}</h5>
-          <p className="text-muted">847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.</p>
-          <PropertyInfoTabs />
-          <h5 className="mb-4">Listing Provider for {post_title}</h5>
-          <p className="text-muted">
-            Information Not Guaranteed. © Triangle MLS Inc. All rights reserved. Listings marked with a TMLSidx icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.
-          </p>
+
+
+          <div className="row">
+            <div className="col-md-12 mb-3">
+              <h5 className={`mb-3 ${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Property Highlights</h5>
+            </div>
+
+            <div className="col-md-12">
+              <PropertyHighlights
+                elementary_school={elementary_school}
+                rets_high_school={rets_high_school}
+                rets_middle_school={rets_middle_school}
+                rets_year_built={rets_year_built}
+                wpp_location_city={wpp_location_city}
+                wpp_location_subdivision={wpp_location_subdivision}
+               />
+            </div>
+          </div>
+
+
+          <div className="row">
+            <div className="col-md-12 mb-3">
+              <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Property Details for {post_title}</h5>
+            </div>
+            <div className="col-md-12 mb-3">
+              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.</p>
+            </div>
+            <div className="col-md-12 mb-5">
+              <PropertyInfoTabs />
+            </div>
+          </div>
+
+
+          <div className="row">
+            <div className="col-md-12 mt-3 mb-3">
+              <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Listing Provider for {post_title}</h5>
+            </div>
+
+            <div className="col-md-12 mb-5">
+              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>
+                Information Not Guaranteed. © Triangle MLS Inc. All rights reserved. Listings marked with a TMLSidx icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     );

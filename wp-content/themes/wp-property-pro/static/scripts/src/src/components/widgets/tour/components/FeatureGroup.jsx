@@ -7,12 +7,17 @@ import _ from 'lodash';
 const FeatureGroup = ({featureGroup, ind}) => {
 
   let counter = 1;
-  let featuresCount = _.get(featureGroup, 'features', []).length;
+  const featuresCount = _.get(featureGroup, 'features', []).length;
+  const backgroundPosition = _.get(featureGroup, 'layout', null)
+  const backgroundSize = _.get(featureGroup, 'background', null)
 
-  let featureGroupBackgroundClasses = _.get(featureGroup, 'layout', null) === 'left' && _.get(featureGroup, 'background', null) !== 'full' ? `col-lg-7 push-lg-5` : `col-lg-7`;
+  let featureGroupBackgroundClasses = backgroundPosition === 'left' && backgroundSize !== 'full' ? `col-lg-7 push-lg-5` : `col-lg-7`;
   featureGroupBackgroundClasses += ` ${Lib.THEME_CLASSES_PREFIX}background-block p-0`;
-  let featureGroupContentClasses = _.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
+  if (backgroundSize === 'full') {
+    featureGroupBackgroundClasses += ` ${Lib.THEME_CLASSES_PREFIX}background-block-full`;
+  }
 
+  let featureGroupContentClasses = backgroundPosition === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
   let backgroundStyle = _.get(featureGroup, 'image_section.image_src', null) !== null
     ? {
       "background": "url(" + featureGroup.image_section.image_src + ")",
@@ -20,10 +25,6 @@ const FeatureGroup = ({featureGroup, ind}) => {
       "backgroundSize": "cover"
     }
     : {};
-
-  if (_.get(featureGroup, 'background', null) === 'full') {
-    featureGroupBackgroundClasses += ` ${Lib.THEME_CLASSES_PREFIX}background-block-full`;
-  }
 
 
   return (

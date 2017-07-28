@@ -416,10 +416,12 @@ html, body {
 
 .propertypro-listings .propertypro-listing-carousel .propertypro-card {
     cursor: pointer;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .propertypro-listing-carousel {
-    width: 87em;
     margin-bottom: 5rem;
 }
 
@@ -446,10 +448,12 @@ html, body {
 
 .propertypro-card {
     border-radius: .75rem;
+    overflow: hidden;
     border-color: #d2dae0;
     opacity: 0.99;
     /*width: 25rem;*/
     max-height: 25rem;
+    margin-bottom: 1px;
 }
 
 .propertypro-card .propertypro-card-block {
@@ -531,11 +535,11 @@ html, body {
 
 ul.propertypro-listing-info-box li {
     float: left;
-    line-height: 1rem;
+    line-height: 1.5rem;
     border-right: .0625rem solid #cad3d9;
-    padding: 0 .5rem;
+    padding: 0 1rem;
     font-weight: 600;
-    color: #000000;
+    color: #414141;
 }
 
 ul.propertypro-listing-info-box li:first-child {
@@ -553,8 +557,6 @@ ul.propertypro-listing-info-box li:last-child {
 }
 
 .propertypro-card-homepage {
-    width: 25rem !important;
-    height: 24.375rem !important;
 }
 
 .propertypro-card-img {
@@ -1726,22 +1728,25 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-listing-map .propertypro-caption {
-    height: 3.125rem;
     background-color: #9a9a9a;
     opacity: 0.8;
-    padding: 0 1rem;
-    font-size: .85rem;
-    display: table;
+    padding: 0.5rem 1rem;
+    font-size: .95rem;
+    font-weight: 700;
     width: 100%;
     position: absolute;
     z-index: 9;
+    display: flex;
+    align-items: center;
 }
 
 .propertypro-listing-map .propertypro-caption .propertypro-caption-content {
-    display: table-cell;
-    vertical-align: middle;
-    font-size: .95rem;
-    font-weight: 700;
+}
+
+.propertypro-listing-map .propertypro-caption .propertypro-caption-dismiss {
+    padding-left: 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
 }
 
 .propertypro-listing-sidebar {
@@ -1876,16 +1881,41 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-single-container ul.propertypro-listing-info-box {
-    margin-top: 2rem;
-    margin-bottom: 4rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
 }
 
 .propertypro-single-container .propertypro-top-information-card {
     border: none;
 }
 
-.properypto-small-info-box .propertypro-top {
-  margin-bottom: 0;
+.propertypro-info-title {
+    color: #414141;
+    font-weight: 700;
+}
+
+.propertypro-info-section-header {
+    color: #414141;
+    font-weight: 700;
+    line-height: 1.5rem;
+}
+
+.propertypro-info-description {
+    line-height: 1.85rem;
+}
+
+.propertypro-small-info-box {
+    margin-bottom: 2rem;
+}
+
+.propertypro-small-info-box .propertypro-top {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.propertypro-small-info-box .propertypro-bottom {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
 }
 
 .propertypro-header-property-single {
@@ -3074,6 +3104,10 @@ p.propertypro-gentle-error {
         padding: 0;
     }
 
+    .propertypro-card-homepage, .propertypro-card-homepage .propertypro-card-img img {
+        border-radius: 0px;
+    }
+
     .propertypro-listing-control-nav {
         margin: 1.875rem 0 0;
     }
@@ -3103,6 +3137,7 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-widget-inner {
+        position: relative;
         margin-top: -9.375rem;
     }
 

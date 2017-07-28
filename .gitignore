@@ -20,3 +20,4 @@ wp-content/plugins/wp-responsive-jquery-slider/README.txt
 /*.sh
 .remote-sync.json
 wp-content/mu-plugins/test.php
+sftp-config.json
