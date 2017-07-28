@@ -21,12 +21,17 @@ export default class PropertyCard extends Component {
   }
 
   componentDidMount() {
-    this.swiper = Swiper.init(this.swiperElement, {
-      effect: 'slide',
-      lazyLoading: true,
-      lazyLoadingInPrevNext: true,
-      preloadImages: false,
-      spaceBetween: 30
+    // let's hold a breathe until the parent cards slider allots width to inner gallery slider
+    setTimeout(() => {
+      this.swiper = Swiper.init(this.swiperElement, {
+        effect: 'slide',
+        preloadImages: false,
+        lazyLoading: true,
+        lazyLoadingInPrevNext: true,
+        lazyLoadingOnTransitionStart: true,
+        lazyLoadingInPrevNextAmount: 3,
+        spaceBetween: 30
+      });
     });
   }
 
