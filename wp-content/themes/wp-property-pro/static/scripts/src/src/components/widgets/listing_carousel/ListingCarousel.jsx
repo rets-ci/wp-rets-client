@@ -18,7 +18,13 @@ const ListingCarousel = ({widget_cell}) => {
 
   return (
     <section className={Lib.THEME_CLASSES_PREFIX+"listings"}>
-      {container}
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+            {container}
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

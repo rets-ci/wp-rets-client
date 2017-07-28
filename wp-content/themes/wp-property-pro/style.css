@@ -416,6 +416,9 @@ html, body {
 
 .propertypro-listings .propertypro-listing-carousel .propertypro-card {
     cursor: pointer;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .propertypro-listing-carousel {
@@ -3096,10 +3099,6 @@ p.propertypro-gentle-error {
     .propertypro-listings .propertypro-listing-carousel-info p {
         line-height: 2rem;
         padding: 0;
-    }
-
-    .propertypro-card-homepage {
-        box-sizing: border-box;
     }
 
     .propertypro-card-homepage, .propertypro-card-homepage .propertypro-card-img img {
