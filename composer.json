@@ -48,9 +48,10 @@
     },
     "settings_develop-dmitry": {
       "wp_debug_log": true,
+      "EP_INDEX_NAME": "latest-v3-1-site-id",
       "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "db_name": "www.reddoorcompany.com/latest-v3",
+      "db_name": "www.reddoorcompany.com/latest-v3-1",
       "WP_PROPERTY_LAYOUTS": false,
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
