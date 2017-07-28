@@ -589,7 +589,7 @@ class Api {
       url: _.get(data, 'url'),
       dataType: 'json',
       type: 'GET',
-      contentType: 'application/json',
+      contentType: 'text/plain',
       data: _.get(data, 'query', null),
       error: (jqXHR, textStatus) => {
         let errorMsg = '';
