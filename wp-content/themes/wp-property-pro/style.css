@@ -3104,8 +3104,17 @@ p.propertypro-gentle-error {
         padding: 0;
     }
 
-    .propertypro-card-homepage, .propertypro-card-homepage .propertypro-card-img img {
-        border-radius: 0px;
+    .propertypro-listing-wrap {
+        padding: 0;
+    }
+
+    .propertypro-listing-wrap .propertypro-card {
+        border: 0;
+        margin-bottom: 0;
+    }
+
+    .propertypro-listing-wrap .propertypro-card, .propertypro-listing-wrap .propertypro-card .propertypro-card-img img {
+        border-radius: 0;
     }
 
     .propertypro-listing-control-nav {
