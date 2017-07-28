@@ -1728,22 +1728,25 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-listing-map .propertypro-caption {
-    height: 3.125rem;
     background-color: #9a9a9a;
     opacity: 0.8;
-    padding: 0 1rem;
-    font-size: .85rem;
-    display: table;
+    padding: 0.5rem 1rem;
+    font-size: .95rem;
+    font-weight: 700;
     width: 100%;
     position: absolute;
     z-index: 9;
+    display: flex;
+    align-items: center;
 }
 
 .propertypro-listing-map .propertypro-caption .propertypro-caption-content {
-    display: table-cell;
-    vertical-align: middle;
-    font-size: .95rem;
-    font-weight: 700;
+}
+
+.propertypro-listing-map .propertypro-caption .propertypro-caption-dismiss {
+    padding-left: 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
 }
 
 .propertypro-listing-sidebar {
