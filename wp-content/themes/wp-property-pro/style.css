@@ -532,11 +532,11 @@ html, body {
 
 ul.propertypro-listing-info-box li {
     float: left;
-    line-height: 1rem;
+    line-height: 1.5rem;
     border-right: .0625rem solid #cad3d9;
-    padding: 0 .5rem;
+    padding: 0 1rem;
     font-weight: 600;
-    color: #000000;
+    color: #414141;
 }
 
 ul.propertypro-listing-info-box li:first-child {
@@ -1875,16 +1875,41 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-single-container ul.propertypro-listing-info-box {
-    margin-top: 2rem;
-    margin-bottom: 4rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
 }
 
 .propertypro-single-container .propertypro-top-information-card {
     border: none;
 }
 
-.properypto-small-info-box .propertypro-top {
-  margin-bottom: 0;
+.propertypro-info-title {
+    color: #414141;
+    font-weight: 700;
+}
+
+.propertypro-info-section-header {
+    color: #414141;
+    font-weight: 700;
+    line-height: 1.5rem;
+}
+
+.propertypro-info-description {
+    line-height: 1.85rem;
+}
+
+.propertypro-small-info-box {
+    margin-bottom: 2rem;
+}
+
+.propertypro-small-info-box .propertypro-top {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.propertypro-small-info-box .propertypro-bottom {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
 }
 
 .propertypro-header-property-single {

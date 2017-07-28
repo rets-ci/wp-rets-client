@@ -11,8 +11,8 @@ function PropertyHighlights(props) {
     wpp_location_subdivision,
     wpp_location_city
   } = props;
-  return <div className="row mb-4">
-      <div className={`col-md-3 small-info-box`}>
+  return <div className="row mb-5">
+      <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
         <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Design </p>
         <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>One Story</p>
       </div>
