@@ -26415,6 +26415,9 @@
 	        dataType: 'json',
 	        type: 'GET',
 	        contentType: 'text/plain',
+	        headers: {
+	          'X-CUSTOM-EP-INDEX': _lodash2.default.get(bundle, 'ep_index_name', '')
+	        },
 	        data: _lodash2.default.get(data, 'query', null),
 	        error: function error(jqXHR, textStatus) {
 	          var errorMsg = '';
@@ -49039,7 +49042,7 @@
 	        _react2.default.createElement(_ImageMixer2.default, { images: images || [] }),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'jumbotron' },
+	          { className: 'jumbotron py-5 mb-5' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'container' },
@@ -49051,12 +49054,12 @@
 	                { className: 'col-md-12' },
 	                _react2.default.createElement(
 	                  'h4',
-	                  null,
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'info-title' },
 	                  post_title
 	                ),
 	                _react2.default.createElement(
 	                  'h6',
-	                  { className: 'card-subtitle mb-2 text-muted' },
+	                  { className: 'mb-3 text-muted' },
 	                  rets_city ? rets_city + "," : null,
 	                  ' ',
 	                  rets_state,
@@ -49118,17 +49121,17 @@
 	            { className: 'row' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-md-12' },
+	              { className: 'col-md-12 mb-5' },
 	              _react2.default.createElement(
 	                'p',
-	                { className: 'text-muted' },
+	                { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'info-description' },
 	                (0, _reactRenderHtml2.default)(post_content)
 	              )
 	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row mb-4' },
+	            { className: 'row mb-5' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
@@ -49173,40 +49176,80 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'h5',
-	            { className: 'mb-4' },
-	            'Property Highlights'
-	          ),
-	          _react2.default.createElement(_PropertyHighlights2.default, {
-	            elementary_school: elementary_school,
-	            rets_high_school: rets_high_school,
-	            rets_middle_school: rets_middle_school,
-	            rets_year_built: rets_year_built,
-	            wpp_location_city: wpp_location_city,
-	            wpp_location_subdivision: wpp_location_subdivision
-	          }),
-	          _react2.default.createElement(
-	            'h5',
-	            { className: 'mb-4' },
-	            'Property Details for ',
-	            post_title
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            { className: 'text-muted' },
-	            '847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.'
-	          ),
-	          _react2.default.createElement(_PropertyInfoTabs2.default, null),
-	          _react2.default.createElement(
-	            'h5',
-	            { className: 'mb-4' },
-	            'Listing Provider for ',
-	            post_title
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12 mb-3' },
+	              _react2.default.createElement(
+	                'h5',
+	                { className: 'mb-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'info-section-header' },
+	                'Property Highlights'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12' },
+	              _react2.default.createElement(_PropertyHighlights2.default, {
+	                elementary_school: elementary_school,
+	                rets_high_school: rets_high_school,
+	                rets_middle_school: rets_middle_school,
+	                rets_year_built: rets_year_built,
+	                wpp_location_city: wpp_location_city,
+	                wpp_location_subdivision: wpp_location_subdivision
+	              })
+	            )
 	          ),
 	          _react2.default.createElement(
-	            'p',
-	            { className: 'text-muted' },
-	            'Information Not Guaranteed. \xA9 Triangle MLS Inc. All rights reserved. Listings marked with a TMLSidx icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.'
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12 mb-3' },
+	              _react2.default.createElement(
+	                'h5',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'info-section-header' },
+	                'Property Details for ',
+	                post_title
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12 mb-3' },
+	              _react2.default.createElement(
+	                'p',
+	                { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'info-description' },
+	                '847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12 mb-5' },
+	              _react2.default.createElement(_PropertyInfoTabs2.default, null)
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12 mt-3 mb-3' },
+	              _react2.default.createElement(
+	                'h5',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'info-section-header' },
+	                'Listing Provider for ',
+	                post_title
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12 mb-5' },
+	              _react2.default.createElement(
+	                'p',
+	                { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'info-description' },
+	                'Information Not Guaranteed. \xA9 Triangle MLS Inc. All rights reserved. Listings marked with a TMLSidx icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.'
+	              )
+	            )
 	          )
 	        )
 	      );
@@ -65050,10 +65093,10 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'row mb-4' },
+	    { className: 'row mb-5' },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -85385,8 +85428,13 @@
 
 	    var _this = _possibleConstructorReturn(this, (MapSearchResults.__proto__ || Object.getPrototypeOf(MapSearchResults)).call(this, props));
 
+	    _this.dismissNotice = function () {
+	      _this.setState({ noticeDisplay: false });
+	    };
+
 	    _this.state = {
-	      mapDisplay: true
+	      mapDisplay: true,
+	      noticeDisplay: true
 	    };
 	    _this.displayedProperties = [];
 	    return _this;
@@ -85402,6 +85450,7 @@
 	    value: function componentWillReceiveProps(nextProps) {
 	      if (!_lodash2.default.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
 	        this.applyQueryFilters();
+	        this.setState({ noticeDisplay: true });
 	      }
 	    }
 	  }, {
@@ -85483,16 +85532,21 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
-	              _react2.default.createElement(
+	              this.state.noticeDisplay && !!displayedResults.length && _react2.default.createElement(
 	                'div',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
-	                displayedResults.length ? _react2.default.createElement(
+	                _react2.default.createElement(
 	                  'span',
 	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
 	                  'Only showing ',
 	                  displayedResults.length,
 	                  ' listings. Explore the map, or use filters to narrow your search.'
-	                ) : null
+	                ),
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-dismiss", onClick: this.dismissNotice },
+	                  'x'
+	                )
 	              ),
 	              _react2.default.createElement(_Map2.default, { currentGeoBounds: searchFilters.geoCoordinates ? _Util2.default.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null, properties: displayedResults,
 	                searchByCoordinates: this.updateURIGeoCoordinates.bind(this), selectedProperty: filters.selected_property }),
@@ -92189,12 +92243,19 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.swiper = _Swiper2.default.init(this.swiperElement, {
-	        effect: 'slide',
-	        lazyLoading: true,
-	        lazyLoadingInPrevNext: true,
-	        preloadImages: false,
-	        spaceBetween: 30
+	      var _this2 = this;
+
+	      // let's hold a breathe until the parent cards slider allots width to inner gallery slider
+	      setTimeout(function () {
+	        _this2.swiper = _Swiper2.default.init(_this2.swiperElement, {
+	          effect: 'slide',
+	          preloadImages: false,
+	          lazyLoading: true,
+	          lazyLoadingInPrevNext: true,
+	          lazyLoadingOnTransitionStart: true,
+	          lazyLoadingInPrevNextAmount: 3,
+	          spaceBetween: 30
+	        });
 	      });
 	    }
 	  }, {
@@ -92209,7 +92270,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var _props$data = this.props.data,
 	          address = _props$data.address,
@@ -92282,7 +92343,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'swiper-container', ref: function ref(r) {
-	                  return _this2.swiperElement = r;
+	                  return _this3.swiperElement = r;
 	                } },
 	              _react2.default.createElement(
 	                'div',
@@ -92326,7 +92387,7 @@
 	                  className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle',
 	                  onClick: function onClick(e) {
 	                    e.preventDefault();
-	                    return _this2.handleNavigation.bind(_this2)('prev');
+	                    return _this3.handleNavigation.bind(_this3)('prev');
 	                  },
 	                  href: '#' })
 	              ),
@@ -92336,7 +92397,7 @@
 	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-next rounded-circle',
 	                  onClick: function onClick(e) {
 	                    e.preventDefault();
-	                    return _this2.handleNavigation.bind(_this2)('next');
+	                    return _this3.handleNavigation.bind(_this3)('next');
 	                  }, href: '#' })
 	              )
 	            )
@@ -101991,7 +102052,19 @@
 	  return _react2.default.createElement(
 	    'section',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listings" },
-	    container
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'container' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-lg-12' },
+	          container
+	        )
+	      )
+	    )
 	  );
 	};
 
@@ -102054,11 +102127,21 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
-	        // centeredSlides: window.innerWidth >= Lib.MOBILE_WIDTH,
-	        slidesPerView: 'auto',
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
-	        spaceBetween: 20
+	        slidesPerView: 3,
+	        slidesPerGroup: 3,
+	        spaceBetween: 20,
+	        breakpoints: {
+	          1199: {
+	            slidesPerView: 2,
+	            slidesPerGroup: 2
+	          },
+	          767: {
+	            slidesPerView: 1,
+	            slidesPerGroup: 1
+	          }
+	        }
 	      });
 	    }
 	  }, {
@@ -102071,63 +102154,59 @@
 	      var posts = _lodash2.default.get(item, 'posts', []);
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info mx-auto text-center' },
+	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	            'h3',
+	            { className: 'mx-auto' },
+	            _lodash2.default.get(item, 'title')
+	          ) : null,
+	          _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	            'p',
+	            null,
+	            _lodash2.default.get(item, 'subtitle')
+	          ) : null
+	        ),
+	        posts.length ? _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info mx-auto text-center' },
-	            _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	              'h3',
-	              { className: 'mx-auto' },
-	              _lodash2.default.get(item, 'title')
-	            ) : null,
-	            _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	              'p',
-	              null,
-	              _lodash2.default.get(item, 'subtitle')
-	            ) : null
-	          ),
-	          posts.length ? _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel mx-auto' },
+	            { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
+	              ref: function ref(r) {
+	                return _this2.swiperElement = r;
+	              } },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
-	                ref: function ref(r) {
-	                  return _this2.swiperElement = r;
-	                } },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'swiper-wrapper' },
-	                posts.map(function (post, key) {
-	                  return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
-	                })
-	              )
+	              { className: 'swiper-wrapper' },
+	              posts.map(function (post, key) {
+	                return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
+	              })
 	            )
-	          ) : null,
+	          )
+	        ) : null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3 rounded-circle',
-	                ref: function ref(r) {
-	                  return _this2.swiperElementPrev = r;
-	                } },
-	              _react2.default.createElement('i', {
-	                className: 'fa fa-angle-left' })
-	            ),
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'next-nav rounded-circle',
-	                ref: function ref(r) {
-	                  return _this2.swiperElementNext = r;
-	                } },
-	              _react2.default.createElement('i', {
-	                className: 'fa fa-angle-right' })
-	            )
+	            'a',
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3 rounded-circle',
+	              ref: function ref(r) {
+	                return _this2.swiperElementPrev = r;
+	              } },
+	            _react2.default.createElement('i', {
+	              className: 'fa fa-angle-left' })
+	          ),
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'next-nav rounded-circle',
+	              ref: function ref(r) {
+	                return _this2.swiperElementNext = r;
+	              } },
+	            _react2.default.createElement('i', {
+	              className: 'fa fa-angle-right' })
 	          )
 	        )
 	      );
@@ -102851,20 +102930,21 @@
 
 	  var counter = 1;
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
+	  var backgroundPosition = _lodash2.default.get(featureGroup, 'layout', null);
+	  var backgroundSize = _lodash2.default.get(featureGroup, 'background', null);
 
-	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5' : 'col-lg-7';
+	  var featureGroupBackgroundClasses = backgroundPosition === 'left' && backgroundSize !== 'full' ? 'col-lg-7 push-lg-5' : 'col-lg-7';
 	  featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block p-0';
-	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
+	  if (backgroundSize === 'full') {
+	    featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block-full';
+	  }
 
+	  var featureGroupContentClasses = backgroundPosition === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
 	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
 	    "background": "url(" + featureGroup.image_section.image_src + ")",
 	    "backgroundPosition": featureGroup.image_section.image_position,
 	    "backgroundSize": "cover"
 	  } : {};
-
-	  if (_lodash2.default.get(featureGroup, 'background', null) === 'full') {
-	    featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block-full';
-	  }
 
 	  return _react2.default.createElement(
 	    'section',

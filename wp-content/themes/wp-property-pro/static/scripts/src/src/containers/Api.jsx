@@ -590,6 +590,9 @@ class Api {
       dataType: 'json',
       type: 'GET',
       contentType: 'text/plain',
+      headers: {
+        'X-CUSTOM-EP-INDEX': _.get(bundle, 'ep_index_name', '')
+      },
       data: _.get(data, 'query', null),
       error: (jqXHR, textStatus) => {
         let errorMsg = '';
