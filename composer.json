@@ -55,7 +55,8 @@
       "db_name": "www.reddoorcompany.com/latest-v3-1",
       "EP_INDEX_NAME": "latest-v3-1-site-id",
       "wp_memcached_servers": "127.0.0.1:11211",
-      "WP_PROPERTY_LAYOUTS": true
+      "WP_PROPERTY_LAYOUTS": true,
+      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_develop-dmitry": {
       "wp_debug_log": true,
