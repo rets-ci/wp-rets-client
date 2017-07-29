@@ -180,6 +180,11 @@ namespace UsabilityDynamics {
         'property_types' => $property_types
       ];
 
+      /** Custom elastic press index */
+      if(defined('EP_INDEX_NAME') && EP_INDEX_NAME){
+        $params['ep_index_name'] = EP_INDEX_NAME;
+      }
+
       if (is_property_overview_page()) {
         $front_page_id = get_option('page_on_front');
         if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
