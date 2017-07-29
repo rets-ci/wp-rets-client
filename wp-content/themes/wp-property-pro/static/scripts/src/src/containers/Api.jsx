@@ -561,8 +561,7 @@ class Api {
 
   static makeStandardPropertySearch(params, callback) {
     let {
-        property_types,
-        geoCoordinates
+        property_types
       } = params;
       let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
       let searchParams = {

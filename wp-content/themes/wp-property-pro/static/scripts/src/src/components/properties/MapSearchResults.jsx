@@ -167,11 +167,9 @@ class MapSearchResults extends Component {
       mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
-      results,
-      searchQueryParams
+      results
     } = this.props;
     let filters = qs.parse(window.location.search.replace('?', ''));
-    let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>

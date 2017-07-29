@@ -300,7 +300,6 @@ class PropertiesModal extends Component {
     let {
       bathroomSelected,
       bedroomSelected,
-      front_page_post_content,
       lotSizeSelected,
       priceSelected,
       propertyTypeSelected,
@@ -310,7 +309,6 @@ class PropertiesModal extends Component {
     } = this.props;
 
     let {
-      initialFilters,
       showAllFilters
     } = this.state;
 
@@ -332,7 +330,6 @@ class PropertiesModal extends Component {
       value: d.value
     }));
 
-    let filters = removeDefaultFilters(localFilters, defaultFiltervalues);
     let termFilters = [];
     let termFilterElement;
     let termFilter = localFilters['term'];

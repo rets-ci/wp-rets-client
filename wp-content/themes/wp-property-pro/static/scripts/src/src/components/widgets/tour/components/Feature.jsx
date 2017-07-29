@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {Lib} from '../../../../lib.jsx';
 import renderHTML from 'react-render-html';
 import _ from 'lodash';

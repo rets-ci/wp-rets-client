@@ -57,7 +57,6 @@ export default class PropertyCard extends Component {
       price,
       property_type,
       post_name,
-      relative_permalink,
       thumbnail,
       type,
       zip
@@ -65,8 +64,6 @@ export default class PropertyCard extends Component {
 
     let link = '/' + bundle.property_single_url + '/' + post_name;
     let classes = [];
-
-    let self = this;
 
     let info_box = `<li>${type}</li>`;
 

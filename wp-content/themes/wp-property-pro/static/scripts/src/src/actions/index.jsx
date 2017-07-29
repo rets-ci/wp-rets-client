@@ -164,11 +164,11 @@ export const setPropertiesModalResultCountLoading = show => {
     type: Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION,
     show: show
   }
-}
+};
 
 export const toggleLocationModalSearchMode = searchMode => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_SEARCH_MODE,
     searchMode: searchMode
   }
-}
+};

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import PropertyCard from '../../../PropertyCard.jsx';
 import Swiper from '../../../Swiper.jsx';
 import {Lib} from '../../../../lib.jsx';

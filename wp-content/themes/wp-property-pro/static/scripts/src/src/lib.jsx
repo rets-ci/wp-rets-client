@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export const Lib = {
+export default {
   ADD_MAP_ACTION: 'ADD_MAP',
   ADD_MARKER_ACTION: 'ADD_MARKER',
   DEFAULT_MAP_COORDINATES: {

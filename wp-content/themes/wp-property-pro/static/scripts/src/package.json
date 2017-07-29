@@ -46,10 +46,11 @@
     "css-loader": "^0.26.2",
     "nouislider": "^9.2.0",
     "numeral": "^2.0.6",
-    "style-loader": "^0.13.2"
+    "style-loader": "^0.13.2",
+    "uglify-js": "^3.0.27"
   },
   "scripts": {
-    "build": "webpack --debug",
+    "build": "webpack && uglifyjs bundle.js -c -m -o bundle.js",
     "watch": "webpack --watch --progress"
   },
   "author": "",

@@ -73,7 +73,6 @@ class PageLayout extends Component {
   }
 
   componentDidMount() {
-    let self = this;
     let url = window.location.pathname + window.location.search;
     this.fetchData(url);
   }
