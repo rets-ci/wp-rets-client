@@ -1,3 +1,4 @@
+import {Lib} from '../../../../lib.jsx';
 import React from 'react';
 import FeatureGroup from './../components/FeatureGroup.jsx';
 import _ from 'lodash';
