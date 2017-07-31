@@ -4,8 +4,8 @@ Donate link: https://www.usabilitydynamics.com
 Tags: admin, google, bucket, CDN, google cloud storage, media, mirror, uploads, stateless
 License: GPLv2 or later
 Requires at least: 4.0
-Tested up to: 4.5.2
-Stable tag: 1.9.0
+Tested up to: 4.8.0
+Stable tag: 1.9.2
 
 == Description ==
 
@@ -64,6 +64,13 @@ See Installation tab.
 * Initial public release.
 
 == Changelog ==
+
+= 1.9.2 =
+* Added ability to modify default bucket link via 'wp_stateless_bucket_link' filter.
+* Added checking of connection to GCS once per four hours instead of doing it on every page load.
+* Google SDK was moved from vendor dir. So it's not loaded on every page load anymore, but only when it's required.
+* Updated Composer Autoload logic.
+* Reverted all changes included to 1.9.1 version because of conflicts.
 
 = 1.9.0 =
 * Added new ability to define cacheControl for remote objects.
