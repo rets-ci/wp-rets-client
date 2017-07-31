@@ -44,7 +44,6 @@ class Single extends Component {
       images,
       post_content,
       post_date,
-      post_modified,
       post_title,
       rets_city,
       rets_high_school,

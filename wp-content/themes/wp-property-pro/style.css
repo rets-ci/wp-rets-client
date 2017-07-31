@@ -1683,22 +1683,19 @@ p.propertypro-gentle-error {
     vertical-align: middle;
 }
 
-.propertypro-map-container {
-    min-height: 600px;
-    height: 50rem;
+#propertypro-Map {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .propertypro-search-map-container {
     position: relative;
-    backface-visibility: hidden;
-    will-change: overflow;
 }
 
 .propertypro-search-map-container .propertypro-search-map-mobile-navigation {
-    bottom: 0;
-    position: fixed;
-    display: block;
-    width: 100%;
     background-color: #ffffff;
     box-shadow: 0 0.1rem 0.5rem #000;
 }
@@ -1786,7 +1783,6 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-listing-wrap-container {
-    height: 42rem;
     overflow-y: scroll;
 }
 
@@ -1801,6 +1797,7 @@ p.propertypro-gentle-error {
 
 .propertypro-search-result-container p {
     color: #000000;
+    margin: 1rem;
 }
 
 .propertypro-search-result-inner-container {
@@ -2367,6 +2364,10 @@ p.propertypro-gentle-error {
 
 .propertypro-guide-navigation-cotrols {
     width: 100%;
+}
+
+.propertypro-waypoint-container {
+    height: 1rem;
 }
 
 /*-----------------------------------------------------------------------------------*/

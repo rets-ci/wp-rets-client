@@ -195,7 +195,6 @@ class searchFilters extends Component {
     let propertyTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
-    let moreFiltersElement;
     if (!this.state.isMobileView) {
       if (bathroomsFilter) {
         bathroomsElement = (
