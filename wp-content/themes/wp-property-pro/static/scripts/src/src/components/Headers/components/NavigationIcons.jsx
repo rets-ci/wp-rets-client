@@ -1,5 +1,4 @@
 import React from 'react';
-import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 import UserPanelIcon from './UserPanelIcon.jsx';
 

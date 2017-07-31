@@ -167,18 +167,16 @@ class MapSearchResults extends Component {
       mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
-      results,
-      searchQueryParams
+      results
     } = this.props;
     let filters = qs.parse(window.location.search.replace('?', ''));
-    let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     let elementToShow = (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
         <LocationModal />
         <PropertiesModal front_page_post_content={front_page_post_content} open={propertiesModalOpen} />
-        <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
-          <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
+        <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
+          <div className={`col-sm-4 h-100 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
             <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
               { this.state.noticeDisplay && !!displayedResults.length &&
                 <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
@@ -227,8 +225,8 @@ class MapSearchResults extends Component {
             }
           </div>
           </div>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
-            <nav className="navbar navbar-toggleable-md">
+          <div>
+            <nav className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation navbar navbar-toggleable-md fixed-bottom hidden-sm-up`}>
               <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
                 <ul
                   className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
@@ -251,7 +249,7 @@ class MapSearchResults extends Component {
       </div>
     );
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
         {elementToShow}
       </div>
     )

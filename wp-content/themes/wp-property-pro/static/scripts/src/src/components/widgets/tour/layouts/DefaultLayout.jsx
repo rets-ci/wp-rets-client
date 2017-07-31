@@ -1,7 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import FeatureGroup from './../components/FeatureGroup.jsx';
-import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
 const DefaultLayout = ({item}) => {

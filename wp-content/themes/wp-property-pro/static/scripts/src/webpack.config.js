@@ -36,7 +36,8 @@ module.exports = {
         ]
     },
     plugins: [
-      new webpack.optimize.DedupePlugin()
+      new webpack.optimize.DedupePlugin(),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     resolve: {
       fallback: [

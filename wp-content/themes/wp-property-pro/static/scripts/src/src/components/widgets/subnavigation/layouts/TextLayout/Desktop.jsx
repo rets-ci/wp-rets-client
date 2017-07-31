@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import TextItem from '../item/TextItem.jsx';
 import {Lib} from '../../../../../lib.jsx';
 import _ from 'lodash';

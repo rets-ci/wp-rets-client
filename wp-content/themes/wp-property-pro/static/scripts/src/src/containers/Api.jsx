@@ -565,21 +565,20 @@ class Api {
 
   static makeStandardPropertySearch(params, callback) {
     let {
-      property_types,
-      geoCoordinates
-    } = params;
-    let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
-    let searchParams = {
-      ...params,
-      property_types: pt,
-      size: Lib.PROPERTY_PER_PAGE
-    };
-
-    let query = this.createESSearchQuery(searchParams);
-    let url = this.getPropertySearchRequestURL();
-    this.search(url, query, (err, response) => {
-      callback(err, query, response);
-    });
+        property_types
+      } = params;
+      let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
+      let searchParams = {
+        ...params,
+        property_types: pt,
+        size: Lib.PROPERTY_PER_PAGE
+      };
+      
+      let query = this.createESSearchQuery(searchParams);
+      let url = this.getPropertySearchRequestURL();
+      this.search(url, query, (err, response) => {
+        callback(err, query, response);
+      });
   }
 
   static makeRequest(data, callback) {
