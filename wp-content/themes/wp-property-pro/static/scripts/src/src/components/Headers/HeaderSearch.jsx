@@ -106,7 +106,7 @@ class HeaderSearch extends Component {
                 : null
             }
           </div>
-          <div className={`hidden-sm-down col-md-2 ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
+          <div className={`hidden-sm-down col-md-2 d-flex justify-content-center align-items-center ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-7 col-lg-8"}>

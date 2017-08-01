@@ -1620,17 +1620,15 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-toolbar .propertypro-drop-nav {
-    display: table;
+    display: flex;
     height: 100%;
     background-color: rgba(237, 242, 245, 0.5);
     border: .0625rem solid #d2dae0;
     border-top-width: 0;
     border-bottom-width: 0;
-    text-align: center;
 }
 
 .propertypro-toolbar .propertypro-drop-nav a {
-    display: table-cell;
     line-height: 5rem;
     color: #414141;
     font-size: 1.40rem;
