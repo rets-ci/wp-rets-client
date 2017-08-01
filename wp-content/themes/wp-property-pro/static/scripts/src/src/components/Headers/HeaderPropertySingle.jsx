@@ -36,7 +36,7 @@ class HeaderPropertySingle extends Component {
                 : null
             }
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1 offset-md-9 offset-lg-10"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1 offset-md-9 offset-lg-10 d-flex align-items-center justify-content-end"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>

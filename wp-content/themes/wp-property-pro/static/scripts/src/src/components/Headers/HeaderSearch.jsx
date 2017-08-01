@@ -109,10 +109,10 @@ class HeaderSearch extends Component {
           <div className={`hidden-sm-down col-md-2 d-flex justify-content-center align-items-center ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-7 col-lg-8"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-7 col-lg-8 d-flex align-items-center"}>
             <SearchFilters filters={searchFilters} front_page_post_content={front_page_post_content} />
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1 d-flex align-items-center justify-content-end"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>
