@@ -3,7 +3,8 @@ import TextItem from '../item/TextItem.jsx';
 import {Lib} from '../../../../../lib.jsx';
 import _ from 'lodash';
 
-const Desktop = ({items, currentUrl}) => {
+
+const Desktop = ({currentUrl, items, openFormModal, pageTitle, pageModalData}) => {
   let btn = {};
   let links = [];
   for (let i in items) {
@@ -13,7 +14,7 @@ const Desktop = ({items, currentUrl}) => {
       links.push(items[i]);
     }
   }
-
+  
   return (_.isEmpty(items)
       ? null
       :
@@ -37,7 +38,7 @@ const Desktop = ({items, currentUrl}) => {
                   ? null
                   :
                   <li className={Lib.THEME_CLASSES_PREFIX + "subnavigation-btn"}>
-                    <a href={btn.url} className="btn">{btn.title}</a>
+                    <a href='#' onClick={(event) => { event.preventDefault(); openFormModal(pageTitle, true)}} className="btn">{btn.title}</a>
                   </li>
               }
             </ul>

@@ -6,6 +6,7 @@ import Callout from './widgets/callout/Callout.jsx';
 import Testimonials from './widgets/testimonials/Testimonials.jsx';
 import {Lib} from '../lib.jsx';
 import ListingCarousel from './widgets/listing_carousel/ListingCarousel.jsx';
+import FormModals from './Modals/FormModals/Index.jsx';;
 import Subnavigation from './widgets/subnavigation/Subnavigation.jsx';
 import Tour from './widgets/tour/Tour.jsx';
 import Single from './blog/Single.jsx';
@@ -29,6 +30,7 @@ class Page extends Component {
     }
 
     let {
+      post,
       rows
     } = this.props;
     return (
@@ -43,7 +45,7 @@ class Page extends Component {
                       return <Masthead widget_cell={cell}/>;
                       break;
                     case 'Property_Pro_Subnavigation_Widget':
-                      return <Subnavigation widget_cell={cell} currentUrl={_.get(this.props, 'post.post_url', '')}/>;
+                      return <Subnavigation post_title={post.post_title} widget_cell={cell} currentUrl={_.get(this.props, 'post.post_url', '')}/>;
                       break;
                     case 'Property_Pro_Tour_Widget':
                       return <Tour widget_cell={cell}/>;
@@ -63,6 +65,7 @@ class Page extends Component {
             )
           })
         }
+        <FormModals />
       </div>
     )
   }

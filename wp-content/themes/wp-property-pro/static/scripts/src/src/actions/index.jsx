@@ -23,6 +23,14 @@ export const resetErrorMessage = () => ({
   type: Lib.RESET_ERROR_MESSAGE_ACTION
 });
 
+export const openFormModal = (id, open) => {
+  return {
+    type: Lib.TOGGLE_FORM_MODAL_ACTION,
+    id: id,
+    open: open
+  }
+};
+
 export const openLocationModal = (open, modifyType) => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
@@ -108,6 +116,13 @@ export const setFilterTerms = (filterTerms) => {
     filterTerms: filterTerms
   }
 };
+
+export const setPageData = (data) => {
+  return {
+    type: Lib.SET_PAGE_TITLE_ACTION,
+    data: data
+  }
+}
 
 export const toggleMapSearchResultsLoading = loading => {
   return {
