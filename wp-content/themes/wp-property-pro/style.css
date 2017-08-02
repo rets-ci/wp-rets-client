@@ -1666,16 +1666,6 @@ p.propertypro-gentle-error {
     font-size: 1.375rem;
 }
 
-.propertypro-navigation-menu-left a {
-    display: table;
-    height: 100%;
-}
-
-.propertypro-navigation-menu-left span {
-    display: table-cell;
-    vertical-align: middle;
-}
-
 #propertypro-Map {
     position: absolute;
     left: 0;
@@ -2841,6 +2831,7 @@ p.propertypro-gentle-error {
 
     .propertypro-masthead .propertypro-search-box li a {
         font-size: 1rem;
+        border-bottom-width: 2px;
     }
 
     .propertypro-masthead.propertypro-subnavigation-text-layout p {
@@ -3100,11 +3091,21 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-toolbar .propertypro-search-box-wrap {
-        margin: 0.5rem 0;
+        margin: 0.75rem 0;
+    }
+
+    .propertypro-toolbar .propertypro-search-box-wrap form {
+        width: 100%;
     }
 
     .propertypro-bs-tags-box .propertypro-tag {
-        margin: 0;
+        margin: 0 0.4rem 0 0;
+        font-size: 0.75rem;
+        padding: 0 0.8em;
+    }
+
+    .propertypro-bs-tags-box .propertypro-tag i, .propertypro-filter-section-button i {
+        top: 0;
     }
 
     .propertypro-bottom-footer .propertypro-footer-bottom-menu-link a {
@@ -3332,9 +3333,8 @@ p.propertypro-gentle-error {
     .propertypro-search-box .propertypro-btn-search {
         height: 3rem;
         font-size: 1rem;
-        line-height: 2rem;
+        line-height: 1rem;
     }
-
     
 
     .propertypro-search-modal .propertypro-search-modal-submit-button {
