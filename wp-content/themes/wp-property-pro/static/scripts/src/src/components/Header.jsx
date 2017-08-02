@@ -35,7 +35,7 @@ const HeaderContent = ({front_page_post_content, location, openUserPanel, saleTy
   } else if (pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')) {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
     headerElement = <HeaderSearch front_page_post_content={front_page_post_content} openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
-    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search col-md-12";
+    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search px-3";
 
     if (saleTypesPanelOpen) {
       sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";

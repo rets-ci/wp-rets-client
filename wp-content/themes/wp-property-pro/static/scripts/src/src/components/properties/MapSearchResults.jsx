@@ -177,7 +177,7 @@ class MapSearchResults extends Component {
         <PropertiesModal front_page_post_content={front_page_post_content} open={propertiesModalOpen} />
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
           <div className={`col-sm-4 h-100 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-            <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}listing-map h-100`}>
               { this.state.noticeDisplay && !!displayedResults.length &&
                 <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
                   <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length} listings. Explore the map, or use filters to narrow your search.</span>
@@ -189,8 +189,8 @@ class MapSearchResults extends Component {
               }
             </div>
           </div>
-          <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-          <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
+          <div className={`col-sm-8 h-100 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}listing-sidebar h-100`}>
             <SearchFilterDescriptionText
               bathrooms={searchFilters.bathrooms}
               bedrooms={searchFilters.bedrooms}
