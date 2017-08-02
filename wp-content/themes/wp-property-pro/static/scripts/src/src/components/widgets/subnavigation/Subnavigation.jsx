@@ -4,7 +4,7 @@ import TextLayout from './layouts/TextLayout.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const Subnavigation = ({widget_cell, currentUrl}) => {
+const Subnavigation = ({currentUrl, post_title, widget_cell}) => {
 
   if (!widget_cell) {
     return null;
@@ -25,7 +25,6 @@ const Subnavigation = ({widget_cell, currentUrl}) => {
       container = <TextLayout items={items} currentUrl={currentUrl}/>
       break;
   }
-
   return (
     <section className={classes}>
       <div className={`container ${Lib.THEME_CLASSES_PREFIX}subnavigation-container`}>

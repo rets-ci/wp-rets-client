@@ -1,9 +1,11 @@
 import errorMessage from './errorMessage.jsx';
 import {routerReducer} from 'react-router-redux';
 import {combineReducers} from 'redux';
+import formModal from './formModal.jsx';
 import headerSearch from './headerSearch.jsx';
 import mapState from './map.jsx';
 import locationModal from './location-modal.jsx';
+import pageModal from './page-modal.jsx';
 import propertiesModal from './propertiesModal.jsx';
 import searchResults from './searchResults.jsx';
 import mapMarkersState from './mapMarkers.jsx';
@@ -16,8 +18,10 @@ import blogPostsState from './blogPosts.jsx';
 
 const propertyProApp = combineReducers({
     errorMessage,
+    formModal,
     mapState,
     locationModal,
+    pageModal,
     propertiesModal,
     searchResults,
     searchType,

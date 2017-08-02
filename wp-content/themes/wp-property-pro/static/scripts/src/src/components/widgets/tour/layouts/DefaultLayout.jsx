@@ -1,8 +1,7 @@
+import {Lib} from '../../../../lib.jsx';
 import React from 'react';
 import _ from 'lodash';
-
 import FeatureGroup from './../components/FeatureGroup.jsx';
-import {Lib} from '../../../../lib.jsx';
 
 const DefaultLayout = ({item}) => {
   return (
