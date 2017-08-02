@@ -51,10 +51,8 @@ class SearchFilterDescription extends Component {
     let mainText = this.getMainText(this.props);
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-        <div>
-          <h1>{headText}</h1>
-          <p>{mainText}</p>
-        </div>
+        <h1>{headText}</h1>
+        <p>{mainText}</p>
       </div>
     );
   }

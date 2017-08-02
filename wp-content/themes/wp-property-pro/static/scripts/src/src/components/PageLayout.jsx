@@ -103,7 +103,7 @@ class PageLayout extends Component {
       <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container h-100"}>
         {!errorMessage ?
           (Object.keys(this.state.post).length ?
-            <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100"}>
+            <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100 d-flex flex-column"}>
               <UserPanel location={location}/>
               <Header front_page_post_content={_.get(this.state, 'front_page_post_content', null)} location={location} />
               {React.Children.map(children, (child, i) => React.cloneElement(child, {
