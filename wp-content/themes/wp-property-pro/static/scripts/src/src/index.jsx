@@ -31,7 +31,7 @@ render(
       <Route path="/" component={PageLayout}>
         <IndexRoute component={Page}/>
         {
-          _.get(wpp, 'instance.settings.configuration.base_slug', null) && _.get(bundle, 'blog_base', null)
+          _.get(bundle, 'property_single_url', null)
             ? <Route path={"/" + _.get(bundle, 'property_single_url') + "/:propertySlug"} component={PropertiesSingleContainer}/>
             : null
         }
@@ -47,7 +47,7 @@ render(
         }
         {
           _.get(bundle, 'category_base', null)
-            ? <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle"}
+            ? <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/:categoryTitle"}
                      component={Archive}/>
             : null
         }

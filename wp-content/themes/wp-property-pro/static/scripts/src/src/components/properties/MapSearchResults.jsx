@@ -96,7 +96,8 @@ class MapSearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mapDisplay: true
+      mapDisplay: true,
+      noticeDisplay: true,
     };
     this.displayedProperties = [];
   }
@@ -108,11 +109,16 @@ class MapSearchResults extends Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
       this.applyQueryFilters();
+      this.setState({ noticeDisplay: true })
     }
   }
 
   componentWillUnmount() {
     this.props.resetSearchResults();
+  }
+
+  dismissNotice = () => {
+    this.setState({ noticeDisplay: false })
   }
 
   seeMoreHandler() {
@@ -161,24 +167,23 @@ class MapSearchResults extends Component {
       mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
-      results,
-      searchQueryParams
+      results
     } = this.props;
     let filters = qs.parse(window.location.search.replace('?', ''));
-    let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     let elementToShow = (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
         <LocationModal />
         <PropertiesModal front_page_post_content={front_page_post_content} open={propertiesModalOpen} />
-        <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
-          <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
+        <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
+          <div className={`col-sm-4 h-100 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
             <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
-              <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
-                {displayedResults.length ? 
+              { this.state.noticeDisplay && !!displayedResults.length &&
+                <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
                   <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length} listings. Explore the map, or use filters to narrow your search.</span>
-                : null}
-              </div>
+                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-dismiss"} onClick={this.dismissNotice}>x</span>
+                </div>
+              }
               <Map currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} properties={displayedResults}
                     searchByCoordinates={this.updateURIGeoCoordinates.bind(this)} selectedProperty={filters.selected_property} />
               }
@@ -220,8 +225,8 @@ class MapSearchResults extends Component {
             }
           </div>
           </div>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
-            <nav className="navbar navbar-toggleable-md">
+          <div>
+            <nav className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation navbar navbar-toggleable-md fixed-bottom hidden-sm-up`}>
               <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
                 <ul
                   className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
@@ -244,7 +249,7 @@ class MapSearchResults extends Component {
       </div>
     );
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
         {elementToShow}
       </div>
     )

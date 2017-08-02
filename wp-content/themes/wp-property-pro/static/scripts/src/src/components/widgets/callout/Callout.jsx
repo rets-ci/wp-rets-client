@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import DefaultLayout from './layouts/DefaultLayout.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';

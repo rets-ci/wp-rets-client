@@ -1,8 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import _ from 'lodash';
+
 import FeatureGroup from './../components/FeatureGroup.jsx';
 import {Lib} from '../../../../lib.jsx';
-import _ from 'lodash';
 
 const DefaultLayout = ({item}) => {
   return (
@@ -19,7 +19,7 @@ const DefaultLayout = ({item}) => {
             {
               _.get(item, 'subtitle', null)
                 ?
-                <p>{item.subtitle}</p>
+                <p className={`${Lib.THEME_CLASSES_PREFIX}padded-on-desktop`}>{item.subtitle}</p>
                 : null
             }
           </div>

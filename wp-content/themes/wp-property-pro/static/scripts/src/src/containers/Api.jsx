@@ -181,7 +181,9 @@ class Api {
       'url': Api.getPropertySearchRequestURL(0),
       'query': body
     }, function (err, response) {
-      if (err) { return callback(err); }
+      if (err) {
+        return callback(err);
+      }
       let rows = [];
       for (let aggregationKey in aggregationsFields) {
 
@@ -306,7 +308,9 @@ class Api {
         data: JSON.stringify(body)
       }
     }, function (err, response) {
-      if (err) { return callback(err); }
+      if (err) {
+        return callback(err);
+      }
       let responseAggs = _.get(response, 'aggregations');
 
       for (let i in responseAggs) {
@@ -391,9 +395,10 @@ class Api {
     }
 
     if (params.sale_type) {
+      let saleType = params.sale_type.toLowerCase() === 'buy' ? 'sale' : params.sale_type.toLowerCase();
       query.bool.must.push({
         "term": {
-          "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
+          "terms.wpp_listing_status.slug": 'for-' + saleType
         }
       });
     }
@@ -493,7 +498,7 @@ class Api {
         }
       });
     }
-    
+
     query = JSON.stringify(query);
 
     let size = params.size || 500;
@@ -560,8 +565,7 @@ class Api {
 
   static makeStandardPropertySearch(params, callback) {
     let {
-        property_types,
-        geoCoordinates
+        property_types
       } = params;
       let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
       let searchParams = {
@@ -584,12 +588,19 @@ class Api {
       return false;
     }
 
+    let query = _.get(data, 'query', null);
+
+    // @TODO Temporary hack for changing ElasticPress index
+    if (_.get(data, 'url').indexOf('newSearch') != -1 && !_.isEmpty(_.get(bundle, 'ep_index_name', null))) {
+      query.custom_ep_index = _.get(bundle, 'ep_index_name');
+    }
+
     jQuery.ajax({
       url: _.get(data, 'url'),
       dataType: 'json',
       type: 'GET',
-      contentType: 'application/json',
-      data: _.get(data, 'query', null),
+      contentType: 'text/plain',
+      data: query,
       error: (jqXHR, textStatus) => {
         let errorMsg = '';
         if (jqXHR.status === 0) {

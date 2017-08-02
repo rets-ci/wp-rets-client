@@ -71,6 +71,10 @@ namespace UsabilityDynamics\PropertyPro\Widget\Callout {
               'type' => 'text',
               'default' => false,
               'label' => __('Url', 'wp-property-pro'),
+            ],
+            'css_class' => [
+              'type' => 'text',
+              'label' => __('Css class', 'wp-property-pro')
             ]
           ]
         ]

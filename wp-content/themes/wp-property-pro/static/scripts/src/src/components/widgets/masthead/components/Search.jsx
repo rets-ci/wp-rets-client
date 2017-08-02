@@ -82,11 +82,6 @@ class SearchContent extends Component {
   }
 
   render() {
-    let {
-      openSearchModal,
-      options
-    } = this.props;
-
     let searchBtnClasses = `btn ${Lib.THEME_CLASSES_PREFIX}btn-search`;
 
     if (this.state.labels.length === 0) {

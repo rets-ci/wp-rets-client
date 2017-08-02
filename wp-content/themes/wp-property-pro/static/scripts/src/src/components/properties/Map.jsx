@@ -1,3 +1,4 @@
+import {isEqual} from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Util from '../Util.jsx';
@@ -6,6 +7,7 @@ import {Lib} from '../../lib.jsx';
 let defaultIcon = {
   url: bundle.static_images_url + 'oval-3-25.png',
 };
+
 let selectedIcon = {
   url: bundle.static_images_url + 'oval-selected-3-25.png'
 };
@@ -51,7 +53,7 @@ export default class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.properties !== this.props.properties) {
+    if (!isEqual(nextProps.properties, this.props.properties)) {
       if (!this.state.dragMode) {
         let coordinates = this.getInitialCoordinates(null, nextProps.properties);
         this.setMapCoordinates(coordinates);
@@ -84,7 +86,7 @@ export default class Map extends Component {
     // calculate the initial coordinates based on geo bounds from the URL or the properties
     let centerPoint;
     if (currentGeoBounds) {
-      centerPoint = this.calculateGeoRectangleCenterPoint(currentGeoBounds.ne.lat, currentGeoBounds.ne.lon, currentGeoBounds.sw.lat, currentGeoBounds.swLon);
+      centerPoint = this.calculateGeoRectangleCenterPoint(currentGeoBounds.ne.lat, currentGeoBounds.ne.lon, currentGeoBounds.sw.lat, currentGeoBounds.sw.Lon);
     } else if (properties && properties.length) {
       centerPoint = {
         lat: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[0] : 0,
@@ -111,12 +113,11 @@ export default class Map extends Component {
       });
     } else {
       this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));
-      let center = this.map.getCenter();
     }
   }
 
   setPropertyMarkers(properties) {
-    properties.forEach((p) => {
+    properties.forEach(p => {
       let loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
       let marker = new window.google.maps.Marker({
         icon: defaultIcon,
@@ -137,8 +138,7 @@ export default class Map extends Component {
 
   componentDidMount() {
     let {
-      currentGeoBounds,
-      selectedProperty
+      currentGeoBounds
     } = this.props;
     // no properties to pass into `getInitialCoordinates`
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
@@ -190,7 +190,7 @@ export default class Map extends Component {
 
   render() {
     return (
-      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} className={Lib.THEME_CLASSES_PREFIX+"map-container"} ref={(r) => this.mapElement = r} ></div>
+      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} ref={(r) => this.mapElement = r} ></div>
     );
   }
 };

@@ -41,7 +41,7 @@ class SQFT extends Component {
       to
     } = this.props;
     let defaults = {
-      Sale: {
+      Buy: {
         start: 1000,
         to: 4000
       },
@@ -54,7 +54,7 @@ class SQFT extends Component {
     let min;
     let max;
     let step;
-    if (saleType === 'Sale' || saleType === 'Rent') {
+    if (saleType === 'Buy' || saleType === 'Rent') {
       step = 500;
       min = 500;
       max = 10000;

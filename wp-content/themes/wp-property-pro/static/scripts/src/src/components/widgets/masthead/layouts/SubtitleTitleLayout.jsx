@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import Search from '../components/Search.jsx';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
@@ -10,7 +9,7 @@ const SubtitleTitleLayout = ({widget_cell}) => {
       {
         _.get(widget_cell, 'widget.fields.subtitle', '')
           ? <p
-            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-top hidden-sm-down`}>{widget_cell.widget.fields.subtitle}</p>
+            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-top`}>{widget_cell.widget.fields.subtitle}</p>
           : null
       }
       {

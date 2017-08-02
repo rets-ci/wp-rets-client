@@ -1,10 +1,9 @@
 import React from 'react';
-import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 import UserPanelIcon from './UserPanelIcon.jsx';
 
 const NavigationIcons = ({openUserPanel}) => (
-  <ul className="d-flex justify-content-end">
+  <ul>
     {/*<li className="hidden-sm-down col-4">
       <a href="#" title="Favorites" className={Lib.THEME_CLASSES_PREFIX + "favorite"}>
         <i className={`fa fa-heart ${Lib.THEME_CLASSES_PREFIX}navbar-navigation-icon`}></i>
@@ -18,7 +17,7 @@ const NavigationIcons = ({openUserPanel}) => (
         </span>
       </a>
     </li>*/}
-    <li className="hidden-sm-down col-4">
+    <li className="hidden-sm-down">
       <UserPanelIcon openUserPanel={openUserPanel} />
     </li>
   </ul>

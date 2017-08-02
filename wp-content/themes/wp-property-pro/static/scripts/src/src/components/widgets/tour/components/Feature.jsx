@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {Lib} from '../../../../lib.jsx';
+import renderHTML from 'react-render-html';
 import _ from 'lodash';
 
 const Feature = ({feature, last, ind}) => {
@@ -13,7 +13,7 @@ const Feature = ({feature, last, ind}) => {
       }
       {
         _.get(feature, 'description', null)
-          ? <p>{feature.description}</p>
+          ? <p>{renderHTML(feature.description)}</p>
           : null
       }
       {
