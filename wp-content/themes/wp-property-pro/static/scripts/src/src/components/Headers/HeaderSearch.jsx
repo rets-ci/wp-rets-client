@@ -89,10 +89,10 @@ class HeaderSearch extends Component {
           </div>
         </div>
         <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
-          <div className={`col-1 hidden-md-up ${Lib.THEME_CLASSES_PREFIX}navigation-menu-left`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-menu-left col-1 p-0 hidden-md-up d-flex align-items-center`}>
             <UserPanelIcon openUserPanel={this.props.openUserPanel} />
           </div>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-2 col-md-2 col-lg-1 my-auto`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-1 col-md-2 col-lg-1 my-auto p-0`}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
@@ -109,10 +109,10 @@ class HeaderSearch extends Component {
           <div className={`hidden-sm-down col-md-2 d-flex justify-content-center align-items-center ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-7 col-lg-8 d-flex align-items-center"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-10 col-md-7 col-lg-8 d-flex align-items-center"}>
             <SearchFilters filters={searchFilters} front_page_post_content={front_page_post_content} />
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1 d-flex align-items-center justify-content-end"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-0 col-md-1 d-flex align-items-center justify-content-end"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>

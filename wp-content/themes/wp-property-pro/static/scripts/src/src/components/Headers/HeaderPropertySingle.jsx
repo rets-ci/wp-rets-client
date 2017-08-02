@@ -19,10 +19,10 @@ class HeaderPropertySingle extends Component {
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single container-fluid`} >
         <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
-          <div className={`col-1 hidden-md-up ${Lib.THEME_CLASSES_PREFIX}navigation-menu-left`}>
+          <div className={`col-1 p-0 hidden-md-up ${Lib.THEME_CLASSES_PREFIX}navigation-menu-left`}>
             <UserPanelIcon openUserPanel={this.props.openUserPanel} />
           </div>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-2 col-md-2 col-lg-1 my-auto`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-1 col-md-2 col-lg-1 p-0 my-auto`}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
