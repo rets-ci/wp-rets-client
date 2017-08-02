@@ -1,0 +1,71 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "powf_b8ba60f3be16e61180e9c4346bace2d4",
+      "powf_a1a3591ebf16e61180e9c4346bace2d4",
+      "powf_91ac4542bf16e61180e9c4346bace2d4",
+      "powf_59dd697ebf16e61180e9c4346bace2d4"
+    ],
+    "properties": {
+      "powf_b8ba60f3be16e61180e9c4346bace2d4": {
+        "name": "powf_b8ba60f3be16e61180e9c4346bace2d4",
+        "title": "First name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_a1a3591ebf16e61180e9c4346bace2d4": {
+        "name": "powf_a1a3591ebf16e61180e9c4346bace2d4",
+        "title": "Last name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_91ac4542bf16e61180e9c4346bace2d4": {
+        "name": "powf_91ac4542bf16e61180e9c4346bace2d4",
+        "title": "Email Address",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_59dd697ebf16e61180e9c4346bace2d4": {
+        "name": "powf_59dd697ebf16e61180e9c4346bace2d4",
+        "title": "Phone Number",
+        "type": "string"
+      },
+      "powf_7bdf7695bf16e61180e9c4346bace2d4": {
+        "type": "string",
+        "name": "powf_7bdf7695bf16e61180e9c4346bace2d4",
+        "title": "Area of Interest",
+        "enum": ["Triangle Area", "Durham Area", "Chapel Hill Area", "Raleigh Area", "Other"],
+        "uniqueItems": true
+      },
+      "powf_c79126adbf16e61180e9c4346bace2d4": {
+        "type": "string",
+        "name": "powf_c79126adbf16e61180e9c4346bace2d4",
+        "title": "Comments/Questions"
+      }
+    }
+  },
+  "uiSchema": {
+    "powf_b8ba60f3be16e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_a1a3591ebf16e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_91ac4542bf16e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_59dd697ebf16e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_7bdf7695bf16e61180e9c4346bace2d4": {
+      "ui:widget": "CustomSelectTextElement"
+    },
+    "powf_c79126adbf16e61180e9c4346bace2d4": {
+      "ui:widget": "CustomTextareaTextElement",
+      "ui:options": {
+        "rows": 10
+      }
+    }
+  }
+}

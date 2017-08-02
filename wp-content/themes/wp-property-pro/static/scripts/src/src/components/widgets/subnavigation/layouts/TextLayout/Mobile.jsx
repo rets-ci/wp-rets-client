@@ -10,7 +10,9 @@ class Mobile extends Component {
     items: PropTypes.array.isRequired,
     currentUrl: PropTypes.string.isRequired,
     dropDownOpen: PropTypes.bool.isRequired,
-    handleChange: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    openFormModal: PropTypes.function,
+    pageTitle: PropTypes.string
   };
 
   constructor(props) {
@@ -115,7 +117,7 @@ class Mobile extends Component {
           _.isEmpty(btn)
             ? null
             :
-            <a href={btn.url} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn ${_.get(this.state, 'buttonDisplay', false) === false ? Lib.THEME_CLASSES_PREFIX+'hide' : ''}`}>{btn.title}</a>
+            <a href={btn.url} onClick={(event) => { event.preventDefault(); this.props.openFormModal(this.props.pageTitle, true)}} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn ${_.get(this.state, 'buttonDisplay', false) === false ? Lib.THEME_CLASSES_PREFIX+'hide' : ''}`}>{btn.title}</a>
         }
       </div>
     );
