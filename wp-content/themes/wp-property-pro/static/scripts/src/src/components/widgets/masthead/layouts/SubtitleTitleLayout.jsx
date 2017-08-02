@@ -9,7 +9,7 @@ const SubtitleTitleLayout = ({widget_cell}) => {
       {
         _.get(widget_cell, 'widget.fields.subtitle', '')
           ? <p
-            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-top hidden-sm-down`}>{widget_cell.widget.fields.subtitle}</p>
+            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-top`}>{widget_cell.widget.fields.subtitle}</p>
           : null
       }
       {

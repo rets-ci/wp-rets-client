@@ -139,6 +139,10 @@ namespace UsabilityDynamics\PropertyPro\Widget\Tour {
                     'url' => [
                       'type' => 'text',
                       'label' => __('Url', 'wp-property-pro')
+                    ],
+                    'css_class' => [
+                      'type' => 'text',
+                      'label' => __('Css class', 'wp-property-pro')
                     ]
                   ]
                 ],
