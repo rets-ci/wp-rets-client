@@ -1383,6 +1383,7 @@ p.propertypro-gentle-error {
     color: #414141;
     padding: .2em .8em;
     margin: 0 .2em .30em 0;
+    cursor: pointer;
 }
 
 
@@ -1618,8 +1619,8 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-toolbar .propertypro-search-box-wrap form {
+    position: relative;
     width: 100%;
-    overflow-x: auto;
     white-space: nowrap;
 }
 
@@ -1635,10 +1636,11 @@ p.propertypro-gentle-error {
 .propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
     position: relative;
     z-index: 1;
+    overflow-x: auto;
 }
 
 .propertypro-bs-tags-input > span:last-child {
-    margin-right: 1.5rem;
+    margin-right: 2.5rem;
 }
 
 .propertypro-toolbar .propertypro-logo {
