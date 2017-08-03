@@ -17,22 +17,6 @@ import Util from '../../Util.jsx';
 import {isEqual} from 'lodash';
 import qs from 'qs';
 
-let mobileViewFilterNumber = filterParam => {
-  let filters = Object.assign({}, filterParam);
-  let numberOfFilters = 0;
-  if (filters.term) {
-    let termFilters = filters.term.slice(0);
-    termFilters.pop();
-    numberOfFilters = termFilters.length;
-    delete filters['term'];
-  }
-  let filtersToDelete = ['bedrooms', 'property_types', 'sale_type', 'geoCoordinates'];
-  filtersToDelete.forEach(d => {
-    delete filters[d];
-  });
-  numberOfFilters += Object.keys(filters).length;
-  return numberOfFilters;
-};
 
 let mobileViewCheck = () => window.innerWidth < Lib.MOBILE_WIDTH;
 
@@ -77,12 +61,10 @@ class searchFilters extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       isMobileView: mobileViewCheck()
     };
-
-    this.updateDisplayFlag = this.updateDisplayFlag.bind(this);
-
   }
 
   componentDidMount() {
@@ -169,7 +151,7 @@ class searchFilters extends Component {
     this.updateURLWithQueryParam('?' + updatedQueryParam);
   }
 
-  updateDisplayFlag() {
+  updateDisplayFlag = () => {
     this.setState({
       isMobileView: mobileViewCheck()
     })
@@ -195,51 +177,50 @@ class searchFilters extends Component {
     let propertyTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
-    if (!this.state.isMobileView) {
-      if (bathroomsFilter) {
-        bathroomsElement = (
-          <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
-        );
-      }
 
-      if (bedroomsFilter) {
-        bedroomsElement = (
-          <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
-        );
-      } else {
-        bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-          <span>+</span> Bedroom
-        </span>);
-      }
+    if (bathroomsFilter) {
+      bathroomsElement = (
+        <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
+      );
+    }
 
-      if (lotSizeFilter) {
-        lotSizeElement = (
-          <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
-        )
-      }
+    if (bedroomsFilter) {
+      bedroomsElement = (
+        <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
+      );
+    } else {
+      bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+        <span>+</span> Bedroom
+      </span>);
+    }
 
-      if (priceFilter) {
-        priceElement = (
-          <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
-        );
-      } else {
-        priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-          <span>+</span> Price
-        </span>);
-      }
+    if (lotSizeFilter) {
+      lotSizeElement = (
+        <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
+      )
+    }
 
-      if (propertyTypeFilter) {
-        let propertyFilterValue = propertyTypeOptions.filter(p => p.value === propertyTypeFilter).map(p => p.name);
-        propertyTypeElement = (
-          <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilterValue} value={propertyTypeFilter} />
-        );
-      }
+    if (priceFilter) {
+      priceElement = (
+        <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
+      );
+    } else {
+      priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+        <span>+</span> Price
+      </span>);
+    }
 
-      if (sqftFilter) {
-        sqftElement = (
-          <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
-        );
-      }
+    if (propertyTypeFilter) {
+      let propertyFilterValue = propertyTypeOptions.filter(p => p.value === propertyTypeFilter).map(p => p.name);
+      propertyTypeElement = (
+        <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilterValue} value={propertyTypeFilter} />
+      );
+    }
+
+    if (sqftFilter) {
+      sqftElement = (
+        <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
+      );
     }
 
     let termFilter = filters['term'];
@@ -261,6 +242,7 @@ class searchFilters extends Component {
     }
     return (
       <form method="get" className="clearfix" onClick={() => this.props.openPropertiesModal(true)}>
+        <div className="gradient-overlay"></div>
         <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
           <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
             {termFilterElement}
@@ -270,13 +252,7 @@ class searchFilters extends Component {
             {sqftElement}
             {lotSizeElement}
             {propertyTypeElement}
-            {mobileViewFilterNumber(filters) ?
-              <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-lg-up`}>
-                <span>+</span>
-                {mobileViewFilterNumber(filters)}
-              </span>
-            : null}
-            <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-md-down`}>
+            <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
               <span>+</span>
               More Filters
             </span>

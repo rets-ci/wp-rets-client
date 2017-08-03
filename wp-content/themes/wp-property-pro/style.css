@@ -1614,7 +1614,26 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-toolbar .propertypro-search-box-wrap {
+    padding-right: 0;
     /*margin-left: 1.1rem;*/
+}
+
+.propertypro-toolbar .propertypro-search-box-wrap form {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.propertypro-toolbar .propertypro-search-box-wrap .gradient-overlay {
+    position: absolute;
+    width: 2rem;
+    height: 3rem;
+    background: linear-gradient(to right, transparent, white);
+    right: 0;
+}
+
+.propertypro-bs-tags-input span:last-child {
+    margin-right: 1rem;
 }
 
 .propertypro-toolbar .propertypro-logo {
@@ -3153,10 +3172,6 @@ p.propertypro-gentle-error {
         margin: 0.75rem 0;
     }
 
-    .propertypro-toolbar .propertypro-search-box-wrap form {
-        width: 100%;
-    }
-
     .propertypro-bs-tags-box .propertypro-tag {
         margin: 0 0.4rem 0 0;
         font-size: 0.75rem;
@@ -3484,6 +3499,14 @@ p.propertypro-gentle-error {
 
     .propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img {
         min-height: 20rem;
+    }
+
+    .propertypro-listing-wrap {
+        padding: 0;
+    }
+
+    .propertypro-listing-wrap .row {
+        margin: 0;
     }
 
     .propertypro-listing-wrap .row > div {
