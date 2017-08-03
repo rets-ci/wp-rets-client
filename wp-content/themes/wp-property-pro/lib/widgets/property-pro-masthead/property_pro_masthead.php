@@ -24,11 +24,11 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         ],
         [],
         false,
-        get_template_directory_uri().'/lib/widgets/property-pro-masthead'
+        get_template_directory_uri() . '/lib/widgets/property-pro-masthead'
       );
 
       /** Disable widget styles panel */
-      add_filter( 'siteorigin_panels_widget_style_fields', '__return_false', 11 );
+      add_filter('siteorigin_panels_widget_style_fields', '__return_false', 11);
 
     }
 
@@ -38,7 +38,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         [
           [
             'property-pro-masthead-base',
-            get_template_directory_uri().'/lib/widgets/property-pro-masthead/css/style.css',
+            get_template_directory_uri() . '/lib/widgets/property-pro-masthead/css/style.css',
             [],
             SOW_BUNDLE_VERSION
           ],
@@ -48,22 +48,17 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
 
     function initialize_form()
     {
-      global $wp_properties;
 
-      $general_property_types = array_filter($wp_properties['property_types'], function ($type) {
-        return !in_array($type, ['Land', 'Commercial']);
-      });
-
-      $additional_property_types = array_filter($wp_properties['property_types'], function ($type) {
-        return in_array($type, ['Land', 'Commercial']);
-      });
-
-      /** Get properties keys for option key */
-      $general_property_types = array_keys($general_property_types);
-      $additional_property_types = array_keys($additional_property_types);
+      $taxonomy = 'wpp_listing_type';
 
       $search_options = [];
       $delimiter = '-';
+
+      $all_property_types = array_map(function($t){
+        return $t->slug;
+      }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
+        return $t->parent;
+      }));
 
       /** Build search options array */
       foreach ([
@@ -73,11 +68,16 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
                  'Commercial'
                ] as $label) {
 
+
         $sale_type = $label;
         if (in_array($label, ['Rent', 'Sale']))
-          $key = implode($delimiter, $general_property_types);
+          $key = implode($delimiter, $all_property_types);
         else {
-          $key = $additional_property_types[array_search(strtolower($label), $additional_property_types)];
+          $term = get_term_by('slug', $label, $taxonomy);
+          $types = array_map(function ($id) use ($taxonomy) {
+            return get_term_by('id', $id, $taxonomy)->slug;
+          }, get_term_children($term->term_id, $taxonomy));
+          $key = implode($delimiter, $types);
           $sale_type = 'Sale';
         }
 
