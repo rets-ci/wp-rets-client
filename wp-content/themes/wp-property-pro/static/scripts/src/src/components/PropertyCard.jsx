@@ -32,7 +32,7 @@ export default class PropertyCard extends Component {
         lazyLoadingInPrevNextAmount: 3,
         spaceBetween: 30
       });
-    });
+    }, 100);
   }
 
   handleNavigation(direction) {
