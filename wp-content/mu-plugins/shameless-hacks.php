@@ -103,3 +103,57 @@ add_filter( 'wpp:elastic:prepare', function( $post_args, $post_id ) {
 return $post_args;
 
 }, 50, 2 );
+
+/**
+ *
+ * `wp property trigger --do-action=fix_wpp_settings`
+ *
+ */
+add_action( 'wpp::cli::trigger::fix_wpp_settings', function( $args ) {
+
+  $wpp_settings = ud_get_wp_property()->get();
+
+  $wpp_settings = SH_Array_cleaner::clean( $wpp_settings );
+
+  update_option('wpp_settings', $wpp_settings);
+
+} );
+
+class SH_Array_cleaner {
+
+  static function clean( $arr ) {
+    if( is_array( $arr ) ) {
+      foreach( $arr as $k => $e ) {
+        if( is_array( $e ) && !empty( $e ) && !self::isAssoc( $e ) && is_string($e[0]) ) {
+
+          $_e = array_unique( $e );
+
+          //* Prints
+          if( md5( json_encode( $_e ) ) !== md5( json_encode( $e ) ) ) {
+            echo "<pre>";
+            print_r($e);
+            echo "</pre>";
+
+            echo "<pre>";
+            print_r($_e);
+            echo "</pre>";
+          }
+          //*/
+
+          $arr[ $k ] = $_e;
+
+        } else if ( is_array( $e ) && !empty( $e ) && self::isAssoc( $e ) ) {
+          $arr[$k] = self::clean( $e );
+        }
+      }
+    }
+    return $arr;
+  }
+
+  static function isAssoc(array $arr) {
+    if (array() === $arr) return false;
+    return array_keys($arr) !== range(0, count($arr) - 1);
+  }
+
+}
+
