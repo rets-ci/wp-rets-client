@@ -208,9 +208,7 @@ class searchFilters extends Component {
         );
       } else {
         bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-            <span>+</span> Bedroom
-          </a>
+          <span>+</span> Bedroom
         </span>);
       }
 
@@ -226,9 +224,7 @@ class searchFilters extends Component {
         );
       } else {
         priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-            <span>+</span> Price
-          </a>
+          <span>+</span> Price
         </span>);
       }
 
@@ -264,7 +260,7 @@ class searchFilters extends Component {
       }
     }
     return (
-      <form method="get" className="clearfix">
+      <form method="get" className="clearfix" onClick={() => this.props.openPropertiesModal(true)}>
         <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
           <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
             {termFilterElement}
@@ -276,17 +272,13 @@ class searchFilters extends Component {
             {propertyTypeElement}
             {mobileViewFilterNumber(filters) ?
               <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-lg-up`}>
-                <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-                  <span>+</span>
-                  {mobileViewFilterNumber(filters)}
-                </a>
+                <span>+</span>
+                {mobileViewFilterNumber(filters)}
               </span>
             : null}
             <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-md-down`}>
-              <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-                <span>+</span>
-                More Filters
-              </a>
+              <span>+</span>
+              More Filters
             </span>
           </div>
         </div>

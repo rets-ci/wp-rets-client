@@ -1741,16 +1741,6 @@ p.propertypro-gentle-error {
     overflow-y: scroll;
 }
 
-.propertypro-listing-sidebar .sidebar-inner {
-    overflow: auto;
-    height: 100vh;
-    box-shadow: -.125rem .125rem .25rem rgba(0, 0, 0, 0.08);
-    background-color: #ffffff;
-    position: relative;
-    z-index: 20;
-    padding-bottom: 5rem;
-}
-
 .propertypro-listing-sidebar .propertypro-headtitle {
     background-color: rgba(232, 238, 242, 0.5);
     border-bottom: .0625rem solid #d2dae0;
@@ -1845,7 +1835,7 @@ p.propertypro-gentle-error {
     position: static;
 }*/
 
-.propertypro-header-search-container form .propertypro-addfilter a {
+.propertypro-header-search-container form .propertypro-addfilter {
     font-weight: 700;
     color: #d33320;
 }
@@ -2993,6 +2983,10 @@ p.propertypro-gentle-error {
     .propertypro-bottom-footer {
         margin-bottom: 5rem;
     }
+
+    .propertypro-card .propertypro-direction-nav a {
+        opacity: 1;
+    }
 }
 
 @media (min-width: 40.000em) and (max-width: 47.938em) {
@@ -3231,10 +3225,6 @@ p.propertypro-gentle-error {
         padding: 0;
     }
 
-    .propertypro-listing-wrap {
-        padding: 0;
-    }
-
     .propertypro-listing-wrap .propertypro-card {
         border: 0;
         margin-bottom: 0;
@@ -3246,6 +3236,10 @@ p.propertypro-gentle-error {
 
     .propertypro-listing-control-nav {
         margin: 1.875rem 0 0;
+    }
+
+    .propertypro-listing-sidebar .propertypro-headtitle {
+        display: none;
     }
 
     .propertypro-slider-content .propertypro-slides li .propertypro-testimonial-text {
@@ -3490,6 +3484,10 @@ p.propertypro-gentle-error {
 
     .propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img {
         min-height: 20rem;
+    }
+
+    .propertypro-listing-wrap .row > div {
+        padding: 0;
     }
 }
 
