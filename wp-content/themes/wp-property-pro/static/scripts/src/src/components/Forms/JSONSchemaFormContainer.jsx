@@ -1,4 +1,3 @@
-import Api from '../../containers/Api.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
@@ -25,7 +24,7 @@ function CustomFieldTemplate(props) {
       </label>
       {children}
       {rawErrors.map(error => <div style={{color: "blue"}}><h1>{error}</h1></div>)}
-      {help}
+      {/* <p className="form-text">{help}</p> */}
     </div>
   ) : <div className="container modal-form-container">
     {props.children}
@@ -50,7 +49,7 @@ const widgets = {
 
 class JSONSchemaFormContainer extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired
+    jsonSchemaForm: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -58,35 +57,8 @@ class JSONSchemaFormContainer extends Component {
     this.state = {
       errorMessage: false,
       isFetching: false,
-      jsonSchemaForm: {},
+      jsonSchemaForm: {}
     };
-  }
-
-  componentDidMount() {
-    this.fetchSchema('/wp-content/static/json-form-schemas/Buy.json');
-  }
-
-  fetchSchema(url) {
-    let self = this;
-    this.setState({
-      isFetching: true
-    });
-    Api.makeRequest({
-      url: url
-    }, (err, data) => {
-      if (err) {
-        self.setState({
-          isFetching: false,
-          errorMessage: err
-        });
-      } else {
-        self.setState({
-          errorMessage: false,
-          isFetching: false,
-          jsonSchemaForm: data
-        });
-      }
-    });
   }
 
   submit({formData}) {
@@ -107,34 +79,27 @@ class JSONSchemaFormContainer extends Component {
     let {
       errorMessage,
       isFetching,
-      jsonSchemaForm
     } = this.state;
+
+    let {
+      jsonSchemaForm
+    } = this.props;
+
     return (
-      <div>
-        {!Object.keys(this.state.jsonSchemaForm).length ?
-          (isFetching ?
-            <LoadingAccordion /> :
-            (errorMessage ?
-              <ErrorMessage message={errorMessage} />
-            :
-              <p>Couldn't find the requested form</p>)
-            ):
-              <Form
-                action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_629EB2C7BE16E61180E9C4346BACE2D4&tver=2013&c=1"
-                FieldTemplate={CustomFieldTemplate}
-                method="post"
-                schema={jsonSchemaForm.schema}
-                uiSchema={jsonSchemaForm.uiSchema}
-                onSubmit={this.submit.bind(this)}
-                noHtml5Validate={true}
-                showErrorList={false}
-                transformErrors={transformErrors}
-                widgets={widgets}
-              >
-                <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
-              </Form>
-        }
-      </div>
+      <Form
+        action={jsonSchemaForm.schema.action}
+        FieldTemplate={CustomFieldTemplate}
+        method="post"
+        schema={jsonSchemaForm.schema}
+        uiSchema={jsonSchemaForm.uiSchema}
+        onSubmit={this.submit.bind(this)}
+        noHtml5Validate={true}
+        showErrorList={false}
+        transformErrors={transformErrors}
+        widgets={widgets}
+      >
+        <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
+      </Form>
     );
   }
 };

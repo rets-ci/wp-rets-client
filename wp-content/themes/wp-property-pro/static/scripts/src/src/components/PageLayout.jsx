@@ -1,6 +1,5 @@
 import {
   raiseErrorMessage,
-  setPageData
 } from '../actions/index.jsx';
 import Api from '../containers/Api.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
@@ -31,11 +30,6 @@ const mapDispatchToProps = dispatch => {
   return {
     raiseError: (msg) => {
       dispatch(raiseErrorMessage(msg))
-    },
-
-    setPageData: (data) => {
-      console.log('setting pageData', data);
-      dispatch(setPageData(data));
     }
   }
 }
@@ -69,7 +63,6 @@ class PageLayout extends Component {
       if (_.get(data, 'post', null)) {
         nprogress.done();
         document.title = _.get(data, 'page_title', '');
-        self.props.setPageData({title: _.get(data, 'post', null).post_title});
         self.setState({
           front_page_post_content: data.front_page_post_content,
           post: data.post
