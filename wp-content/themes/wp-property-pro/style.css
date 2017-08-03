@@ -1614,7 +1614,6 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-toolbar .propertypro-search-box-wrap {
-    padding-right: 0;
     /*margin-left: 1.1rem;*/
 }
 
@@ -1626,14 +1625,20 @@ p.propertypro-gentle-error {
 
 .propertypro-toolbar .propertypro-search-box-wrap .gradient-overlay {
     position: absolute;
-    width: 2rem;
-    height: 3rem;
-    background: linear-gradient(to right, transparent, white);
+    width: 3rem;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.001), white 50%);
     right: 0;
+    z-index: 2;
 }
 
-.propertypro-bs-tags-input span:last-child {
-    margin-right: 1rem;
+.propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
+    position: relative;
+    z-index: 1;
+}
+
+.propertypro-bs-tags-input > span:last-child {
+    margin-right: 1.5rem;
 }
 
 .propertypro-toolbar .propertypro-logo {
