@@ -1,3 +1,11 @@
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
+import _ from 'lodash';
+import qs from 'qs';
+import URI from 'urijs';
+
 import Api from '../../containers/Api.jsx';
 import {
   openPropertiesModal,
@@ -7,21 +15,18 @@ import {
   requestSearchResultsPosts,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
+import Util from '../Util.jsx';
+import { Lib } from '../../lib.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
-import Map from './Map.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
-import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
+import Map from './Map.jsx';
 import SearchResultListing from './SearchResultListing.jsx';
 import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
-import Util from '../Util.jsx';
-import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
-import qs from 'qs';
-import URI from 'urijs';
+import CarouselOnMap from './CarouselOnMap.jsx';
+
+const isMobile = window.innerWidth < Lib.MOBILE_WIDTH;
+
 
 const mapStateToProps = (state, ownProps) => {
   let allQueryParams = ownProps.location.query ? qs.parse(ownProps.location.query) : {};
@@ -208,6 +213,13 @@ class MapSearchResults extends Component {
       />
     );
 
+    const sliderElement = ( isMobile
+      ? <CarouselOnMap
+          properties={displayedResults}
+        />
+      : null
+    );
+
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
 
@@ -222,6 +234,7 @@ class MapSearchResults extends Component {
           <div className={`col-sm-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
             { captionElement }
             { mapElement }
+            { sliderElement }
           </div>
 
           <div className={`col-sm-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar ${this.state.mapDisplay? 'hidden-xs-down': ''}`}>
@@ -268,7 +281,7 @@ class MapSearchResults extends Component {
       <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
         {elementToShow}
       </div>
-    )
+    );
   }
 }
 
