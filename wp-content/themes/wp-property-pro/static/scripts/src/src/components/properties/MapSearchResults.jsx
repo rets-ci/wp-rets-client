@@ -109,7 +109,6 @@ class MapSearchResults extends Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
       this.applyQueryFilters();
-      this.setState({ noticeDisplay: true })
     }
   }
 
@@ -121,7 +120,7 @@ class MapSearchResults extends Component {
     this.setState({ noticeDisplay: false })
   }
 
-  seeMoreHandler() {
+  seeMoreHandler = () => {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
     this.props.doSearchWithQuery(this.props.errorMessage, modifiedQuery, true);
@@ -169,28 +168,63 @@ class MapSearchResults extends Component {
       propertiesModalOpen,
       results
     } = this.props;
+
     let filters = qs.parse(window.location.search.replace('?', ''));
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+
+    const captionElement = (this.state.noticeDisplay && displayedResults.length > 0)
+      ? (
+          <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
+            <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>
+              Only showing {displayedResults.length} listings. Explore the map, or use filters to narrow your search.
+            </span>
+            <span className={Lib.THEME_CLASSES_PREFIX + "caption-dismiss"} onClick={this.dismissNotice}>x</span>
+          </div>
+        )
+      : null
+
+    const mobileNavigatorElement = (
+      <div className={`${Lib.THEME_CLASSES_PREFIX}mobile-bottom-navbar fixed-bottom hidden-sm-up d-flex`}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}mobile-bottom-navbar-left`}>
+          <span onClick={ () => openPropertiesModal(true) }>
+            Filter
+          </span>
+          <span className="separator">|</span>
+          <span onClick={ () => this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay) }>
+            {this.state.mapDisplay ? 'List' : 'Map'}
+          </span>
+        </div>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}mobile-bottom-navbar-right`}>
+        </div>
+      </div>
+    );
+
+    const mapElement = (
+      <Map
+        properties={displayedResults}
+        currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} 
+        searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}
+        selectedProperty={filters.selected_property}
+      />
+    );
+
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
+
         <LocationModal />
-        <PropertiesModal front_page_post_content={front_page_post_content} open={propertiesModalOpen} />
+
+        <PropertiesModal
+          open={propertiesModalOpen}
+          front_page_post_content={front_page_post_content}
+        />
+
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
-          <div className={`col-sm-4 h-100 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}listing-map h-100`}>
-              { this.state.noticeDisplay && !!displayedResults.length &&
-                <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
-                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length} listings. Explore the map, or use filters to narrow your search.</span>
-                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-dismiss"} onClick={this.dismissNotice}>x</span>
-                </div>
-              }
-              <Map currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} properties={displayedResults}
-                    searchByCoordinates={this.updateURIGeoCoordinates.bind(this)} selectedProperty={filters.selected_property} />
-              }
-            </div>
+          <div className={`col-sm-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+            { captionElement }
+            { mapElement }
           </div>
-          <div className={`col-sm-8 h-100 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}listing-sidebar h-100`}>
+
+          <div className={`col-sm-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar ${this.state.mapDisplay? 'hidden-xs-down': ''}`}>
             <SearchFilterDescriptionText
               bathrooms={searchFilters.bathrooms}
               bedrooms={searchFilters.bedrooms}
@@ -199,13 +233,13 @@ class MapSearchResults extends Component {
               total={this.props.resultsTotal}
             />
             
-            {this.props.displayedResults.length
+            { this.props.displayedResults.length > 0
               ?
                 <SearchResultListing
                   allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
                   isFetching={isFetching}
                   properties={displayedResults}
-                  seeMoreHandler={this.seeMoreHandler.bind(this)}
+                  seeMoreHandler={this.seeMoreHandler}
                   selectedProperty={filters.selected_property}
                   total={this.props.resultsTotal}
                 />
@@ -221,32 +255,15 @@ class MapSearchResults extends Component {
                       null
                     )
                 )
-                
             }
           </div>
-          </div>
-          <div>
-            <nav className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation navbar navbar-toggleable-md fixed-bottom hidden-sm-up`}>
-              <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
-                <ul
-                  className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
-                  <li className="nav-item">
-                    <a className="btn" href="#" onClick={(e) => {
-                      e.preventDefault();
-                      openPropertiesModal(true);
-                    }}>Filter</a></li>
-                  <li className="nav-item">
-                    <a className="btn" href="#" onClick={(e) => {
-                      e.preventDefault();
-                      this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
-                    }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
-                </ul>
-              </div>
-            </nav>
-          </div>
+
+          { mobileNavigatorElement }
+
         </section>
       </div>
     );
+
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
         {elementToShow}

@@ -1710,22 +1710,22 @@ p.propertypro-gentle-error {
     overflow: hidden;
 }
 
-.propertypro-search-map-container .propertypro-search-map-mobile-navigation {
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar {
     background-color: #ffffff;
     box-shadow: 0 0.1rem 0.5rem #000;
-}
-
-.propertypro-search-map-container .propertypro-search-map-mobile-navigation-items {
-    display: flex;
+    padding: 0.5rem 1rem;
     width: 100%;
 }
 
-.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers {
-    display: block;
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span {
+    cursor: pointer;
+    line-height: 2rem;
+    color: #a0a0a0;
 }
 
-.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers li {
-    display: inline-block;
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span.separator {
+    font-size: 18px;
+    padding: 0 1rem;
 }
 
 .propertypro-search-result-loading {
@@ -3174,7 +3174,7 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-toolbar .propertypro-search-box-wrap {
-        margin: 0.75rem 0;
+        margin: 0.5rem 0;
     }
 
     .propertypro-bs-tags-box .propertypro-tag {
