@@ -241,7 +241,6 @@ class MapSearchResults extends Component {
                       this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
                     }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
                 </ul>
-                <a href="#" className="btn">Search</a>
               </div>
             </nav>
           </div>
