@@ -36,12 +36,10 @@ export default class CarouselOnMap extends Component {
 
   render() {
     const { properties } = this.props;
-
     const swiperParams = {
       slidesPerView: 1,
       slidesPerGroup: 1,
       spaceBetween: 0,
-      runCallbacksOnInit: true,
       onInit: (swiper) => {
         this.swiper = swiper;
       },
@@ -58,7 +56,7 @@ export default class CarouselOnMap extends Component {
         {
           properties.map((p, key) => {
             const item = {
-              address: _.get(p, '_source.post_meta.rets_address', ''),
+              address: _.get(p, '_source.post_meta.rets_address', [''])[0],
               location: _.get(p, '_source.post_meta.wpp_location_pin', []),
               baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
               beds: _.get(p, '_source.post_meta.rets_beds', 0),
@@ -72,12 +70,13 @@ export default class CarouselOnMap extends Component {
               post_type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
               type: _.get(bundle, 'property_types.'+_.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''), 'Other'),
               relative_permalink: _.get(p, '_source.permalink', ''),
-              thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
+              thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', [''])[0],
               zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')
             };
+
             return (
               <div className="swiper-slide" key={key}>
-                <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_CAROUSEL} />
+                <PropertyCard data={item} />
               </div>
             )
           })

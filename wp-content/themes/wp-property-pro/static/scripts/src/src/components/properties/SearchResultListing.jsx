@@ -52,12 +52,12 @@ class SearchResultListing extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (this.props.properties !== nextProps.properties) ||
-      (this.props.selectedProperty !== nextProps.selectedProperty) ||
-      (this.props.isFetching !== nextProps.isFetching) ||
-      (nextState.loading !== this.state.loading);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return (this.props.properties !== nextProps.properties) ||
+  //     (this.props.selectedProperty !== nextProps.selectedProperty) ||
+  //     (this.props.isFetching !== nextProps.isFetching) ||
+  //     (nextState.loading !== this.state.loading);
+  // }
 
   render() {
     let {
@@ -76,7 +76,7 @@ class SearchResultListing extends Component {
             {
               properties.map((p, i) => {
                 let item = {
-                  address: _.get(p, '_source.post_meta.rets_address', ''),
+                  address: _.get(p, '_source.post_meta.rets_address', [''])[0],
                   location: _.get(p, '_source.post_meta.wpp_location_pin', []),
                   baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
                   beds: _.get(p, '_source.post_meta.rets_beds', 0),
@@ -90,12 +90,12 @@ class SearchResultListing extends Component {
                   post_type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
                   type: _.get(bundle, 'property_types.'+_.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''), 'Other'),
                   relative_permalink: _.get(p, '_source.permalink', ''),
-                  thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
+                  thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', [''])[0],
                   zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')
                 };
                 return (
                   <div className={`col-12 col-sm-6 col-xl-4`} key={i}>
-                    <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i} highlighted={selectedProperty === p._id} ref={(r) => this.properties[p._id] = r} />
+                    <PropertyCard data={item} highlighted={selectedProperty === p._id} ref={(r) => this.properties[p._id] = r} />
                   </div>
                 );
               })

@@ -471,7 +471,7 @@ html, body {
     top: 12rem;
     left: 0;
     padding: 0 1.5rem;
-    z-index: 3;
+    z-index: 2;
 }
 
 .propertypro-card .propertypro-listing-top .propertypro-price {
@@ -562,9 +562,6 @@ ul.propertypro-listing-info-box li:last-child {
     width: 100%;
 }
 
-.propertypro-card-homepage {
-}
-
 .propertypro-card-img {
     position: relative;
 }
@@ -577,6 +574,7 @@ ul.propertypro-listing-info-box li:last-child {
     position: absolute;
     width: 100%;
     top: 50%;
+    z-index: 3;
 }
 
 .propertypro-card-img .propertypro-direction-nav a {
@@ -3025,13 +3023,13 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-listing-map #propertypro-Map {
+        flex: 1;
         position: relative;
-        height: 100%;
     }
 
     .propertypro-listing-map .propertypro-listing-wrap {
-        margin-bottom: 3rem;
-        min-height: 19rem;
+        flex: 1;
+        margin-bottom: 6rem; /* need to sacrifice chrome, we only need mobile view on iOS */
     }
 
     .propertypro-card .propertypro-direction-nav a {
@@ -3272,8 +3270,11 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-listing-wrap .propertypro-card {
-        border: 0;
         margin-bottom: 0;
+    }
+
+    .propertypro-listing-wrap .propertypro-card:not(.propertypro-card-selected) {
+        border: 0;
     }
 
     .propertypro-listing-wrap .propertypro-card, .propertypro-listing-wrap .propertypro-card .propertypro-card-img img {

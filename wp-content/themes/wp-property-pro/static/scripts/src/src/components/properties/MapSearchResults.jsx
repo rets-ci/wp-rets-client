@@ -225,14 +225,14 @@ class MapSearchResults extends Component {
       />
     );
 
-    const sliderElement = ( isMobile
-      ? <CarouselOnMap
-          properties={displayedResults}
-          selectedProperty={filters.selected_property}
-          onChangeSlide={this.updateSelectedProperty}
-        />
-      : null
+    const sliderElement = (
+      <CarouselOnMap
+        properties={displayedResults}
+        selectedProperty={filters.selected_property}
+        onChangeSlide={this.updateSelectedProperty}
+      />
     );
+
 
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
@@ -248,7 +248,7 @@ class MapSearchResults extends Component {
           <div className={`col-sm-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
             { captionElement }
             { mapElement }
-            { sliderElement }
+            { isMobile && sliderElement }
           </div>
 
           <div className={`col-sm-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar ${this.state.mapDisplay? 'hidden-xs-down': ''}`}>
@@ -285,7 +285,7 @@ class MapSearchResults extends Component {
             }
           </div>
 
-          { mobileNavigatorElement }
+          { isMobile && mobileNavigatorElement }
 
         </section>
       </div>
