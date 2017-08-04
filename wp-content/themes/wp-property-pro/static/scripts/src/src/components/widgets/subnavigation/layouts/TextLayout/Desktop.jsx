@@ -2,16 +2,19 @@ import React from 'react';
 import TextItem from '../item/TextItem.jsx';
 import {Lib} from '../../../../../lib.jsx';
 import _ from 'lodash';
+import Util from '../../../../Util.jsx';
 
 
-const Desktop = ({currentUrl, items, openFormModal, pageTitle, pageModalData}) => {
+const Desktop = ({currentUrl, items, openFormModal, pageModalData}) => {
   let btn = {};
   let links = [];
   for (let i in items) {
+    let item = items[i];
     if (_.get(items[i], 'classes.0', null) === 'btn') {
-      btn = items[i];
+      btn = item;
+      btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
     } else {
-      links.push(items[i]);
+      links.push(item);
     }
   }
   
@@ -38,7 +41,7 @@ const Desktop = ({currentUrl, items, openFormModal, pageTitle, pageModalData}) =
                   ? null
                   :
                   <li className={Lib.THEME_CLASSES_PREFIX + "subnavigation-btn"}>
-                    <a href='#' onClick={(event) => { event.preventDefault(); openFormModal(pageTitle, true)}} className="btn">{btn.title}</a>
+                    <a href='#' onClick={btn.formModalId ? ((event) => { event.preventDefault(); openFormModal(btn.formModalId, true)}) : null} className={btn.classes.join(' ')}>{btn.title}</a>
                   </li>
               }
             </ul>

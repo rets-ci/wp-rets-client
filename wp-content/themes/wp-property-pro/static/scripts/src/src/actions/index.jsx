@@ -1,5 +1,5 @@
 import {Lib} from '../lib.jsx'
-
+ 
 export const deletePropertiesModalSingleLocalFilter = filterKey => {
   return {
     type: Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION,
@@ -116,13 +116,6 @@ export const setFilterTerms = (filterTerms) => {
     filterTerms: filterTerms
   }
 };
-
-export const setPageData = (data) => {
-  return {
-    type: Lib.SET_PAGE_TITLE_ACTION,
-    data: data
-  }
-}
 
 export const toggleMapSearchResultsLoading = loading => {
   return {

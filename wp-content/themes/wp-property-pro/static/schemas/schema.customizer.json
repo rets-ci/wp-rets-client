@@ -176,7 +176,8 @@
       "selector": [
         "h1, h2, h3",
         ".propertypro-search-modal .propertypro-search-modal-box li a",
-        ".propertypro-testimonial h4"
+        ".propertypro-testimonial h4",
+        ".propertypro-modal .modal-title"
       ]
     },
     {
