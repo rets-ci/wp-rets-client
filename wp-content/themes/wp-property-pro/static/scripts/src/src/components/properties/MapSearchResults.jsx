@@ -112,8 +112,14 @@ class MapSearchResults extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let filters = qs.parse(window.location.search.replace('?', ''));
+
     if (!_.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
       this.applyQueryFilters();
+    }
+
+    if (nextProps.displayedResults.length > 0 && !filters.selected_property && isMobile) {
+      this.updateSelectedProperty(nextProps.displayedResults[0]._id);
     }
   }
 
@@ -142,6 +148,12 @@ class MapSearchResults extends Component {
     this.setState({
       state
     });
+  }
+
+  updateSelectedProperty = (propertyId) => {
+    let filter = {'selected_property': propertyId};
+    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'set', false);
+    Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
   }
 
   updateURIGeoCoordinates(geoCoordinates) {
@@ -216,6 +228,8 @@ class MapSearchResults extends Component {
     const sliderElement = ( isMobile
       ? <CarouselOnMap
           properties={displayedResults}
+          selectedProperty={filters.selected_property}
+          onChangeSlide={this.updateSelectedProperty}
         />
       : null
     );

@@ -1,11 +1,13 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import {findDOMNode} from 'react-dom';
-import LoadingCircle from '../LoadingCircle.jsx';
-import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import { findDOMNode } from 'react-dom';
 import Waypoint from 'react-waypoint';
+import _ from 'lodash';
+
+import LoadingCircle from '../LoadingCircle.jsx';
+import { Lib } from '../../lib.jsx';
 import PropertyCard from '../PropertyCard.jsx';
+
 
 class SearchResultListing extends Component {
   static propTypes = {
@@ -69,8 +71,8 @@ class SearchResultListing extends Component {
     if (isFetching) { classNames.push(Lib.THEME_CLASSES_PREFIX + 'loading-overlay'); }
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container h-100`}>
-        <div className={classNames.join(' ')} ref={(r) => this.listingWrapElement = r}>
-          <div className="row" ref={(r) => this.searchResultLisintElement = r}>
+        <div className={classNames.join(' ')}>
+          <div className="row">
             {
               properties.map((p, i) => {
                 let item = {
@@ -96,8 +98,8 @@ class SearchResultListing extends Component {
                     <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i} highlighted={selectedProperty === p._id} ref={(r) => this.properties[p._id] = r} />
                   </div>
                 );
-                }
-              )}
+              })
+            }
           </div>
         </div>
         {this.props.allowPagination ?

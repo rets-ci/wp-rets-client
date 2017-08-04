@@ -3010,6 +3010,21 @@ p.propertypro-gentle-error {
         margin-bottom: 5rem;
     }
 
+    .propertypro-listing-map {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .propertypro-listing-map #propertypro-Map {
+        position: relative;
+        height: 100%;
+    }
+
+    .propertypro-listing-map .propertypro-listing-wrap {
+        margin-bottom: 3rem;
+        min-height: 19rem;
+    }
+
     .propertypro-card .propertypro-direction-nav a {
         opacity: 1;
     }
