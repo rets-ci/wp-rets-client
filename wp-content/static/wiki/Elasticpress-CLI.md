@@ -1,6 +1,6 @@
 * To install Elasticsearch feature for WP-Property based on Elasticpress plugin, WP-CLI has to be used.
 * Elasticsearch index of client equals `site_id`
-* For RDC client ( and, in theory, for all clients in future ) we are using Elasticsarch v5.X.
+* For RDC client ( and, in theory, for all clients in future ) we are using Elasticsearch v5.X.
 
 ## Install Main index
 
@@ -40,7 +40,181 @@ To create new Saved Search index, the following WP-CLI command has to be run:
 wp saved-search put-mapping
 ```
 
-**Note!**, main index must exist to run the command. In other case error will be returned. 
+**Note!** Main index must exist to run the command. Also, it's good to index properties before create Saved Search index, since the mapping may be updated on indexing new data. In other case error may be occurred. 
 
+### Saved Search Percolator
 
+The following CURL request is example of Saved Search Percolator object:
 
+```
+curl -X PUT \
+  https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100/mocha-test-search/search/1 \
+  -H 'cache-control: no-cache' \
+  -d '{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "exists": {
+            "field": "wpp_location_pin"
+          }
+        },
+        {
+          "term": {
+            "terms.wpp_listing_status.slug": "for-rent"
+          }
+        },
+        {
+          "terms": {
+            "terms.wpp_listing_type.slug": [
+              "apartment",
+              "multifamily",
+              "land_vacant",
+              "land_farm",
+              "land_manufactured_house_lot",
+              "commercial_apartment",
+              "commercial_entertainment",
+              "commercial_healthcare",
+              "commercial_hotel",
+              "commercial_industrial",
+              "commercial_multifamily",
+              "commercial_office",
+              "commercial_other",
+              "commercial_residential",
+              "commercial_retail",
+              "land_other",
+              "land_industrial",
+              "land_residential",
+              "land_commercial",
+              "land_ranch",
+              "land_hunting",
+              "land_recreational",
+              "residential",
+              "residential_apartment",
+              "residential_condo",
+              "residential_house",
+              "residential_manufactured",
+              "residential_multifamily",
+              "residential_other",
+              "residential_townhouse",
+              "house",
+              "condo",
+              "townhouse",
+              "other",
+              "duplex",
+              "manufactured"
+            ]
+          }
+        },
+        {
+          "range": {
+            "meta.rets_total_baths.double": {
+              "gte": "1"
+            }
+          }
+        },
+        {
+          "range": {
+            "meta.rets_beds.double": {
+              "gte": "2"
+            }
+          }
+        },
+        {
+          "range": {
+            "meta.rets_list_price.double": {
+              "gte": 1000,
+              "lt": 4750
+            }
+          }
+        },
+        {
+          "range": {
+            "meta.rets_living_area.double": {
+              "gte": 1000,
+              "lt": 9500
+            }
+          }
+        },
+        {
+          "range": {
+            "meta.rets_lot_size_area.double": {
+              "lt": "9.75"
+            }
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "terms.wpp_location.name.raw": "Raleigh, NC"
+                }
+              },
+              {
+                "term": {
+                  "terms.wpp_location.name.raw": "Durham, NC"
+                }
+              },
+              {
+                "term": {
+                  "terms.wpp_location.name.raw": "Cary, NC"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "meta": {
+	"site_id": "616bf200-b814-4a8b-816e-a4405061e3b8",
+    "user_id": 25,
+    "name": "My Saved Search Title",
+    "notification": {
+      "active": true
+    },
+    "created": "2017-07-17T12:00:01",
+    "modified": "2017-07-17T13:12:01",
+    "comment": "Any comment can be added here"
+  }
+}'
+```
+
+To percolate the property `5908107`, which tied to just added Saved Search:
+
+```
+curl -X POST \
+  https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100/mocha-test-search/_search \
+  -H 'cache-control: no-cache' \
+  -d '{
+  "query": {
+    "percolate": {
+      "field": "query",
+      "document_type": "doctype",
+      "index": "mocha-test",
+      "type": "post",
+      "id": 5908107
+    }
+  }
+}'
+```
+
+To percolate the property `9273045`, which DOES NOT tied to just added Saved Search:
+
+```
+curl -X POST \
+  https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100/mocha-test-search/_search \
+  -H 'cache-control: no-cache' \
+  -d '{
+  "query": {
+    "percolate": {
+      "field": "query",
+      "document_type": "doctype",
+      "index": "mocha-test",
+      "type": "post",
+      "id": 9273045
+    }
+  }
+}'
+```

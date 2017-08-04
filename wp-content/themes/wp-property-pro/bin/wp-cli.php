@@ -56,28 +56,31 @@ class WPP_CLI_Saved_Search_Command extends WP_CLI_Command {
 
     WP_CLI::log( sprintf( __( 'Put mapping for [%s] index...' ), $index ) );
 
-    $request_args = array(
-      'body'    => json_encode( array(
-        'settings' => array(
-          'index' =>  array(
-            'number_of_shards' => ( isset( $settings[ 'number_of_shards' ] ) ? $settings[ 'number_of_shards' ] : "3" ),
-            'number_of_replicas' => ( isset( $settings[ 'number_of_replicas' ] ) ? $settings[ 'number_of_replicas' ] : "0" ),
-            'analysis' => ( isset( $settings[ 'analysis' ] ) ? $settings[ 'analysis' ] : array() )
-          )
+    $body = array(
+      'settings' => array(
+        'index' =>  array(
+          "mapping" => ( isset( $settings[ 'mapping' ] ) ? $settings[ 'mapping' ] : array() ),
+          'number_of_shards' => ( isset( $settings[ 'number_of_shards' ] ) ? $settings[ 'number_of_shards' ] : "3" ),
+          'number_of_replicas' => ( isset( $settings[ 'number_of_replicas' ] ) ? $settings[ 'number_of_replicas' ] : "0" ),
+          'analysis' => ( isset( $settings[ 'analysis' ] ) ? $settings[ 'analysis' ] : array() )
+        )
+      ),
+      'mappings' => array(
+        'doctype' => array(
+          'properties' => $mapping
         ),
-        'mappings' => array(
-          'doctype' => array(
-            'properties' => $mapping
-          ),
-          'search' => array(
-            'properties' => array(
-              'query' => array(
-                'type' => 'percolator'
-              )
+        'search' => array(
+          'properties' => array(
+            'query' => array(
+              'type' => 'percolator'
             )
           )
         )
-      ) ),
+      )
+    );
+
+    $request_args = array(
+      'body'    => json_encode( $body ),
       'method'  => 'PUT',
     );
 

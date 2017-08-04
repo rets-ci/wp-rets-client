@@ -117,7 +117,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _shims = __webpack_require__(635);
+	var _shims = __webpack_require__(634);
 
 	var _shims2 = _interopRequireDefault(_shims);
 
@@ -157,7 +157,7 @@
 
 /***/ }),
 /* 1 */
-[663, 2],
+[662, 2],
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -554,9 +554,9 @@
 
 /***/ }),
 /* 5 */
-[664, 6, 9, 12, 15],
+[663, 6, 9, 12, 15],
 /* 6 */
-[665, 7, 8],
+[664, 7, 8],
 /* 7 */
 /***/ (function(module, exports) {
 
@@ -662,7 +662,7 @@
 
 /***/ }),
 /* 9 */
-[666, 4, 10, 11, 13, 14],
+[665, 4, 10, 11, 13, 14],
 /* 10 */
 /***/ (function(module, exports) {
 
@@ -699,7 +699,7 @@
 
 /***/ }),
 /* 11 */
-[667, 12],
+[666, 12],
 /* 12 */
 /***/ (function(module, exports) {
 
@@ -799,7 +799,7 @@
 
 /***/ }),
 /* 15 */
-[668, 7, 10, 14, 16, 8, 17, 11],
+[667, 7, 10, 14, 16, 8, 17, 11],
 /* 16 */
 /***/ (function(module, exports) {
 
@@ -909,9 +909,9 @@
 
 /***/ }),
 /* 18 */
-[669, 7, 19, 13, 20, 8, 11],
+[668, 7, 19, 13, 20, 8, 11],
 /* 19 */
-[670, 11],
+[669, 11],
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -938,7 +938,7 @@
 
 /***/ }),
 /* 21 */
-[671, 4, 18, 19, 20],
+[670, 4, 18, 19, 20],
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1698,7 +1698,7 @@
 
 /***/ }),
 /* 24 */
-[672, 9, 25],
+[671, 9, 25],
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1958,9 +1958,9 @@
 
 /***/ }),
 /* 26 */
-[673, 7, 10, 8, 11],
+[672, 7, 10, 8, 11],
 /* 27 */
-[674, 7, 23, 28, 8, 11, 26, 26],
+[673, 7, 23, 28, 8, 11, 26, 26],
 /* 28 */
 /***/ (function(module, exports) {
 
@@ -2658,7 +2658,7 @@
 
 /***/ }),
 /* 35 */
-[675, 7, 9, 8],
+[674, 7, 9, 8],
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5012,7 +5012,7 @@
 
 /***/ }),
 /* 54 */
-[665, 39, 8],
+[664, 39, 8],
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26737,13 +26737,13 @@
 
 /***/ }),
 /* 252 */
-[676, 253, 259, 261],
+[675, 253, 259, 261],
 /* 253 */
-[677, 254, 257, 258],
+[676, 254, 257, 258],
 /* 254 */
-[678, 255],
+[677, 255],
 /* 255 */
-[679, 256],
+[678, 256],
 /* 256 */
 /***/ (function(module, exports) {
 
@@ -26756,7 +26756,7 @@
 
 /***/ }),
 /* 257 */
-[680, 254],
+[679, 254],
 /* 258 */
 /***/ (function(module, exports) {
 
@@ -26786,7 +26786,7 @@
 
 /***/ }),
 /* 259 */
-[681, 260],
+[680, 260],
 /* 260 */
 /***/ (function(module, exports) {
 
@@ -27379,21 +27379,21 @@
 
 /***/ }),
 /* 273 */
-[676, 274, 280, 282],
+[675, 274, 280, 282],
 /* 274 */
-[677, 275, 278, 279],
+[676, 275, 278, 279],
 /* 275 */
-[678, 276],
+[677, 276],
 /* 276 */
-[679, 277],
+[678, 277],
 /* 277 */
 256,
 /* 278 */
-[680, 275],
+[679, 275],
 /* 279 */
 258,
 /* 280 */
-[681, 281],
+[680, 281],
 /* 281 */
 260,
 /* 282 */
@@ -76764,7 +76764,7 @@
 	            { className: 'col-sm-4 h-100 ' + (!this.state.mapDisplay ? "hidden-xs-down" : "") },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-map h-100' },
 	              this.state.noticeDisplay && !!displayedResults.length && _react2.default.createElement(
 	                'div',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
@@ -76788,10 +76788,10 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-sm-8 ' + (this.state.mapDisplay ? "hidden-xs-down" : "") },
+	            { className: 'col-sm-8 h-100 ' + (this.state.mapDisplay ? "hidden-xs-down" : "") },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-sidebar h-100' },
 	              _react2.default.createElement(_SearchFilterDescriptionText2.default, {
 	                bathrooms: searchFilters.bathrooms,
 	                bedrooms: searchFilters.bedrooms,
@@ -76850,11 +76850,6 @@
 	                      this.state.mapDisplay ? 'List' : 'Map'
 	                    )
 	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', className: 'btn' },
-	                  'Search'
 	                )
 	              )
 	            )
@@ -81636,7 +81631,7 @@
 
 /***/ }),
 /* 454 */
-[663, 455],
+[662, 455],
 /* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -81734,19 +81729,19 @@
 /* 456 */
 4,
 /* 457 */
-[664, 458, 461, 464, 467],
+[663, 458, 461, 464, 467],
 /* 458 */
-[665, 459, 460],
+[664, 459, 460],
 /* 459 */
 7,
 /* 460 */
 8,
 /* 461 */
-[666, 456, 462, 463, 465, 466],
+[665, 456, 462, 463, 465, 466],
 /* 462 */
 10,
 /* 463 */
-[667, 464],
+[666, 464],
 /* 464 */
 12,
 /* 465 */
@@ -81754,19 +81749,19 @@
 /* 466 */
 14,
 /* 467 */
-[668, 459, 462, 466, 468, 460, 469, 463],
+[667, 459, 462, 466, 468, 460, 469, 463],
 /* 468 */
 16,
 /* 469 */
 17,
 /* 470 */
-[669, 459, 471, 465, 472, 460, 463],
+[668, 459, 471, 465, 472, 460, 463],
 /* 471 */
-[670, 463],
+[669, 463],
 /* 472 */
 20,
 /* 473 */
-[671, 456, 470, 471, 472],
+[670, 456, 470, 471, 472],
 /* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -82492,7 +82487,7 @@
 /* 475 */
 23,
 /* 476 */
-[672, 461, 477],
+[671, 461, 477],
 /* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -82733,9 +82728,9 @@
 
 /***/ }),
 /* 478 */
-[673, 459, 462, 460, 463],
+[672, 459, 462, 460, 463],
 /* 479 */
-[674, 459, 475, 480, 460, 463, 478, 478],
+[673, 459, 475, 480, 460, 463, 478, 478],
 /* 480 */
 28,
 /* 481 */
@@ -83196,7 +83191,7 @@
 
 /***/ }),
 /* 483 */
-[675, 459, 461, 460],
+[674, 459, 461, 460],
 /* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -84985,7 +84980,7 @@
 	          lazyLoadingInPrevNextAmount: 3,
 	          spaceBetween: 30
 	        });
-	      });
+	      }, 100);
 	    }
 	  }, {
 	    key: 'handleNavigation',
@@ -90699,18 +90694,14 @@
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
 	        _react2.default.createElement(
-	          'div',
+	          'h1',
 	          null,
-	          _react2.default.createElement(
-	            'h1',
-	            null,
-	            headText
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            mainText
-	          )
+	          headText
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          mainText
 	        )
 	      );
 	    }
@@ -90885,7 +90876,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container h-100" },
 	        !errorMessage ? Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100 d-flex flex-column" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { front_page_post_content: _lodash2.default.get(this.state, 'front_page_post_content', null), location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -91331,7 +91322,7 @@
 	  } else if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
 	    var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
 	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { front_page_post_content: front_page_post_content, openUserPanel: openUserPanel, searchFilters: searchFilters });
-	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search col-md-12";
+	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search px-3";
 
 	    if (saleTypesPanelOpen) {
 	      sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
@@ -91924,23 +91915,6 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var mobileViewFilterNumber = function mobileViewFilterNumber(filterParam) {
-	  var filters = Object.assign({}, filterParam);
-	  var numberOfFilters = 0;
-	  if (filters.term) {
-	    var termFilters = filters.term.slice(0);
-	    termFilters.pop();
-	    numberOfFilters = termFilters.length;
-	    delete filters['term'];
-	  }
-	  var filtersToDelete = ['bedrooms', 'property_types', 'sale_type', 'geoCoordinates'];
-	  filtersToDelete.forEach(function (d) {
-	    delete filters[d];
-	  });
-	  numberOfFilters += Object.keys(filters).length;
-	  return numberOfFilters;
-	};
-
 	var mobileViewCheck = function mobileViewCheck() {
 	  return window.innerWidth < _lib.Lib.MOBILE_WIDTH;
 	};
@@ -91986,12 +91960,15 @@
 
 	    var _this = _possibleConstructorReturn(this, (searchFilters.__proto__ || Object.getPrototypeOf(searchFilters)).call(this, props));
 
+	    _this.updateDisplayFlag = function () {
+	      _this.setState({
+	        isMobileView: mobileViewCheck()
+	      });
+	    };
+
 	    _this.state = {
 	      isMobileView: mobileViewCheck()
 	    };
-
-	    _this.updateDisplayFlag = _this.updateDisplayFlag.bind(_this);
-
 	    return _this;
 	  }
 
@@ -92081,13 +92058,6 @@
 	      this.updateURLWithQueryParam('?' + updatedQueryParam);
 	    }
 	  }, {
-	    key: 'updateDisplayFlag',
-	    value: function updateDisplayFlag() {
-	      this.setState({
-	        isMobileView: mobileViewCheck()
-	      });
-	    }
-	  }, {
 	    key: 'updateURLWithQueryParam',
 	    value: function updateURLWithQueryParam(queryParam) {
 	      _Util2.default.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
@@ -92111,69 +92081,56 @@
 	      var propertyTypeElement = void 0;
 	      var sqftFilter = filters['sqft'];
 	      var sqftElement = void 0;
-	      if (!this.state.isMobileView) {
-	        if (bathroomsFilter) {
-	          bathroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBathroomsFilterRemove.bind(this), display: bathroomsFilter + '+ Baths', value: bathroomsFilter });
-	        }
 
-	        if (bedroomsFilter) {
-	          bedroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBedroomsFilterRemove.bind(this), display: bedroomsFilter + '+ Beds', value: bedroomsFilter });
-	        } else {
-	          bedroomsElement = _react2.default.createElement(
+	      if (bathroomsFilter) {
+	        bathroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBathroomsFilterRemove.bind(this), display: bathroomsFilter + '+ Baths', value: bathroomsFilter });
+	      }
+
+	      if (bedroomsFilter) {
+	        bedroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBedroomsFilterRemove.bind(this), display: bedroomsFilter + '+ Beds', value: bedroomsFilter });
+	      } else {
+	        bedroomsElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	          _react2.default.createElement(
 	            'span',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick() {
-	                  return _this2.props.openPropertiesModal(true);
-	                } },
-	              _react2.default.createElement(
-	                'span',
-	                null,
-	                '+'
-	              ),
-	              ' Bedroom'
-	            )
-	          );
-	        }
+	            null,
+	            '+'
+	          ),
+	          ' Bedroom'
+	        );
+	      }
 
-	        if (lotSizeFilter) {
-	          lotSizeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleLotSizefilterRemove.bind(this), display: _Util2.default.lotSizeFilterSearchTagText(lotSizeFilter), value: lotSizeFilter });
-	        }
+	      if (lotSizeFilter) {
+	        lotSizeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleLotSizefilterRemove.bind(this), display: _Util2.default.lotSizeFilterSearchTagText(lotSizeFilter), value: lotSizeFilter });
+	      }
 
-	        if (priceFilter) {
-	          priceElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePriceFilterRemove.bind(this), display: _Util2.default.priceFilterSearchTagText(priceFilter), value: priceFilter });
-	        } else {
-	          priceElement = _react2.default.createElement(
+	      if (priceFilter) {
+	        priceElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePriceFilterRemove.bind(this), display: _Util2.default.priceFilterSearchTagText(priceFilter), value: priceFilter });
+	      } else {
+	        priceElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	          _react2.default.createElement(
 	            'span',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick() {
-	                  return _this2.props.openPropertiesModal(true);
-	                } },
-	              _react2.default.createElement(
-	                'span',
-	                null,
-	                '+'
-	              ),
-	              ' Price'
-	            )
-	          );
-	        }
+	            null,
+	            '+'
+	          ),
+	          ' Price'
+	        );
+	      }
 
-	        if (propertyTypeFilter) {
-	          var propertyFilterValue = _staticFilters.property_type.filter(function (p) {
-	            return p.value === propertyTypeFilter;
-	          }).map(function (p) {
-	            return p.name;
-	          });
-	          propertyTypeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePropertyTypeRemove.bind(this), display: propertyFilterValue, value: propertyTypeFilter });
-	        }
+	      if (propertyTypeFilter) {
+	        var propertyFilterValue = _staticFilters.property_type.filter(function (p) {
+	          return p.value === propertyTypeFilter;
+	        }).map(function (p) {
+	          return p.name;
+	        });
+	        propertyTypeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePropertyTypeRemove.bind(this), display: propertyFilterValue, value: propertyTypeFilter });
+	      }
 
-	        if (sqftFilter) {
-	          sqftElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleSQFTFilterRemove.bind(this), display: _Util2.default.sqftFilterSearchTagText(sqftFilter), value: sqftFilter });
-	        }
+	      if (sqftFilter) {
+	        sqftElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleSQFTFilterRemove.bind(this), display: _Util2.default.sqftFilterSearchTagText(sqftFilter), value: sqftFilter });
 	      }
 
 	      var termFilter = filters['term'];
@@ -92199,7 +92156,10 @@
 	      }
 	      return _react2.default.createElement(
 	        'form',
-	        { method: 'get', className: 'clearfix' },
+	        { method: 'get', className: 'clearfix', onClick: function onClick() {
+	            return _this2.props.openPropertiesModal(true);
+	          } },
+	        _react2.default.createElement('div', { className: 'gradient-overlay' }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
@@ -92213,37 +92173,15 @@
 	            sqftElement,
 	            lotSizeElement,
 	            propertyTypeElement,
-	            mobileViewFilterNumber(filters) ? _react2.default.createElement(
-	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter hidden-lg-up' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: '#', onClick: function onClick() {
-	                    return _this2.props.openPropertiesModal(true);
-	                  } },
-	                _react2.default.createElement(
-	                  'span',
-	                  null,
-	                  '+'
-	                ),
-	                mobileViewFilterNumber(filters)
-	              )
-	            ) : null,
 	            _react2.default.createElement(
 	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter hidden-md-down' },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
 	              _react2.default.createElement(
-	                'a',
-	                { href: '#', onClick: function onClick() {
-	                    return _this2.props.openPropertiesModal(true);
-	                  } },
-	                _react2.default.createElement(
-	                  'span',
-	                  null,
-	                  '+'
-	                ),
-	                'More Filters'
-	              )
+	                'span',
+	                null,
+	                '+'
+	              ),
+	              'More Filters'
 	            )
 	          )
 	        ),
@@ -92800,7 +92738,7 @@
 	  return _react2.default.createElement(
 	    'section',
 	    {
-	      className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel col-md-12 " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
+	      className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel px-3 " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
 	      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(event) {
@@ -105979,39 +105917,39 @@
 
 	var _locationModal2 = _interopRequireDefault(_locationModal);
 
-	var _propertiesModal = __webpack_require__(626);
+	var _propertiesModal = __webpack_require__(625);
 
 	var _propertiesModal2 = _interopRequireDefault(_propertiesModal);
 
-	var _searchResults = __webpack_require__(627);
+	var _searchResults = __webpack_require__(626);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(628);
+	var _mapMarkers = __webpack_require__(627);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _mapSearchResultsLoading = __webpack_require__(629);
+	var _mapSearchResultsLoading = __webpack_require__(628);
 
 	var _mapSearchResultsLoading2 = _interopRequireDefault(_mapSearchResultsLoading);
 
-	var _searchType = __webpack_require__(630);
+	var _searchType = __webpack_require__(629);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(631);
+	var _filterTerms = __webpack_require__(630);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _panel = __webpack_require__(632);
+	var _panel = __webpack_require__(631);
 
 	var _panel2 = _interopRequireDefault(_panel);
 
-	var _testimonialsCarousel = __webpack_require__(633);
+	var _testimonialsCarousel = __webpack_require__(632);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
-	var _blogPosts = __webpack_require__(634);
+	var _blogPosts = __webpack_require__(633);
 
 	var _blogPosts2 = _interopRequireDefault(_blogPosts);
 
@@ -106201,8 +106139,7 @@
 	exports.default = locationModal;
 
 /***/ }),
-/* 625 */,
-/* 626 */
+/* 625 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106273,7 +106210,7 @@
 	exports.default = propertiesModal;
 
 /***/ }),
-/* 627 */
+/* 626 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106322,7 +106259,7 @@
 	exports.default = searchResults;
 
 /***/ }),
-/* 628 */
+/* 627 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106349,7 +106286,7 @@
 	exports.default = mapMarkers;
 
 /***/ }),
-/* 629 */
+/* 628 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106376,7 +106313,7 @@
 	exports.default = mapSearchResultsLoading;
 
 /***/ }),
-/* 630 */
+/* 629 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106406,7 +106343,7 @@
 	exports.default = searchProps;
 
 /***/ }),
-/* 631 */
+/* 630 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106433,7 +106370,7 @@
 	exports.default = filterTerms;
 
 /***/ }),
-/* 632 */
+/* 631 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106463,7 +106400,7 @@
 	exports.default = panel;
 
 /***/ }),
-/* 633 */
+/* 632 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -106490,7 +106427,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ }),
-/* 634 */
+/* 633 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -106531,7 +106468,7 @@
 	exports.default = searchResults;
 
 /***/ }),
-/* 635 */
+/* 634 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -106539,7 +106476,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var values = __webpack_require__(636);
+	var values = __webpack_require__(635);
 
 	function shims() {
 	  // Object.values is not supported in Safari
@@ -106551,16 +106488,16 @@
 	exports.default = shims;
 
 /***/ }),
-/* 636 */
+/* 635 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var define = __webpack_require__(637);
+	var define = __webpack_require__(636);
 
-	var implementation = __webpack_require__(641);
-	var getPolyfill = __webpack_require__(661);
-	var shim = __webpack_require__(662);
+	var implementation = __webpack_require__(640);
+	var getPolyfill = __webpack_require__(660);
+	var shim = __webpack_require__(661);
 
 	var polyfill = getPolyfill();
 
@@ -106574,13 +106511,13 @@
 
 
 /***/ }),
-/* 637 */
+/* 636 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var keys = __webpack_require__(638);
-	var foreach = __webpack_require__(640);
+	var keys = __webpack_require__(637);
+	var foreach = __webpack_require__(639);
 	var hasSymbols = typeof Symbol === 'function' && typeof Symbol() === 'symbol';
 
 	var toStr = Object.prototype.toString;
@@ -106636,7 +106573,7 @@
 
 
 /***/ }),
-/* 638 */
+/* 637 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -106645,7 +106582,7 @@
 	var has = Object.prototype.hasOwnProperty;
 	var toStr = Object.prototype.toString;
 	var slice = Array.prototype.slice;
-	var isArgs = __webpack_require__(639);
+	var isArgs = __webpack_require__(638);
 	var isEnumerable = Object.prototype.propertyIsEnumerable;
 	var hasDontEnumBug = !isEnumerable.call({ toString: null }, 'toString');
 	var hasProtoEnumBug = isEnumerable.call(function () {}, 'prototype');
@@ -106782,7 +106719,7 @@
 
 
 /***/ }),
-/* 639 */
+/* 638 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -106805,7 +106742,7 @@
 
 
 /***/ }),
-/* 640 */
+/* 639 */
 /***/ (function(module, exports) {
 
 	
@@ -106833,14 +106770,14 @@
 
 
 /***/ }),
-/* 641 */
+/* 640 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ES = __webpack_require__(642);
-	var has = __webpack_require__(660);
-	var bind = __webpack_require__(655);
+	var ES = __webpack_require__(641);
+	var has = __webpack_require__(659);
+	var bind = __webpack_require__(654);
 	var isEnumerable = bind.call(Function.call, Object.prototype.propertyIsEnumerable);
 
 	module.exports = function values(O) {
@@ -106856,13 +106793,13 @@
 
 
 /***/ }),
-/* 642 */
+/* 641 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ES6 = __webpack_require__(643);
-	var assign = __webpack_require__(646);
+	var ES6 = __webpack_require__(642);
+	var assign = __webpack_require__(645);
 
 	var ES7 = assign(ES6, {
 		// https://github.com/tc39/ecma262/pull/60
@@ -106878,7 +106815,7 @@
 
 
 /***/ }),
-/* 643 */
+/* 642 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -106887,17 +106824,17 @@
 	var hasSymbols = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol';
 	var symbolToStr = hasSymbols ? Symbol.prototype.toString : toStr;
 
-	var $isNaN = __webpack_require__(644);
-	var $isFinite = __webpack_require__(645);
+	var $isNaN = __webpack_require__(643);
+	var $isFinite = __webpack_require__(644);
 	var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 
-	var assign = __webpack_require__(646);
-	var sign = __webpack_require__(647);
-	var mod = __webpack_require__(648);
-	var isPrimitive = __webpack_require__(649);
-	var toPrimitive = __webpack_require__(650);
+	var assign = __webpack_require__(645);
+	var sign = __webpack_require__(646);
+	var mod = __webpack_require__(647);
+	var isPrimitive = __webpack_require__(648);
+	var toPrimitive = __webpack_require__(649);
 	var parseInteger = parseInt;
-	var bind = __webpack_require__(655);
+	var bind = __webpack_require__(654);
 	var strSlice = bind.call(Function.call, String.prototype.slice);
 	var isBinary = bind.call(Function.call, RegExp.prototype.test, /^0b[01]+$/i);
 	var isOctal = bind.call(Function.call, RegExp.prototype.test, /^0o[0-7]+$/i);
@@ -106920,9 +106857,9 @@
 		return replace(value, trimRegex, '');
 	};
 
-	var ES5 = __webpack_require__(657);
+	var ES5 = __webpack_require__(656);
 
-	var hasRegExpMatcher = __webpack_require__(659);
+	var hasRegExpMatcher = __webpack_require__(658);
 
 	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-abstract-operations
 	var ES6 = assign(assign({}, ES5), {
@@ -107216,7 +107153,7 @@
 
 
 /***/ }),
-/* 644 */
+/* 643 */
 /***/ (function(module, exports) {
 
 	module.exports = Number.isNaN || function isNaN(a) {
@@ -107225,7 +107162,7 @@
 
 
 /***/ }),
-/* 645 */
+/* 644 */
 /***/ (function(module, exports) {
 
 	var $isNaN = Number.isNaN || function (a) { return a !== a; };
@@ -107234,7 +107171,7 @@
 
 
 /***/ }),
-/* 646 */
+/* 645 */
 /***/ (function(module, exports) {
 
 	var has = Object.prototype.hasOwnProperty;
@@ -107249,7 +107186,7 @@
 
 
 /***/ }),
-/* 647 */
+/* 646 */
 /***/ (function(module, exports) {
 
 	module.exports = function sign(number) {
@@ -107258,7 +107195,7 @@
 
 
 /***/ }),
-/* 648 */
+/* 647 */
 /***/ (function(module, exports) {
 
 	module.exports = function mod(number, modulo) {
@@ -107268,7 +107205,7 @@
 
 
 /***/ }),
-/* 649 */
+/* 648 */
 /***/ (function(module, exports) {
 
 	module.exports = function isPrimitive(value) {
@@ -107277,17 +107214,17 @@
 
 
 /***/ }),
-/* 650 */
+/* 649 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var hasSymbols = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol';
 
-	var isPrimitive = __webpack_require__(651);
-	var isCallable = __webpack_require__(652);
-	var isDate = __webpack_require__(653);
-	var isSymbol = __webpack_require__(654);
+	var isPrimitive = __webpack_require__(650);
+	var isCallable = __webpack_require__(651);
+	var isDate = __webpack_require__(652);
+	var isSymbol = __webpack_require__(653);
 
 	var ordinaryToPrimitive = function OrdinaryToPrimitive(O, hint) {
 		if (typeof O === 'undefined' || O === null) {
@@ -107357,9 +107294,9 @@
 
 
 /***/ }),
+/* 650 */
+648,
 /* 651 */
-649,
-/* 652 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -107404,7 +107341,7 @@
 
 
 /***/ }),
-/* 653 */
+/* 652 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -107430,7 +107367,7 @@
 
 
 /***/ }),
-/* 654 */
+/* 653 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -107463,16 +107400,16 @@
 
 
 /***/ }),
-/* 655 */
+/* 654 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var implementation = __webpack_require__(656);
+	var implementation = __webpack_require__(655);
 
 	module.exports = Function.prototype.bind || implementation;
 
 
 /***/ }),
-/* 656 */
+/* 655 */
 /***/ (function(module, exports) {
 
 	var ERROR_MESSAGE = 'Function.prototype.bind called on incompatible ';
@@ -107526,19 +107463,19 @@
 
 
 /***/ }),
-/* 657 */
+/* 656 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var $isNaN = __webpack_require__(644);
-	var $isFinite = __webpack_require__(645);
+	var $isNaN = __webpack_require__(643);
+	var $isFinite = __webpack_require__(644);
 
-	var sign = __webpack_require__(647);
-	var mod = __webpack_require__(648);
+	var sign = __webpack_require__(646);
+	var mod = __webpack_require__(647);
 
-	var IsCallable = __webpack_require__(652);
-	var toPrimitive = __webpack_require__(658);
+	var IsCallable = __webpack_require__(651);
+	var toPrimitive = __webpack_require__(657);
 
 	// https://es5.github.io/#x9
 	var ES5 = {
@@ -107618,16 +107555,16 @@
 
 
 /***/ }),
-/* 658 */
+/* 657 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var toStr = Object.prototype.toString;
 
-	var isPrimitive = __webpack_require__(651);
+	var isPrimitive = __webpack_require__(650);
 
-	var isCallable = __webpack_require__(652);
+	var isCallable = __webpack_require__(651);
 
 	// https://es5.github.io/#x8.12
 	var ES5internalSlots = {
@@ -107661,12 +107598,12 @@
 
 
 /***/ }),
-/* 659 */
+/* 658 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var has = __webpack_require__(660);
+	var has = __webpack_require__(659);
 	var regexExec = RegExp.prototype.exec;
 	var gOPD = Object.getOwnPropertyDescriptor;
 
@@ -107706,12 +107643,25 @@
 
 
 /***/ }),
+/* 659 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var bind = __webpack_require__(654);
+
+	module.exports = bind.call(Function.call, Object.prototype.hasOwnProperty);
+
+
+/***/ }),
 /* 660 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var bind = __webpack_require__(655);
+	'use strict';
 
-	module.exports = bind.call(Function.call, Object.prototype.hasOwnProperty);
+	var implementation = __webpack_require__(640);
+
+	module.exports = function getPolyfill() {
+		return typeof Object.values === 'function' ? Object.values : implementation;
+	};
 
 
 /***/ }),
@@ -107720,21 +107670,8 @@
 
 	'use strict';
 
-	var implementation = __webpack_require__(641);
-
-	module.exports = function getPolyfill() {
-		return typeof Object.values === 'function' ? Object.values : implementation;
-	};
-
-
-/***/ }),
-/* 662 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var getPolyfill = __webpack_require__(661);
-	var define = __webpack_require__(637);
+	var getPolyfill = __webpack_require__(660);
+	var define = __webpack_require__(636);
 
 	module.exports = function shimValues() {
 		var polyfill = getPolyfill();
@@ -107748,7 +107685,7 @@
 
 
 /***/ }),
-/* 663 */
+/* 662 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	'use strict';
@@ -107757,7 +107694,7 @@
 
 
 /***/ }),
-/* 664 */
+/* 663 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__, __webpack_module_template_argument_3__) {
 
 	/**
@@ -107952,7 +107889,7 @@
 	module.exports = ReactChildren;
 
 /***/ }),
-/* 665 */
+/* 664 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -108069,7 +108006,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 666 */
+/* 665 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__, __webpack_module_template_argument_3__, __webpack_module_template_argument_4__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -108415,7 +108352,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 667 */
+/* 666 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -108487,7 +108424,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 668 */
+/* 667 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__, __webpack_module_template_argument_3__, __webpack_module_template_argument_4__, __webpack_module_template_argument_5__, __webpack_module_template_argument_6__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -108668,7 +108605,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 669 */
+/* 668 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__, __webpack_module_template_argument_3__, __webpack_module_template_argument_4__, __webpack_module_template_argument_5__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -108791,7 +108728,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 670 */
+/* 669 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -108892,7 +108829,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 671 */
+/* 670 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__, __webpack_module_template_argument_3__) {
 
 	/**
@@ -108938,7 +108875,7 @@
 	module.exports = ReactPureComponent;
 
 /***/ }),
-/* 672 */
+/* 671 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -109113,7 +109050,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 673 */
+/* 672 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__, __webpack_module_template_argument_3__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -109452,7 +109389,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 674 */
+/* 673 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__, __webpack_module_template_argument_3__, __webpack_module_template_argument_4__, __webpack_module_template_argument_5__, __webpack_module_template_argument_6__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -109544,7 +109481,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 675 */
+/* 674 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -109587,7 +109524,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 676 */
+/* 675 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__) {
 
 	var baseGetTag = __webpack_require__(__webpack_module_template_argument_0__),
@@ -109655,7 +109592,7 @@
 
 
 /***/ }),
-/* 677 */
+/* 676 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__, __webpack_module_template_argument_1__, __webpack_module_template_argument_2__) {
 
 	var Symbol = __webpack_require__(__webpack_module_template_argument_0__),
@@ -109689,7 +109626,7 @@
 
 
 /***/ }),
-/* 678 */
+/* 677 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	var root = __webpack_require__(__webpack_module_template_argument_0__);
@@ -109701,7 +109638,7 @@
 
 
 /***/ }),
-/* 679 */
+/* 678 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	var freeGlobal = __webpack_require__(__webpack_module_template_argument_0__);
@@ -109716,7 +109653,7 @@
 
 
 /***/ }),
-/* 680 */
+/* 679 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	var Symbol = __webpack_require__(__webpack_module_template_argument_0__);
@@ -109768,7 +109705,7 @@
 
 
 /***/ }),
-/* 681 */
+/* 680 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	var overArg = __webpack_require__(__webpack_module_template_argument_0__);
