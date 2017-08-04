@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import onClickOutside from 'react-onclickoutside';
-import Util from '../../../../Util.jsx';
 import {Lib} from '../../../../../lib.jsx';
 import _ from 'lodash';
+import Util from '../../../../Util.jsx';
 
 class Mobile extends Component {
   static propTypes = {
@@ -11,8 +11,7 @@ class Mobile extends Component {
     currentUrl: PropTypes.string.isRequired,
     dropDownOpen: PropTypes.bool.isRequired,
     handleChange: PropTypes.func.isRequired,
-    openFormModal: PropTypes.function,
-    pageTitle: PropTypes.string
+    openFormModal: PropTypes.func
   };
 
   constructor(props) {
@@ -58,6 +57,10 @@ class Mobile extends Component {
 
   render() {
 
+    let {
+      openFormModal
+    } = this.props;
+
     let self = this;
 
     let btn = {};
@@ -67,6 +70,7 @@ class Mobile extends Component {
       let item = this.props.items[i];
       if (_.get(item, 'classes.0', null) === 'btn') {
         btn = item;
+        btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
       } else {
         links.push(item);
         if (_.get(item, 'url') == this.props.currentUrl)
@@ -117,7 +121,7 @@ class Mobile extends Component {
           _.isEmpty(btn)
             ? null
             :
-            <a href={btn.url} onClick={(event) => { event.preventDefault(); this.props.openFormModal(this.props.pageTitle, true)}} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn ${_.get(this.state, 'buttonDisplay', false) === false ? Lib.THEME_CLASSES_PREFIX+'hide' : ''}`}>{btn.title}</a>
+            <a href={btn.url} onClick={btn.formModalId ? ((event) => { event.preventDefault(); openFormModal(btn.formModalId, true)}) : null} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn ${_.get(this.state, 'buttonDisplay', false) === false ? Lib.THEME_CLASSES_PREFIX+'hide' : ''}`}>{btn.title}</a>
         }
       </div>
     );

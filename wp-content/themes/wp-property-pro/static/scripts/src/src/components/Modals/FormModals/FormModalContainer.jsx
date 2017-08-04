@@ -3,12 +3,13 @@ import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import JSONSchemaFormContainer from '../../Forms/JSONSchemaFormContainer.jsx';
 
-let id = 'Buy';
-let formId = 'formModal-' + id;
 
-class Buy extends Component {
+class FormModalContainer extends Component {
   static propTypes = {
-    closeModal: PropTypes.func.isRequired
+    closeModal: PropTypes.func.isRequired,
+    title: PropTypes.string,
+    id: PropTypes.string,
+    jsonSchemaForm: PropTypes.object.isRequired
   }
   constructor(props) {
     super(props);
@@ -17,12 +18,16 @@ class Buy extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.open !== this.props.open) {
-      this.toggleModal(nextProps.open);
+    if (nextProps.open !== this.props.open) {  
+      this.toggleModal(this.formId(this.props.id), nextProps.open);
     }
   }
 
-  toggleModal(open) {
+  formId(id) {
+    return Lib.FORM_MODAL_PREFIX_ACTION + id;
+  }
+
+  toggleModal(formId, open) {
     if (open) {
      jQuery('#' + formId).modal('show'); 
      this.setState({
@@ -37,7 +42,8 @@ class Buy extends Component {
   }
 
   componentDidMount() {
-    this.toggleModal(this.props.open);
+    let formId = this.formId(this.props.id);
+    this.toggleModal(formId, this.props.open);
     let self = this;
     jQuery('#' + formId).on('hidden.bs.modal', e => {
       self.props.closeModal();
@@ -48,19 +54,24 @@ class Buy extends Component {
     let {
       showForm
     } = this.state;
+    let {
+      title,
+      id,
+      jsonSchemaForm
+    } = this.props;
     return (
-      <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}form-modal`} id={formId} tabIndex="-1" role="dialog" aria-labelledby={formId} aria-hidden="true" ref={(r) => this.modalRef = r}>
+      <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}modal ${Lib.THEME_CLASSES_PREFIX}form-modal`} id={this.formId(this.props.id)} tabIndex="-1" role="dialog" aria-labelledby={this.formId(this.props.id)} aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title mx-auto" id="exampleModalLabel">{id}</h5>
+              <h5 className="modal-title mx-auto" id="modalLabel">{title}</h5>
               <button type="button" className="close" aria-label="Close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className="modal-body">
               {showForm &&
-                <JSONSchemaFormContainer id={id} />
+                <JSONSchemaFormContainer jsonSchemaForm={jsonSchemaForm} />
               }
             </div>
           </div>
@@ -70,4 +81,4 @@ class Buy extends Component {
   }
 };
 
-export default Buy;
+export default FormModalContainer;

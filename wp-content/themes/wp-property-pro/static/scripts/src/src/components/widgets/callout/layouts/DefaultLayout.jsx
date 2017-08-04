@@ -1,8 +1,10 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
+import Util from '../../../Util.jsx';
 
-const DefaultLayout = ({item}) => {
+const DefaultLayout = ({item, openFormModal}) => {
+  let formModalId = _.get(item, 'button.css_class', null) ? Util.getFormModalIdFromCSSClass(item.button.css_class.split(' ')) : null;
   return (
     <div className="container">
       <div className="row">
@@ -20,7 +22,9 @@ const DefaultLayout = ({item}) => {
                   ?
                   <ul className="navbar-nav">
                     <li>
-                      <a href={_.get(item, 'button.url', bundle.site_url)}
+                      <a
+                        href="#"
+                        onClick={formModalId ? ((event) => { event.preventDefault(); openFormModal(formModalId, true)}) : null}
                          className={`btn ${Lib.THEME_CLASSES_PREFIX}btn-contact`}>{item.button.label}</a>
                     </li>
                   </ul>

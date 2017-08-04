@@ -6,9 +6,7 @@ import Desktop from './TextLayout/Desktop.jsx';
 import Mobile from './TextLayout/Mobile.jsx';
 
 const mapStateToProps = (state) => {
-  return {
-    pageTitle: state.pageModal.data.title
-  }
+  return {}
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -40,8 +38,8 @@ class TextLayoutContent extends Component {
     return (
       <nav>
         <Mobile items={this.props.items} currentUrl={this.props.currentUrl} dropDownOpen={this.state.dropDownOpen}
-                handleChange={this.handleSearchDropDownChange.bind(this)} openFormModal={this.props.openFormModal} pageTitle={this.props.pageTitle} />
-        <Desktop items={this.props.items} currentUrl={this.props.currentUrl} openFormModal={this.props.openFormModal} pageTitle={this.props.pageTitle} />
+                handleChange={this.handleSearchDropDownChange.bind(this)} openFormModal={this.props.openFormModal} />
+        <Desktop items={this.props.items} currentUrl={this.props.currentUrl} openFormModal={this.props.openFormModal} />
       </nav>
     );
   }
