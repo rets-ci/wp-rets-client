@@ -58,9 +58,7 @@
       "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "WP_PROPERTY_LAYOUTS": false,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false,
-      "db_name": "www.reddoorcompany.com/latest-v3",
-      "EP_INDEX_NAME": "616bf200-b814-4a8b-816e-a4405061e3b8"
+      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_develop-v3-ash": {
       "wp_debug_log": true,
