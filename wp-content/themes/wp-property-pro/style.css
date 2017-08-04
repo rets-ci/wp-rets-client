@@ -2373,6 +2373,15 @@ p.propertypro-gentle-error {
     font-size: 1rem;
 }
 
+.propertypro-form-modal .modal-header {
+    border-bottom: 0
+}
+
+.propertypro-form-modal .modal-title {
+    font-size: 2rem;
+    font-weight: 400;
+}
+
 .propertypro-form-modal form input, .propertypro-form-modal form textarea {
     border: 1px solid #d2dae0;
     border-radius: 0.375rem;

@@ -21,7 +21,9 @@
       "wp_debug_display": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "WP_PROPERTY_LAYOUTS": true,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
+      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false,
+      "db_name": "www.reddoorcompany.com/latest-v3-1",
+      "EP_INDEX_NAME": "616bf200-b814-4a8b-816e-a4405061e3b8-v3-1"
     },
     "settings_develop-v3-local": {
       "wp_debug_log": true,
@@ -39,9 +41,7 @@
       "wp_debug_display": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "WP_PROPERTY_LAYOUTS": false,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false,
-      "db_name": "www.reddoorcompany.com/latest-v3",
-      "EP_INDEX_NAME": "616bf200-b814-4a8b-816e-a4405061e3b8"
+      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_latest-v3-1": {
       "wp_debug_log": true,
@@ -112,7 +112,7 @@
       "RETSCI_FEATURE_FLAG": true,
       "WP_PROPERTY_FLAG_ENABLE_LEGACY_TAXONOMIES": false,
       "WP_PROPERTY_ELASTICSEARCH_SERVICE": true,
-      "WP_PROPERTY_SETUP_ASSISTANT": true,
+      "WP_PROPERTY_SETUP_ASSISTANT": false,
       "__WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": true,
       "RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET": true,
       "WP_HTTP_BLOCK_EXTERNAL": true,
@@ -135,7 +135,6 @@
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
       "EP_HOST": "https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100",
-      "EP_INDEX_NAME": "616bf200-b814-4a8b-816e-a4405061e3b8-v3-1",
       "wp_cache": true,
       "concatenate_scripts": false,
       "sunrise": false,
@@ -157,7 +156,7 @@
       },
       "AUTOMATIC_UPDATER_DISABLED": true,
       "db": {
-        "name": "www.reddoorcompany.com/latest-v3-1",
+        "name": "www.reddoorcompany.com/latest-v3",
         "user": "rdc",
         "password": "wpcvdvwyocbhnrfj",
         "host": "api.wpcloud.io:13038",

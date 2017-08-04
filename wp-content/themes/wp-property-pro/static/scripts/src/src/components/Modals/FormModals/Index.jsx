@@ -1,5 +1,6 @@
+import Api from '../../../containers/Api.jsx';
 import {openFormModal} from '../../../actions/index.jsx';
-import Buy from './Buy.jsx';
+import FormModalContainer from './FormModalContainer.jsx';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,8 +14,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    closeFormModal: (id, open) => {
-      dispatch(openFormModal(id, open));
+    closeFormModal: () => {
+      dispatch(openFormModal(null, false));
     }
   }
 };
@@ -25,6 +26,53 @@ class FormModals extends Component {
     formModalId: PropTypes.string,
     formModalOpen: PropTypes.bool
   }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      errorMessage: false,
+      isFetching: false,
+      jsonSchemaForm: {}
+    };
+  }
+
+
+  schemaURL(id) {
+    return `/wp-content/static/json-form-schemas/${id}.json`;
+  }
+
+  fetchSchema(url) {
+    let self = this;
+    this.setState({
+      isFetching: true
+    });
+    Api.makeRequest({
+      url: url
+    }, (err, data) => {
+      if (err) {
+        self.setState({
+          isFetching: false,
+          errorMessage: err
+        });
+      } else {
+        self.setState({
+          errorMessage: false,
+          isFetching: false,
+          jsonSchemaForm: data
+        });
+      }
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let {
+      formModalId,
+      formModalOpen
+    } = nextProps;
+    if (formModalOpen && formModalId !== this.props.formModalId) {
+      this.fetchSchema(this.schemaURL(formModalId));
+    }
+  }
   
   render() {
     let {
@@ -32,16 +80,26 @@ class FormModals extends Component {
       formModalOpen
     } = this.props;
 
+    let {
+      errorMessage,
+      isFetching,
+      jsonSchemaForm
+    } = this.state;
+    if (formModalId && errorMessage) {
+      console.log('failed to load modal: ', formModalId);
+    }
     return (
       <div>
-        {(() => {
-          switch(formModalId) {
-            case 'Buy':
-              return <Buy closeModal={() => this.props.closeFormModal(formModalId, false)} open={formModalOpen} />;
-            default:
-              null;
-          }
-        }) ()}
+      {Object.keys(this.state.jsonSchemaForm).length ?
+        <FormModalContainer
+          title={jsonSchemaForm.title}
+          id={formModalId}
+          jsonSchemaForm={jsonSchemaForm}
+          closeModal={() => this.props.closeFormModal()}
+          open={formModalOpen}
+        />
+        : null
+      }
       </div>
     );
   }

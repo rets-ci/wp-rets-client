@@ -1,0 +1,95 @@
+{
+  "title": "Sell Inquiry",
+  "schema": {
+    "action": "https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1",
+    "type": "object",
+    "required": [
+      "powf_b080c09604dbe5118114c4346bb5981c"
+    ],
+    "properties": {
+      "powf_ae80c09604dbe5118114c4346bb5981c": {
+        "name": "powf_ae80c09604dbe5118114c4346bb5981c",
+        "title": "First Name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_b080c09604dbe5118114c4346bb5981c": {
+        "name": "powf_b080c09604dbe5118114c4346bb5981c",
+        "title": "Last name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_794eeb11c216e61180e9c4346bace2d4": {
+        "name": "powf_794eeb11c216e61180e9c4346bace2d4",
+        "title": "Email Address",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_bc80c09604dbe5118114c4346bb5981c": {
+        "name": "powf_bc80c09604dbe5118114c4346bb5981c",
+        "title": "Phone Number",
+        "type": "string"
+      },
+      "powf_c780c09604dbe5118114c4346bb5981c": {
+        "name": "powf_c780c09604dbe5118114c4346bb5981c",
+        "title": "Subject Property",
+        "type": "string"
+      },
+      "powf_d480c09604dbe5118114c4346bb5981c": {
+        "name": "powf_d480c09604dbe5118114c4346bb5981c",
+        "title": "City",
+        "type": "string",
+        "maxlength": 80
+      },
+      "powf_d580c09604dbe5118114c4346bb5981c": {
+        "name": "powf_d580c09604dbe5118114c4346bb5981c",
+        "title": "State",
+        "type": "string"
+      },
+      "powf_d880c09604dbe5118114c4346bb5981c": {
+        "name": "powf_d880c09604dbe5118114c4346bb5981c",
+        "title": "Zip/Postal Code",
+        "type": "string",
+        "maxlength": 20
+      },
+      "powf_62c06e431a12e61180e4fc15b428cd78": {
+        "type": "string",
+        "name": "powf_62c06e431a12e61180e4fc15b428cd78",
+        "title": "Comments/Questions"
+      }
+    }
+  },
+  "uiSchema": {
+    "powf_ae80c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_b080c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_794eeb11c216e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_bc80c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_c780c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "CustomInputTextElement",
+      "ui:help": "Street Address"
+    },
+    "powf_d480c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_d580c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_d880c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_62c06e431a12e61180e4fc15b428cd78": {
+      "ui:widget": "CustomTextareaTextElement",
+      "ui:options": {
+        "rows": 10
+      }
+    }
+  }
+}

@@ -88,6 +88,12 @@ class Util extends React.Component {
     return _.replace(thumbnailUrl, fileName, newFileName);
   }
 
+  static getFormModalIdFromCSSClass(classes) {
+    let formModalIdClass = classes.filter(c => c.indexOf(Lib.FORM_MODAL_PREFIX_ACTION) >= 0);
+    let formModalIdClassExists = formModalIdClass.length;
+    return formModalIdClassExists ? formModalIdClass[0].replace(Lib.FORM_MODAL_PREFIX_ACTION, '') : null;
+  }
+
   static getGoogleStreetViewThumbnailURL(params) {
 
     let key = _.get(bundle, 'google_api_key', null);
