@@ -1,5 +1,14 @@
 {
   "title": "Sell Inquiry",
+  "initialData": {
+    "powf_d780c09604dbe5118114c4346bb5981c": "Seller Webform Lead",
+    "powf_ad80c09604dbe5118114c4346bb5981c": "",
+    "powf_ac80c09604dbe5118114c4346bb5981c": "Seller",
+    "ignore_submitmessage": "",
+    "ignore_linkbuttontext": "",
+    "ignore_redirecturl": "",
+    "ignore_redirectmode": "Auto"
+  },
   "schema": {
     "action": "https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1",
     "type": "object",
@@ -56,6 +65,34 @@
         "type": "string",
         "name": "powf_62c06e431a12e61180e4fc15b428cd78",
         "title": "Comments/Questions"
+      },
+      "powf_d780c09604dbe5118114c4346bb5981c": {
+        "type": "string",
+        "name": "powf_d780c09604dbe5118114c4346bb5981c"
+      },
+      "powf_ad80c09604dbe5118114c4346bb5981c": {
+        "type": "string",
+        "name": "powf_ad80c09604dbe5118114c4346bb5981c"
+      },
+      "powf_ac80c09604dbe5118114c4346bb5981c":{
+        "type": "string",
+        "name": "powf_ac80c09604dbe5118114c4346bb5981c"
+      },
+      "ignore_submitmessage": {
+        "type": "string",
+        "name": "ignore_submitmessage"
+      },
+      "ignore_linkbuttontext": {
+        "type": "string",
+        "name": "ignore_linkbuttontext"
+      },
+      "ignore_redirecturl": {
+        "type": "string",
+        "name": "ignore_redirecturl"
+      },
+      "ignore_redirectmode": {
+        "type": "string",
+        "name": "ignore_redirectmode"
       }
     }
   },
@@ -90,6 +127,27 @@
       "ui:options": {
         "rows": 10
       }
+    },
+    "powf_d780c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "hidden"
+    },
+    "powf_ad80c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "hidden"
+    },
+    "powf_ac80c09604dbe5118114c4346bb5981c": {
+      "ui:widget": "hidden"
+    },
+    "ignore_submitmessage": {
+      "ui:widget": "hidden"
+    },
+    "ignore_linkbuttontext": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirecturl": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirectmode": {
+      "ui:widget": "hidden"
     }
   }
 }

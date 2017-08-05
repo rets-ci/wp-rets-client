@@ -28775,7 +28775,7 @@
 	        type: 'GET',
 	        contentType: 'text/plain',
 	        data: query,
-	        error: function error(jqXHR, textStatus) {
+	        error: function error(jqXHR, textStatus, errorThrown) {
 	          var errorMsg = '';
 	          if (jqXHR.status === 0) {
 	            errorMsg = "Couldn't establish a connection.";
@@ -28783,11 +28783,11 @@
 	            errorMsg = "Requested page not found. [404]";
 	          } else if (jqXHR.status == 500) {
 	            errorMsg = "Internal Server Error [500].";
-	          } else if (exception === 'parsererror') {
+	          } else if (textStatus === 'parsererror') {
 	            errorMsg = "Requested JSON parse failed.";
-	          } else if (exception === 'timeout') {
+	          } else if (textStatus === 'timeout') {
 	            errorMsg = "Time out error.";
-	          } else if (exception === 'abort') {
+	          } else if (textStatus === 'abort') {
 	            errorMsg = "Ajax request aborted.";
 	          } else {
 	            errorMsg = "Uncaught Error.\n" + jqXHR.responseText;
@@ -94911,25 +94911,31 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _BootstrapModal = __webpack_require__(549);
+
+	var _BootstrapModal2 = _interopRequireDefault(_BootstrapModal);
+
 	var _Api = __webpack_require__(293);
 
 	var _Api2 = _interopRequireDefault(_Api);
 
 	var _index = __webpack_require__(437);
 
-	var _FormModalContainer = __webpack_require__(549);
+	var _JSONSchemaFormContainer = __webpack_require__(550);
 
-	var _FormModalContainer2 = _interopRequireDefault(_FormModalContainer);
+	var _JSONSchemaFormContainer2 = _interopRequireDefault(_JSONSchemaFormContainer);
+
+	var _lib = __webpack_require__(294);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	var _reactRedux = __webpack_require__(241);
-
-	var _propTypes = __webpack_require__(185);
-
-	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -94986,10 +94992,12 @@
 	        url: url
 	      }, function (err, data) {
 	        if (err) {
+	          // this resets the form modal state in case of an error, thus allowing the retriggering of fetchSchema in componentWillReceiveProps
 	          self.setState({
 	            isFetching: false,
 	            errorMessage: err
 	          });
+	          self.props.closeFormModal();
 	        } else {
 	          self.setState({
 	            errorMessage: false,
@@ -95024,19 +95032,24 @@
 
 	      if (formModalId && errorMessage) {
 	        console.log('failed to load modal: ', formModalId);
+	        console.log('error message: ', errorMessage);
 	      }
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        Object.keys(this.state.jsonSchemaForm).length ? _react2.default.createElement(_FormModalContainer2.default, {
-	          title: jsonSchemaForm.title,
-	          id: formModalId,
-	          jsonSchemaForm: jsonSchemaForm,
-	          closeModal: function closeModal() {
-	            return _this2.props.closeFormModal();
+	        Object.keys(this.state.jsonSchemaForm).length ? _react2.default.createElement(
+	          _BootstrapModal2.default,
+	          {
+	            title: jsonSchemaForm.title,
+	            id: _lib.Lib.FORM_MODAL_PREFIX_ACTION + formModalId,
+	            jsonSchemaForm: jsonSchemaForm,
+	            closeModal: function closeModal() {
+	              return _this2.props.closeFormModal();
+	            },
+	            open: formModalOpen
 	          },
-	          open: formModalOpen
-	        }) : null
+	          _react2.default.createElement(_JSONSchemaFormContainer2.default, { jsonSchemaForm: jsonSchemaForm })
+	        ) : null
 	      );
 	    }
 	  }]);
@@ -95074,10 +95087,6 @@
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _JSONSchemaFormContainer = __webpack_require__(550);
-
-	var _JSONSchemaFormContainer2 = _interopRequireDefault(_JSONSchemaFormContainer);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -95086,31 +95095,26 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var FormModalContainer = function (_Component) {
-	  _inherits(FormModalContainer, _Component);
+	var BootstrapModal = function (_Component) {
+	  _inherits(BootstrapModal, _Component);
 
-	  function FormModalContainer(props) {
-	    _classCallCheck(this, FormModalContainer);
+	  function BootstrapModal(props) {
+	    _classCallCheck(this, BootstrapModal);
 
-	    var _this = _possibleConstructorReturn(this, (FormModalContainer.__proto__ || Object.getPrototypeOf(FormModalContainer)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (BootstrapModal.__proto__ || Object.getPrototypeOf(BootstrapModal)).call(this, props));
 
 	    _this.state = {
-	      showForm: false
+	      showBody: false
 	    };
 	    return _this;
 	  }
 
-	  _createClass(FormModalContainer, [{
+	  _createClass(BootstrapModal, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if (nextProps.open !== this.props.open) {
-	        this.toggleModal(this.formId(this.props.id), nextProps.open);
+	        this.toggleModal(this.props.id, nextProps.open);
 	      }
-	    }
-	  }, {
-	    key: 'formId',
-	    value: function formId(id) {
-	      return _lib.Lib.FORM_MODAL_PREFIX_ACTION + id;
 	    }
 	  }, {
 	    key: 'toggleModal',
@@ -95118,19 +95122,20 @@
 	      if (open) {
 	        jQuery('#' + formId).modal('show');
 	        this.setState({
-	          showForm: true
+	          showBody: true
 	        });
 	      } else {
 	        jQuery('#' + formId).modal('hide');
 	        this.setState({
-	          showForm: false
+	          showBody: false
 	        });
 	      }
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var formId = this.formId(this.props.id);
+	      console.log('from Bootstrap Modal');
+	      var formId = this.props.id;
 	      this.toggleModal(formId, this.props.open);
 	      var self = this;
 	      jQuery('#' + formId).on('hidden.bs.modal', function (e) {
@@ -95140,15 +95145,17 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var showForm = this.state.showForm;
+	      var showBody = this.state.showBody;
 	      var _props = this.props,
+	          children = _props.children,
 	          title = _props.title,
 	          id = _props.id,
 	          jsonSchemaForm = _props.jsonSchemaForm;
 
+	      var body = showBody ? children : null;
 	      return _react2.default.createElement(
 	        'div',
-	        { 'data-keyboard': 'true', className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'form-modal', id: this.formId(this.props.id), tabIndex: '-1', role: 'dialog', 'aria-labelledby': this.formId(this.props.id), 'aria-hidden': 'true' },
+	        { 'data-keyboard': 'true', className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'form-modal', id: id, tabIndex: '-1', role: 'dialog', 'aria-labelledby': id, 'aria-hidden': 'true' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'modal-dialog', role: 'document' },
@@ -95176,7 +95183,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'modal-body' },
-	              showForm && _react2.default.createElement(_JSONSchemaFormContainer2.default, { jsonSchemaForm: jsonSchemaForm })
+	              body
 	            )
 	          )
 	        )
@@ -95184,18 +95191,16 @@
 	    }
 	  }]);
 
-	  return FormModalContainer;
+	  return BootstrapModal;
 	}(_react.Component);
 
-	FormModalContainer.propTypes = {
+	BootstrapModal.propTypes = {
 	  closeModal: _propTypes2.default.func.isRequired,
 	  title: _propTypes2.default.string,
 	  id: _propTypes2.default.string,
 	  jsonSchemaForm: _propTypes2.default.object.isRequired
 	};
-	;
-
-	exports.default = FormModalContainer;
+	exports.default = BootstrapModal;
 
 /***/ }),
 /* 550 */
@@ -95253,12 +95258,14 @@
 	      _props$rawErrors = props.rawErrors,
 	      rawErrors = _props$rawErrors === undefined ? [] : _props$rawErrors;
 
-	  return props.displayLabel ? _react2.default.createElement(
+	  console.log('props: ', props);
+	  var labelsClassname = props.uiSchema['ui:widget'] !== 'CustomRadioElement' ? 'sr-only' : null;
+	  return !props.hidden ? props.displayLabel ? _react2.default.createElement(
 	    'div',
 	    { className: "form-group row" },
 	    _react2.default.createElement(
 	      'label',
-	      { className: 'sr-only', htmlFor: id },
+	      { className: labelsClassname, htmlFor: id },
 	      label,
 	      required ? "*" : null
 	    ),
@@ -95273,14 +95280,19 @@
 	          error
 	        )
 	      );
-	    })
+	    }),
+	    help
 	  ) : _react2.default.createElement(
 	    'div',
 	    { className: 'container modal-form-container' },
 	    props.children,
 	    errors
+	  ) : _react2.default.createElement(
+	    'div',
+	    null,
+	    children
 	  );
-	};
+	}
 
 	var transformErrors = function transformErrors(errors) {
 	  return errors.map(function (error) {
@@ -95290,10 +95302,12 @@
 	  });
 	};
 
+	// Note about the widgets object: modifying the following object might break 'CustomFieldTemplate' which will break the form funcionality
 	var widgets = {
 	  CustomInputTextElement: _widgets.inputTextElement,
 	  CustomSelectTextElement: _widgets.selectTextElement,
-	  CustomTextareaTextElement: _widgets.textareaTextElement
+	  CustomTextareaTextElement: _widgets.textareaTextElement,
+	  CustomRadioElement: _widgets.radioElement
 	};
 
 	var JSONSchemaFormContainer = function (_Component) {
@@ -95304,6 +95318,25 @@
 
 	    var _this = _possibleConstructorReturn(this, (JSONSchemaFormContainer.__proto__ || Object.getPrototypeOf(JSONSchemaFormContainer)).call(this, props));
 
+	    _this.submit = function (_ref) {
+	      var schema = _ref.schema,
+	          formData = _ref.formData;
+
+	      var action = schema.action;
+	      console.log('action: ', action);
+	      jQuery.post({
+	        url: '/',
+	        data: formData,
+	        success: function success(data, status, jqXHR) {
+	          console.log('success');
+	        },
+	        error: function error(xhr, status, _error) {
+	          console.log('any error? ', _error);
+	        }
+	      });
+	      // console.log('submitted: ', formData);
+	    };
+
 	    _this.state = {
 	      errorMessage: false,
 	      isFetching: false,
@@ -95313,23 +95346,6 @@
 	  }
 
 	  _createClass(JSONSchemaFormContainer, [{
-	    key: 'submit',
-	    value: function submit(_ref) {
-	      var formData = _ref.formData;
-
-	      // $.post({
-	      //   url: 'http://localhost:3200/form',
-	      //   data: formData,
-	      //   success: (data, status, jqXHR) => {
-	      //       console.log('success');
-	      //   },
-	      //   error: (xhr, status, error) => {
-	      //       console.log('any error? ', error);
-	      //   }
-	      // });
-	      console.log('submitted: ', formData);
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _state = this.state,
@@ -95343,10 +95359,11 @@
 	        {
 	          action: jsonSchemaForm.schema.action,
 	          FieldTemplate: CustomFieldTemplate,
+	          formData: jsonSchemaForm.initialData,
 	          method: 'post',
 	          schema: jsonSchemaForm.schema,
 	          uiSchema: jsonSchemaForm.uiSchema,
-	          onSubmit: this.submit.bind(this),
+	          onSubmit: this.submit,
 	          noHtml5Validate: true,
 	          showErrorList: false,
 	          transformErrors: transformErrors,
@@ -103718,6 +103735,7 @@
 	  value: true
 	});
 	exports.inputTextElement = inputTextElement;
+	exports.radioElement = radioElement;
 	exports.selectTextElement = selectTextElement;
 	exports.textareaTextElement = textareaTextElement;
 
@@ -103739,11 +103757,30 @@
 	  });
 	}
 
+	function radioElement(props) {
+	  return _react2.default.createElement(
+	    "div",
+	    null,
+	    props.schema.enum.map(function (d, i) {
+	      return _react2.default.createElement(
+	        "div",
+	        { key: d, className: "form-check" },
+	        _react2.default.createElement(
+	          "label",
+	          { className: "form-check-label" },
+	          _react2.default.createElement("input", { type: "radio", className: "form-check-input", name: "optionsRadios", id: "optionsRadios1", value: d }),
+	          d
+	        )
+	      );
+	    })
+	  );
+	}
+
 	function selectTextElement(props) {
 	  return _react2.default.createElement(
 	    "select",
 	    {
-	      defaultValue: "",
+	      value: props.value,
 	      id: props.id,
 	      className: "form-control",
 	      name: props.schema.name,
@@ -103753,7 +103790,7 @@
 	    },
 	    _react2.default.createElement(
 	      "option",
-	      { value: "", disabled: true },
+	      { value: "", disabled: true, selected: true },
 	      props.schema.title
 	    ),
 	    props.schema.enum.map(function (d, i) {
