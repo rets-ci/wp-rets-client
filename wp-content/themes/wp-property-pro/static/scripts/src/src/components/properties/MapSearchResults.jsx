@@ -183,7 +183,8 @@ class MapSearchResults extends Component {
       mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
-      results
+      results,
+      resultsTotal,
     } = this.props;
 
     let filters = qs.parse(window.location.search.replace('?', ''));
@@ -193,7 +194,7 @@ class MapSearchResults extends Component {
       ? (
           <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
             <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>
-              Only showing {displayedResults.length} listings. Explore the map, or use filters to narrow your search.
+              Showing {displayedResults.length} of {resultsTotal} listings. Browse to load more or adjust filters.
             </span>
             <span className={Lib.THEME_CLASSES_PREFIX + "caption-dismiss"} onClick={this.dismissNotice}>x</span>
           </div>

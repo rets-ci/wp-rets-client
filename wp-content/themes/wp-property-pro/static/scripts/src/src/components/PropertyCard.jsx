@@ -54,9 +54,13 @@ export default class PropertyCard extends Component {
       preloadImages: false,
       lazyLoading: true,
       lazyLoadingInPrevNext: true,
+      lazyLoadingInPrevNextAmount: 3,
       lazyLoadingOnTransitionStart: true,
       onInit: (swiper) => {
         this.swiper = swiper;
+        setTimeout(() => {  // need to resize images
+          this.swiper.onResize();
+        });
       },
     };
 
@@ -117,6 +121,7 @@ export default class PropertyCard extends Component {
                     className="swiper-lazy card-img-top"
                     data-src={Util.getThumbnailUrlBySize(d, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
                   />
+                  <div className="swiper-lazy-preloader"></div>
                 </div>
               )}
             </Swiper>

@@ -15,6 +15,8 @@ import {Lib} from './lib.jsx';
 import _ from 'lodash';
 import shims from './shims.js';
 
+require('swiper-css');
+
 
 // set up all relevant shims and polyfills for various browsers
 shims();
