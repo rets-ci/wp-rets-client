@@ -109,7 +109,7 @@ msgstr ""
 msgid "SiteOrigin Page Builder"
 msgstr ""
 
-#: tmp/base/inc/fields/date-range.class.php:31, tmp/base/inc/fields/date-range.class.php:45, tmp/widgets/contact/contact.php:1134
+#: tmp/base/inc/fields/date-range.class.php:31, tmp/base/inc/fields/date-range.class.php:45, tmp/widgets/contact/contact.php:1137
 msgid "From"
 msgstr ""
 
@@ -917,7 +917,7 @@ msgstr ""
 msgid "Required Field"
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:158, tmp/widgets/contact/contact.php:950
+#: tmp/widgets/contact/contact.php:158, tmp/widgets/contact/contact.php:953
 msgid "Required field"
 msgstr ""
 
@@ -1245,31 +1245,31 @@ msgstr ""
 msgid "Please write something"
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:962
+#: tmp/widgets/contact/contact.php:965
 msgid "Invalid email address."
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:1036
+#: tmp/widgets/contact/contact.php:1039
 msgid "Error sending email, please try again later."
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:1054
+#: tmp/widgets/contact/contact.php:1057
 msgid "A valid email is required"
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:1056
+#: tmp/widgets/contact/contact.php:1059
 msgid "The email address is invalid"
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:1060
+#: tmp/widgets/contact/contact.php:1063
 msgid "Missing subject"
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:1094
+#: tmp/widgets/contact/contact.php:1097
 msgid "Error validating your Captcha response."
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:1126
+#: tmp/widgets/contact/contact.php:1129
 msgid "Unfortunately our system identified your message as spam."
 msgstr ""
 

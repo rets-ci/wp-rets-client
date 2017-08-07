@@ -194,6 +194,48 @@ namespace UsabilityDynamics {
         if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
           $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
         }
+
+        /** Build search options array for search type dropDown at search result page */
+        $taxonomy = 'wpp_listing_type';
+
+        $search_options = [];
+        $delimiter = '-';
+
+        $all_property_types = array_map(function($t){
+          return $t->slug;
+        }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
+          return $t->parent;
+        }));
+
+        /** Build search options array */
+        foreach ([
+                   'Rent',
+                   'Sale',
+                   'Land',
+                   'Commercial'
+                 ] as $label) {
+
+
+          $sale_type = $label;
+          if (in_array($label, ['Rent', 'Sale']))
+            $key = implode($delimiter, $all_property_types);
+          else {
+            $term = get_term_by('slug', $label, $taxonomy);
+            $types = array_map(function ($id) use ($taxonomy) {
+              return get_term_by('id', $id, $taxonomy)->slug;
+            }, get_term_children($term->term_id, $taxonomy));
+            $key = implode($delimiter, $types);
+            $sale_type = 'Sale';
+          }
+
+          $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
+            'type' => 'checkbox',
+            'default' => false,
+            'label' => __($label, 'wp-property-pro'),
+          ];
+        }
+
+        $params['search_options'] = $search_options;
       }
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
