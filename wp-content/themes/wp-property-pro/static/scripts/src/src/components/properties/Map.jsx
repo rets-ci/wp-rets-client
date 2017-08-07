@@ -14,6 +14,8 @@ let selectedIcon = {
 
 let defaultZoom = 9;
 
+const isMobile = window.innerWidth < Lib.MOBILE_WIDTH;
+
 export default class Map extends Component {
   static propTypes = {
     currentGeoBounds: PropTypes.object,
@@ -109,7 +111,8 @@ export default class Map extends Component {
         mapTypeControlOptions: {mapTypeIds: []},
         scrollwheel: false,
         streetViewControl: false,
-        zoom: defaultZoom
+        zoom: defaultZoom,
+        zoomControl: isMobile === false,
       });
     } else {
       this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));

@@ -3045,7 +3045,7 @@ p.propertypro-gentle-error {
 
     .propertypro-listing-map .propertypro-listing-wrap {
         flex: 1;
-        margin-bottom: 6rem; /* need to sacrifice chrome, we only need mobile view on iOS */
+        margin-bottom: 3rem; /* need to sacrifice chrome, we only need mobile view on iOS */
     }
 
     .propertypro-card .propertypro-direction-nav a {
