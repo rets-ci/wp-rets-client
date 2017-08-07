@@ -2,8 +2,8 @@
 Tags: page builder, responsive, widget, widgets, builder, page, admin, gallery, content, cms, pages, post, css, layout, grid
 Requires at least: 4.4
 Tested up to: 4.8
-Stable tag: 2.5.9
-Build time: 2017-07-27T14:23:09+02:00
+Stable tag: 2.5.10
+Build time: 2017-08-04T10:38:11+02:00
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -95,6 +95,9 @@ Page Builder is actively developed and updated, so generally I'd recommend that 
 We've tried to ensure that Page Builder is compatible with most plugin widgets. It's best to just download Page Builder and test for yourself.
 
 == Changelog ==
+
+= 2.5.9 - 4 August 2017 =
+* Fixed WP widget wrappers broken by WP4.8.1 changes.
 
 = 2.5.9 - 27 July 2017 =
 * Post Loop widget: Use correct base widget properties for post loop helper on Widgets page.
