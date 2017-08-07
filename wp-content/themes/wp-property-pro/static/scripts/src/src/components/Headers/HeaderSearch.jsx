@@ -25,14 +25,22 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
+let origUrl = null;
+
 class HeaderSearch extends Component {
   constructor(props) {
     super(props);
   }
 
+  componentDidMount(){
+    origUrl = window.location.href;
+  }
+
   handleSaleSelectionItemClick(event, saleItem) {
     event.preventDefault();
-    let url = new URI(window.location.href);
+
+    // Set url to original url, because changing search type should remove all filters
+    let url = new URI(origUrl);
 
     let labelsArr = saleItem.split(Lib.STRING_ARRAY_DELIMITER);
     let saLeType = labelsArr[1];
