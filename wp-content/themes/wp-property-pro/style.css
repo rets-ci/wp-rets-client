@@ -390,7 +390,7 @@ html, body {
     overflow: hidden;
 }
 
-.propertypro-listings .propertypro-listing-carousel-container {
+.propertypro-listings .propertypro-listing-carousel-container, .propertypro-listings .propertypro-listing-carousel {
     width: 100%;
 }
 
@@ -564,6 +564,10 @@ ul.propertypro-listing-info-box li:last-child {
 
 .propertypro-card-img {
     position: relative;
+}
+
+.propertypro-card-img, .propertypro-card-img-top, .propertypro-card-img .swiper-container {
+    width: 100%;
 }
 
 .propertypro-direction-nav {

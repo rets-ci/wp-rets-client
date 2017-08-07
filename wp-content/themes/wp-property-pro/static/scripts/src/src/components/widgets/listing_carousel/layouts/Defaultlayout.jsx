@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import PropertyCard from '../../../PropertyCard.jsx';
-import Swiper from '../../../Swiper.jsx';
+import Swiper from 'react-id-swiper';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
@@ -12,12 +12,25 @@ export default class DefaultLayout extends Component {
 
   constructor(props) {
     super(props);
+
+    this.swiper = null;
   }
 
-  componentDidMount() {
-    this.swiper = Swiper.init(this.swiperElement, {
-      nextButton: this.swiperElementNext,
-      prevButton: this.swiperElementPrev,
+  handleNavigation(direction) {
+    if (direction === 'next') {
+      this.swiper.slideNext();
+    } else if (direction === 'prev') {
+      this.swiper.slidePrev();
+    }
+  }
+
+  render() {
+    let { item } = this.props;
+    let posts = _.get(item, 'posts', []);
+
+    const swiperParams = {
+      nextButton: `${Lib.THEME_CLASSES_PREFIX}next-nav`,
+      prevButton: `${Lib.THEME_CLASSES_PREFIX}prev-nav`,
       slidesPerView: 3,
       slidesPerGroup: 3,
       spaceBetween: 20,
@@ -31,14 +44,11 @@ export default class DefaultLayout extends Component {
           slidesPerGroup: 1,
         }
       },
-    });
-  }
+      onInit: (swiper) => {
+        this.swiper = swiper;
+      },
+    };
 
-  render() {
-    let {
-      item
-    } = this.props;
-    let posts = _.get(item, 'posts', []);
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "listing-carousel-container"}>
         <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel-info mx-auto text-center`}>
@@ -54,33 +64,36 @@ export default class DefaultLayout extends Component {
           }
         </div>
         {
-          posts.length
-            ?
+          posts.length > 0 &&
             <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel`}>
-              <div className={`swiper-container ${Lib.THEME_CLASSES_PREFIX}listing-carousel-container`}
-                   ref={(r) => this.swiperElement = r}>
-                <div className="swiper-wrapper">
-                  {
-                    posts.map((post, key) => {
-                      return (
-                        <div className="swiper-slide" key={key}>
-                          <PropertyCard data={post} />
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
+              <Swiper {...swiperParams} containerClass={`swiper-container ${Lib.THEME_CLASSES_PREFIX}listing-carousel-container`}>
+                {
+                  posts.map((post, key) => {
+                    return (
+                      <div className="swiper-slide" key={key}>
+                        <PropertyCard data={post} />
+                      </div>
+                    )
+                  })
+                }
+              </Swiper>
             </div>
-            : null
         }
         <div className={`${Lib.THEME_CLASSES_PREFIX}listing-control-nav text-center`}>
           <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}prev-nav mr-3 rounded-circle`}
-             ref={(r) => this.swiperElementPrev = r}><i
-            className="fa fa-angle-left"></i></a>
+              onClick={e => {
+                e.preventDefault();
+                this.handleNavigation.bind(this)('prev');
+              }}>
+             <i className="fa fa-angle-left"></i>
+          </a>
           <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}next-nav rounded-circle`}
-             ref={(r) => this.swiperElementNext = r}><i
-            className="fa fa-angle-right"></i></a>
+              onClick={e => {
+                e.preventDefault();
+                this.handleNavigation.bind(this)('next');
+              }}>
+             <i className="fa fa-angle-right"></i>
+          </a>
         </div>
       </div>
     );
