@@ -21,7 +21,6 @@ export default class PropertyCard extends Component {
     browserHistory.push(url);
 
     this.swiper = null;
-    this.swiperInitialized = false;
   }
 
   handleNavigation(direction) {
@@ -61,7 +60,7 @@ export default class PropertyCard extends Component {
         this.swiper = swiper;
         setTimeout(() => {  // need to resize images
           this.swiper.onResize();
-        }, 1000);
+        });
       },
     };
 

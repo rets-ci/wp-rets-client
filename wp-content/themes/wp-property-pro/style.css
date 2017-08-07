@@ -390,7 +390,7 @@ html, body {
     overflow: hidden;
 }
 
-.propertypro-listings .propertypro-listing-carousel-container, .propertypro-listings .propertypro-listing-carousel {
+.propertypro-listings .propertypro-listing-carousel-container {
     width: 100%;
 }
 
@@ -564,10 +564,6 @@ ul.propertypro-listing-info-box li:last-child {
 
 .propertypro-card-img {
     position: relative;
-}
-
-.propertypro-card-img, .propertypro-card-img-top, .propertypro-card-img .swiper-container {
-    width: 100%;
 }
 
 .propertypro-direction-nav {
@@ -1756,6 +1752,7 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-listing-map .propertypro-caption .propertypro-caption-content {
+    flex: auto;
 }
 
 .propertypro-listing-map .propertypro-caption .propertypro-caption-dismiss {

@@ -29,8 +29,6 @@ export default class DefaultLayout extends Component {
     let posts = _.get(item, 'posts', []);
 
     const swiperParams = {
-      nextButton: `${Lib.THEME_CLASSES_PREFIX}next-nav`,
-      prevButton: `${Lib.THEME_CLASSES_PREFIX}prev-nav`,
       slidesPerView: 3,
       slidesPerGroup: 3,
       spaceBetween: 20,
