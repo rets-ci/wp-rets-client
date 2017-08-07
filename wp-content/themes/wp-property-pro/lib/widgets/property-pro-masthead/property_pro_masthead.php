@@ -49,6 +49,9 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
     function initialize_form()
     {
 
+      // @TODO temporary solution for right search options loading, because it looks like caching.
+      wp_cache_flush();
+
       $taxonomy = 'wpp_listing_type';
 
       $search_options = [];
