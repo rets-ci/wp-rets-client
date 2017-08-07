@@ -1168,17 +1168,24 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-search-modal .propertypro-modal-dialog,
 .propertypro-search-modal .propertypro-modal-dialog {
     max-width: 100%;
+    height: 100%;
 }
 
 .propertypro-search-modal .propertypro-modal-content {
-    height: 100vh;
-    display: block;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.propertypro-search-modal .propertypro-modal-header {
+    flex: 0 0 auto;
+    height: 6rem;
 }
 
 .propertypro-search-modal .propertypro-modal-body {
+    flex: 1;
     background-color: #e9eff3;
     overflow: auto;
-    height: calc(100vh - 4.875rem);
 }
 
 .propertypro-search-modal .propertypro-close-panel {
@@ -1752,6 +1759,7 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-listing-map .propertypro-caption .propertypro-caption-content {
+    flex: auto;
 }
 
 .propertypro-listing-map .propertypro-caption .propertypro-caption-dismiss {
@@ -2762,10 +2770,6 @@ p.propertypro-gentle-error {
         font-size: 1.2rem;
     }
 
-    .propertypro-search-modal .propertypro-modal-body {
-        height: calc(100vh - 4.5625rem);
-    }
-
     .propertypro-search-modal-box ol li.propertypro-search-result-item a {
         font-size: 2.2rem;
     }
@@ -3421,6 +3425,42 @@ p.propertypro-gentle-error {
     .propertypro-blog-posts-row .propertypro-post-item:last-child {
         margin-left: 0;
     }
+
+    .propertypro-search-modal .propertypro-modal-header {
+        height: 3.5rem;
+        padding: 0;
+    }
+
+    .propertypro-search-modal .propertypro-modal-header .container {
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .propertypro-search-modal .propertypro-modal-header i {
+        font-size: 1.25rem;
+    }
+
+    .propertypro-search-modal .propertypro-modal-header input {
+        padding: 0.5rem 0;
+        font-size: 1rem;
+    }
+
+    .propertypro-search-modal .propertypro-modal-header .btn {
+        padding: 0.4rem 1rem;
+        font-size: 1rem;
+    }
+
+    .propertypro-search-modal .propertypro-search-result-group {
+        margin-top: 1rem;
+    }
+
+    .propertypro-search-modal-box ol {
+        margin-bottom: 1rem;
+    }
+
+    .propertypro-search-modal-box ol li.propertypro-search-result-item {
+        margin-top: 0.5rem;
+    }
 }
 
 /* Extra small devices (portrait phones, less than 576px) */
@@ -3437,10 +3477,6 @@ p.propertypro-gentle-error {
 
     .propertypro-search-modal-box ol li.propertypro-search-result-item a {
         font-size: 1.5rem;
-    }
-
-    .propertypro-search-modal .propertypro-modal-header {
-        padding: 1rem 0 0 0;
     }
 
     .propertypro-bottom-footer .propertypro-social {
