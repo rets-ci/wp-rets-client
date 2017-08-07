@@ -2770,10 +2770,6 @@ p.propertypro-gentle-error {
         font-size: 1.2rem;
     }
 
-    .propertypro-search-modal-box ol li.propertypro-search-result-item a {
-        font-size: 2.2rem;
-    }
-
     .propertypro-subnavigation.propertypro-subnavigation-icon-layout .propertypro-subnavigation-container,
     .propertypro-subnavigation.propertypro-subnavigation-icon-layout .propertypro-subnavigation-container nav {
         width: 100%;
@@ -3100,10 +3096,6 @@ p.propertypro-gentle-error {
     .propertypro-search-modal form .form-control,
     .propertypro-search-modal form i {
         font-size: 1rem;
-    }
-
-    .propertypro-search-modal-box ol li.propertypro-search-result-item a {
-        font-size: 2rem;
     }
 
     .propertypro-top-footer .propertypro-footer-logo {
@@ -3461,6 +3453,11 @@ p.propertypro-gentle-error {
     .propertypro-search-modal-box ol li.propertypro-search-result-item {
         margin-top: 0.5rem;
     }
+
+    .propertypro-search-modal-box ol li.propertypro-search-result-item a {
+        font-size: 1rem;
+        line-height: 2.25rem;
+    }
 }
 
 /* Extra small devices (portrait phones, less than 576px) */
@@ -3473,10 +3470,6 @@ p.propertypro-gentle-error {
 
     .propertypro-bottom-footer li a {
         font-size: 1rem;
-    }
-
-    .propertypro-search-modal-box ol li.propertypro-search-result-item a {
-        font-size: 1.5rem;
     }
 
     .propertypro-bottom-footer .propertypro-social {
