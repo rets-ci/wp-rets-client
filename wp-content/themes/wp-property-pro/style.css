@@ -471,7 +471,7 @@ html, body {
     top: 12rem;
     left: 0;
     padding: 0 1.5rem;
-    z-index: 3;
+    z-index: 2;
 }
 
 .propertypro-card .propertypro-listing-top .propertypro-price {
@@ -562,9 +562,6 @@ ul.propertypro-listing-info-box li:last-child {
     width: 100%;
 }
 
-.propertypro-card-homepage {
-}
-
 .propertypro-card-img {
     position: relative;
 }
@@ -577,6 +574,7 @@ ul.propertypro-listing-info-box li:last-child {
     position: absolute;
     width: 100%;
     top: 50%;
+    z-index: 3;
 }
 
 .propertypro-card-img .propertypro-direction-nav a {
@@ -1383,6 +1381,7 @@ p.propertypro-gentle-error {
     color: #414141;
     padding: .2em .8em;
     margin: 0 .2em .30em 0;
+    cursor: pointer;
 }
 
 
@@ -1618,8 +1617,8 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-toolbar .propertypro-search-box-wrap form {
+    position: relative;
     width: 100%;
-    overflow-x: auto;
     white-space: nowrap;
 }
 
@@ -1635,10 +1634,11 @@ p.propertypro-gentle-error {
 .propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
     position: relative;
     z-index: 1;
+    overflow-x: auto;
 }
 
 .propertypro-bs-tags-input > span:last-child {
-    margin-right: 1.5rem;
+    margin-right: 2.5rem;
 }
 
 .propertypro-toolbar .propertypro-logo {
@@ -1710,22 +1710,22 @@ p.propertypro-gentle-error {
     overflow: hidden;
 }
 
-.propertypro-search-map-container .propertypro-search-map-mobile-navigation {
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar {
     background-color: #ffffff;
     box-shadow: 0 0.1rem 0.5rem #000;
-}
-
-.propertypro-search-map-container .propertypro-search-map-mobile-navigation-items {
-    display: flex;
+    padding: 0.5rem 1rem;
     width: 100%;
 }
 
-.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers {
-    display: block;
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span {
+    cursor: pointer;
+    line-height: 2rem;
+    color: #a0a0a0;
 }
 
-.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers li {
-    display: inline-block;
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span.separator {
+    font-size: 18px;
+    padding: 0 1rem;
 }
 
 .propertypro-search-result-loading {
@@ -3033,6 +3033,21 @@ p.propertypro-gentle-error {
         margin-bottom: 5rem;
     }
 
+    .propertypro-listing-map {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .propertypro-listing-map #propertypro-Map {
+        flex: 1;
+        position: relative;
+    }
+
+    .propertypro-listing-map .propertypro-listing-wrap {
+        flex: 1;
+        margin-bottom: 6rem; /* need to sacrifice chrome, we only need mobile view on iOS */
+    }
+
     .propertypro-card .propertypro-direction-nav a {
         opacity: 1;
     }
@@ -3199,7 +3214,7 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-toolbar .propertypro-search-box-wrap {
-        margin: 0.75rem 0;
+        margin: 0.5rem 0;
     }
 
     .propertypro-bs-tags-box .propertypro-tag {
@@ -3271,8 +3286,11 @@ p.propertypro-gentle-error {
     }
 
     .propertypro-listing-wrap .propertypro-card {
-        border: 0;
         margin-bottom: 0;
+    }
+
+    .propertypro-listing-wrap .propertypro-card:not(.propertypro-card-selected) {
+        border: 0;
     }
 
     .propertypro-listing-wrap .propertypro-card, .propertypro-listing-wrap .propertypro-card .propertypro-card-img img {
