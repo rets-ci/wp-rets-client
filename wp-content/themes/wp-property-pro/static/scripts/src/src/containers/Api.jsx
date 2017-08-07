@@ -601,7 +601,7 @@ class Api {
       type: 'GET',
       contentType: 'text/plain',
       data: query,
-      error: (jqXHR, textStatus) => {
+      error: (jqXHR, textStatus, errorThrown) => {
         let errorMsg = '';
         if (jqXHR.status === 0) {
           errorMsg = "Couldn't establish a connection.";
@@ -609,11 +609,11 @@ class Api {
           errorMsg = "Requested page not found. [404]";
         } else if (jqXHR.status == 500) {
           errorMsg = "Internal Server Error [500].";
-        } else if (exception === 'parsererror') {
+        } else if (textStatus === 'parsererror') {
           errorMsg = "Requested JSON parse failed.";
-        } else if (exception === 'timeout') {
+        } else if (textStatus === 'timeout') {
           errorMsg = "Time out error.";
-        } else if (exception === 'abort') {
+        } else if (textStatus === 'abort') {
           errorMsg = "Ajax request aborted.";
         } else {
           errorMsg = "Uncaught Error.\n" + jqXHR.responseText;

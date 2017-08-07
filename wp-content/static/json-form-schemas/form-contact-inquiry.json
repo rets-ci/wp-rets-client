@@ -1,0 +1,141 @@
+{
+  "title": "Contact Inquiry",
+  "initialData": {
+    "powf_f5884fc3b616e61180e9c4346bace2d4": "Any",
+    "powf_26bab857b716e61180e9c4346bace2d4": "General",
+    "powf_d0a7e78bb716e61180e9c4346bace2d4": "RedDoorCompany.com",
+    "powf_72719c86c31ee61180e4fc15b428cd78": "",
+    "ignore_submitmessage": "Thank you.  We will be in touch with you shortly.",
+    "ignore_linkbuttontext": "",
+    "ignore_redirecturl": "",
+    "ignore_redirectmode": "Auto"
+  },
+  "schema": {
+    "action": "https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_F0DEC080B516E61180E9C4346BACE2D4&tver=2013&c=1",
+    "type": "object",
+    "required": [
+      "powf_06e1350eb616e61180e9c4346bace2d4",
+      "powf_2eb5375ab616e61180e9c4346bace2d4",
+      "powf_f5884fc3b616e61180e9c4346bace2d4"
+    ],
+    "properties": {
+      "powf_742ed9c3b516e61180e9c4346bace2d4": {
+        "name": "powf_742ed9c3b516e61180e9c4346bace2d4",
+        "title": "First Name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_06e1350eb616e61180e9c4346bace2d4": {
+        "name": "powf_06e1350eb616e61180e9c4346bace2d4",
+        "title": "Last name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_2eb5375ab616e61180e9c4346bace2d4": {
+        "name": "powf_2eb5375ab616e61180e9c4346bace2d4",
+        "title": "Email",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_e7a87d97b616e61180e9c4346bace2d4": {
+        "name": "powf_e7a87d97b616e61180e9c4346bace2d4",
+        "title": "Phone",
+        "type": "string"
+      },
+      "powf_f5884fc3b616e61180e9c4346bace2d4": {
+        "type": "string",
+        "name": "powf_f5884fc3b616e61180e9c4346bace2d4",
+        "title": "Contact Preference",
+        "enum": ["Any", "Email", "Phone"],
+        "uniqueItems": true
+      },
+      "powf_e774acf9b616e61180e9c4346bace2d4": {
+        "type": "string",
+        "name": "powf_e774acf9b616e61180e9c4346bace2d4",
+        "title": "Area of Interest",
+        "enum": ["Triangle Area", "Durham Area", "Chapel Hill Area", "Raleigh Area", "Other"],
+        "uniqueItems": true
+      },
+      "powf_97b71c12b716e61180e9c4346bace2d4": {
+        "type": "string",
+        "name": "powf_97b71c12b716e61180e9c4346bace2d4",
+        "title": "Message/Comments"
+      },
+      "powf_26bab857b716e61180e9c4346bace2d4": {
+        "type": "string",
+        "name": "powf_26bab857b716e61180e9c4346bace2d4"
+      },
+      "powf_d0a7e78bb716e61180e9c4346bace2d4": {
+        "type": "string",
+        "name": "powf_d0a7e78bb716e61180e9c4346bace2d4"
+      },
+      "powf_72719c86c31ee61180e4fc15b428cd78": {
+        "type": "string",
+        "name": "powf_72719c86c31ee61180e4fc15b428cd78"
+      },
+      "ignore_submitmessage": {
+        "type": "string",
+        "name": "ignore_submitmessage"
+      },
+      "ignore_linkbuttontext": {
+        "type": "string",
+        "name": "ignore_linkbuttontext"
+      },
+      "ignore_redirecturl": {
+        "type": "string",
+        "name": "ignore_redirecturl"
+      },
+      "ignore_redirectmode": {
+        "type": "string",
+        "name": "ignore_redirectmode"
+      }
+    }
+  },
+  "uiSchema": {
+    "powf_742ed9c3b516e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_06e1350eb616e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_2eb5375ab616e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_e7a87d97b616e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_f5884fc3b616e61180e9c4346bace2d4": {
+      "ui:widget": "CustomSelectTextElement"
+    },
+    "powf_e774acf9b616e61180e9c4346bace2d4": {
+      "ui:widget": "CustomSelectTextElement"
+    },
+    "powf_97b71c12b716e61180e9c4346bace2d4": {
+      "ui:widget": "CustomTextareaTextElement",
+      "ui:options": {
+        "rows": 10
+      }
+    },
+    "powf_26bab857b716e61180e9c4346bace2d4": {
+      "ui:widget": "hidden"
+    },
+    "powf_d0a7e78bb716e61180e9c4346bace2d4": {
+      "ui:widget": "hidden"
+    },
+    "powf_72719c86c31ee61180e4fc15b428cd78": {
+      "ui:widget": "hidden"
+    },
+    "ignore_submitmessage": {
+      "ui:widget": "hidden"
+    },
+    "ignore_linkbuttontext": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirecturl": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirectmode": {
+      "ui:widget": "hidden"
+    }
+  }
+}
