@@ -3,34 +3,39 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Form from "react-jsonschema-form";
 import LoadingAccordion from '../LoadingAccordion.jsx';
-import {inputTextElement, selectTextElement, textareaTextElement} from './JSONSchemaComponents/widgets.jsx';
+import {inputTextElement, radioElement, selectTextElement, textareaTextElement} from './JSONSchemaComponents/widgets.jsx';
 
 function CustomFieldTemplate(props) {
   const {
-    id,
-    classNames,
-    label,
-    help,
-    required,
-    description,
-    errors,
-    children,
-    rawErrors=[]
+      id,
+      classNames,
+      label,
+      help,
+      required,
+      description,
+      errors,
+      children,
+      rawErrors=[]
   } = props;
-  return props.displayLabel ? (
-    <div className={"form-group row"}>
-      <label className="sr-only" htmlFor={id}>
-          {label}{required ? "*" : null}
-      </label>
-      {children}
-      {rawErrors.map(error => <div style={{color: "blue"}}><h1>{error}</h1></div>)}
-      {/* <p className="form-text">{help}</p> */}
-    </div>
-  ) : <div className="container modal-form-container">
-    {props.children}
-    {errors}
-  </div>;
-};
+  console.log('props: ', props);
+  let labelsClassname = props.uiSchema['ui:widget'] !== 'CustomRadioElement' ? 'sr-only' : null;
+  return !props.hidden ? 
+    (
+      props.displayLabel ? (
+        <div className={"form-group row"}>
+          <label className={labelsClassname} htmlFor={id}>
+              {label}{required ? "*" : null}
+          </label>
+          {children}
+          {rawErrors.map(error => <div style={{color: "blue"}}><h1>{error}</h1></div>)}
+          {help}
+        </div>
+      ) : <div className="container modal-form-container">
+        {props.children}
+        {errors}
+      </div>
+    ) : <div>{children}</div>;
+}
 
 const transformErrors = errors => {
   return errors.map(error => {
@@ -41,10 +46,12 @@ const transformErrors = errors => {
   });
 };
 
+// Note about the widgets object: modifying the following object might break 'CustomFieldTemplate' which will break the form funcionality
 const widgets = {
   CustomInputTextElement: inputTextElement,
   CustomSelectTextElement: selectTextElement,
-  CustomTextareaTextElement: textareaTextElement
+  CustomTextareaTextElement: textareaTextElement,
+  CustomRadioElement: radioElement
 };
 
 class JSONSchemaFormContainer extends Component {
@@ -61,18 +68,20 @@ class JSONSchemaFormContainer extends Component {
     };
   }
 
-  submit({formData}) {
-    // $.post({
-    //   url: 'http://localhost:3200/form',
-    //   data: formData,
-    //   success: (data, status, jqXHR) => {
-    //       console.log('success');
-    //   },
-    //   error: (xhr, status, error) => {
-    //       console.log('any error? ', error);
-    //   }
-    // });
-    console.log('submitted: ', formData);
+  submit = ({schema, formData}) => {
+    let action = schema.action;
+    console.log('action: ', action);
+    jQuery.post({
+      url: '/',
+      data: formData,
+      success: (data, status, jqXHR) => {
+        console.log('success');
+      },
+      error: (xhr, status, error) => {
+        console.log('any error? ', error);
+      }
+    });
+    // console.log('submitted: ', formData);
   }
 
   render() {
@@ -89,10 +98,11 @@ class JSONSchemaFormContainer extends Component {
       <Form
         action={jsonSchemaForm.schema.action}
         FieldTemplate={CustomFieldTemplate}
+        formData={jsonSchemaForm.initialData}
         method="post"
         schema={jsonSchemaForm.schema}
         uiSchema={jsonSchemaForm.uiSchema}
-        onSubmit={this.submit.bind(this)}
+        onSubmit={this.submit}
         noHtml5Validate={true}
         showErrorList={false}
         transformErrors={transformErrors}

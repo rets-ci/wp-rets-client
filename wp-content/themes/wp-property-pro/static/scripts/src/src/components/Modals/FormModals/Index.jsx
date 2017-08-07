@@ -1,9 +1,11 @@
+import BootstrapModal from '../components/BootstrapModal.jsx';
 import Api from '../../../containers/Api.jsx';
 import {openFormModal} from '../../../actions/index.jsx';
-import FormModalContainer from './FormModalContainer.jsx';
+import JSONSchemaFormContainer from '../../Forms/JSONSchemaFormContainer.jsx';
+import {Lib} from '../../../lib.jsx';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 
 const mapStateToProps = state => {
   return {
@@ -50,10 +52,12 @@ class FormModals extends Component {
       url: url
     }, (err, data) => {
       if (err) {
+        // this resets the form modal state in case of an error, thus allowing the retriggering of fetchSchema in componentWillReceiveProps
         self.setState({
           isFetching: false,
           errorMessage: err
         });
+        self.props.closeFormModal();
       } else {
         self.setState({
           errorMessage: false,
@@ -79,7 +83,6 @@ class FormModals extends Component {
       formModalId,
       formModalOpen
     } = this.props;
-
     let {
       errorMessage,
       isFetching,
@@ -87,17 +90,20 @@ class FormModals extends Component {
     } = this.state;
     if (formModalId && errorMessage) {
       console.log('failed to load modal: ', formModalId);
+      console.log('error message: ', errorMessage)
     }
     return (
       <div>
       {Object.keys(this.state.jsonSchemaForm).length ?
-        <FormModalContainer
+        <BootstrapModal
           title={jsonSchemaForm.title}
-          id={formModalId}
+          id={Lib.FORM_MODAL_PREFIX_ACTION + formModalId}
           jsonSchemaForm={jsonSchemaForm}
           closeModal={() => this.props.closeFormModal()}
           open={formModalOpen}
-        />
+        >
+          <JSONSchemaFormContainer jsonSchemaForm={jsonSchemaForm} />
+        </BootstrapModal>
         : null
       }
       </div>

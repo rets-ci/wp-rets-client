@@ -63,7 +63,9 @@ export default class DefaultLayout extends Component {
                   {
                     posts.map((post, key) => {
                       return (
-                        <PropertyCard data={post} listType={Lib.PROPERTIES_LIST_CAROUSEL} key={key}/>
+                        <div className="swiper-slide" key={key}>
+                          <PropertyCard data={post} />
+                        </div>
                       )
                     })
                   }

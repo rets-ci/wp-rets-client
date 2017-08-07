@@ -1,0 +1,141 @@
+{
+  "title": "Career Inquiry",
+  "initialData": {
+    "powf_63a6a346d7d1e511810fc4346bace18c": "NC",
+    "powf_8e5f38f8d7d1e511810fc4346bace18c": "",
+    "powf_42573b9313dbe5118114c4346bb5981c": "Recruit",
+    "ignore_submitmessage": "Thank you for your submission.",
+    "ignore_linkbuttontext": "",
+    "ignore_redirecturl": "",
+    "ignore_redirectmode": "Auto"
+  },
+  "schema": {
+    "type": "object",
+    "required": [
+      "powf_351e0689d6d1e511810fc4346bace18c",
+      "powf_58bb03a2d6d1e511810fc4346bace18c",
+      "powf_e70b12cad6d1e511810fc4346bace18c",
+      "powf_7352d601d7d1e511810fc4346bace18c",
+      "powf_abf61434d7d1e511810fc4346bace18c",
+      "powf_666689c1d7d1e511810fc4346bace18c"
+    ],
+    "properties": {
+      "powf_351e0689d6d1e511810fc4346bace18c": {
+        "name": "powf_351e0689d6d1e511810fc4346bace18c",
+        "title": "First name",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_58bb03a2d6d1e511810fc4346bace18c": {
+        "name": "powf_58bb03a2d6d1e511810fc4346bace18c",
+        "title": "Last Name",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_e70b12cad6d1e511810fc4346bace18c": {
+        "name": "powf_e70b12cad6d1e511810fc4346bace18c",
+        "title": "Email",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_7352d601d7d1e511810fc4346bace18c": {
+        "name": "powf_7352d601d7d1e511810fc4346bace18c",
+        "title": "Telephone",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_abf61434d7d1e511810fc4346bace18c": {
+        "name": "powf_abf61434d7d1e511810fc4346bace18c",
+        "title": "City",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_63a6a346d7d1e511810fc4346bace18c": {
+        "name": "powf_63a6a346d7d1e511810fc4346bace18c",
+        "title": "State",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_f9726b7ed7d1e511810fc4346bace18c": {
+        "name": "powf_f9726b7ed7d1e511810fc4346bace18c",
+        "title": "License #",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_666689c1d7d1e511810fc4346bace18c": {
+        "name": "powf_666689c1d7d1e511810fc4346bace18c",
+        "title": "Job Interest",
+        "enum": ["Sales Broker", "Property Manager"],
+        "type": "string"
+      },
+      "powf_183a105923d4e5118112c4346bb5981c": {
+        "name": "powf_183a105923d4e5118112c4346bb5981c",
+        "title": "Resume",
+        "type": "string"
+      },
+      "powf_42573b9313dbe5118114c4346bb5981c": {
+        "name": "powf_42573b9313dbe5118114c4346bb5981c",
+        "type": "string"
+      },
+      "ignore_submitmessage": {
+        "name": "ignore_submitmessage",
+        "type": "string"
+      },
+      "ignore_linkbuttontext": {
+        "name": "ignore_linkbuttontext",
+        "type": "string"
+      },
+      "ignore_redirectmode": {
+        "name": "ignore_redirectmode",
+        "type": "string"
+      }
+    }
+  },
+  "uiSchema": {
+    "powf_351e0689d6d1e511810fc4346bace18c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_58bb03a2d6d1e511810fc4346bace18c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_e70b12cad6d1e511810fc4346bace18c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_7352d601d7d1e511810fc4346bace18c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_abf61434d7d1e511810fc4346bace18c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_63a6a346d7d1e511810fc4346bace18c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_f9726b7ed7d1e511810fc4346bace18c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_666689c1d7d1e511810fc4346bace18c": {
+      "ui:widget": "CustomSelectTextElement"
+    },
+    "powf_183a105923d4e5118112c4346bb5981c": {
+      "ui:widget": "file"
+    },
+    "powf_8e5f38f8d7d1e511810fc4346bace18c": {
+      "ui:widget": "hidden"
+    },
+    "powf_42573b9313dbe5118114c4346bb5981c": {
+      "ui:widget": "hidden"
+    },
+    "ignore_submitmessage": {
+      "ui:widget": "hidden"
+    },
+    "ignore_linkbuttontext": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirecturl": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirectmode": {
+      "ui:widget": "hidden"
+    }
+  }
+}

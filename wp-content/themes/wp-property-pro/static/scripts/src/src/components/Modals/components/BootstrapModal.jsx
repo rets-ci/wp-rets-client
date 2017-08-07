@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
-import JSONSchemaFormContainer from '../../Forms/JSONSchemaFormContainer.jsx';
 
-
-class FormModalContainer extends Component {
+class BootstrapModal extends Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
     title: PropTypes.string,
@@ -14,35 +12,32 @@ class FormModalContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showForm: false
+      showBody: false
     };
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.open !== this.props.open) {  
-      this.toggleModal(this.formId(this.props.id), nextProps.open);
+      this.toggleModal(this.props.id, nextProps.open);
     }
-  }
-
-  formId(id) {
-    return Lib.FORM_MODAL_PREFIX_ACTION + id;
   }
 
   toggleModal(formId, open) {
     if (open) {
      jQuery('#' + formId).modal('show'); 
      this.setState({
-       showForm: true
+       showBody: true
      });
     } else {
       jQuery('#' + formId).modal('hide'); 
       this.setState({
-       showForm: false
+       showBody: false
      });
     }
   }
 
   componentDidMount() {
-    let formId = this.formId(this.props.id);
+    console.log('from Bootstrap Modal');
+    let formId = this.props.id;
     this.toggleModal(formId, this.props.open);
     let self = this;
     jQuery('#' + formId).on('hidden.bs.modal', e => {
@@ -52,15 +47,17 @@ class FormModalContainer extends Component {
   
   render() {
     let {
-      showForm
+      showBody
     } = this.state;
     let {
+      children,
       title,
       id,
       jsonSchemaForm
     } = this.props;
+    let body = showBody ? children : null;
     return (
-      <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}modal ${Lib.THEME_CLASSES_PREFIX}form-modal`} id={this.formId(this.props.id)} tabIndex="-1" role="dialog" aria-labelledby={this.formId(this.props.id)} aria-hidden="true">
+      <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}modal ${Lib.THEME_CLASSES_PREFIX}form-modal`} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -70,15 +67,13 @@ class FormModalContainer extends Component {
               </button>
             </div>
             <div className="modal-body">
-              {showForm &&
-                <ChildElement />
-              }
+              {body}
             </div>
           </div>
         </div>
       </div>
     );
   }
-};
+}
 
-export default FormModalContainer;
+export default BootstrapModal;
