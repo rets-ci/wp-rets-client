@@ -2457,6 +2457,12 @@ p.propertypro-gentle-error {
     color:red;
 }
 
+.propertypro-form-modal form .help-block {
+    color: #8b8c8d;
+    padding-left: 0.05rem;
+    font-size: 0.75rem;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*  Additional Rules
 /*-----------------------------------------------------------------------------------*/
