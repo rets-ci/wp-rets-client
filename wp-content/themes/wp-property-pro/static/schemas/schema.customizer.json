@@ -147,6 +147,21 @@
           "selector": [
             ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.propertypro-active a"
           ]
+        },
+        {
+          "style": "background",
+          "important": true,
+          "selector": [
+            "#nprogress .propertypro-bar",
+            "#nprogress .propertypro-bar .peg"
+          ]
+        },
+        {
+          "style": "color",
+          "important": true,
+          "selector": [
+            "#nprogress .propertypro-bar .peg"
+          ]
         }
       ]
     },
