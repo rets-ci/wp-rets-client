@@ -652,7 +652,6 @@ namespace UsabilityDynamics {
     private static function property_pro_rebuild_builder_content($content, $post_id)
     {
 
-      wp_cache_flush();
       $rows = [];
 
       $posts_array_for_caching = [];
