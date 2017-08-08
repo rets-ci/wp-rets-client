@@ -19,8 +19,11 @@ class ImageMixer extends Component {
     };
   }
   
-  imageMixerClicked = () => {
-    this.setState({ lightboxIsOpen: true });
+  imageMixerClicked(imgIndex) {
+    this.setState({
+      lightboxIsOpen: true,
+      currentLightboxImage: imgIndex,
+    });
   }
 
   closeLightbox = () => {
@@ -66,7 +69,7 @@ class ImageMixer extends Component {
 
     const desktopSwiper = (
       <Swiper {...desktopSwiperParams}>
-        <div className="swiper-slide" key={0}>
+        <div className="swiper-slide" key={0} onClick={this.imageMixerClicked.bind(this, 0)}>
           <div
             className="swiper-lazy img-lg"
             style={{ backgroundImage: `url(${images[0]})` }}
@@ -79,10 +82,12 @@ class ImageMixer extends Component {
               <div
                 className="swiper-lazy img-sm"
                 style={{ backgroundImage: `url(${subset[0]})` }}
+                onClick={this.imageMixerClicked.bind(this, index * 2 + 1)}
               />
               <div
                 className="swiper-lazy img-sm"
                 style={{ backgroundImage: `url(${subset[1]})` }}
+                onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
               />
             </div>
           ))
