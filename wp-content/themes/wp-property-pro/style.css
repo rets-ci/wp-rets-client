@@ -1955,7 +1955,7 @@ p.propertypro-gentle-error {
     width: auto;
 }
 
-.propertypro-image-mixer .img-sm, .propertypro-image-mixer .img-lg {
+.propertypro-image-mixer .img-sm, .propertypro-image-mixer .img-lg, .propertypro-image-mixer .img-mobile {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
