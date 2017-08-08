@@ -159,15 +159,6 @@ namespace UsabilityDynamics {
           $property_single_url = array_pop($property_single_url_array);
       }
 
-      /** Get property types */
-      $property_types = [];
-      $property_types_array = get_terms([
-        'taxonomy' => 'wpp_listing_type'
-      ]);
-
-      foreach($property_types_array as $type){
-        $property_types[$type->slug] = $type->name;
-      }
 
       $params = [
         'site_url' => site_url(),
@@ -180,8 +171,7 @@ namespace UsabilityDynamics {
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
         'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : '',
-        'property_single_url' => $property_single_url,
-        'property_types' => $property_types
+        'property_single_url' => $property_single_url
       ];
 
       /** Custom elastic press index */
@@ -194,6 +184,48 @@ namespace UsabilityDynamics {
         if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
           $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
         }
+
+        /** Build search options array for search type dropDown at search result page */
+        $taxonomy = 'wpp_listing_type';
+
+        $search_options = [];
+        $delimiter = '-';
+
+        $all_property_types = array_map(function($t){
+          return $t->slug;
+        }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
+          return $t->parent;
+        }));
+
+        /** Build search options array */
+        foreach ([
+                   'Rent',
+                   'Sale',
+                   'Land',
+                   'Commercial'
+                 ] as $label) {
+
+
+          $sale_type = $label;
+          if (in_array($label, ['Rent', 'Sale']))
+            $key = implode($delimiter, $all_property_types);
+          else {
+            $term = get_term_by('slug', $label, $taxonomy);
+            $types = array_map(function ($id) use ($taxonomy) {
+              return get_term_by('id', $id, $taxonomy)->slug;
+            }, get_term_children($term->term_id, $taxonomy));
+            $key = implode($delimiter, $types);
+            $sale_type = 'Sale';
+          }
+
+          $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
+            'type' => 'checkbox',
+            'default' => false,
+            'label' => __($label, 'wp-property-pro'),
+          ];
+        }
+
+        $params['search_options'] = $search_options;
       }
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
@@ -706,11 +738,18 @@ namespace UsabilityDynamics {
                 $formatted_post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
                 $formatted_post->living_area = isset($property_detail['wpp_total_living_are']) ? $property_detail['wpp_total_living_are'] : '';
                 $formatted_post->zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
-                $listing_types_array = get_the_terms($postId, 'wpp_listing_type');
-                $formatted_post->type = $listing_types_array && isset($listing_types_array[0]->name) ? $listing_types_array[0]->name : ucfirst($formatted_post->property_type);
                 $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
                 $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
                 $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
+
+                $types = get_the_terms($postId, 'wpp_listing_type');
+                foreach ($types as $type){
+                  if($type->parent === 0){
+                    $formatted_post->type = $type->slug;
+                  }else{
+                    $formatted_post->sub_type = $type->name;
+                  }
+                }
 
                 /** Get city  */
                 $city_term = array_filter(array_map(function ($term) {

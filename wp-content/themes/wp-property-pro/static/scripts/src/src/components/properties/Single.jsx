@@ -48,6 +48,7 @@ class Single extends Component {
       rets_city,
       rets_high_school,
       rets_state,
+      formatted_address_simple,
       rets_list_price,
       rets_living_area,
       rets_lot_size_area,
@@ -55,10 +56,29 @@ class Single extends Component {
       rets_postal_code,
       rets_year_built,
       wpp_location_subdivision,
-      wpp_location_city
+      wpp_location_city,
+      listing_type,
+      listing_sub_type,
     } = this.props;
     let daysOnWebsite = daysPassedSincePostedDate(post_date);
     let lastUpdated = getLastUpdated(post_date);
+
+    let info_box = `<li>${listing_sub_type}</li>`;
+    info_box += `<li>${rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>`;
+
+    switch (listing_type){
+      case 'land':
+        info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
+        break;
+      case 'commercial':
+        info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+        break;
+      default:
+        info_box += `<li>${beds} Beds</li>`;
+        info_box += `<li>${baths} Baths</li>`;
+        info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+    }
+
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []} />
@@ -66,27 +86,9 @@ class Single extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{post_title}</h4>
+                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{formatted_address_simple}</h4>
                 <h6 className="mb-3 text-muted">{rets_city ? rets_city + "," : null} {rets_state} {rets_postal_code}</h6>
-                <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>
-                  <li>{rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>
-                  {beds ?
-                    <li>{beds} Bed</li>
-                    : null
-                  }
-                  {baths ?
-                    <li>{baths} Bath</li>
-                    : null
-                  }
-                  {rets_living_area ? 
-                    <li>{Util.formatSQFTValue(rets_living_area)} SF</li>
-                    : null
-                  }
-                  {rets_lot_size_area ? 
-                    <li>{Util.formatLotSizeValue(rets_lot_size_area)} Acers</li>
-                    : null
-                  }
-                </ul>
+                <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
                 <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button card-link`}>Request Showing</button>
                 <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button card-link`}>Request Application</button>
               </div>
