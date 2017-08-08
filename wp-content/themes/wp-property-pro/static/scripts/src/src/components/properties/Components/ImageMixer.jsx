@@ -1,18 +1,10 @@
-import {Lib} from '../../../lib.jsx';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import LoadingCircle from '../../LoadingCircle.jsx';
 import Lightbox from 'react-images';
-import Preload from 'react-preload';
+import Swiper from 'react-id-swiper';
 
-function imageSizeNameAppended(image, width, height) {
-  let strArr = image.split('.');
-  // '- 2' gets you the actual path
-  let path = strArr[strArr.length - 2];
-  let newPath = path + '-' + width + 'x' + height;
-  strArr[strArr.length - 2] = newPath;
-  return strArr.join('.');
-}
+import { Lib } from '../../../lib.jsx';
+
 
 class ImageMixer extends Component {
   static propTypes = {
@@ -27,81 +19,93 @@ class ImageMixer extends Component {
     };
   }
   
-  imageMixerClicked() {
-    this.setState({
-      lightboxIsOpen: true
-    });
+  imageMixerClicked = () => {
+    this.setState({ lightboxIsOpen: true });
   }
 
-  closeLightbox() {
-    this.setState({
-      lightboxIsOpen: false
-    });
+  closeLightbox = () => {
+    this.setState({ lightboxIsOpen: false });
   }
 
-  gotoNext() {
-    this.setState({
-			currentLightboxImage: this.state.currentLightboxImage + 1,
-		});
+  gotoNext = () => {
+    this.setState({ currentLightboxImage: this.state.currentLightboxImage + 1 });
   }
 
-  gotoPrevious () {
-		this.setState({
-			currentLightboxImage: this.state.currentLightboxImage - 1,
-		});
+  gotoPrevious = () => {
+		this.setState({ currentLightboxImage: this.state.currentLightboxImage - 1 });
 	}
-
-  handleImageLoadError() {
-    console.warn('error loading images');
-  }
-
-  handleImageLoadSuccess() {
-    console.warn('successful loading');
-  }
 
   render() {
     let {
       images
     } = this.props;
+
     let LightboxImages = images.map(i => ({
       src: i
     }));
-    let imagesSubset = images.slice(0, 8);
-    imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 460, 460);
-    let loadingContainer = (<LoadingCircle containerHeight="600px" verticallyCentered={true} />);
-    return (
-      <Preload
-        autoResolveDelay={3000}
-        loadingIndicator={loadingContainer}
-        images={imagesSubset}
-        onError={this.handleImageLoadError}
-        onSuccess={this.handleImageLoadSuccess}
-        resolveOnError={true}
-        mountChildren={true}
-        >
-          <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer`} onClick={this.imageMixerClicked.bind(this)}>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}large-img-container`}>
-              <img src={imagesSubset[0] || ""} width="600" height="600" />
-            </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}wrap`}>
-              {imagesSubset.slice(1, 8).map((src, index) =>
-                <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer-box`} key={index}>
-                  <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer-boxInner`}>
-                    <img src={src} width="460" height="460" />
-                  </div>
-                </div>
-              )}
-            </div>
-            <Lightbox
-              currentImage={this.state.currentLightboxImage}
-              images={LightboxImages}
-              isOpen={this.state.lightboxIsOpen}
-              onClickNext={this.gotoNext.bind(this)}
-              onClickPrev={this.gotoPrevious.bind(this)}
-              onClose={this.closeLightbox.bind(this)}
-            />
+
+    let smImagesSet = []
+    for (let i = 1; i < images.length; i = i + 2) {
+      const subset = [ images[i] ]
+      if ( i + 1 < images.length ) {
+        subset.push(images[i + 1]);
+      }
+      smImagesSet.push(subset);
+    }
+
+    const desktopSwiperParams = {
+      freeMode: true,
+      slidesPerView: 'auto',
+      spaceBetween: 5,
+      preloadImages: false,
+      lazyLoading: true,
+      onInit: (swiper) => {
+        this.swiper = swiper;
+      },
+    };
+
+    const desktopSwiper = (
+      <Swiper {...desktopSwiperParams}>
+        <div className="swiper-slide" key={0}>
+          <div
+            className="swiper-lazy img-lg"
+            style={{ backgroundImage: `url(${images[0]})` }}
+          >
+            <div className="swiper-lazy-preloader"></div>
           </div>
-      </Preload>
+        </div>
+        { smImagesSet.map((subset, index) => (
+            <div className="swiper-slide" key={index + 1}>
+              <div
+                className="swiper-lazy img-sm"
+                style={{ backgroundImage: `url(${subset[0]})` }}
+              />
+              <div
+                className="swiper-lazy img-sm"
+                style={{ backgroundImage: `url(${subset[1]})` }}
+              />
+            </div>
+          ))
+        }
+      </Swiper>
+    );
+
+
+    return (
+      <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer`}>
+        {
+          desktopSwiper
+        }
+        
+        <Lightbox
+          currentImage={this.state.currentLightboxImage}
+          images={LightboxImages}
+          isOpen={this.state.lightboxIsOpen}
+          onClickNext={this.gotoNext}
+          onClickPrev={this.gotoPrevious}
+          onClose={this.closeLightbox}
+        />
+      </div>
     )
   }
 }

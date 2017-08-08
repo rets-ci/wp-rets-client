@@ -62,4 +62,5 @@ export const Lib = {
   HEADER_SEARCH_HEIGHT: 80,
   MAP_CHANGE_BOUNDS_INTERVAL: 1000,
   MAP_CHANGE_ZOOM_LIMIT: 14,
+  IS_MOBILE_VIEW: window.innerWidth < 768,
 };

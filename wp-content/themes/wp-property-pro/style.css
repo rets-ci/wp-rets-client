@@ -1937,7 +1937,31 @@ p.propertypro-gentle-error {
 
 .propertypro-image-mixer {
     background: #eceeef;
-    overflow: hidden;
+    min-height: 37.5rem;
+}
+
+.propertypro-image-mixer .swiper-slide {
+    width: auto;
+}
+
+.propertypro-image-mixer .img-sm, .propertypro-image-mixer .img-lg {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.propertypro-image-mixer .img-sm {
+    width: 18.625rem;
+    height: 18.625rem;
+}
+
+.propertypro-image-mixer .img-sm:first-child {
+    margin-bottom: 0.25rem;
+}
+
+.propertypro-image-mixer .img-lg {
+    width: 37.5rem;
+    height: 37.5rem;
 }
 
 .propertypro-image-mixer .propertypro-wrap {
