@@ -64,19 +64,34 @@ class Single extends Component {
     let lastUpdated = getLastUpdated(post_date);
 
     let info_box = `<li>${listing_sub_type}</li>`;
-    info_box += `<li>${rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>`;
+
+    if(rets_list_price){
+      info_box += `<li>${rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>`;
+    }
 
     switch (listing_type){
       case 'land':
-        info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
+        if(rets_lot_size_area){
+          info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
+        }
         break;
       case 'commercial':
-        info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+        if(rets_living_area){
+          info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+        }
         break;
       default:
-        info_box += `<li>${beds} Beds</li>`;
-        info_box += `<li>${baths} Baths</li>`;
-        info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+        if(beds){
+          info_box += `<li>${beds} Beds</li>`;
+        }
+
+        if(baths){
+          info_box += `<li>${baths} Baths</li>`;
+        }
+
+        if(!!+rets_living_area){
+          info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+        }
     }
 
     return (
