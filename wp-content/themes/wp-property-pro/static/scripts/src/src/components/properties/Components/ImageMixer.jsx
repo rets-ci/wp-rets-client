@@ -30,13 +30,21 @@ class ImageMixer extends Component {
     this.setState({ lightboxIsOpen: false });
   }
 
-  gotoNext = () => {
+  onLightboxNext = () => {
     this.setState({ currentLightboxImage: this.state.currentLightboxImage + 1 });
   }
 
-  gotoPrevious = () => {
+  onLightboxPrev = () => {
 		this.setState({ currentLightboxImage: this.state.currentLightboxImage - 1 });
 	}
+
+  handleNavigation(direction) {
+    if (direction === 'next') {
+      this.swiper.slideNext();
+    } else if (direction === 'prev') {
+      this.swiper.slidePrev();
+    }
+  }
 
   render() {
     let {
@@ -125,19 +133,42 @@ class ImageMixer extends Component {
 
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer ${Lib.THEME_CLASSES_PREFIX}card-img`}>
         {
           Lib.IS_MOBILE_VIEW
             ? mobileSwiper
             : desktopSwiper
         }
+
+        <div className={`${Lib.THEME_CLASSES_PREFIX}direction-nav-container`}>
+          <ul className={`${Lib.THEME_CLASSES_PREFIX}direction-nav nav text-center`}>
+            <li className="nav-item mr-auto">
+              <a href="#"
+                className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`}
+                onClick={e => {
+                  e.preventDefault();
+                  this.handleNavigation.bind(this)('prev');
+                }}
+              ></a>
+            </li>
+            <li className="nav-item">
+              <a href="#"
+                className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
+                onClick={e => {
+                  e.preventDefault();
+                  this.handleNavigation.bind(this)('next');
+                }}
+              ></a>
+            </li>
+          </ul>
+        </div>
         
         <Lightbox
           currentImage={this.state.currentLightboxImage}
           images={LightboxImages}
           isOpen={this.state.lightboxIsOpen}
-          onClickNext={this.gotoNext}
-          onClickPrev={this.gotoPrevious}
+          onClickNext={this.onLightboxNext}
+          onClickPrev={this.onLightboxPrev}
           onClose={this.closeLightbox}
         />
       </div>
