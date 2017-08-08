@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import Api from '../../containers/Api.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Single from './Single.jsx';
 
@@ -16,13 +16,17 @@ let singlePropertyData = (data) => {
     wpp_media
   } = data._source;
 
+  let listing_type = _.get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
+  let listing_sub_type = _.get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
+
+  let formatted_address_simple = _.get(post_meta, 'formatted_address_simple', null);
   let rets_list_price = _.get(post_meta, 'rets_list_price', null);
   let rets_living_area = _.get(post_meta, 'rets_living_area', null);
   let rets_lot_size_area = _.get(post_meta, 'rets_lot_size_area', null);
   let baths  = _.get(post_meta, 'rets_total_baths', null);
   let rets_postal_code = _.get(post_meta, 'rets_postal_code', null);
   let rets_year_built = _.get(post_meta, 'rets_year_built', null);
-  let beds = _.get(post_meta, 'beds', null);
+  let beds = _.get(post_meta, 'rets_beds', null);
 
   let rets_city = _.get(tax_input, 'rets_city', null);
   let rets_middle_school = _.get(tax_input, 'rets_middle_school', null);
@@ -46,6 +50,7 @@ let singlePropertyData = (data) => {
     post_title,
     rets_city: _.get(rets_city, 'rets_city[0].name', null),
     rets_state: _.get(rets_state, 'rets_state[0].name', null),
+    formatted_address_simple,
     rets_list_price,
     rets_living_area,
     rets_lot_size_area,
@@ -55,6 +60,8 @@ let singlePropertyData = (data) => {
     rets_year_built,
     wpp_location_subdivision: _.get(wpp_location_subdivision, '[0].name', null),
     wpp_location_city: _.get(wpp_location_city, '[0].name'),
+    listing_type,
+    listing_sub_type,
     ...data
   }
 }
