@@ -34,7 +34,7 @@ export default class Map extends Component {
       dragMode: false
     };
 
-    this.onChangeMapBounds = debounce(this.onChangeMapBounds, 1000);
+    this.onChangeMapBounds = debounce(this.onChangeMapBounds, Lib.MAP_BOUNDS_CHANGE_INTERVAL);
   }
 
   calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
@@ -157,7 +157,7 @@ export default class Map extends Component {
 
   onChangeMapBounds = () => {
     // only trigger the Geo change at a certain zoom level
-    if (this.map.getZoom() >= 14) {
+    if (this.map.getZoom() >= Lib.MAP_CHANGE_ZOOM_LIMIT) {
       return;
     }
 

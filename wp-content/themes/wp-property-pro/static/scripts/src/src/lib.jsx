@@ -60,4 +60,6 @@ export const Lib = {
   LOCATION_MODAL_REQUESTS_DELAY: 500,
   GOOGLE_STREETVIEW_URL: 'https://maps.googleapis.com/maps/api/streetview',
   HEADER_SEARCH_HEIGHT: 80,
+  MAP_CHANGE_BOUNDS_INTERVAL: 1000,
+  MAP_CHANGE_ZOOM_LIMIT: 14,
 };
