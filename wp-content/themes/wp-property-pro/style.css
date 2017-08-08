@@ -2610,12 +2610,8 @@ p.propertypro-gentle-error {
 
 /* nprogress */
 
-#nprogress .propertypro-bar {
-    background: #d03528 !important;
-}
-
 #nprogress .propertypro-bar .peg {
-    box-shadow: 0 0 10px #d03528, 0 0 5px #d03528 !important;
+    box-shadow: 0 0 10px #fff, 0 0 5px #fff !important;
 }
 
 /* noUISlider related CSS and override rules */

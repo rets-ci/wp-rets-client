@@ -67,6 +67,7 @@ export default class CarouselOnMap extends Component {
               lots_size: _.get(p, '_source.post_meta.rets_lot_size_area', 0),
               price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
               post_name: _.get(p, '_source.post_name', 0),
+              state: _.get(p, '_source.tax_input.wpp_location.wpp_location_state[0].name', ''),
               type: _.get(p, '_source.tax_input.wpp_listing_type.listing_type[0].slug', ''),
               sub_type: _.get(p, '_source.tax_input.wpp_listing_type.listing_sub_type[0].name', ''),
               relative_permalink: _.get(p, '_source.permalink', ''),

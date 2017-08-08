@@ -651,6 +651,7 @@ namespace UsabilityDynamics {
      */
     private static function property_pro_rebuild_builder_content($content, $post_id)
     {
+
       $rows = [];
 
       $posts_array_for_caching = [];
@@ -751,15 +752,25 @@ namespace UsabilityDynamics {
                   }
                 }
 
+                $wpp_location_terms = get_the_terms($postId, 'wpp_location');
+
                 /** Get city  */
                 $city_term = array_filter(array_map(function ($term) {
                   $term->term_type = get_term_meta($term->term_id, '_type', true);
                   return $term;
-                }, get_the_terms($postId, 'wpp_location')), function ($term) {
+                }, $wpp_location_terms), function ($term) {
                   return $term->term_type === 'wpp_location_city';
                 });
                 $formatted_post->city = $city_term ? array_shift($city_term)->name : '';
 
+                /** Get city  */
+                $state_term = array_filter(array_map(function ($term) {
+                  $term->term_type = get_term_meta($term->term_id, '_type', true);
+                  return $term;
+                }, $wpp_location_terms), function ($term) {
+                  return $term->term_type === 'wpp_location_state';
+                });
+                $formatted_post->state = $state_term ? array_shift($state_term)->name : '';
 
                 /** Get gallery images */
                 $formatted_post->gallery_images = [];
