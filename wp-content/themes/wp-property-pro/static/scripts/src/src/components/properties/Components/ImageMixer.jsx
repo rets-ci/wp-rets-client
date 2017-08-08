@@ -67,12 +67,24 @@ class ImageMixer extends Component {
       },
     };
 
-    const desktopSwiper = (
+    const mobileSwiperParams = {
+      spaceBetween: 30,
+      preloadImages: false,
+      lazyLoading: true,
+      lazyLoadingInPrevNext: true,
+      lazyLoadingInPrevNextAmount: 3,
+      lazyLoadingOnTransitionStart: true,
+      onInit: (swiper) => {
+        this.swiper = swiper;
+      },
+    };
+
+    const desktopSwiper = Lib.IS_MOBILE_VIEW === false && (
       <Swiper {...desktopSwiperParams}>
         <div className="swiper-slide" key={0} onClick={this.imageMixerClicked.bind(this, 0)}>
           <div
             className="swiper-lazy img-lg"
-            style={{ backgroundImage: `url(${images[0]})` }}
+            data-background={ images[0] }
           >
             <div className="swiper-lazy-preloader"></div>
           </div>
@@ -81,14 +93,30 @@ class ImageMixer extends Component {
             <div className="swiper-slide" key={index + 1}>
               <div
                 className="swiper-lazy img-sm"
-                style={{ backgroundImage: `url(${subset[0]})` }}
+                style={{ backgroundImage : `url(${subset[0]})` }}
                 onClick={this.imageMixerClicked.bind(this, index * 2 + 1)}
               />
               <div
                 className="swiper-lazy img-sm"
-                style={{ backgroundImage: `url(${subset[1]})` }}
+                style={{ backgroundImage : `url(${subset[1]})` }}
                 onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
               />
+            </div>
+          ))
+        }
+      </Swiper>
+    );
+
+    const mobileSwiper = Lib.IS_MOBILE_VIEW === true && (
+      <Swiper {...mobileSwiperParams}>
+        { images.length && images.map((img, index) => (
+            <div className="swiper-slide" key={index} onClick={this.imageMixerClicked.bind(this, index)}>
+              <div
+                className="swiper-lazy img-mobile"
+                data-background={ img }
+              >
+                <div className="swiper-lazy-preloader"></div>
+              </div>
             </div>
           ))
         }
@@ -99,7 +127,9 @@ class ImageMixer extends Component {
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer`}>
         {
-          desktopSwiper
+          Lib.IS_MOBILE_VIEW
+            ? mobileSwiper
+            : desktopSwiper
         }
         
         <Lightbox
