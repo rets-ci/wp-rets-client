@@ -254,7 +254,7 @@ class LocationModal extends Component {
                     <i className="fa fa-search"></i>
                   </div>
 
-                  <div className="p-2 col-xl-10 col-lg-10 my-auto">
+                  <div className="p-2 col-xl-10 col-lg-9 my-auto">
                     <input
                       autoComplete="off"
                       className={inputClasses}
@@ -269,7 +269,7 @@ class LocationModal extends Component {
                     />
                   </div>
 
-                  <div className="p-2 my-auto">
+                  <div className="p-2 my-auto hidden-sm-down">
                     <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>
                       Search
                     </button>

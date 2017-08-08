@@ -1,8 +1,11 @@
-import {isEqual} from 'lodash';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
+
 import Util from '../Util.jsx';
-import {Lib} from '../../lib.jsx';
+import { Lib } from '../../lib.jsx';
+
 
 let defaultIcon = {
   url: bundle.static_images_url + 'oval-3-25.png',
@@ -13,6 +16,8 @@ let selectedIcon = {
 };
 
 let defaultZoom = 9;
+
+const isMobile = window.innerWidth < Lib.MOBILE_WIDTH;
 
 export default class Map extends Component {
   static propTypes = {
@@ -28,6 +33,8 @@ export default class Map extends Component {
     this.state = {
       dragMode: false
     };
+
+    this.onChangeMapBounds = debounce(this.onChangeMapBounds, 1000);
   }
 
   calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
@@ -109,7 +116,8 @@ export default class Map extends Component {
         mapTypeControlOptions: {mapTypeIds: []},
         scrollwheel: false,
         streetViewControl: false,
-        zoom: defaultZoom
+        zoom: defaultZoom,
+        zoomControl: isMobile === false,
       });
     } else {
       this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));
@@ -144,28 +152,32 @@ export default class Map extends Component {
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     this.setMapCoordinates(coordinates);
     // this.setPropertyMarkers(this.props.properties);
-    this.map.addListener('dragend', () => {
-      // only trigger the Geo change at a certain zoom level
-      if (this.map.getZoom() < 14) {
-        let bounds = this.map.getBounds();
-        let ne = bounds.getNorthEast();
-        let sw = bounds.getSouthWest();
-        this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
-          {
-            ne: {
-              lat: ne.lat(),
-              lon: ne.lng()
-            },
-            sw: {
-              lat: sw.lat(),
-              lon: sw.lng()
-            }
-          }));
-        // set localState to distinguish between initial load and dragging in componentWillReceiveProps
-        this.setState({
-          dragMode: true
-        });
-      }
+    this.map.addListener('bounds_changed', this.onChangeMapBounds);
+  }
+
+  onChangeMapBounds = () => {
+    // only trigger the Geo change at a certain zoom level
+    if (this.map.getZoom() >= 14) {
+      return;
+    }
+
+    let bounds = this.map.getBounds();
+    let ne = bounds.getNorthEast();
+    let sw = bounds.getSouthWest();
+    this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
+      {
+        ne: {
+          lat: ne.lat(),
+          lon: ne.lng()
+        },
+        sw: {
+          lat: sw.lat(),
+          lon: sw.lng()
+        }
+      }));
+    // set localState to distinguish between initial load and dragging in componentWillReceiveProps
+    this.setState({
+      dragMode: true
     });
   }
 
