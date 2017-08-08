@@ -47,6 +47,7 @@ export default class PropertyCard extends Component {
       post_name,
       thumbnail,
       type,
+      sub_type,
       zip
     } = this.props.data;
 
@@ -67,17 +68,17 @@ export default class PropertyCard extends Component {
     let link = '/' + bundle.property_single_url + '/' + post_name;
     let classes;
 
-    let info_box = `<li>${type}</li>`;
+    let info_box = `<li>${sub_type}</li>`;
 
-    if (property_type !== 'commercial' && property_type !== 'land') {
+    if (type !== 'commercial' && type !== 'land') {
       info_box += `<li>${beds} Bed</li><li>${baths} Bath</li>`;
     }
 
-    if (property_type !== 'land' && !!+living_area[0]) {
+    if (type !== 'land' && !!+living_area[0]) {
       info_box += `<li>${Util.formatSQFTValue(living_area)} SF</li>`;
     }
 
-    if (property_type === 'land') {
+    if (type === 'land') {
       info_box += `<li>${lots_size} Acres</li>`;
     }
 
