@@ -108,7 +108,8 @@ class MapSearchResults extends Component {
   }
 
   componentDidMount() {
-    this.applyQueryFilters();
+    // map initialization will call `updateURIGeoCoordinates`
+    // this.applyQueryFilters();
   }
 
   componentWillReceiveProps(nextProps) {
