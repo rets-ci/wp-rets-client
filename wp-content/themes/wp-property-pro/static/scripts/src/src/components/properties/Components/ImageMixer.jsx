@@ -84,10 +84,10 @@ class ImageMixer extends Component {
               <img src={imagesSubset[0] || ""} width="600" height="600" />
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}wrap`}>
-              {imagesSubset.slice(1, 8).map(i =>
-                <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer-box`}>
+              {imagesSubset.slice(1, 8).map((src, index) =>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer-box`} key={index}>
                   <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer-boxInner`}>
-                    <img src={i} width="460" height="460" />
+                    <img src={src} width="460" height="460" />
                   </div>
                 </div>
               )}
