@@ -191,10 +191,13 @@ namespace UsabilityDynamics {
         $search_options = [];
         $delimiter = '-';
 
-        $all_property_types = array_map(function($t){
+        $_property_types = array_map(function($t){
           return $t->slug;
         }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
-          return $t->parent;
+          if($t->parent){
+            $parent_term = get_term($t->parent);
+          }
+          return $t->parent && !in_array($parent_term->name, ['Land', 'Commercial']);
         }));
 
         /** Build search options array */
@@ -208,7 +211,7 @@ namespace UsabilityDynamics {
 
           $sale_type = $label;
           if (in_array($label, ['Rent', 'Sale']))
-            $key = implode($delimiter, $all_property_types);
+            $key = implode($delimiter, $_property_types);
           else {
             $term = get_term_by('slug', $label, $taxonomy);
             $types = array_map(function ($id) use ($taxonomy) {
