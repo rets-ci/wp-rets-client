@@ -25,22 +25,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
-let origUrl = null;
-
 class HeaderSearch extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount(){
-    origUrl = window.location.href;
-  }
-
   handleSaleSelectionItemClick(event, saleItem) {
     event.preventDefault();
 
-    // Set url to original url, because changing search type should remove all filters
-    let url = new URI(origUrl);
+    let url = new URI(window.location.href);
 
     let labelsArr = saleItem.split(Lib.STRING_ARRAY_DELIMITER);
     let saLeType = labelsArr[1];
@@ -83,27 +76,29 @@ class HeaderSearch extends Component {
     let chosen = null;
 
     // Build options object for dropDown search type filter and detect chosen type for displaying
-    for(let option in search_options ){
+    for (let option in search_options) {
       let optionPieces = option.split('-');
 
-      if(_.isEmpty(optionPieces)){
+      if (_.isEmpty(optionPieces)) {
         continue;
       }
 
+      let searchType = optionPieces[0] === 'Sale' ? 'Buy' : optionPieces[0];
+
       //@TODO hack mapping for values
-      let origTitle = optionPieces[0];
-      if(optionPieces[0] === 'Sale'){
+      if (optionPieces[0] === 'Sale') {
         optionPieces[0] = 'Buy';
+        optionPieces[1] = 'Buy';
       }
 
-      options[optionPieces[0]] = option;
+      options[optionPieces[0]] = optionPieces.join('-');
 
       // found selected value
       if(currentFilter === [_.slice(optionPieces, 2).join(Lib.STRING_ARRAY_DELIMITER)].join(Lib.STRING_ARRAY_DELIMITER)){
         if(_.isEmpty(chosen)){
           chosen = optionPieces[0];
         }else{
-          if(saleType === origTitle){
+          if(saleType === searchType){
             chosen = optionPieces[0];
           }
         }
