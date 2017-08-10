@@ -18,7 +18,7 @@ const DefaultLayout = ({item}) => {
             {
               _.get(item, 'subtitle', null)
                 ?
-                <p className={`${Lib.THEME_CLASSES_PREFIX}padded-on-desktop`}>{item.subtitle}</p>
+                <p>{item.subtitle}</p>
                 : null
             }
           </div>

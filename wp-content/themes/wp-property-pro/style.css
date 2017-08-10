@@ -2763,7 +2763,7 @@ p.propertypro-gentle-error {
         width: 50%;
     }
 
-    .propertypro-widget-tour .propertypro-headtitle p.propertypro-padded-on-desktop {
+    .propertypro-widget-tour .propertypro-headtitle p {
         padding: 0 20rem;
     }
 }
