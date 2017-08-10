@@ -7,7 +7,7 @@ class BootstrapModal extends Component {
     closeModal: PropTypes.func.isRequired,
     title: PropTypes.string,
     id: PropTypes.string,
-    jsonSchemaForm: PropTypes.object.isRequired
+    jsonSchemaForm: PropTypes.object
   }
   constructor(props) {
     super(props);
@@ -36,7 +36,6 @@ class BootstrapModal extends Component {
   }
 
   componentDidMount() {
-    console.log('from Bootstrap Modal');
     let formId = this.props.id;
     this.toggleModal(formId, this.props.open);
     let self = this;
@@ -51,23 +50,30 @@ class BootstrapModal extends Component {
     } = this.state;
     let {
       children,
-      title,
       id,
-      jsonSchemaForm
+      jsonSchemaForm,
+      ...other
     } = this.props;
     let body = showBody ? children : null;
     return (
-      <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}modal ${Lib.THEME_CLASSES_PREFIX}form-modal`} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
+      <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}modal`} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title mx-auto" id="modalLabel">{title}</h5>
+              <h5 className="modal-title mx-auto" id="modalLabel">{jsonSchemaForm.title}</h5>
               <button type="button" className="close" aria-label="Close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className="modal-body">
-              {body}
+              {showBody &&
+                <div>
+                  {React.Children.map(this.props.children, (child, i) => React.cloneElement(child, {
+                    jsonSchemaForm: jsonSchemaForm,
+                    ...other
+                  }))}
+                </div>
+              }
             </div>
           </div>
         </div>

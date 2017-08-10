@@ -51285,6 +51285,14 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _AgentCard = __webpack_require__(771);
+
+	var _AgentCard2 = _interopRequireDefault(_AgentCard);
+
+	var _FormFetcher = __webpack_require__(772);
+
+	var _FormFetcher2 = _interopRequireDefault(_FormFetcher);
+
 	var _lodash = __webpack_require__(293);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -51611,6 +51619,17 @@
 	                'p',
 	                { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'info-description' },
 	                'Information Not Guaranteed. \xA9 Triangle MLS Inc. All rights reserved. Listings marked with a TMLSidx icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-12 mb-5' },
+	              _react2.default.createElement(
+	                _FormFetcher2.default,
+	                { formId: 'form-request-showing' },
+	                _react2.default.createElement(_AgentCard2.default, {
+	                  phoneNumber: '919-123-3123'
+	                })
 	              )
 	            )
 	          )
@@ -98133,13 +98152,17 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _Api = __webpack_require__(294);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
 	var _BootstrapModal = __webpack_require__(637);
 
 	var _BootstrapModal2 = _interopRequireDefault(_BootstrapModal);
 
-	var _Api = __webpack_require__(294);
+	var _FormFetcher = __webpack_require__(772);
 
-	var _Api2 = _interopRequireDefault(_Api);
+	var _FormFetcher2 = _interopRequireDefault(_FormFetcher);
 
 	var _index = __webpack_require__(435);
 
@@ -98191,52 +98214,21 @@
 	    var _this = _possibleConstructorReturn(this, (FormModals.__proto__ || Object.getPrototypeOf(FormModals)).call(this, props));
 
 	    _this.state = {
-	      errorMessage: false,
-	      isFetching: false,
-	      jsonSchemaForm: {}
+	      showModal: false
 	    };
 	    return _this;
 	  }
 
 	  _createClass(FormModals, [{
-	    key: 'schemaURL',
-	    value: function schemaURL(id) {
-	      return '/wp-content/static/json-form-schemas/' + id + '.json';
-	    }
-	  }, {
-	    key: 'fetchSchema',
-	    value: function fetchSchema(url) {
-	      var self = this;
-	      this.setState({
-	        isFetching: true
-	      });
-	      _Api2.default.makeRequest({
-	        url: url
-	      }, function (err, data) {
-	        if (err) {
-	          // this resets the form modal state in case of an error, thus allowing the retriggering of fetchSchema in componentWillReceiveProps
-	          self.setState({
-	            isFetching: false,
-	            errorMessage: err
-	          });
-	          self.props.closeFormModal();
-	        } else {
-	          self.setState({
-	            errorMessage: false,
-	            isFetching: false,
-	            jsonSchemaForm: data
-	          });
-	        }
-	      });
-	    }
-	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      var formModalId = nextProps.formModalId,
 	          formModalOpen = nextProps.formModalOpen;
 
 	      if (formModalOpen && formModalId !== this.props.formModalId) {
-	        this.fetchSchema(this.schemaURL(formModalId));
+	        this.setState({
+	          showModal: true
+	        });
 	      }
 	    }
 	  }, {
@@ -98259,18 +98251,20 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        Object.keys(this.state.jsonSchemaForm).length ? _react2.default.createElement(
-	          _BootstrapModal2.default,
-	          {
-	            title: jsonSchemaForm.title,
-	            id: _lib.Lib.FORM_MODAL_PREFIX_ACTION + formModalId,
-	            jsonSchemaForm: jsonSchemaForm,
-	            closeModal: function closeModal() {
-	              return _this2.props.closeFormModal();
+	        this.state.showModal ? _react2.default.createElement(
+	          _FormFetcher2.default,
+	          { formId: formModalId },
+	          _react2.default.createElement(
+	            _BootstrapModal2.default,
+	            {
+	              id: _lib.Lib.FORM_MODAL_PREFIX_ACTION + formModalId,
+	              closeModal: function closeModal() {
+	                return _this2.props.closeFormModal();
+	              },
+	              open: formModalOpen
 	            },
-	            open: formModalOpen
-	          },
-	          _react2.default.createElement(_JSONSchemaFormContainer2.default, { jsonSchemaForm: jsonSchemaForm })
+	            _react2.default.createElement(_JSONSchemaFormContainer2.default, null)
+	          )
 	        ) : null
 	      );
 	    }
@@ -98297,6 +98291,8 @@
 	  value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -98310,6 +98306,8 @@
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -98356,7 +98354,6 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      console.log('from Bootstrap Modal');
 	      var formId = this.props.id;
 	      this.toggleModal(formId, this.props.open);
 	      var self = this;
@@ -98368,16 +98365,17 @@
 	    key: 'render',
 	    value: function render() {
 	      var showBody = this.state.showBody;
+
 	      var _props = this.props,
 	          children = _props.children,
-	          title = _props.title,
 	          id = _props.id,
-	          jsonSchemaForm = _props.jsonSchemaForm;
+	          jsonSchemaForm = _props.jsonSchemaForm,
+	          other = _objectWithoutProperties(_props, ['children', 'id', 'jsonSchemaForm']);
 
 	      var body = showBody ? children : null;
 	      return _react2.default.createElement(
 	        'div',
-	        { 'data-keyboard': 'true', className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'form-modal', id: id, tabIndex: '-1', role: 'dialog', 'aria-labelledby': id, 'aria-hidden': 'true' },
+	        { 'data-keyboard': 'true', className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal', id: id, tabIndex: '-1', role: 'dialog', 'aria-labelledby': id, 'aria-hidden': 'true' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'modal-dialog', role: 'document' },
@@ -98390,7 +98388,7 @@
 	              _react2.default.createElement(
 	                'h5',
 	                { className: 'modal-title mx-auto', id: 'modalLabel' },
-	                title
+	                jsonSchemaForm.title
 	              ),
 	              _react2.default.createElement(
 	                'button',
@@ -98405,7 +98403,15 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'modal-body' },
-	              body
+	              showBody && _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.Children.map(this.props.children, function (child, i) {
+	                  return _react2.default.cloneElement(child, _extends({
+	                    jsonSchemaForm: jsonSchemaForm
+	                  }, other));
+	                })
+	              )
 	            )
 	          )
 	        )
@@ -98420,7 +98426,7 @@
 	  closeModal: _propTypes2.default.func.isRequired,
 	  title: _propTypes2.default.string,
 	  id: _propTypes2.default.string,
-	  jsonSchemaForm: _propTypes2.default.object.isRequired
+	  jsonSchemaForm: _propTypes2.default.object
 	};
 	exports.default = BootstrapModal;
 
@@ -98458,6 +98464,8 @@
 
 	var _LoadingAccordion2 = _interopRequireDefault(_LoadingAccordion);
 
+	var _lib = __webpack_require__(295);
+
 	var _widgets = __webpack_require__(685);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -98480,7 +98488,6 @@
 	      _props$rawErrors = props.rawErrors,
 	      rawErrors = _props$rawErrors === undefined ? [] : _props$rawErrors;
 
-	  console.log('props: ', props);
 	  var labelsClassname = props.uiSchema['ui:widget'] !== 'CustomRadioElement' ? 'sr-only' : null;
 	  return !props.hidden ? props.displayLabel ? _react2.default.createElement(
 	    'div',
@@ -98545,7 +98552,6 @@
 	          formData = _ref.formData;
 
 	      var action = schema.action;
-	      console.log('action: ', action);
 	      jQuery.post({
 	        url: '/',
 	        data: formData,
@@ -98577,24 +98583,28 @@
 
 
 	      return _react2.default.createElement(
-	        _reactJsonschemaForm2.default,
-	        {
-	          action: jsonSchemaForm.schema.action,
-	          FieldTemplate: CustomFieldTemplate,
-	          formData: jsonSchemaForm.initialData,
-	          method: 'post',
-	          schema: jsonSchemaForm.schema,
-	          uiSchema: jsonSchemaForm.uiSchema,
-	          onSubmit: this.submit,
-	          noHtml5Validate: true,
-	          showErrorList: false,
-	          transformErrors: transformErrors,
-	          widgets: widgets
-	        },
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'form' },
 	        _react2.default.createElement(
-	          'button',
-	          { type: 'submit', className: 'btn btn-primary mx-auto d-block' },
-	          'Submit'
+	          _reactJsonschemaForm2.default,
+	          {
+	            action: jsonSchemaForm.schema.action,
+	            FieldTemplate: CustomFieldTemplate,
+	            formData: jsonSchemaForm.initialData,
+	            method: 'post',
+	            schema: jsonSchemaForm.schema,
+	            uiSchema: jsonSchemaForm.uiSchema,
+	            onSubmit: this.submit,
+	            noHtml5Validate: true,
+	            showErrorList: false,
+	            transformErrors: transformErrors,
+	            widgets: widgets
+	          },
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'submit', className: 'btn btn-primary mx-auto d-block' },
+	            'Submit'
+	          )
 	        )
 	      );
 	    }
@@ -98603,9 +98613,6 @@
 	  return JSONSchemaFormContainer;
 	}(_react.Component);
 
-	JSONSchemaFormContainer.propTypes = {
-	  jsonSchemaForm: _propTypes2.default.object.isRequired
-	};
 	;
 
 	exports.default = JSONSchemaFormContainer;
@@ -113014,6 +113021,263 @@
 
 	module.exports = getPrototype;
 
+
+/***/ }),
+/* 771 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _lib = __webpack_require__(295);
+
+	var _JSONSchemaFormContainer = __webpack_require__(638);
+
+	var _JSONSchemaFormContainer2 = _interopRequireDefault(_JSONSchemaFormContainer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var hidePartsOfPhoneNumber = function hidePartsOfPhoneNumber(phoneNumber) {
+	  if (phoneNumber.includes('-')) {
+	    var n = phoneNumber.split('-');
+	    var visibleParts = n.shift();
+	    var hiddenParts = n.map(function (d) {
+	      return Array(d.length).join('X');
+	    });
+	    return [visibleParts].concat(hiddenParts).join('-');
+	  } else {
+	    return null;
+	  }
+	};
+
+	var AgentCard = function (_Component) {
+	  _inherits(AgentCard, _Component);
+
+	  function AgentCard(props) {
+	    _classCallCheck(this, AgentCard);
+
+	    var _this = _possibleConstructorReturn(this, (AgentCard.__proto__ || Object.getPrototypeOf(AgentCard)).call(this, props));
+
+	    _this.revealPhoneNumber = function () {
+	      _this.setState({
+	        displayedPhoneNumber: _this.props.phoneNumber
+	      });
+	    };
+
+	    _this.componentDidMount = function () {
+	      var number = hidePartsOfPhoneNumber(_this.props.phoneNumber);
+	      _this.setState({
+	        displayedPhoneNumber: number
+	      });
+	    };
+
+	    _this.state = {
+	      displayedPhoneNumber: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AgentCard, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'agent-card' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'agent-card-head' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'media' },
+	            _react2.default.createElement('img', { className: 'd-flex align-self-start mr-3', src: bundle.static_images_url + 'agent-photo.png', alt: 'Agent photo' }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'media-body ' + _lib.Lib.THEME_CLASSES_PREFIX + 'media-body' },
+	              _react2.default.createElement(
+	                'h5',
+	                { className: 'mt-0' },
+	                'Germany McNeal'
+	              ),
+	              _react2.default.createElement(
+	                'p',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'primary-color ' + _lib.Lib.THEME_CLASSES_PREFIX + 'secondary-text' },
+	                'Red Door Company'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'phone-number', onClick: this.revealPhoneNumber },
+	                this.state.displayedPhoneNumber
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'agent-card-body' },
+	          _react2.default.createElement(
+	            'h5',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'info-section-header' },
+	            'Request Showing for 3 Moss Creek Court'
+	          ),
+	          _react2.default.createElement(_JSONSchemaFormContainer2.default, { jsonSchemaForm: this.props.jsonSchemaForm })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AgentCard;
+	}(_react.Component);
+
+	AgentCard.propTypes = {
+	  phoneNumber: _propTypes2.default.string.isRequired
+	};
+	;
+
+	exports.default = AgentCard;
+
+/***/ }),
+/* 772 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Api = __webpack_require__(294);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FormFetcher = function (_Component) {
+	  _inherits(FormFetcher, _Component);
+
+	  function FormFetcher(props) {
+	    _classCallCheck(this, FormFetcher);
+
+	    var _this = _possibleConstructorReturn(this, (FormFetcher.__proto__ || Object.getPrototypeOf(FormFetcher)).call(this, props));
+
+	    _this.state = {
+	      errorMessage: false,
+	      isFetching: false,
+	      jsonSchemaForm: {}
+	    };
+	    return _this;
+	  }
+
+	  _createClass(FormFetcher, [{
+	    key: 'fetchSchema',
+	    value: function fetchSchema(url) {
+	      var self = this;
+	      this.setState({
+	        isFetching: true
+	      });
+	      _Api2.default.makeRequest({
+	        url: url
+	      }, function (err, data) {
+	        if (err) {
+	          // this resets the form modal state in case of an error, thus allowing the retriggering of fetchSchema in componentWillReceiveProps
+	          self.setState({
+	            isFetching: false,
+	            errorMessage: err
+	          });
+	        } else {
+	          self.setState({
+	            errorMessage: false,
+	            isFetching: false,
+	            jsonSchemaForm: data
+	          });
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'schemaURL',
+	    value: function schemaURL(id) {
+	      return '/wp-content/static/json-form-schemas/' + id + '.json';
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var formId = this.props.formId;
+
+
+	      this.fetchSchema(this.schemaURL(formId));
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.formId !== this.props.formId) {
+	        this.fetchSchema(this.schemaURL(nextProps.formId));
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var formId = this.props.formId;
+	      var errorMessage = this.state.errorMessage;
+
+	      if (formId && errorMessage) {
+	        console.log('failed to load modal: ', formId);
+	        console.log('error message: ', errorMessage);
+	      }
+	      console.log('FormFetcher: ', this.state.jsonSchemaForm);
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        Object.keys(this.state.jsonSchemaForm).length ? _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.Children.map(this.props.children, function (child, i) {
+	            return _react2.default.cloneElement(child, {
+	              jsonSchemaForm: _this2.state.jsonSchemaForm
+	            });
+	          })
+	        ) : null
+	      );
+	    }
+	  }]);
+
+	  return FormFetcher;
+	}(_react.Component);
+
+	;
+
+	exports.default = FormFetcher;
 
 /***/ })
 /******/ ])));
