@@ -19,6 +19,7 @@ let singlePropertyData = (data) => {
   let listing_type = _.get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
   let listing_sub_type = _.get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
 
+  let address = _.get(post_meta, 'rets_address', null);
   let formatted_address_simple = _.get(post_meta, 'formatted_address_simple', null);
   let rets_list_price = _.get(post_meta, 'rets_list_price', null);
   let rets_living_area = _.get(post_meta, 'rets_living_area', null);
@@ -39,6 +40,7 @@ let singlePropertyData = (data) => {
   let images = wpp_media.map(w => w.url);
 
   return {
+    address,
     baths,
     beds,
     elementary_school: _.get(elementary_school, '[0].name', null),
