@@ -171,7 +171,8 @@ namespace UsabilityDynamics {
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
         'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : '',
-        'property_single_url' => $property_single_url
+        'property_single_url' => $property_single_url,
+        'agents' => get_users(['role' => 'agent'])
       ];
 
       /** Custom elastic press index */
