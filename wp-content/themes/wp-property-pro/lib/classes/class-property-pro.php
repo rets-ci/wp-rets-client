@@ -174,6 +174,11 @@ namespace UsabilityDynamics {
         'property_single_url' => $property_single_url,
         'agents' => array_map(function($user){
           $user->meta = get_user_meta($user->ID);
+
+          $user->images = array_map(function($image){
+            return wp_get_attachment_image_src(unserialize($image)[0]);
+          }, $user->meta['agent_images']);
+
           return $user;
         }, get_users(['role' => 'agent']))
       ];
