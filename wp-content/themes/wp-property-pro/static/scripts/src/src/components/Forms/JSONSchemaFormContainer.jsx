@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Form from "react-jsonschema-form";
 import LoadingAccordion from '../LoadingAccordion.jsx';
+import {Lib} from '../../lib.jsx';
 import {inputTextElement, radioElement, selectTextElement, textareaTextElement} from './JSONSchemaComponents/widgets.jsx';
 
 function CustomFieldTemplate(props) {
@@ -17,7 +18,6 @@ function CustomFieldTemplate(props) {
       children,
       rawErrors=[]
   } = props;
-  console.log('props: ', props);
   let labelsClassname = props.uiSchema['ui:widget'] !== 'CustomRadioElement' ? 'sr-only' : null;
   return !props.hidden ? 
     (
@@ -55,10 +55,6 @@ const widgets = {
 };
 
 class JSONSchemaFormContainer extends Component {
-  static propTypes = {
-    jsonSchemaForm: PropTypes.object.isRequired
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -70,7 +66,6 @@ class JSONSchemaFormContainer extends Component {
 
   submit = ({schema, formData}) => {
     let action = schema.action;
-    console.log('action: ', action);
     jQuery.post({
       url: '/',
       data: formData,
@@ -95,21 +90,23 @@ class JSONSchemaFormContainer extends Component {
     } = this.props;
 
     return (
-      <Form
-        action={jsonSchemaForm.schema.action}
-        FieldTemplate={CustomFieldTemplate}
-        formData={jsonSchemaForm.initialData}
-        method="post"
-        schema={jsonSchemaForm.schema}
-        uiSchema={jsonSchemaForm.uiSchema}
-        onSubmit={this.submit}
-        noHtml5Validate={true}
-        showErrorList={false}
-        transformErrors={transformErrors}
-        widgets={widgets}
-      >
-        <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
-      </Form>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}form`}>
+        <Form
+          action={jsonSchemaForm.schema.action}
+          FieldTemplate={CustomFieldTemplate}
+          formData={jsonSchemaForm.initialData}
+          method="post"
+          schema={jsonSchemaForm.schema}
+          uiSchema={jsonSchemaForm.uiSchema}
+          onSubmit={this.submit}
+          noHtml5Validate={true}
+          showErrorList={false}
+          transformErrors={transformErrors}
+          widgets={widgets}
+        >
+          <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
+        </Form>
+      </div>
     );
   }
 };
