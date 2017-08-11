@@ -1,5 +1,6 @@
-import BootstrapModal from '../components/BootstrapModal.jsx';
 import Api from '../../../containers/Api.jsx';
+import BootstrapModal from '../components/BootstrapModal.jsx';
+import FormFetcher from '../../Forms/FormFetcher.jsx';
 import {openFormModal} from '../../../actions/index.jsx';
 import JSONSchemaFormContainer from '../../Forms/JSONSchemaFormContainer.jsx';
 import {Lib} from '../../../lib.jsx';
@@ -32,40 +33,8 @@ class FormModals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorMessage: false,
-      isFetching: false,
-      jsonSchemaForm: {}
+      showModal: false
     };
-  }
-
-
-  schemaURL(id) {
-    return `/wp-content/static/json-form-schemas/${id}.json`;
-  }
-
-  fetchSchema(url) {
-    let self = this;
-    this.setState({
-      isFetching: true
-    });
-    Api.makeRequest({
-      url: url
-    }, (err, data) => {
-      if (err) {
-        // this resets the form modal state in case of an error, thus allowing the retriggering of fetchSchema in componentWillReceiveProps
-        self.setState({
-          isFetching: false,
-          errorMessage: err
-        });
-        self.props.closeFormModal();
-      } else {
-        self.setState({
-          errorMessage: false,
-          isFetching: false,
-          jsonSchemaForm: data
-        });
-      }
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,7 +43,9 @@ class FormModals extends Component {
       formModalOpen
     } = nextProps;
     if (formModalOpen && formModalId !== this.props.formModalId) {
-      this.fetchSchema(this.schemaURL(formModalId));
+      this.setState({
+        showModal: true
+      });
     }
   }
   
@@ -83,6 +54,7 @@ class FormModals extends Component {
       formModalId,
       formModalOpen
     } = this.props;
+
     let {
       errorMessage,
       isFetching,
@@ -94,16 +66,16 @@ class FormModals extends Component {
     }
     return (
       <div>
-      {Object.keys(this.state.jsonSchemaForm).length ?
-        <BootstrapModal
-          title={jsonSchemaForm.title}
-          id={Lib.FORM_MODAL_PREFIX_ACTION + formModalId}
-          jsonSchemaForm={jsonSchemaForm}
-          closeModal={() => this.props.closeFormModal()}
-          open={formModalOpen}
-        >
-          <JSONSchemaFormContainer jsonSchemaForm={jsonSchemaForm} />
-        </BootstrapModal>
+      {this.state.showModal ?
+        <FormFetcher formId={formModalId}>
+          <BootstrapModal
+            id={Lib.FORM_MODAL_PREFIX_ACTION + formModalId}
+            closeModal={() => this.props.closeFormModal()}
+            open={formModalOpen}
+          >
+            <JSONSchemaFormContainer />
+          </BootstrapModal>
+        </FormFetcher>
         : null
       }
       </div>
