@@ -22,8 +22,9 @@ class FormFetcher extends Component {
       if (err) {
         // this resets the form modal state in case of an error, thus allowing the retriggering of fetchSchema in componentWillReceiveProps
         self.setState({
+          errorMessage: err,
           isFetching: false,
-          errorMessage: err
+          jsonSchemaForm: {}
         });
       } else {
         self.setState({
@@ -64,7 +65,6 @@ class FormFetcher extends Component {
       console.log('failed to load modal: ', formId);
       console.log('error message: ', errorMessage)
     }
-    console.log('FormFetcher: ', this.state.jsonSchemaForm);
     return (
       <div>
         {Object.keys(this.state.jsonSchemaForm).length ?

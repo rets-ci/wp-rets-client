@@ -174,6 +174,13 @@ export const setPropertiesModalResultCountLoading = show => {
   }
 };
 
+export const setAgentCardTab = tab => {
+  return {
+    type: Lib.AGENT_CARD_SELECT_TAB,
+    tab: tab
+  }
+}
+
 export const toggleLocationModalSearchMode = searchMode => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_SEARCH_MODE,

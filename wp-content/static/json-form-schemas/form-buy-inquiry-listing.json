@@ -1,0 +1,146 @@
+{
+  "title": "Buy Inquiry Listing",
+  "initialData": {
+    "powf_c7a4dd42d416e61180e6fc15b4286ffc": "reddoorcompany.com",
+    "powf_35ff73d9fbe9e511811afc15b42886e8": "Buyer",
+    "powf_36ff73d9fbe9e511811afc15b42886e8": "",
+    "powf_44ff73d9fbe9e511811afc15b42886e8": "Buyer Webform Lead",
+    "ignore_submitmessage": "",
+    "ignore_linkbuttontext": "",
+    "ignore_redirecturl": "",
+    "ignore_redirectmode": "Auto"
+  },
+  "schema": {
+    "action": "https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_280C1763D278E5118103C4346BB5981C&tver=2013&c=1",
+    "type": "object",
+    "required": [
+      "powf_38ff73d9fbe9e511811afc15b42886e8",
+      "powf_71f56036c216e61180e9c4346bace2d4",
+      "powf_3aff73d9fbe9e511811afc15b42886e8"
+    ],
+    "properties": {
+      "powf_37ff73d9fbe9e511811afc15b42886e8": {
+        "name": "powf_37ff73d9fbe9e511811afc15b42886e8",
+        "title": "First Name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_38ff73d9fbe9e511811afc15b42886e8": {
+        "name": "powf_38ff73d9fbe9e511811afc15b42886e8",
+        "title": "Last Name",
+        "type": "string",
+        "maxlength": 50
+      },
+      "powf_71f56036c216e61180e9c4346bace2d4": {
+        "name": "powf_71f56036c216e61180e9c4346bace2d4",
+        "title": "Email Address",
+        "type": "string",
+        "maxlength": 100
+      },
+      "powf_3aff73d9fbe9e511811afc15b42886e8": {
+        "name": "powf_3aff73d9fbe9e511811afc15b42886e8",
+        "title": "Phone",
+        "type": "string",
+        "maxLength": 20
+      },
+
+      "powf_b62d13821a12e61180e4fc15b428cd78": {
+        "type": "string",
+        "name": "powf_b62d13821a12e61180e4fc15b428cd78",
+        "title": "Comments",
+        "maxLength": 100
+      },
+     
+      "powf_c7a4dd42d416e61180e6fc15b4286ffc": {
+        "type": "string",
+        "name": "powf_c7a4dd42d416e61180e6fc15b4286ffc"
+      },
+      "powf_35ff73d9fbe9e511811afc15b42886e8": {
+        "type": "string",
+        "name": "powf_35ff73d9fbe9e511811afc15b42886e8"
+      },
+      "powf_36ff73d9fbe9e511811afc15b42886e8": {
+        "type": "string",
+        "name": "powf_36ff73d9fbe9e511811afc15b42886e8"
+      },
+      "powf_a0fb31f729f8e51180e2fc15b4286ffc": {
+        "type": "string",
+        "name": "powf_a0fb31f729f8e51180e2fc15b4286ffc"
+      },
+      "powf_44ff73d9fbe9e511811afc15b42886e8": {
+        "type": "string",
+        "name": "powf_44ff73d9fbe9e511811afc15b42886e8"
+      },
+      "powf_fc8e60252af8e51180e2fc15b4286ffc": {
+        "type": "string",
+        "name": "powf_fc8e60252af8e51180e2fc15b4286ffc"
+      },
+      "ignore_submitmessage": {
+        "type": "string",
+        "name": "ignore_submitmessage"
+      },
+      "ignore_linkbuttontext": {
+        "type": "string",
+        "name": "ignore_linkbuttontext"
+      },
+      "ignore_redirecturl": {
+        "type": "string",
+        "name": "ignore_redirecturl"
+      },
+      "ignore_redirectmode": {
+        "type": "string",
+        "name": "ignore_redirectmode"
+      }
+    }
+  },
+  "uiSchema": {
+    "powf_37ff73d9fbe9e511811afc15b42886e8": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_38ff73d9fbe9e511811afc15b42886e8": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_71f56036c216e61180e9c4346bace2d4": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_3aff73d9fbe9e511811afc15b42886e8": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_b62d13821a12e61180e4fc15b428cd78": {
+      "ui:widget": "CustomTextareaTextElement",
+      "ui:options": {
+        "rows": 10
+      }
+    },
+    "powf_c7a4dd42d416e61180e6fc15b4286ffc": {
+      "ui:widget": "hidden"
+    },
+    "powf_35ff73d9fbe9e511811afc15b42886e8": {
+      "ui:widget": "hidden"
+    },
+    "powf_36ff73d9fbe9e511811afc15b42886e8": {
+      "ui:widget": "hidden"
+    },
+    "powf_a0fb31f729f8e51180e2fc15b4286ffc": {
+      "ui:widget": "hidden"
+    },
+    "powf_44ff73d9fbe9e511811afc15b42886e8": {
+      "ui:widget": "hidden"
+    },
+    "powf_fc8e60252af8e51180e2fc15b4286ffc": {
+      "ui:widget": "hidden"
+    },
+    "ignore_submitmessage": {
+      "ui:widget": "hidden"
+    },
+    "ignore_linkbuttontext": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirecturl": {
+      "ui:widget": "hidden"
+    },
+    "ignore_redirectmode": {
+      "ui:widget": "hidden"
+    }
+  }
+}

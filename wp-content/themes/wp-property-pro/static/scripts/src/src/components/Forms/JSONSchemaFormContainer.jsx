@@ -4,7 +4,16 @@ import PropTypes from 'prop-types';
 import Form from "react-jsonschema-form";
 import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
-import {inputTextElement, radioElement, selectTextElement, textareaTextElement} from './JSONSchemaComponents/widgets.jsx';
+import {
+  datePickerElement,
+  inputTextElement,
+  radioElement,
+  selectTextElement,
+  textareaTextElement
+} from './JSONSchemaComponents/widgets.jsx';
+
+import '../../../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js';
+import '../../../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css';
 
 function CustomFieldTemplate(props) {
   const {
@@ -18,7 +27,7 @@ function CustomFieldTemplate(props) {
       children,
       rawErrors=[]
   } = props;
-  let labelsClassname = props.uiSchema['ui:widget'] !== 'CustomRadioElement' ? 'sr-only' : null;
+  let labelsClassname = props.uiSchema['ui:widget'] !== 'CustomRadioElement' ? 'sr-only' : 'col-form-legend col-sm-12';
   return !props.hidden ? 
     (
       props.displayLabel ? (
@@ -48,6 +57,7 @@ const transformErrors = errors => {
 
 // Note about the widgets object: modifying the following object might break 'CustomFieldTemplate' which will break the form funcionality
 const widgets = {
+  CustomDateElement: datePickerElement,
   CustomInputTextElement: inputTextElement,
   CustomSelectTextElement: selectTextElement,
   CustomTextareaTextElement: textareaTextElement,

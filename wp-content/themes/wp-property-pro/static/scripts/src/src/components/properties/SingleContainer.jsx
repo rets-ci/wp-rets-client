@@ -16,31 +16,36 @@ let singlePropertyData = (data) => {
     wpp_media
   } = data._source;
 
-  let listing_type = _.get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
-  let listing_sub_type = _.get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
-
   let address = _.get(post_meta, 'rets_address', null);
+  let agentId = _.get(post_meta, 'rets_list_agent[0]', null);
+  let agentName = _.get(tax_input, 'wpp_agency_agent.listing_agent[0].name', null);
+  let agentPhoneNumber = _.get(post_meta, 'rets_la1_agent_phone1_number[0]', null);
+  let baths  = _.get(post_meta, 'rets_total_baths', null);
+  let beds = _.get(post_meta, 'rets_beds', null);
+  let elementary_school = _.get(tax_input, 'rets_state.wpp_schools.elementary_school', null);
   let formatted_address_simple = _.get(post_meta, 'formatted_address_simple', null);
+  let images = wpp_media.map(w => w.url);
+  let rets_city = _.get(tax_input, 'rets_city', null);
+  let rets_high_school = _.get(tax_input, 'rets_high_school', null);
   let rets_list_price = _.get(post_meta, 'rets_list_price', null);
   let rets_living_area = _.get(post_meta, 'rets_living_area', null);
   let rets_lot_size_area = _.get(post_meta, 'rets_lot_size_area', null);
-  let baths  = _.get(post_meta, 'rets_total_baths', null);
-  let rets_postal_code = _.get(post_meta, 'rets_postal_code', null);
-  let rets_year_built = _.get(post_meta, 'rets_year_built', null);
-  let beds = _.get(post_meta, 'rets_beds', null);
-
-  let rets_city = _.get(tax_input, 'rets_city', null);
   let rets_middle_school = _.get(tax_input, 'rets_middle_school', null);
-  let rets_high_school = _.get(tax_input, 'rets_high_school', null);
+  let rets_postal_code = _.get(post_meta, 'rets_postal_code', null);
   let rets_state = _.get(tax_input, 'rets_state', null);
+  let rets_year_built = _.get(post_meta, 'rets_year_built', null);
+  let listing_office = _.get(tax_input, 'wpp_office.listing_office[0].name', null);
+  let listing_status_sale = _.get(tax_input, 'wpp_listing_status.listing_status_sale[0].slug', null);
+  let listing_sub_type = _.get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
+  let listing_type = _.get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
   let wpp_location_subdivision = _.get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
   let wpp_location_city = _.get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
-  let elementary_school = _.get(tax_input, 'rets_state.wpp_schools.elementary_school', null);
-
-  let images = wpp_media.map(w => w.url);
 
   return {
     address,
+    agentId,
+    agentName,
+    agentPhoneNumber,
     baths,
     beds,
     elementary_school: _.get(elementary_school, '[0].name', null),
@@ -62,6 +67,8 @@ let singlePropertyData = (data) => {
     rets_year_built,
     wpp_location_subdivision: _.get(wpp_location_subdivision, '[0].name', null),
     wpp_location_city: _.get(wpp_location_city, '[0].name'),
+    listing_office,
+    listing_status_sale,
     listing_type,
     listing_sub_type,
     ...data
@@ -89,7 +96,6 @@ class SingleContainer extends Component {
     let {
       post_id : id
     } = this.props.post;
-
     if (!this.state.property) {
       let query = {
         "query": {
@@ -117,7 +123,10 @@ class SingleContainer extends Component {
     return (
       this.state.property !== null ?
         this.state.property ?
-          <Single {...singlePropertyData(this.state.property)} />
+          <Single
+            agents={this.props.agents}
+            {...singlePropertyData(this.state.property)}
+          />
         : <p>Request property id {id} could not be found</p>
       : <LoadingCircle containerHeight="600px" verticallyCentered={true} />);
   }
