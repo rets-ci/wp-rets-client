@@ -1,6 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleUserPanel} from '../actions/index.jsx';
+import {
+  openLoginModal,
+  toggleUserPanel
+} from '../actions/index.jsx';
 import HeaderDefault from './Headers/HeaderDefault.jsx';
 import HeaderPropertiesSingle from './Headers/HeaderPropertySingle.jsx';
 import HeaderSearch from './Headers/HeaderSearch.jsx';
@@ -18,13 +21,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    openLoginModal: () => {
+      dispatch(openLoginModal(true));
+    },
+
     openUserPanel: () => {
       dispatch(toggleUserPanel(true));
     }
   }
 };
 
-const HeaderContent = ({front_page_post_content, search_options, location, openUserPanel, saleTypesPanelOpen}) => {
+const HeaderContent = ({front_page_post_content, search_options, location, openLoginModal, openUserPanel, saleTypesPanelOpen}) => {
   let pathname = _.get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
@@ -43,7 +50,7 @@ const HeaderContent = ({front_page_post_content, search_options, location, openU
   } else if (pathRoot.indexOf(_.get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
     headerElement = <HeaderPropertiesSingle openUserPanel={openUserPanel}/>;
   } else {
-    headerElement = <HeaderDefault openUserPanel={openUserPanel}/>;
+    headerElement = <HeaderDefault openUserPanel={openUserPanel} openLoginModal={openLoginModal} />;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";
   }
 

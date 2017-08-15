@@ -2391,7 +2391,7 @@ p.propertypro-gentle-error {
 }
 
 /*-----------------------------------------------------------------------------------*/
-/*  Forms
+/*  Forms and modals
 /*-----------------------------------------------------------------------------------*/
 
 .propertypro-modal .modal-title {
@@ -2475,6 +2475,41 @@ p.propertypro-gentle-error {
     color: #8b8c8d;
     padding-left: 0.05rem;
     font-size: 0.75rem;
+}
+
+.propertypro-login-modal-container {
+    
+}
+
+.propertypro-login-modal-container h4 {
+    color: #6d6e71;
+    font-size: 1.2em;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin: 20% 0;
+}
+
+.propertypro-login-modal-container .card {
+    border: 0;
+    text-align: center;
+}
+
+.propertypro-login-modal-container .card img.card-img-top {
+    margin: 0 auto;
+}
+
+.propertypro-login-modal-container .card .card-block a {
+    background-color: #d03528 !important;
+    border-radius: .1875rem;
+    border-color: #d03528 !important;
+    color: #fff;
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.5625rem;
+    /* padding: .60em 2em; */
+    padding: .5rem 1rem;
+    width: 100%;
 }
 
 /*-----------------------------------------------------------------------------------*/

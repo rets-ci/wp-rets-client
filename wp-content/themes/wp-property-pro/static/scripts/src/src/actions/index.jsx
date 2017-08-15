@@ -1,5 +1,5 @@
 import {Lib} from '../lib.jsx'
- 
+
 export const deletePropertiesModalSingleLocalFilter = filterKey => {
   return {
     type: Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION,
@@ -38,6 +38,13 @@ export const openLocationModal = (open, modifyType) => {
     open: open
   }
 };
+
+export const openLoginModal = (open) => {
+  return {
+    type: Lib.TOGGLE_LOGIN_MODAL_ACTION,
+    open: open
+  }
+}
 
 export const openPropertiesModal = (open) => {
   return {

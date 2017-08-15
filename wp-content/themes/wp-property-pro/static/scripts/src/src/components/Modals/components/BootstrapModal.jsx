@@ -50,17 +50,19 @@ class BootstrapModal extends Component {
     } = this.state;
     let {
       children,
+      closeModal,
       id,
-      jsonSchemaForm,
+      open,
       ...other
     } = this.props;
     let body = showBody ? children : null;
+    let title = this.props.jsonSchemaForm ? this.props.jsonSchemaForm.title : this.props.title;
     return (
       <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}modal`} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title mx-auto" id="modalLabel">{jsonSchemaForm.title}</h5>
+              <h5 className="modal-title mx-auto" id="modalLabel">{title}</h5>
               <button type="button" className="close" aria-label="Close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -69,7 +71,6 @@ class BootstrapModal extends Component {
               {showBody &&
                 <div>
                   {React.Children.map(this.props.children, (child, i) => React.cloneElement(child, {
-                    jsonSchemaForm: jsonSchemaForm,
                     ...other
                   }))}
                 </div>
