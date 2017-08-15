@@ -61,7 +61,8 @@ namespace UsabilityDynamics\WPRETSC {
         
         ud_get_wp_rets_client()->write_log( "Running [property_published] for [" . $post_id . "].", 'debug' );
 
-
+        // @todo
+        // add_post_meta($post_id, 'wpp_agents', $agent_id);
       
       }
 
