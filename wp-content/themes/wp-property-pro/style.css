@@ -2477,8 +2477,36 @@ p.propertypro-gentle-error {
     font-size: 0.75rem;
 }
 
-.propertypro-login-modal-container {
-    
+#loginModal .modal-dialog {
+    min-height: -webkit-calc(100vh - 60px);
+    min-height: -moz-calc(100vh - 60px);
+    min-height: calc(100vh - 60px);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+       -moz-box-orient: vertical;
+       -moz-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+       -moz-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    overflow: auto; 
+}
+
+@media (max-width: 768px) {
+    loginModal .modal-dialog {
+        min-height: -webkit-calc(100vh - 20px);
+        min-height: -moz-calc(100vh - 20px);
+        min-height: calc(100vh - 20px);   
+    }
 }
 
 .propertypro-login-modal-container h4 {
