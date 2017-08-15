@@ -42,6 +42,11 @@ class BootstrapModal extends Component {
     jQuery('#' + formId).on('hidden.bs.modal', e => {
       self.props.closeModal();
     });
+    jQuery('#' + formId + ' .modal-dialog').on('click tap', e => {
+      if (jQuery(e.target).hasClass('modal-dialog')) {
+        jQuery('#' + formId).modal('hide');
+      }
+    });
   }
   
   render() {
