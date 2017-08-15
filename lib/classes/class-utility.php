@@ -165,8 +165,15 @@ namespace UsabilityDynamics\WPRETSC {
 
                 if( isset( $_term_name[ '_id'] ) ) {
                   ud_get_wp_rets_client()->write_log( "Have hierarchical object term [$tax_name] with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
-                  $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
-                  ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
+                  
+                  if( method_exists( 'WPP_F', 'insert_terms' ) ) {
+                    $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
+                    ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
+                  } else {
+                    ud_get_wp_rets_client()->write_log( "Failed to insert termsfor [$tax_name] taxonomy, missing WPP_F::insert_terms method.", 'error' );  
+                  }
+                  
+                
                 }
 
                 continue;
@@ -195,6 +202,7 @@ namespace UsabilityDynamics\WPRETSC {
               if( !$_term_parent ) {
                 ud_get_wp_rets_client()->write_log( "Did not find parent term [$tax_name] - [$_term_parent_value].", 'warn' );
 
+                
                 $_term_parent = wp_insert_term( $_term_parent_value, $tax_name, array(
                   "slug" => sanitize_title( $_term_parent_value )
                 ));
@@ -259,8 +267,14 @@ namespace UsabilityDynamics\WPRETSC {
 
               // Item is an array, which means this entry includes term meta.
               if( is_object( $_term_name ) || is_array( $_term_name ) && isset( $_term_name[ '_id'] ) ) {
-                $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
-                ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
+                
+                if( method_exists( 'WPP_F', 'insert_terms' ) ) {
+                  $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
+                  ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
+                } else {
+                  ud_get_wp_rets_client()->write_log( "Failed to insert non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id. Missing WPP_F::insert_terms method.", 'error' );                  
+                }
+                
               } else {
                 $_terms[] = $_term_name;
               }
