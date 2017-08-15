@@ -46,6 +46,23 @@ namespace UsabilityDynamics\WPRETSC {
         add_action( 'rest_api_init', array( $this, 'api_init' ), 100 );
 
 
+        add_action( 'wrc_property_published', array( $this, 'property_published' ), 100, 2 );
+    
+
+      }
+      
+      /**
+       * Handle post-publish actions.
+       * 
+       * @author potanin@UD
+       * 
+       */
+      public function property_published( $post_id, $post ) {
+        
+        ud_get_wp_rets_client()->write_log( "Running [property_published] for [" . $post_id . "].", 'debug' );
+
+
+      
       }
 
       /**
@@ -858,7 +875,7 @@ namespace UsabilityDynamics\WPRETSC {
           /**
            * Do something after property is published
            */
-          do_action( 'wrc_property_published', $_post_id );
+          do_action( 'wrc_property_published', $_post_id, $_post );
 
         } else {
           ud_get_wp_rets_client()->write_log( 'Error publishing post ' . $_post_id, 'error' );
@@ -1091,7 +1108,7 @@ namespace UsabilityDynamics\WPRETSC {
           /**
            * Do something after property is published
            */
-          do_action( 'wrc_property_published', $_post_id );
+          do_action( 'wrc_property_published', $_post_id, $_post );
 
         } else {
           ud_get_wp_rets_client()->write_log( 'Error publishing post ' . $_post_id, 'error' );
