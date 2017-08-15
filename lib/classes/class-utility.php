@@ -31,7 +31,11 @@ namespace UsabilityDynamics\WPRETSC {
           return false;
         }
 
-        ud_get_wp_rets_client()->write_log( "Running [insert_media] for [$_post_id], have [" .  count( $_rets_media['items'] ) . "] media items, updated [" . $_rets_media['updated'] ."].", 'debug' );
+        if( isset( $_rets_media['updated'] ) ) {         
+          ud_get_wp_rets_client()->write_log( "Running [insert_media] for [$_post_id], have [" .  count( $_rets_media['items'] ) . "] media items, updated [" . $_rets_media['updated'] ."].", 'debug' );
+        } else {
+          ud_get_wp_rets_client()->write_log( "Running [insert_media] for [$_post_id], have [" .  count( $_rets_media['items'] ) . "] media items. No [updated] field.", 'debug' );        
+        }
 
         if( isset( $_rets_media[ 'updated' ] )) {
           $_updated_formatted = date("Y-m-d H:i:s",strtotime($_rets_media[ 'updated' ]));
@@ -52,7 +56,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         if( count( $_attachments ) ) {
-          ud_get_wp_rets_client()->write_log( "Deleted [" .  count( $_attachments ) . "] that are older than our new updated [" . $_rets_media['updated'] ."] timestamp.", 'debug' );
+          ud_get_wp_rets_client()->write_log( "Deleted [" .  count( $_attachments ) . "] that are older than our new updated [" . ( isset( $_rets_media['updated'] ) ? $_rets_media['updated'] : '-' ) ."] timestamp.", 'debug' );
         }
 
         $items = (array) $_rets_media['items'];
@@ -115,7 +119,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
 
-        ud_get_wp_rets_client()->write_log( "Inserted or updated [" .  count( $_rets_media['items'] ) . "] that are older than our new updated [" . $_rets_media['updated'] ."] timestamp.", 'debug' );
+        ud_get_wp_rets_client()->write_log( "Inserted or updated [" .  count( $_rets_media['items'] ) . "] that are older than our new updated [" . ( isset( $_rets_media['updated'] ) ? $_rets_media['updated'] : '-' ) ."] timestamp.", 'debug' );
 
         return true;
 
