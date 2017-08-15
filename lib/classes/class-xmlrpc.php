@@ -45,25 +45,75 @@ namespace UsabilityDynamics\WPRETSC {
         // REST API
         add_action( 'rest_api_init', array( $this, 'api_init' ), 100 );
 
-
+        // Run actions after a property is published. (e.g. associated Agents)
         add_action( 'wrc_property_published', array( $this, 'property_published' ), 100, 2 );
     
-
       }
       
       /**
        * Handle post-publish actions.
        * 
-       * @author potanin@UD
+       * - Associate wpp_agents based on wpp_agency_agent terms.
+       * - Agent Users must have a "rets_id" field that matches their unique ID in the MLS.
+       * - the rets.ci service adds agents/office as terms with extra meta to store information such as their MLS/MLN.
        * 
+       * @author potanin@UD
        */
-      public function property_published( $post_id, $post ) {
+      public function property_published( $post_id, $post_data ) {
+        // ud_get_wp_rets_client()->write_log( "Running [property_published] for [" . $post_id . "].", 'debug' );
         
-        ud_get_wp_rets_client()->write_log( "Running [property_published] for [" . $post_id . "].", 'debug' );
+        // If missing agent module, do nothing.
+        if( !function_exists( 'ud_get_wpp_agents' ) ) {
+          return;
+        }
+        
+        $_wpp_agents = array();
+        
+        // get "agent" terms. 
+        $_agents = wp_get_post_terms( $post_id, 'wpp_agency_agent', array(
+          'orderby'    => 'count',
+          'hide_empty' => false,
+          'fields' => 'ids'
+        ) );
+        
+        if( $_agents && is_array( $_agents ) && count($_agents) >= 1 ) {
+          
+          foreach( $_agents as $_agent_term_id ) {
+            
+            // get the "rets_id" field from agent term.
+            $_rets_id = get_term_meta( $_agent_term_id, 'listing-agent-rets_id', true );
+            
+            // Find relevant WP agent users with matching "rets_id" field. 
+            $_user_agents = get_users(array(
+              'meta_key' => 'rets_id',
+              'meta_value' => $_rets_id,
+              'fields' => array( 'ID', 'display_name' ),
+              'number' => 1
+            ));
+            
+            if( is_array( $_user_agents ) ) {
+              
+              foreach( $_user_agents as $_user_object ) {
+                $_wpp_agents[] = $_user_object->ID;
+                ud_get_wp_rets_client()->write_log( "Found agent-user [" . $_user_object->display_name . "] with rets_id [" . $_rets_id . "] for listing [" . $post_id . "].", 'info' );
+              }
 
-        // @todo
-        // add_post_meta($post_id, 'wpp_agents', $agent_id);
-      
+            }
+            
+          }
+          
+          // remove all past agent(s)
+          delete_post_meta( $post_id, 'wpp_agents' );
+          
+          // add new agents, if the exist.
+          foreach( (array) $_wpp_agents as $_agent_user_id ){
+            add_post_meta($post_id, 'wpp_agents', $_agent_user_id );  
+            // ud_get_wp_rets_client()->write_log( "Associated agent [" . $_agent_user_id . "] to listing [" . $post_id . "].", 'info' );
+          }
+          
+
+        }
+        
       }
 
       /**
@@ -876,7 +926,7 @@ namespace UsabilityDynamics\WPRETSC {
           /**
            * Do something after property is published
            */
-          do_action( 'wrc_property_published', $_post_id, $_post );
+          do_action( 'wrc_property_published', $_post_id, $post_data );
 
         } else {
           ud_get_wp_rets_client()->write_log( 'Error publishing post ' . $_post_id, 'error' );
@@ -1109,7 +1159,7 @@ namespace UsabilityDynamics\WPRETSC {
           /**
            * Do something after property is published
            */
-          do_action( 'wrc_property_published', $_post_id, $_post );
+          do_action( 'wrc_property_published', $_post_id, $post_data );
 
         } else {
           ud_get_wp_rets_client()->write_log( 'Error publishing post ' . $_post_id, 'error' );
