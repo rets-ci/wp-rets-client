@@ -1,5 +1,20 @@
 import React, {Component} from 'react';
 
+export function datePickerElement (props) {
+  return (
+    <input type="text"
+      className="form-control"
+      data-provide="datepicker"
+      data-date-autoclose="true"
+      data-date-todayHighlight="true"
+      name={props.schema.name}
+      placeholder={props.schema.title}
+      value={props.value}
+      onChange={(event) => props.onChange(event.target.value)}
+    />
+  );
+}
+
 export function inputTextElement (props) {
   return (
     <input type="text"
@@ -14,7 +29,7 @@ export function inputTextElement (props) {
 
 export function radioElement (props) {
   return (
-    <div>
+    <div className="col-sm-10">
       {props.schema.enum.map((d, i) =>
         <div key={d} className="form-check">
           <label className="form-check-label">

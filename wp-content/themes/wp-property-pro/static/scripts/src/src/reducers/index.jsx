@@ -1,3 +1,4 @@
+import agentCardState from './agentCardState.jsx';
 import errorMessage from './errorMessage.jsx';
 import {routerReducer} from 'react-router-redux';
 import {combineReducers} from 'redux';
@@ -16,6 +17,7 @@ import testimonialsCarouselState from './testimonialsCarousel.jsx';
 import blogPostsState from './blogPosts.jsx';
 
 const propertyProApp = combineReducers({
+    agentCardState,
     errorMessage,
     formModal,
     mapState,

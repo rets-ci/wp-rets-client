@@ -1,4 +1,5 @@
-import AgentCard from '../AgentCard.jsx';
+import {setAgentCardTab} from '../../actions/index.jsx';
+import AgentCardForms from './Components/AgentCardForms.jsx';
 import FormFetcher from '../Forms/FormFetcher.jsx';
 import _ from 'lodash';
 import {Lib} from '../../lib.jsx';
@@ -7,7 +8,9 @@ import PropertyHighlights from './Components/PropertyHighlights.jsx';
 import PropertyInfoTabs from './Components/PropertyInfoTabs.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import renderHTML from 'react-render-html';
+import scrollToElement from 'scroll-to-element';
 import ImageMixer from './Components/ImageMixer.jsx';
 import Util from '../Util.jsx';
 
@@ -32,14 +35,38 @@ let daysPassedSincePostedDate = postDate => {
   }
 };
 
+const mapStateToProps = (state) => {
+  return {
+   selectedAgentCardTab: _.get(state, 'agentCardState.tab', null) 
+  }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setAgentCardTab: (tab) => {
+      dispatch(setAgentCardTab(tab));
+    }
+  };
+}
+
+
 class Single extends Component {
-  componentDidMount() {
-    // let scripts = _.get(this.props.post, 'scripts', '');
-    // Util.loadScripts(scripts);
+  static propTypes = {
+    selectedAgentCardTab: PropTypes.string,
+    setAgentCardTab: PropTypes.func
+  }
+  requestButtonClicked = tab => {
+    scrollToElement('#' + this.agentCardContainer.id, {
+      duration: 500
+    });
+    this.props.setAgentCardTab(tab);
   }
 
   render() {
     let {
+      agentId,
+      agentName,
+      agentPhoneNumber,
       address,
       baths,
       beds,
@@ -60,11 +87,15 @@ class Single extends Component {
       rets_year_built,
       wpp_location_subdivision,
       wpp_location_city,
+      listing_office,
+      listing_status_sale,
       listing_type,
       listing_sub_type,
     } = this.props;
     let daysOnWebsite = daysPassedSincePostedDate(post_date);
     let lastUpdated = getLastUpdated(post_date);
+
+    let saleType = listing_status_sale.replace('for-', '');
 
     let info_box = `<li>${listing_sub_type}</li>`;
 
@@ -96,7 +127,6 @@ class Single extends Component {
           info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
         }
     }
-
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []}/>
@@ -104,16 +134,22 @@ class Single extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address}</h4>
+                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]}</h4>
                 <h6
                   className="mb-3 text-muted">{rets_city ? rets_city + "," : null} {rets_state} {rets_postal_code}</h6>
                 <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
-                <button type="button"
-                        className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button card-link`}>
+                <button
+                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button card-link`}
+                  onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-showing-' + saleType)}}
+                  type="button"
+                >
                   Request Showing
                 </button>
-                <button type="button"
-                        className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button card-link`}>
+                <button
+                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button card-link`}
+                  onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-application')}}
+                  type="button"
+                >
                   Request Application
                 </button>
               </div>
@@ -183,6 +219,23 @@ class Single extends Component {
             </div>
           </div>
 
+          <div id="agentCardContainer" className="mb-5" ref={(r) => this.agentCardContainer = r}>
+            <AgentCardForms
+              address={address[0]}
+              agents={this.props.agents}
+              listingOffice={this.props.listing_office}
+              RETSAgent={{
+                id: agentId,
+                name: agentName,
+                phone: agentPhoneNumber,
+              }}
+              rdcListing={listing_office === 'Red Door Company'}
+              setAgentCardTab={this.props.setAgentCardTab}
+              selectedTab={this.props.selectedAgentCardTab}
+              saleType={listing_status_sale.replace('for-', '')}
+            />
+          </div>
+
 
           <div className="row">
             <div className="col-md-12 mt-3 mb-3">
@@ -195,13 +248,6 @@ class Single extends Component {
                 are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.
               </p>
             </div>
-            <div className="col-md-12 mb-5">
-              <FormFetcher formId="form-request-showing">
-                <AgentCard
-                  phoneNumber="919-123-3123"
-                />
-              </FormFetcher>
-            </div>
           </div>
         </div>
       </div>
@@ -209,5 +255,7 @@ class Single extends Component {
   }
 }
 
-
-export default Single;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Single);

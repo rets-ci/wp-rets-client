@@ -64,6 +64,7 @@ class PageLayout extends Component {
         nprogress.done();
         document.title = _.get(data, 'page_title', '');
         self.setState({
+          agents: _.get(data, 'agents'),
           front_page_post_content: data.front_page_post_content,
           search_options: _.get(data, 'search_options'),
           post: data.post
@@ -101,6 +102,7 @@ class PageLayout extends Component {
               <UserPanel location={location}/>
               <Header front_page_post_content={_.get(this.state, 'front_page_post_content', null)} search_options={_.get(this.state, 'search_options', null)} location={location} />
               {React.Children.map(children, (child, i) => React.cloneElement(child, {
+                agents: _.get(this.state, 'agents', null),
                 front_page_post_content: _.get(this.state, 'front_page_post_content', null),
                 search_options: _.get(this.state, 'search_options', null),
                 post: _.get(this.state, 'post', {}),
