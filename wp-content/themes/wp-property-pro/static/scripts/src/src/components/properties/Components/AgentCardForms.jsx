@@ -114,7 +114,7 @@ class AgentCardForms extends Component {
     let agent = {};
     let correctScenario;
     let realNumber;
-    if (this.props.saleType && this.props.rdcListing) {
+    if (this.props.saleType && this.props.rdcListing !== null) {
        correctScenario = this.correctScenario(this.props.saleType, this.props.rdcListing)
     }
     let displayedPhoneNumber;

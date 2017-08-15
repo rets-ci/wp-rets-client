@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const Navigation = ({openUserPanel}) => (
+const Navigation = ({openUserPanel, openLoginModal}) => (
   <nav className={`navbar navbar-toggleable-md ${Lib.THEME_CLASSES_PREFIX}navigation-navbar`}>
     <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-items mx-3`}>
       {
@@ -34,9 +34,9 @@ const Navigation = ({openUserPanel}) => (
         }
       </a>
       <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
-        {/*<li className="nav-item">
-          <a href="#" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}login-box`}>Login</a>
-        </li>*/}
+        <li className="nav-item">
+          <a href="#" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}login-box`} onClick={openLoginModal}>Login</a>
+        </li>
         <li className="nav-item hidden-sm-down">
           <button type="button" className={Lib.THEME_CLASSES_PREFIX+"navigation-menu-button"} onClick={openUserPanel}><span>☰</span> Menu</button>
         </li>

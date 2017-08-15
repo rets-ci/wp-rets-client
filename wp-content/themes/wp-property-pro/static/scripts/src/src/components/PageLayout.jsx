@@ -4,6 +4,7 @@ import {
 import Api from '../containers/Api.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import Footer from './Footer.jsx';
+import LoginModal from './Modals/LoginModal.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -100,6 +101,7 @@ class PageLayout extends Component {
           (Object.keys(this.state.post).length ?
             <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100 d-flex flex-column"}>
               <UserPanel location={location}/>
+              <LoginModal />
               <Header front_page_post_content={_.get(this.state, 'front_page_post_content', null)} search_options={_.get(this.state, 'search_options', null)} location={location} />
               {React.Children.map(children, (child, i) => React.cloneElement(child, {
                 agents: _.get(this.state, 'agents', null),
