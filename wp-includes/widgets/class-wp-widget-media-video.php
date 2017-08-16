@@ -115,9 +115,13 @@ class WP_Widget_Media_Video extends WP_Widget_Media {
 			$attachment = get_post( $instance['attachment_id'] );
 		}
 
-		$src = $instance['url'];
 		if ( $attachment ) {
 			$src = wp_get_attachment_url( $attachment->ID );
+		} else {
+
+			// Manually add the loop query argument.
+			$loop = $instance['loop'] ? '1' : '0';
+			$src = empty( $instance['url'] ) ? $instance['url'] : add_query_arg( 'loop', $loop, $instance['url'] );
 		}
 
 		if ( empty( $src ) ) {

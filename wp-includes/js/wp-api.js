@@ -1112,10 +1112,7 @@
 					'PostsRevisions':  'PostRevisions',
 					'PostsTags':       'PostTags'
 				}
-			},
-
-			modelEndpoints = routeModel.get( 'modelEndpoints' ),
-			modelRegex     = new RegExp( '(?:.*[+)]|\/(' + modelEndpoints.join( '|' ) + '))$' );
+			};
 
 			/**
 			 * Iterate thru the routes, picking up models and collections to build. Builds two arrays,
@@ -1140,8 +1137,8 @@
 						index !== ( '/' + routeModel.get( 'versionString' ).slice( 0, -1 ) )
 				) {
 
-					// Single items end with a regex, or a special case word.
-					if ( modelRegex.test( index ) ) {
+					// Single items end with a regex (or the special case 'me').
+					if ( /(?:.*[+)]|\/me)$/.test( index ) ) {
 						modelRoutes.push( { index: index, route: route } );
 					} else {
 
@@ -1363,11 +1360,10 @@
 	wp.api.init = function( args ) {
 		var endpoint, attributes = {}, deferred, promise;
 
-		args                      = args || {};
-		attributes.apiRoot        = args.apiRoot || wpApiSettings.root || '/wp-json';
-		attributes.versionString  = args.versionString || wpApiSettings.versionString || 'wp/v2/';
-		attributes.schema         = args.schema || null;
-		attributes.modelEndpoints = args.modelEndpoints || [ 'me', 'settings' ];
+		args                     = args || {};
+		attributes.apiRoot       = args.apiRoot || wpApiSettings.root || '/wp-json';
+		attributes.versionString = args.versionString || wpApiSettings.versionString || 'wp/v2/';
+		attributes.schema        = args.schema || null;
 		if ( ! attributes.schema && attributes.apiRoot === wpApiSettings.root && attributes.versionString === wpApiSettings.versionString ) {
 			attributes.schema = wpApiSettings.schema;
 		}

@@ -2229,7 +2229,8 @@
 				}
 			} );
 
-			control.container.find( '.menu-delete-item .button-link-delete' ).on( 'click', function( event ) {
+			control.container.find( '.menu-delete-item' ).on( 'click', function( event ) {
+				event.stopPropagation();
 				event.preventDefault();
 				control.setting.set( false );
 			});

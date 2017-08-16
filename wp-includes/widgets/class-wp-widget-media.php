@@ -34,14 +34,6 @@ abstract class WP_Widget_Media extends WP_Widget {
 	);
 
 	/**
-	 * Whether or not the widget has been registered yet.
-	 *
-	 * @since 4.8.1
-	 * @var bool
-	 */
-	protected $registered = false;
-
-	/**
 	 * Constructor.
 	 *
 	 * @since 4.8.0
@@ -94,16 +86,8 @@ abstract class WP_Widget_Media extends WP_Widget {
 	 *
 	 * @since 4.8.0
 	 * @access public
-	 *
-	 * @param integer $number Optional. The unique order number of this widget instance
-	 *                        compared to other instances of the same class. Default -1.
 	 */
-	public function _register_one( $number = -1 ) {
-		parent::_register_one( $number );
-		if ( $this->registered ) {
-			return;
-		}
-		$this->registered = true;
+	public function _register() {
 
 		// Note that the widgets component in the customizer will also do the 'admin_print_scripts-widgets.php' action in WP_Customize_Widgets::print_scripts().
 		add_action( 'admin_print_scripts-widgets.php', array( $this, 'enqueue_admin_scripts' ) );
@@ -116,6 +100,8 @@ abstract class WP_Widget_Media extends WP_Widget {
 		add_action( 'admin_footer-widgets.php', array( $this, 'render_control_template_scripts' ) );
 
 		add_filter( 'display_media_states', array( $this, 'display_media_state' ), 10, 2 );
+
+		parent::_register();
 	}
 
 	/**
