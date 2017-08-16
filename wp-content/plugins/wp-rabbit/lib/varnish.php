@@ -14,11 +14,6 @@ add_action( 'save_post', function( $post_id ) {
     return;
   }
 
-  // If not public PT
-  if ( ! get_post_type_object( get_post( $post_id )->post_type )->public ) {
-    return;
-  }
-
   $post_url = get_permalink( $post_id );
 
   // Removes the URL added by WP, we need the original.
