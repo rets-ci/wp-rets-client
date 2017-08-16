@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
 import Util from '../Util.jsx';
@@ -33,8 +32,6 @@ export default class Map extends Component {
     this.state = {
       dragMode: false
     };
-
-    this.onChangeMapBounds = debounce(this.onChangeMapBounds, Lib.MAP_BOUNDS_CHANGE_INTERVAL);
   }
 
   calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
@@ -111,6 +108,7 @@ export default class Map extends Component {
 
   setMapCoordinates(coordinates) {
     if (!this.map) {
+      console.log('zoomControl: ', isMobile === false);
       this.map = new window.google.maps.Map(this.mapElement, {
         center: coordinates,
         mapTypeControlOptions: {mapTypeIds: []},
@@ -152,18 +150,19 @@ export default class Map extends Component {
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     this.setMapCoordinates(coordinates);
     // this.setPropertyMarkers(this.props.properties);
-    this.map.addListener('bounds_changed', this.onChangeMapBounds);
+    this.map.addListener('dragend', this.onMapChange);
+    this.map.addListener('zoom_changed', this.onMapChange);
   }
 
-  onChangeMapBounds = () => {
+  onMapChange = () => {
     // only trigger the Geo change at a certain zoom level
     if (this.map.getZoom() >= Lib.MAP_CHANGE_ZOOM_LIMIT) {
       return;
     }
-
     let bounds = this.map.getBounds();
     let ne = bounds.getNorthEast();
     let sw = bounds.getSouthWest();
+    console.log('%c Bounds changed!', 'background: red; color: #ffffff', ne.lat(), ne.lng(), sw.lat(), sw.lng() );
     this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
       {
         ne: {
