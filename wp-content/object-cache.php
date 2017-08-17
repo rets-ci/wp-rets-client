@@ -12,7 +12,11 @@ if( !defined( 'MEMCACHED_DISABLED' ) || !MEMCACHED_DISABLED ) {
   if ( !file_exists( WP_CONTENT_DIR . '/object-cache-load.php' ) ) {
     die( 'Object Cache file is not found' );
   }
+  
+  if( class_exists( 'Memcached' )  ) {
   require_once ( WP_CONTENT_DIR . '/object-cache-load.php' );
+}
+  
 } else {
   wp_using_ext_object_cache( false );
   require_once ( ABSPATH . WPINC . '/cache.php' );
