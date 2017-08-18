@@ -4,11 +4,17 @@ import PropTypes from 'prop-types';
 
 class BootstrapModal extends Component {
   static propTypes = {
+    classes: PropTypes.array,
     closeModal: PropTypes.func.isRequired,
     title: PropTypes.string,
     id: PropTypes.string,
     jsonSchemaForm: PropTypes.object
   }
+
+  static defaultProps = {
+    classes: []
+  }
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -48,6 +54,12 @@ class BootstrapModal extends Component {
       }
     });
   }
+
+  componentWillUnmount() {
+    let formId = this.props.id;
+    // cleanup after yourself
+    jQuery('#' + formId).modal('hide');
+  }
   
   render() {
     let {
@@ -55,15 +67,17 @@ class BootstrapModal extends Component {
     } = this.state;
     let {
       children,
+      classes,
       closeModal,
       id,
       open,
       ...other
     } = this.props;
     let body = showBody ? children : null;
+    let classesArr = ['modal', `${Lib.THEME_CLASSES_PREFIX}modal`].concat(classes)
     let title = this.props.jsonSchemaForm ? this.props.jsonSchemaForm.title : this.props.title;
     return (
-      <div data-keyboard="true" className={`modal ${Lib.THEME_CLASSES_PREFIX}modal`} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
+      <div data-keyboard="true" className={classesArr.join(' ')} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">

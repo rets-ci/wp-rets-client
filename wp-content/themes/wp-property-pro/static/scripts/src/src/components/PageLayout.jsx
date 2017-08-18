@@ -1,6 +1,8 @@
 import {
   raiseErrorMessage,
+  toggleUserPanel
 } from '../actions/index.jsx';
+import {browserHistory} from 'react-router';
 import Api from '../containers/Api.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import Footer from './Footer.jsx';
@@ -10,7 +12,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Header from './Header.jsx';
 import nprogress from 'nprogress/nprogress.js';
-import UserPanel from './UserPanel.jsx';
+import UserPanel from './UserPanel2.jsx';
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
@@ -23,12 +25,17 @@ nprogress.configure({
 
 const mapStateToProps = state => {
   return {
-   errorMessage: state.errorMessage 
+    userPanelOpen: state.userPanel.open,
+    errorMessage: state.errorMessage 
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    closeUserPanel: () => {
+      dispatch(toggleUserPanel(false));
+    },
+
     raiseError: (msg) => {
       dispatch(raiseErrorMessage(msg))
     }
@@ -91,16 +98,23 @@ class PageLayout extends Component {
 
   render() {
     let {
+      closeUserPanel,
       errorMessage,
       children,
-      location
+      location,
+      userPanelOpen
     } = this.props;
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container h-100"}>
         {!errorMessage ?
           (Object.keys(this.state.post).length ?
             <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100 d-flex flex-column"}>
-              <UserPanel location={location}/>
+              <UserPanel
+                browserHistoryPush={browserHistory.push}
+                closeUserPanel={closeUserPanel}
+                location={location}
+                panelOpen={userPanelOpen}
+                />
               <LoginModal />
               <Header front_page_post_content={_.get(this.state, 'front_page_post_content', null)} search_options={_.get(this.state, 'search_options', null)} location={location} />
               {React.Children.map(children, (child, i) => React.cloneElement(child, {

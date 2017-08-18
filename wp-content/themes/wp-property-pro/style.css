@@ -696,7 +696,7 @@ ul.propertypro-listing-info-box li:last-child {
 }
 
 .propertypro-user-navigation {
-    height: 100%;
+    overflow-y: scroll;
 }
 
 .propertypro-user-navigation .propertypro-user-navigation-list {
@@ -704,16 +704,10 @@ ul.propertypro-listing-info-box li:last-child {
     display: block;
     list-style-type: none;
     margin: 0;
-    padding: 0 0 1.0625rem;
-}
-
-.propertypro-user-navigation li:nth-child(3n+0) {
-    border-bottom: .0625rem solid #d2dae0;
+    padding-left: 1rem;
 }
 
 .propertypro-user-navigation .propertypro-user-navigation-item-link {
-    display: block;
-    padding: 0 2.1875rem;
     font-size: 1.050rem;
     font-weight: 600;
     line-height: 4.0625rem;
@@ -722,7 +716,7 @@ ul.propertypro-listing-info-box li:last-child {
 
 .propertypro-user-navigation .propertypro-user-navigation-item-link span {
     display: inline-block;
-    margin-right: .9375rem;
+    margin-right: 1rem;
 }
 
 .propertypro-user-navigation .propertypro-user-navigation-list li:last-child {
@@ -776,6 +770,10 @@ ul.propertypro-listing-info-box li:last-child {
     position: absolute;
     top: 1.4375rem;
     right: .625rem;
+}
+
+.propertypro-divider-bottom {
+    border-bottom: .0625rem solid #d2dae0;
 }
 
 /** Testimonial */
@@ -2538,6 +2536,52 @@ p.propertypro-gentle-error {
     /* padding: .60em 2em; */
     padding: .5rem 1rem;
     width: 100%;
+}
+
+.sidebar .modal-header {
+    min-height: 3.4375rem;
+}
+
+.sidebar-left .modal-dialog,
+.sidebar-right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 320px;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+         -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+}
+
+.sidebar-left .modal-content,
+.sidebar-right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.sidebar-left .modal-body,
+.sidebar-right .modal-body {
+    padding: 15px;
+}
+
+.sidebar-left .modal-dialog{
+    left: 0;
+}
+
+.sidebar-right .modal-dialog {
+    right: 0;
+}
+
+/* ----- MODAL STYLE ----- */
+.sidebar .modal-content {
+    border-radius: 0;
+    border: none;
+}
+
+.sidebar .modal-header {
+    border-bottom-color: #EEEEEE;
+    background-color: #FAFAFA;
 }
 
 /*-----------------------------------------------------------------------------------*/
