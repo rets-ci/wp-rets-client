@@ -12,7 +12,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Header from './Header.jsx';
 import nprogress from 'nprogress/nprogress.js';
-import UserPanel from './UserPanel2.jsx';
+import UserPanel from './UserPanel.jsx';
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
