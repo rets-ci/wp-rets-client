@@ -10,7 +10,6 @@ const userPanel = (state = {open: false}, action) => {
         }
         break;
       case LOCATION_CHANGE:
-        console.log('location was changed and userPanel should be closed');
         return {
           ...state,
           open: false
