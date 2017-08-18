@@ -3,7 +3,7 @@ import React from 'react';
 import _ from 'lodash';
 import FeatureGroup from './../components/FeatureGroup.jsx';
 
-const DefaultLayout = ({item}) => {
+const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal}) => {
   return (
     <div className={Lib.THEME_CLASSES_PREFIX + "widget-tour"}>
       <div className="container-fluid">
@@ -24,7 +24,7 @@ const DefaultLayout = ({item}) => {
           </div>
           {
             _.get(item, 'feature_groups', []).map((featureGroup, key) =>
-              <FeatureGroup featureGroup={featureGroup} ind={key} key={key}/>
+              <FeatureGroup browserHistoryPush={browserHistoryPush} featureGroup={featureGroup} ind={key} openFormModal={openFormModal} key={key}/>
             )
           }
         </div>

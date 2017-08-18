@@ -34,7 +34,7 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
               title="Home Buying"
             >
               <span>
-                <img src={bundle.static_images_url + "home-buying-icon.svg"} alt="home buying"/>
+                <img src={bundle.static_images_url + "home-buying-icon-small.svg"} alt="home buying"/>
               </span>
               Home Buying
             </a>
@@ -60,7 +60,7 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
               title="Home Renting"
             >
               <span>
-                <img src={bundle.static_images_url + "home-renting-icon.svg"} alt="home renting"/>
+                <img src={bundle.static_images_url + "home-renting-icon-small.svg"} alt="home renting"/>
               </span>
               Home Renting
             </a>
@@ -73,7 +73,7 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
               title="Home Selling"
             >
               <span>
-                <img src={bundle.static_images_url + "home-selling-icon.svg"} alt="home selling"/></span>
+                <img src={bundle.static_images_url + "home-selling-icon-small.svg"} alt="home selling"/></span>
                 Home Selling
             </a>
           </li>

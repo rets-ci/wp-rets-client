@@ -44,12 +44,15 @@ class FormFetcher extends Component {
     let {
       formId
     } = this.props;
-
     this.fetchSchema(this.schemaURL(formId));
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.formId !== this.props.formId) {
+    if (nextProps.formId && nextProps.formId !== this.props.formId) {
+      // if a new form is being loaded, clear the previous jsonSchemaForm state
+      this.setState({
+        jsonSchemaForm: {}
+      });
       this.fetchSchema(this.schemaURL(nextProps.formId));
     }
   }

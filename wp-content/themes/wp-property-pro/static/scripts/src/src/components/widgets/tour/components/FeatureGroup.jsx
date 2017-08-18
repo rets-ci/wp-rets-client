@@ -3,7 +3,7 @@ import Feature from './Feature.jsx';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
-const FeatureGroup = ({featureGroup, ind}) => {
+const FeatureGroup = ({browserHistoryPush, featureGroup, ind, openFormModal}) => {
 
   let counter = 1;
   const featuresCount = _.get(featureGroup, 'features', []).length;
@@ -42,7 +42,7 @@ const FeatureGroup = ({featureGroup, ind}) => {
                       _.get(featureGroup, 'features', []).map((feature, k) => {
                           let last = featuresCount === counter;
                           counter++;
-                          return (<Feature feature={feature} last={last} ind={k} key={k}/>)
+                          return (<Feature browserHistoryPush={browserHistoryPush} feature={feature} last={last} openFormModal={openFormModal} ind={k} key={k}/>)
                         }
                       )
                     }
