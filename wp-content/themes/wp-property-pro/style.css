@@ -704,7 +704,27 @@ ul.propertypro-listing-info-box li:last-child {
     display: block;
     list-style-type: none;
     margin: 0;
-    padding-left: 1rem;
+    padding: 0;
+}
+
+.propertypro-user-navigation .propertypro-user-navigation-list li  {
+    padding-top: 1rem;
+}
+
+.propertypro-user-navigation .propertypro-user-navigation-list li.propertypro-divider-bottom {
+    border-bottom: .0625rem solid #d2dae0;
+    padding-bottom: 1rem;
+}
+
+.propertypro-user-navigation .propertypro-user-navigation-list a {
+    display: inline-block;
+    width: 100%;
+    padding-left: 3.0625rem;
+}
+
+.propertypro-user-navigation .propertypro-user-navigation-list a span {
+    width: 2rem;
+    height: 2rem;
 }
 
 .propertypro-user-navigation .propertypro-user-navigation-item-link {
@@ -716,7 +736,7 @@ ul.propertypro-listing-info-box li:last-child {
 
 .propertypro-user-navigation .propertypro-user-navigation-item-link span {
     display: inline-block;
-    margin-right: 1rem;
+    margin-right: 2rem;
 }
 
 .propertypro-user-navigation .propertypro-user-navigation-list li:last-child {
@@ -770,10 +790,6 @@ ul.propertypro-listing-info-box li:last-child {
     position: absolute;
     top: 1.4375rem;
     right: .625rem;
-}
-
-.propertypro-divider-bottom {
-    border-bottom: .0625rem solid #d2dae0;
 }
 
 /** Testimonial */
@@ -2546,7 +2562,7 @@ p.propertypro-gentle-error {
 .sidebar-right .modal-dialog {
     position: fixed;
     margin: auto;
-    width: 320px;
+    width: 25rem;
     height: 100%;
     -webkit-transform: translate3d(0%, 0, 0);
         -ms-transform: translate3d(0%, 0, 0);
@@ -2562,7 +2578,8 @@ p.propertypro-gentle-error {
 
 .sidebar-left .modal-body,
 .sidebar-right .modal-body {
-    padding: 15px;
+    /* padding: 15px; */
+    padding: 0;
 }
 
 .sidebar-left .modal-dialog{
