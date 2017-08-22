@@ -1,0 +1,100 @@
+{
+  "Rooms": [
+    {
+      "Bedrooms": [
+        {"name": "Bedrooms on 1st Floor", "value": null},
+        {"name": "Master Bedroom 1st Floor", "value": null},
+        {"name": "Bedrooms", "value": "post_meta.rets_beds[0]"}
+      ],
+      "Kitchen & Dining": [
+        {"name": "Dining Room", "value": null}
+      ]
+    },
+    {
+      "Bathrooms": [
+        {"name": "Full Bathrooms", "value": "post_meta.rets_baths_full"},
+        {"name": "Bathrooms", "value": "post_meta.rets_total_baths"}
+      ]
+    },
+    {
+      "Other Rooms": [
+        {"name": "Basement", "value": null},
+        {"name": "Other Rooms", "value": null},
+        {"name": "Attic Features", "value": null},
+        {"name": "Number of Rooms", "value": "post_meta.rets_number_of_rooms"}
+      ]
+    }
+  ],
+  "Features": [
+    {
+      "Interior": [
+        {"name": "Flooring", "value": null},
+        {"name": "Appliances", "value": null},
+        {"name": "Interior Features", "value": null}
+      ],
+      "Utility": [
+        {"name": "Water / Sewer Access", "value": null}
+      ]
+    },
+    {
+      "Parking": [
+        {"name": "Garage", "value": "post_meta.rets_garage"},
+        {"name": "Parking", "value": null}
+      ],
+      "Exterior": [
+        {"name": "Exterior Finish", "value": null},
+        {"name": "Exterior Features", "value": null}
+      ]
+    },
+    {
+      "Heating & Cooling": [
+        {"name": "Fireplace", "value": null},
+        {"name": "Air Conditioning", "value": null},
+        {"name": "Heating", "value": null},
+        {"name": "Water Heater", "value": null},
+        {"name": "Fireplace Description", "value": null},
+        {"name": "Heating Fuel", "value": null}
+      ]
+    }
+  ],
+  "Neighborhood": [
+    {
+      "Schools": [
+        {"name": "Elementary School", "value": "tax_input.wpp_schools.elementary_school[0].name"},
+        {"name": "Middle School", "value": "tax_input.wpp_schools.middle_school[0].name"},
+        {"name": "High School", "value": "tax_input.wpp_schools.high_school[0].name"}
+      ]
+    }
+  ],
+  "Property & Pricing": [
+    {
+      "Pricing & Terms": [
+        {"name": "Rental", "value": null},
+        {"name": "Sale Type", "value": "tax_input.wpp_listing_status.listing_status_sale[0].name"},
+        {"name": "Payment Period", "value": "post_meta.rets_payment_period[0]"},
+        {"name": "Security Deposit", "value": "post_meta.rets_security_deposit[0]"},
+        {"name": "Rental Terms", "value": null},
+        {"name": "Tenant Pays", "value": null},
+        {"name": "Pet Policy", "value": null},
+        {"name": "Restrictions", "value": null},
+        {"name": "Price", "value": "post_meta.rets_list_price[0]"},
+        {"name": "Price per SQFT", "value": null},
+        {"name": "Date Available", "value": "post_meta.rets_date_available[0]"}
+      ]
+    },
+    {
+      "Building": [
+        {"name": "Property Description", "value": null},
+        {"name": "Living Area Above Grade", "value": "post_meta.rets_living_area_above_grade[0]"},
+        {"name": "Design", "value": "post_meta.rets_living_area_above_grade[0]"},
+        {"name": "Total Living Area SQFT", "value": null},
+        {"name": "Year Built", "value": "post_meta.rets_year_built[0]"}
+      ]
+    },
+    {
+      "Lot": [
+        {"name": "Approximate Lot Size", "value": "post_meta.rets_lot_size_area"}
+      ]
+    }
+  ]
+}
