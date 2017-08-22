@@ -6,6 +6,7 @@ import {Lib} from '../../lib.jsx';
 import moment from 'moment';
 import PropertyHighlights from './Components/PropertyHighlights.jsx';
 import PropertyInfoTabs from './Components/PropertyInfoTabs.jsx';
+import propertyDataStructure from '../../../static_data/property-data-structure.json';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -13,7 +14,6 @@ import renderHTML from 'react-render-html';
 import scrollToElement from 'scroll-to-element';
 import ImageMixer from './Components/ImageMixer.jsx';
 import Util from '../Util.jsx';
-
 let getLastUpdated = lastUpdated => {
   let parsed = moment.utc(lastUpdated, 'YYYY-MM-D hh:mm:ss');
   if (!parsed.isValid()) {
@@ -68,6 +68,7 @@ class Single extends Component {
       agentName,
       agentPhoneNumber,
       address,
+      all,
       baths,
       beds,
       elementary_school,
@@ -215,7 +216,10 @@ class Single extends Component {
                 priced at $1,100 a month.</p>
             </div>
             <div className="col-md-12 mb-5">
-              <PropertyInfoTabs />
+              <PropertyInfoTabs
+                data={all}
+                propertyDataStructure={propertyDataStructure}
+              />
             </div>
           </div>
 

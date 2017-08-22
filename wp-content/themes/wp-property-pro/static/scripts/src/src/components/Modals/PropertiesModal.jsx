@@ -283,7 +283,6 @@ class PropertiesModal extends Component {
       'Land': ['location', 'lotSize', 'price']
     };
     if (!filtersSaleTypeMap[saleType]) {
-      console.log(`saletype ${saleType} was not recognized, properties modal filters might work properly`);
       return false;
     }
     return filtersSaleTypeMap[saleType].indexOf(filter) >= 0;

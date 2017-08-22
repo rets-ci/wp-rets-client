@@ -1,5 +1,7 @@
+import {openFormModal} from '../actions/index.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import Masthead from './widgets/masthead/Masthead.jsx';
 import Callout from './widgets/callout/Callout.jsx';
@@ -13,8 +15,21 @@ import Single from './blog/Single.jsx';
 import GuideSingle from './guide/Single.jsx';
 import _ from 'lodash';
 
+const mapStateToProps = (state) => {
+  return {}
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    openFormModal: (id, open) => {
+      dispatch(openFormModal(id, open));
+    }
+  }
+};
+
 class Page extends Component {
   static propTypes = {
+    openFormModal: PropTypes.func.isRequired,
     post: PropTypes.object,
     rows: PropTypes.array
   };
@@ -30,6 +45,8 @@ class Page extends Component {
     }
 
     let {
+      formModalOpen,
+      openFormModal,
       post,
       rows
     } = this.props;
@@ -48,7 +65,7 @@ class Page extends Component {
                       return <Subnavigation post_title={post.post_title} widget_cell={cell} currentUrl={_.get(this.props, 'post.post_url', '')}/>;
                       break;
                     case 'Property_Pro_Tour_Widget':
-                      return <Tour widget_cell={cell}/>;
+                      return <Tour browserHistoryPush={browserHistory.push} openFormModal={openFormModal} widget_cell={cell}/>;
                       break;
                     case 'Property_Pro_Listing_Carousel_Widget':
                       return <ListingCarousel widget_cell={cell}/>;
@@ -71,4 +88,7 @@ class Page extends Component {
   }
 }
 
-export default Page;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Page);

@@ -126,6 +126,7 @@ class SingleContainer extends Component {
           <Single
             agents={this.props.agents}
             {...singlePropertyData(this.state.property)}
+            all={this.state.property._source}
           />
         : <p>Request property id {id} could not be found</p>
       : <LoadingCircle containerHeight="600px" verticallyCentered={true} />);

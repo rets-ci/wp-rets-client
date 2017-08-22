@@ -1,116 +1,150 @@
+import BootstrapModal from './Modals/components/BootstrapModal.jsx'
 import React from 'react';
-import {connect} from 'react-redux'
-import {toggleUserPanel} from '../actions/index.jsx';
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    panelOpen: state.panel.open,
-    location: _.get(ownProps, 'location')
-  }
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    closeUserPanel: () => {
-      dispatch(toggleUserPanel(false));
-    }
-  }
-};
-
-const UserPanelContent = ({panelOpen, closeUserPanel}) => {
-
-  // Exclude render User panel for guide blog
-  let pathname = _.get(location, 'pathname', '');
-  let pathRoot = pathname.replace(/\//g, '');
-  if (pathRoot.indexOf('guide') !== -1) {
-    return null;
-  }
-
+const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
   return (
-    <section
-      className={Lib.THEME_CLASSES_PREFIX + "user-panel px-3 " + (panelOpen ? Lib.THEME_CLASSES_PREFIX + "on" : "")}>
-      <a href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel"} onClick={(event) => {
-        closeUserPanel();
-        event.preventDefault();
-        event.stopPropagation();
-      }}><i className="fa fa-times"></i></a>
-      <div className={Lib.THEME_CLASSES_PREFIX + "user-info-box"}>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}status ${Lib.THEME_CLASSES_PREFIX}notlogged`}>
-          <a href="#">
-            <img src={bundle.static_images_url + "default-avatar.svg"} alt="default-avatar"
-                 className={Lib.THEME_CLASSES_PREFIX + "default-user"}/>
-            <h5>Sign up now</h5>
-            <p>Search, find and manage property</p>
-          </a>
-        </div>
-
-        <div className={Lib.THEME_CLASSES_PREFIX + "status"}>
-          <a href="#">
-            <img src={bundle.static_images_url + "paresh.png"} alt=""
-                 className={Lib.THEME_CLASSES_PREFIX + "default-user"}/>
-            <h5>Paresh Khatri</h5>
-            <p>Home buyer</p>
-            <span className={Lib.THEME_CLASSES_PREFIX + "user-info-box-status-image"}><img
-              src={bundle.static_images_url + "settings.svg"} alt=""/></span>
-          </a>
-        </div>
-      </div>
-
+    <BootstrapModal
+      classes={["sidebar", "sidebar-right"]}
+      id={'UserPanel'}
+      closeModal={closeUserPanel}
+      open={panelOpen}
+      >
       <div className={Lib.THEME_CLASSES_PREFIX + "user-navigation"}>
         <ol className={`${Lib.THEME_CLASSES_PREFIX}user-navigation-list clearfix`}>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Home For You">
-                      <span><img src={bundle.static_images_url + "home-for-you.svg"}
-                                 alt="home-for-you"/></span> Home For You <span
-            className={Lib.THEME_CLASSES_PREFIX + "tag"}>8</span></a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Shared Favorites">
-                      <span><img src={bundle.static_images_url + "shared-favorites.svg"}
-                                 alt="shared-favorites"/></span> Shared Favorites <span
-            className={Lib.THEME_CLASSES_PREFIX + "tag"}>8</span></a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Comments">
-            <span><img src={bundle.static_images_url + "comments.svg"} alt="comments"/></span>
-            Comments</a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Search Homes">
-                      <span><img src={bundle.static_images_url + "search-homes.svg"}
-                                 alt="search-homes"/></span> Search Homes</a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Favorites">
-            <span><img src={bundle.static_images_url + "favorites.svg"} alt="favorites"/></span>
-            Favorites</a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Saved Searches">
-                      <span><img src={bundle.static_images_url + "saved-searches.svg"}
-                                 alt="saved-searches"/></span> Saved Searches</a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Buy With Us">
-                      <span><img src={bundle.static_images_url + "buy-with-us.svg"}
-                                 alt="buy-with-us"/></span> Buy With Us</a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Home Buyer’s Guide">
-                      <span><img src={bundle.static_images_url + "buyers-guide.svg"}
-                                 alt="buyers-guide"/></span> Home Buyer’s Guide</a></li>
-          <li><a href="#" className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"} title="Home Buyer’s Blog">
-                      <span><img src={bundle.static_images_url + "buyers-blog.svg"}
-                                 alt="buyers-blog"/></span> Home Buyer’s Blog</a></li>
+          <li>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham%2C%20NC&wpp_search[property_types]=condo-house-manufactured-residential-apartment-residential-other-townhouse&wpp_search[sale_type]=Buy")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Home For Sale"
+            >
+              <span>
+                <img src={bundle.static_images_url + "search-homes.svg"} alt="homes for sale"/>
+              </span>
+              Homes for Sale
+            </a>
+          </li>
+          <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/buy")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Home Buying"
+            >
+              <span>
+                <img src={bundle.static_images_url + "home-buying-icon-small.svg"} alt="home buying"/>
+              </span>
+              Home Buying
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham%2C%20NC&wpp_search[property_types]=condo-house-manufactured-residential-apartment-residential-other-townhouse&wpp_search[sale_type]=Rent")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Homes for Rent"
+            >
+              <span>
+                <img src={bundle.static_images_url + "search-homes.svg"} alt="homes for rent"/>
+              </span>
+              Homes for Rent
+            </a>
+          </li>
+          <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/rent")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Home Renting"
+            >
+              <span>
+                <img src={bundle.static_images_url + "home-renting-icon-small.svg"} alt="home renting"/>
+              </span>
+              Home Renting
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/sell")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Home Selling"
+            >
+              <span>
+                <img src={bundle.static_images_url + "home-selling-icon-small.svg"} alt="home selling"/></span>
+                Home Selling
+            </a>
+          </li>
+          <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/management")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Property Management"
+            >
+              <span>
+                <img src={bundle.static_images_url + "propertymanagement-icon-black.svg"} alt="property management"/></span>
+                Property Management
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/about")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="About Us"
+            >
+              <span>
+                {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
+              </span>
+                About Us
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/about/careers/")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Careers"
+            >
+              <span>
+                {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
+              </span>
+              Careers
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/blog")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Blog"
+            >
+              <span>
+                {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
+              </span>
+              Blog
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/contact")}}
+              className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
+              title="Contact"
+            >
+              <span>
+                {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
+              </span>
+              Contact
+            </a>
+          </li>
         </ol>
       </div>
-      <div className={Lib.THEME_CLASSES_PREFIX + "more"}>
-        <a
-          className={Lib.THEME_CLASSES_PREFIX + "more-link"}
-          href="#"
-          onClick={(event) => {
-            closeUserPanel();
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-        >
-          <span>☰</span> Menu <i className="fa fa-caret-down"></i>
-          </a>
-      </div>
-    </section>
-  )
+    </BootstrapModal>
+  ); 
 };
-
-const UserPanel = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserPanelContent);
 
 export default UserPanel

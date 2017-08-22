@@ -4,7 +4,7 @@ import {Lib} from '../../../lib.jsx';
 const UserPanelIcon = ({openUserPanel}) => (
   <a
     href="#"
-    onClick={openUserPanel}
+    onClick={(event) => {event.preventDefault(); openUserPanel()}}
     className={`${Lib.THEME_CLASSES_PREFIX}side-navigation`}
     >
       <span className={`${Lib.THEME_CLASSES_PREFIX}navbar-navigation-icon`}>☰</span>

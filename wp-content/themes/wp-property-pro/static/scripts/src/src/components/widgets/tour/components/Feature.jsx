@@ -2,8 +2,11 @@ import React from 'react';
 import {Lib} from '../../../../lib.jsx';
 import renderHTML from 'react-render-html';
 import _ from 'lodash';
+import Util from '../../../Util.jsx';
 
-const Feature = ({feature, last, ind}) => {
+const Feature = ({browserHistoryPush, feature, last, openFormModal, ind}) => {
+  let formModalId = _.get(feature, 'button_section.css_class', null) ? Util.getFormModalIdFromCSSClass(feature.button_section.css_class.split(' ')) : null;
+  let mainLinkOnClick = formModalId ? ((event) => { event.preventDefault(); openFormModal(formModalId, true)}) : ((event) => {event.preventDefault(); browserHistoryPush(feature.button_section.url); });
   return (
     <div className={Lib.THEME_CLASSES_PREFIX+"tour-widget-content-container"} key={ind}>
       {
@@ -18,7 +21,7 @@ const Feature = ({feature, last, ind}) => {
       }
       {
         _.get(feature, 'button_section.label', null) && _.get(feature, 'button_section.url', null)
-          ? <a href={feature.button_section.url} className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}tour-widget-content-button`}>{feature.button_section.label}</a>
+          ? <a href="#" onClick={mainLinkOnClick} className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}tour-widget-content-button`}>{feature.button_section.label}</a>
           : null
       }
       {
