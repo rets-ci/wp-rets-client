@@ -134,7 +134,7 @@
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
-      "_EP_HOST": "https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100",
+      "EP_HOST": "https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100",
       "wp_cache": true,
       "concatenate_scripts": false,
       "sunrise": false,
