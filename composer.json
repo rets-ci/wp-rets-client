@@ -178,7 +178,7 @@
     "optimize-autoloader": true,
     "docker": {
       "scripts": {
-        "start": [ "bash /var/www/wp-content/static/bin/install.sh" ]
+        "start": [ "bash wp-content/static/bin/install.sh" ]
       }
     }
   },

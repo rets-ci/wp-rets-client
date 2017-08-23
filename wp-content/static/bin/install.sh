@@ -2,9 +2,7 @@ if [[ ! -z "$GIT_BRANCH" ]]
 then
 	if [ "$GIT_BRANCH" != "production" ] && [ "$GIT_BRANCH" != "latest-v3" ];
 	then
-		cd /var/www/wp-content/themes/wp-property-pro/static/scripts/src
-		NODE_ENV=development npm install
-		touch testing-install-script
+	NODE_ENV=development npm --prefix=/var/www/wp-content/themes/wp-property-pro/static/scripts/src install
 	fi
 fi
 
