@@ -45,7 +45,8 @@
     "swiper": "^3.4.1",
     "urijs": "^1.18.9",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "webpack-cleanup-plugin": "^0.5.1"
   },
   "devDependencies": {
     "css-loader": "^0.26.2",
@@ -55,8 +56,8 @@
     "uglify-js": "^3.0.27"
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack && uglifyjs bundle.js -c -m -o bundle.js",
-    "watch": "webpack --watch --progress"
+    "build": "NODE_ENV=production webpack --progress",
+    "watch": "NODE_ENV=development webpack --watch --progress"
   },
   "author": "",
   "license": "ISC"

@@ -113,7 +113,7 @@ namespace UsabilityDynamics {
       // load assets.json
       $webpack_assets_json = json_decode(file_get_contents( get_template_directory() . '/static/scripts/src/assets.json' ));
       $bundleFilename = $webpack_assets_json->main->js;
-      wp_enqueue_script('bundle', $this->_scriptsDir . '/src/' . $bundleFilename, [], null, true);
+      wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/' . $bundleFilename, [], null, true);
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
       }
