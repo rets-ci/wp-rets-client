@@ -18,6 +18,13 @@ let plugins = [
   }),
   new webpack.optimize.DedupePlugin(),
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  // function() {
+  //   this.plugin("done", function(stats) {
+  //     require("fs").writeFileSync(
+  //       path.join(__dirname, "hash.json"),
+  //       JSON.stringify({hash: stats.hash}));
+  //   });
+  // }
 ];
 
 
