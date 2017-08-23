@@ -1,12 +1,41 @@
-
+const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
+const AssetsPlugin = require('assets-webpack-plugin');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const path = require('path');
 const webpack = require('webpack');
+
+let plugins = [
+  new AssetsPlugin({
+    filename: 'assets.json',
+    prettyPrint: true,
+    update: true
+  }),
+  new WebpackCleanupPlugin({verbose: false}),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+    }
+  }),
+  new webpack.optimize.DedupePlugin(),
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+];
+
+
+if (PROD) {
+  console.log('in production mode');
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: { warnings: false },
+    mangle: true
+  }));
+} else {
+  console.log('NOT in production mode');
+}
 
 module.exports = {
     entry: './src/index.jsx',
     output: {
-        path: './',
-        filename: 'bundle.js'
+        path: path.join(__dirname, 'dist'),
+        filename: 'bundle-[hash].js'
     },
     module: {
         loaders: [
@@ -35,10 +64,7 @@ module.exports = {
           }
         ]
     },
-    plugins: [
-      new webpack.optimize.DedupePlugin(),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-    ],
+    plugins: plugins,
     resolve: {
       fallback: [
         'node_modules'
