@@ -54,7 +54,7 @@
     "uglify-js": "^3.0.27"
   },
   "scripts": {
-    "build": "webpack && uglifyjs bundle.js -c -m -o bundle.js",
+    "build": "NODE_ENV=production webpack && uglifyjs bundle.js -c -m -o bundle.js",
     "watch": "webpack --watch --progress"
   },
   "author": "",
