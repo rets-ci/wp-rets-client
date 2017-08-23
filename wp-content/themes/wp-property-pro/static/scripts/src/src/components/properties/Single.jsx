@@ -49,7 +49,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 }
 
-
 class Single extends Component {
   static propTypes = {
     selectedAgentCardTab: PropTypes.string,
