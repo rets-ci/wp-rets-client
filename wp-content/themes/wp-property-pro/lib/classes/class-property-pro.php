@@ -110,8 +110,10 @@ namespace UsabilityDynamics {
     
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ));
-
-      wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
+      // load assets.json
+      $webpack_assets_json = json_decode(file_get_contents( get_template_directory() . '/static/scripts/src/assets.json' ));
+      $bundleFilename = $webpack_assets_json->main->js;
+      wp_enqueue_script('bundle', $this->_scriptsDir . '/src/' . $bundleFilename, [], null, true);
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
       }

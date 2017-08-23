@@ -1,4 +1,5 @@
 
+const AssetsPlugin = require('assets-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -6,7 +7,7 @@ module.exports = {
     entry: './src/index.jsx',
     output: {
         path: './',
-        filename: 'bundle.js'
+        filename: 'bundle-[hash].js'
     },
     module: {
         loaders: [
@@ -36,6 +37,10 @@ module.exports = {
         ]
     },
     plugins: [
+      new AssetsPlugin({
+        filename: 'assets.json',
+        prettyPrint: true
+      }),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production')
