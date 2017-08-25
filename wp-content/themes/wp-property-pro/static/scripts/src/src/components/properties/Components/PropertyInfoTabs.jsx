@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {merge} from 'lodash';
 
-import PropertySingleDataDiv from './PropertySingleDataDiv.jsx';
+import PropertySingleTabContent from './PropertySingleTabContent.jsx';
 
 let getAllTabData = (propertyData, colNumbers) => {
 	let propertyDataModified = propertyData;
@@ -64,7 +64,7 @@ class PropertyInfoTabs extends Component {
     } = this.state;
     
     let propertyDataStructureModified = Object.assign({}, propertyDataStructure);
-    propertyDataStructureModified['All'] = getAllTabData(Object.assign({}, propertyDataStructure), 3);
+		propertyDataStructureModified['All'] = getAllTabData(Object.assign({}, propertyDataStructure), 3);
     return (
       <div className="App">
         <div id={`${Lib.THEME_CLASSES_PREFIX}property-details`}>
@@ -83,20 +83,11 @@ class PropertyInfoTabs extends Component {
 							</ul>
 						</div>
 						<div className="card-block">
-							<div className="d-flex">
-								{propertyDataStructureModified[selectedTab].map(p =>
-									<div className="col" key={JSON.stringify(p)}>
-										{Object.keys(p).map((d, i) =>
-											<div key={d + i}>
-												<PropertySingleDataDiv
-                          data={data}
-													head={d}
-													content={p[d]}
-												/>
-											</div>
-										)}
-									</div>
-								)}
+							<div>
+								<PropertySingleTabContent
+									tab={propertyDataStructureModified[selectedTab]}
+									data={data}
+								/>
 							</div>
 						</div>
 					</div>
