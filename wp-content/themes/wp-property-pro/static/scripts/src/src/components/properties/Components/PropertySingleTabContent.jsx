@@ -6,12 +6,11 @@ function showContentValue(data, esReference, booleanField) {
   if (!esReference || (!_.get(data, esReference, null) && !booleanField )) { return 'N/A'; }
   let v = _.get(data, esReference);
   let value;
-
   if (v instanceof Array) {
     value = v.map(d => d.name).join(', ');
 
     if (booleanField) {
-      value = !!value ? 'Yes' : 'No'
+      value = value.includes('No') || value.includes('no') || !value ? 'No' : 'Yes';
     }
   } else if (typeof v !== 'string') {
     console.log('return value in property single is an object, most likely a path referencing issue: ', value);
@@ -19,7 +18,7 @@ function showContentValue(data, esReference, booleanField) {
   } else {
     value = v;
     if (booleanField) {
-      value = !!value ? 'Yes' : 'No'
+      value = value.includes('no') || !value ? 'No' : 'Yes';
     }
   }
   return value;
@@ -28,7 +27,7 @@ function showContentValue(data, esReference, booleanField) {
 
 function getContent(content, data) {
   let contentElements = content.map(c => {
-    return showContentValue(data, c.esReference, c.booleanField) !== 'N/A' ?
+    return ['N/A', '0'].indexOf(showContentValue(data, c.esReference, c.booleanField)) < 0 ?
       <li key={JSON.stringify(c)}>
         <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>{c.name}:</span> {showContentValue(data, c.esReference, c.booleanField)}
       </li>

@@ -108,18 +108,22 @@
         {"name": "Elementary School", "esReference": "tax_input.wpp_schools.elementary_school"},
         {"name": "Middle School", "esReference": "tax_input.wpp_schools.middle_school"},
         {"name": "High School", "esReference": "tax_input.wpp_schools.high_school"}
-      ],
+      ]
+    },
+    {
       "Homeowners Association": [
-        {"name": "Hoa Fees Amount", "esReference": "post_meta.rets_hoa_fees_amount[0]"},
-        {"name": "Hoa Payment Frequency", "esReference": "post_meta.rets_hoa_payment_frequency[0]"},
-        {"name": "Hoa 1 Fee Payment Frequency", "esReference": "post_meta.rets_hoa_1_fee_payment_frequency[0]"},
-        {"name": "Hoa 2 Fee Payment Frequency", "esReference": "post_meta.rets_hoa_2_fee_payment_frequency[0]"},
-        {"name": "Hoa 1 Fees Requirement", "esReference": "post_meta.rets_hoa_1_mgmt[0]"},
-        {"name": "Hoa 2 Fees Requirement", "esReference": "post_meta.rets_hoa_2_mgmt[0]"},
-        {"name": "Hoa 1 fees amount", "esReference": "post_meta.rets_hoa_1_fees[0]"},
-        {"name": "Hoa 2 fees amount", "esReference": "post_meta.rets_hoa_2_fees[0]"},
-        {"name": "Hoa Phone", "esReference": "post_meta.rets_hoa_phone[0]"},
-        {"name": "Hoa Fees Include", "esReference": "tax_input.rets_hoa_fees_include.rets_hoa_fees_include"}
+        {"name": "HOA 1 Fees Requirement", "esReference": "tax_input.rets_hoa_1_fees_required.rets_hoa_1_fees_required", "booleanField": true},
+        {"name": "HOA 2 Fees Requirement", "esReference": "tax_input.rets_hoa_2_fees_required.rets_hoa_2_fees_required", "booleanField": true},
+        {"name": "HOA 1", "esReference": "post_meta.rets_hoa_1_mgmt[0]"},
+        {"name": "HOA 2", "esReference": "post_meta.rets_hoa_2_mgmt[0]"},
+        {"name": "HOA 1 fees amount", "esReference": "post_meta.rets_hoa_1_fees[0]"},
+        {"name": "HOA 2 fees amount", "esReference": "post_meta.rets_hoa_2_fees[0]"},
+        {"name": "HOA Phone", "esReference": "post_meta.rets_hoa_phone[0]"},
+        {"name": "HOA 1 Fee Payment Frequency", "esReference": "tax_input.rets_hoa_1_fee_payment.rets_hoa_1_fee_payment"},
+        {"name": "HOA 2 Fee Payment Frequency", "esReference": "tax_input.rets_hoa_2_fee_payment.rets_hoa_2_fee_payment"},
+        {"name": "HOA Fees Amount", "esReference": "post_meta.rets_hoa_fees_amount[0]"},
+        {"name": "HOA Payment Frequency", "esReference": "post_meta.rets_hoa_payment_frequency[0]"},
+        {"name": "HOA Fees Include", "esReference": "tax_input.rets_hoa_fees_include.rets_hoa_fees_include"}
       ]
     }
   ],
