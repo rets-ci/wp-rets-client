@@ -7,10 +7,11 @@
     "powf_c324b3fd9a38e61180efc4346bac563c": "Contact Agent Directly",
     "ignore_submitmessage": "Thank you for your submission.",
     "ignore_linkbuttontext": "",
-    "ignore_redirecturl": "http://www.reddoorcompany.com/form-submitted/",
+    "ignore_redirecturl": "",
     "ignore_redirectmode": "Auto"
   },
   "schema": {
+    "action": "https://api.reddoorcompany.com/v1/form?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_AD77AFF19A38E61180EFC4346BAC563C&tver=2013&c=1",
     "type": "object",
     "required": [
       "powf_6524b3fd9a38e61180efc4346bac563c",
@@ -70,6 +71,12 @@
         "type": "string",
         "maxlength": 100
       },
+      "powf_7124b3fd9a38e61180efc4346bac563c": {
+        "name": "powf_7124b3fd9a38e61180efc4346bac563c",
+        "title": "Client Last Name",
+        "type": "string",
+        "maxlength": 100
+      },
       "powf_7224b3fd9a38e61180efc4346bac563c": {
         "name": "powf_7224b3fd9a38e61180efc4346bac563c",
         "title": "Client Email",
@@ -101,7 +108,7 @@
         "maxlength": 100
       },
       "powf_c124b3fd9a38e61180efc4346bac563c": {
-        "name": "§",
+        "name": "powf_c124b3fd9a38e61180efc4346bac563c",
         "title": "Client Zip",
         "type": "string",
         "maxlength": 100
@@ -155,6 +162,9 @@
       "ui:widget": "CustomInputTextElement"
     },
     "powf_6a24b3fd9a38e61180efc4346bac563c": {
+      "ui:widget": "CustomInputTextElement"
+    },
+    "powf_7124b3fd9a38e61180efc4346bac563c": {
       "ui:widget": "CustomInputTextElement"
     },
     "powf_7224b3fd9a38e61180efc4346bac563c": {

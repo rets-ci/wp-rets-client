@@ -2676,8 +2676,26 @@ p.propertypro-gentle-error {
 }
 
 /*-----------------------------------------------------------------------------------*/
+/*  Form Success Message
+/*-----------------------------------------------------------------------------------*/
+
+.propertypro-form-success-message-container {
+    text-align: center;
+}
+
+.propertypro-form-success-message-container img {
+    margin-bottom: 2.625rem;
+}
+
+.propertypro-form-confirmation-paragraph {
+    color: #8b8c8d;
+}
+
+/*-----------------------------------------------------------------------------------*/
 /*  Agent cards
 /*-----------------------------------------------------------------------------------*/
+
+
 .propertypro-agent-card {
     border: 0.0625px solid #e1e5e6;
     border-radius: 0.3125rem;

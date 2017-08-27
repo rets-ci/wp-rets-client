@@ -10,7 +10,7 @@
     "ignore_redirectmode": "Auto"
   },
   "schema": {
-    "action": "https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1",
+    "action": "https://api.reddoorcompany.com/v1/form?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1",
     "type": "object",
     "required": [
       "powf_b080c09604dbe5118114c4346bb5981c"
@@ -42,7 +42,8 @@
       "powf_c780c09604dbe5118114c4346bb5981c": {
         "name": "powf_c780c09604dbe5118114c4346bb5981c",
         "title": "Subject Property",
-        "type": "string"
+        "type": "string",
+        "maxlength": 250
       },
       "powf_d480c09604dbe5118114c4346bb5981c": {
         "name": "powf_d480c09604dbe5118114c4346bb5981c",
@@ -53,7 +54,8 @@
       "powf_d580c09604dbe5118114c4346bb5981c": {
         "name": "powf_d580c09604dbe5118114c4346bb5981c",
         "title": "State",
-        "type": "string"
+        "type": "string",
+        "maxLength": 50
       },
       "powf_d880c09604dbe5118114c4346bb5981c": {
         "name": "powf_d880c09604dbe5118114c4346bb5981c",

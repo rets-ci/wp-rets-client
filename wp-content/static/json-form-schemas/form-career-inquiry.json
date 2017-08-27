@@ -10,6 +10,7 @@
     "ignore_redirectmode": "Auto"
   },
   "schema": {
+    "action": "https://api.reddoorcompany.com/v1/form?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_905AF33FD6D1E511810FC4346BACE18C&tver=2013&c=1",
     "type": "object",
     "required": [
       "powf_351e0689d6d1e511810fc4346bace18c",

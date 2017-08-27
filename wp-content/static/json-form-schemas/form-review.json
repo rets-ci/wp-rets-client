@@ -3,10 +3,11 @@
   "initialData": {
     "ignore_submitmessage": "",
     "ignore_linkbuttontext": "",
-    "ignore_redirecturl": "http://www.reddoorcompany.com/form-submitted/",
+    "ignore_redirecturl": "",
     "ignore_redirectmode": "Auto"
   },
   "schema": {
+    "action": "https://api.reddoorcompany.com/v1/form?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_E1FC2444265AE411B3136C3BE5A87DF0&tver=2013&c=1",
     "type": "object",
     "required": [
       "powf_29adbc5e265ae411b3136c3be5a87df0",

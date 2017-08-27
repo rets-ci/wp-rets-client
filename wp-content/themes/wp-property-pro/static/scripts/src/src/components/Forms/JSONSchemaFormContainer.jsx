@@ -68,54 +68,88 @@ class JSONSchemaFormContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      formSuccess: false,
       errorMessage: false,
       isFetching: false,
       jsonSchemaForm: {}
     };
   }
 
+  componentWillUnMount = () => {
+    this.setState({
+      formSuccess: false
+    });
+  }
+
   submit = ({schema, formData}) => {
     let action = schema.action;
+    let self = this;
     jQuery.post({
-      url: '/',
+      url: action,
       data: formData,
       success: (data, status, jqXHR) => {
-        console.log('success');
+        self.setState({
+          formSuccess: true
+        });
+        if (self.props.closeModal) {
+          self.props.closeModal();
+        }
       },
       error: (xhr, status, error) => {
         console.log('any error? ', error);
       }
     });
-    // console.log('submitted: ', formData);
   }
 
   render() {
     let {
       errorMessage,
-      isFetching,
+      formSuccess,
+      isFetching
     } = this.state;
 
     let {
-      jsonSchemaForm
+      jsonSchemaForm,
+      closeModal,
+      showConfirmation
     } = this.props;
 
+    let successElement = (
+      <div className={`${Lib.THEME_CLASSES_PREFIX}form-success-message-container`}>
+        <img src={bundle.static_images_url + "form-confirmation-image.png"} alt="Form Confirmation Image" />
+        <div>
+          <h3>Request Received</h3>
+          <p className={Lib.THEME_CLASSES_PREFIX + "form-confirmation-paragraph"}>The form was submitted successfully</p>
+        </div>
+      </div>
+    );
+
+    let formElement = (<Form
+      action={jsonSchemaForm.schema.action}
+      FieldTemplate={CustomFieldTemplate}
+      formData={jsonSchemaForm.initialData}
+      method="post"
+      schema={jsonSchemaForm.schema}
+      uiSchema={jsonSchemaForm.uiSchema}
+      onSubmit={this.submit}
+      noHtml5Validate={true}
+      showErrorList={false}
+      transformErrors={transformErrors}
+      widgets={widgets}
+    >
+      <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
+    </Form>);
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}form`}>
-        <Form
-          action={jsonSchemaForm.schema.action}
-          FieldTemplate={CustomFieldTemplate}
-          formData={jsonSchemaForm.initialData}
-          method="post"
-          schema={jsonSchemaForm.schema}
-          uiSchema={jsonSchemaForm.uiSchema}
-          onSubmit={this.submit}
-          noHtml5Validate={true}
-          showErrorList={false}
-          transformErrors={transformErrors}
-          widgets={widgets}
-        >
-          <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
-        </Form>
+        {formSuccess && this.props.showConfirmation ?
+          <div>
+            {successElement}
+          </div>
+        :
+        <div>
+          {formElement}
+        </div>
+        }
       </div>
     );
   }

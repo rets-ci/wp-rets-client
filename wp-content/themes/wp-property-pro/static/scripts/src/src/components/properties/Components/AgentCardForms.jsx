@@ -171,7 +171,7 @@ class AgentCardForms extends Component {
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
               <FormFetcher formId={formIdMapper[selectedTab]}>
-                <JSONSchemaFormContainer jsonSchemaForm={this.props.jsonSchemaForm} />  
+                <JSONSchemaFormContainer jsonSchemaForm={this.props.jsonSchemaForm} showConfirmation={true} />
               </FormFetcher>
             </div>
           </div>
@@ -189,7 +189,7 @@ class AgentCardForms extends Component {
           <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
             <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Request Showing for {address}</h5>
             <FormFetcher formId={formIdMapper['request-showing-buy']}>
-              <JSONSchemaFormContainer />
+              <JSONSchemaFormContainer showConfirmation={true} />
             </FormFetcher>
           </div>
         );
@@ -199,7 +199,7 @@ class AgentCardForms extends Component {
           <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
             <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Request Showing for {address}</h5>
             <FormFetcher formId={formIdMapper['request-showing-buy']}>
-              <JSONSchemaFormContainer />
+              <JSONSchemaFormContainer showConfirmation={true} />
             </FormFetcher>
           </div>
         );
