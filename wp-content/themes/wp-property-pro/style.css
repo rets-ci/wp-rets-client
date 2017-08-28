@@ -1292,7 +1292,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-filter-section {
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
 }
 
 .propertypro-filter-section h3 {
@@ -1329,6 +1329,14 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-filter-section.propertypro-filter-section-price,
 .propertypro-filter-section.propertypro-filter-section-total-size {
     width: 100%;
+}
+
+.propertypro-filter-slider {
+    margin-bottom: 3.7rem;
+}
+
+.propertypro-filter-slider h3 {
+    margin-bottom: 3rem;
 }
 
 p.propertypro-gentle-error {
@@ -1457,10 +1465,6 @@ p.propertypro-gentle-error {
     font-size: 0.9375rem;
     font-weight: 500;
     line-height: 3.125rem;
-}
-
-.propertypro-advanced-filter .propertypro-filter-slider {
-    margin-top: 3em;
 }
 
 /* Range Slider Module */

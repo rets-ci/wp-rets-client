@@ -459,7 +459,7 @@ class PropertiesModal extends Component {
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'price') ?
                     <div className="row">
                       <div
-                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
+                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
                         <h3>Price <span>(Range)</span></h3>
                         <div>
                           {localFilters.sale_type && priceSelected.start && priceSelected.to ?
@@ -488,7 +488,7 @@ class PropertiesModal extends Component {
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'sqft') ?
                     <div className="row">
                       <div
-                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
+                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
                         style={{display: showAllFilters ? 'block' : 'none'}}>
                         <h3>Total Size <span>(SQFT)</span></h3>
                         <div>
@@ -505,7 +505,7 @@ class PropertiesModal extends Component {
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'lotSize') ?
                     <div className="row">
                       <div
-                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
+                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
                         style={{display: showAllFilters ? 'block' : 'none'}}>
                         <h3>Lot Size <span>(Acres)</span></h3>
                         <div>
