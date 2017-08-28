@@ -523,6 +523,17 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
+       * @param $_post_id
+       */
+      static public function insert_slideshow_images( $_post_id ) {
+        $media = get_attached_media( 'image', $_post_id );
+        $ids = array_keys($media);
+        if(!empty($ids)) {
+          update_post_meta( $_post_id, 'slideshow_images', $ids );
+        }
+      }
+
+      /**
        * Registers a system taxonomy if needed with most essential arguments.
        *
        * @since 2.2.1

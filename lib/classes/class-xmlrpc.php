@@ -809,7 +809,8 @@ namespace UsabilityDynamics\WPRETSC {
         $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
           'skipTermCounting' => false,
           'skipTermUpdates' => false,
-          'skipMediaUpdate' => false
+          'skipMediaUpdate' => false,
+          'skipSlideshowImages' => true
         ));
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.createProperty] request.', 'debug' );
@@ -885,6 +886,10 @@ namespace UsabilityDynamics\WPRETSC {
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
           Utility::insert_media( $_post_id, $post_data[ '_media' ] );
+        }
+
+        if( !isset( $options[ 'skipSlideshowImages' ] ) || !$options[ 'skipSlideshowImages' ] ) {
+          Utility::insert_slideshow_images( $_post_id );
         }
 
         if( $_post_id ) {
@@ -1118,6 +1123,10 @@ namespace UsabilityDynamics\WPRETSC {
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
           Utility::insert_media( $_post_id, $post_data[ '_media' ] );
+        }
+
+        if( !isset( $options[ 'skipSlideshowImages' ] ) || !$options[ 'skipSlideshowImages' ] ) {
+          Utility::insert_slideshow_images( $_post_id );
         }
 
         if( $_post_id ) {
