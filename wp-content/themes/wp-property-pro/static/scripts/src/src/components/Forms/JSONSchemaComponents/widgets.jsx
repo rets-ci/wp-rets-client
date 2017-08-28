@@ -51,7 +51,8 @@ export function selectTextElement (props) {
       name={props.schema.name}
       onChange={(event) => props.onChange(event.target.value)}
     >
-      <option value="" disabled selected>{props.schema.title}</option>
+      <option className="gray" value="" disabled selected>{props.schema.title}</option>
+      {/* <option selected="selected">{props.schema.title}</option> */}
       {props.schema.enum.map((d, i) => 
         <option key={i} value={d}>{d}</option>
       )}
