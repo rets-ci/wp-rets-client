@@ -73,7 +73,7 @@ class FormModals extends Component {
             closeModal={() => this.props.closeFormModal()}
             open={formModalOpen}
           >
-            <JSONSchemaFormContainer />
+            <JSONSchemaFormContainer showConfirmation={true} />
           </BootstrapModal>
         </FormFetcher>
         : null

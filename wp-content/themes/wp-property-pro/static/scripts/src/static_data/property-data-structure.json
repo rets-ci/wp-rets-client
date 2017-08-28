@@ -2,98 +2,178 @@
   "Rooms": [
     {
       "Bedrooms": [
-        {"name": "Bedrooms on 1st Floor", "value": null},
-        {"name": "Master Bedroom 1st Floor", "value": null},
-        {"name": "Bedrooms", "value": "post_meta.rets_beds[0]"}
+        {"name": "Bedrooms on 1st Floor", "esReference": "tax_input.rets_bedrooms_1st_floor.rets_bedrooms_1st_floor", "booleanField": true},
+        {"name": "Master Bedroom 1st Floor", "esReference": "tax_input.rets_master_bedroom_1st_floor.rets_master_bedroom_1st_floor", "booleanField": true},
+        {"name": "Master Bedroom Floor", "esReference": "tax_input.rets_master_bedroom_floor.rets_master_bedroom_floor"},
+        {"name": "Bedrooms 2 Dimensions", "esReference": "post_meta.rets_bedroom_2_dimensions[0]"},
+        {"name": "Bedrooms 3 Dimensions", "esReference": "post_meta.rets_bedroom_3_dimensions[0]"},
+        {"name": "Bedrooms 4 Dimensions", "esReference": "post_meta.rets_bedroom_4_dimensions[0]"},
+        {"name": "Bedrooms 5 Dimensions", "esReference": "post_meta.rets_bedroom_5_dimensions[0]"},
+        {"name": "Bedrooms", "esReference": "post_meta.rets_beds[0]"}
       ],
       "Kitchen & Dining": [
-        {"name": "Dining Room", "value": null}
+        {"name": "Dining Room Floor", "esReference": "tax_input.rets_dining_room.rets_dining_room_floor"},
+        {"name": "Dining Room", "esReference": "tax_input.rets_dining_room.rets_dining_room"},
+        {"name": "Kitchen Floor", "esReference": "tax_input.rets_kitchen_floor.rets_kitchen_floor"},
+        {"name": "Breakfast Room Floor", "esReference": "tax_input.rets_breakfast_room_floor.rets_breakfast_room_floor"},
+        {"name": "Dining Room Dimensions", "esReference": "post_meta.rets_dining_room_dimensions[0]"},
+        {"name": "Kitchen Dimensions", "esReference": "post_meta.rets_kitchen_dimensions[0]"},
+        {"name": "Breakfast Room Dimensions", "esReference": "post_meta.rets_breakfast_room_dimensions[0]"}
       ]
     },
     {
       "Bathrooms": [
-        {"name": "Full Bathrooms", "value": "post_meta.rets_baths_full"},
-        {"name": "Bathrooms", "value": "post_meta.rets_total_baths"}
+        {"name": "Half Bathrooms", "esReference": "post_meta.rets_baths_half[0]"},
+        {"name": "Full Bathrooms", "esReference": "post_meta.rets_baths_full[0]"},
+        {"name": "Bathrooms", "esReference": "post_meta.rets_total_baths[0]"},
+        {"name": "Bath Features", "esReference": "tax_input.rets_bath_features.rets_bath_features"}
       ]
     },
     {
       "Other Rooms": [
-        {"name": "Basement", "value": null},
-        {"name": "Other Rooms", "value": null},
-        {"name": "Attic Features", "value": null},
-        {"name": "Number of Rooms", "value": "post_meta.rets_number_of_rooms"}
+        {"name": "Basement", "esReference": "tax_input.rets_basement.rets_basement", "booleanField": true},
+        {"name": "Entrance Hall Floor", "esReference": "tax_input.rets_entrance_hall_floor.rets_entrance_hall_floor[0].slug", "booleanField": true},
+        {"name": "Entrance Hall Dimensions", "esReference": "tax_input.rets_entrance_hall_dimensions.rets_entrance_hall_dimensions"},
+        {"name": "Office Study Dimensions", "esReference": "tax_input.office_study_dimensions.office_study_dimensions"},
+        {"name": "Basement Description", "esReference": null},
+        {"name": "Office Room Floor", "esReference": "tax_input.rets_office_study_floor.rets_office_study_floor"},
+        {"name": "Other Rooms", "esReference": "tax_input.rets_other_rooms.rets_other_rooms"},
+        {"name": "Attic Features", "esReference": "tax_input.rets_attic_description.rets_attic_description"},
+        {"name": "Storage Dimensions", "esReference": "post_meta.rets_storage_dimensions[0]"},
+        {"name": "Other Area Room 3 Dimensions", "esReference": "post_meta.rets_other_area_room_3_dmns[0]"},
+        {"name": "Other Area Room 4 Dimensions", "esReference": "post_meta.rets_other_area_room_4_dmns[0]"},
+        {"name": "Utility Room Floor", "esReference": "tax_input.rets_utility_room_floor.rets_utility_room_floor"},
+        {"name": "Bonus Room Floor", "esReference": "tax_input.rets_bonus_room_floor.rets_bonus_room_floor"},
+        {"name": "Storage Floor", "esReference": "tax_input.rets_storage_floor.rets_storage_floor"},
+        {"name": "Attic Features", "esReference": "tax_input.rets_attic.rets_attic"},
+        {"name": "Other Room 1 Dimensions", "esReference": "tax_input.rets_other_room_1_dimensions.rets_other_room_1_dimensions"},
+        {"name": "Other Room 2 Dimensions", "esReference": "tax_input.rets_other_room_2_dimensions.rets_other_room_2_dimensions"},
+        {"name": "Other Room 2 Description", "esReference": "tax_input.rets_other_room_1_description.rets_other_room_1_description"},
+        {"name": "Other Room 3 Description", "esReference": "tax_input.rets_other_room_3_description.rets_other_room_3_description"},
+        {"name": "Other Room 3 Level", "esReference": "tax_input.rets_other_room_3_level.rets_other_room_3_level"},
+        {"name": "Number of Rooms", "esReference": "post_meta.rets_number_of_rooms[0]"}
       ]
     }
   ],
   "Features": [
     {
       "Interior": [
-        {"name": "Flooring", "value": null},
-        {"name": "Appliances", "value": null},
-        {"name": "Interior Features", "value": null}
+        {"name": "Flooring", "esReference": "tax_input.rets_flooring.rets_flooring"},
+        {"name": "Washer Dryer Location", "esReference": "tax_input.rets_washer_dryer_location.rets_washer_dryer_location"},
+        {"name": "Appliances", "esReference": "tax_input.rets_equipment_appliances.rets_equipment_appliances"},
+        {"name": "Interior Features", "esReference": "tax_input.rets_interior_features.rets_interior_features"}
       ],
       "Utility": [
-        {"name": "Water / Sewer Access", "value": null}
+        {"name": "Water / Sewer Access", "esReference": "tax_input.rets_water_sewer.rets_water_sewer"}
       ]
     },
     {
       "Parking": [
-        {"name": "Garage", "value": "post_meta.rets_garage"},
-        {"name": "Parking", "value": null}
+        {"name": "Garage", "esReference": "post_meta.rets_garage[0]", "booleanField": true},
+        {"name": "Parking", "esReference": "tax_input.rets_parking.rets_parking"},
+        {"name": "Garage Dimensions", "esReference": "post_meta.rets_garage_dimensions[0]"},
+        {"name": "Carport Dimensions", "esReference": "post_meta.rets_carport_dimensions[0]"}
       ],
       "Exterior": [
-        {"name": "Exterior Finish", "value": null},
-        {"name": "Exterior Features", "value": null}
+        {"name": "Exterior Finish", "esReference": "tax_input.rets_exterior_finish.rets_exterior_finish"},
+        {"name": "Roof", "esReference": "tax_input.rets_roof.rets_roof"},
+        {"name": "Exterior Features", "esReference": "tax_input.rets_exterior_features.rets_exterior_features"},
+        {"name": "Screened Porch Dimensions", "esReference": "post_meta.rets_screened_porch_dimensions[0]"},
+        {"name": "Porch Dimensions", "esReference": "post_meta.rets_porch_dimensions[0]"},
+        {"name": "Patio Dimensions", "esReference": "post_meta.rets_patio_dimensions[0]"},
+        {"name": "Deck Dimensions", "esReference": "post_meta.rets_deck_dimensions[0]"},
+        {"name": "Screened Porch Floor", "esReference": "tax_input.rets_screened_porch_floor.rets_screened_porch_floor"},
+        {"name": "Porch Floor", "esReference": "tax_input.rets_porch_floor.rets_porch_floor", "booleanField": true},
+        {"name": "Patio Floor", "esReference": "tax_input.rets_patio_floor.rets_patio_floor", "booleanField": true},
+        {"name": "Deck Floor", "esReference": "tax_input.rets_deck_floor.rets_deck_floor", "booleanField": true},
+        {"name": "Pool", "esReference": "tax_input.rets_pool.rets_pool"}
       ]
     },
     {
       "Heating & Cooling": [
-        {"name": "Fireplace", "value": null},
-        {"name": "Air Conditioning", "value": null},
-        {"name": "Heating", "value": null},
-        {"name": "Water Heater", "value": null},
-        {"name": "Fireplace Description", "value": null},
-        {"name": "Heating Fuel", "value": null}
+        {"name": "Air Condition", "esReference": "tax_input.rets_air_conditioning.rets_air_conditioning"},
+        {"name": "Air Conditioning", "esReference": "tax_input.rets_cooling.rets_cooling"},
+        {"name": "Heating", "esReference": "tax_input.rets_heating.rets_heating"},
+        {"name": "Heating Fuel", "esReference": "tax_input.rets_heating_fuel.rets_heating_fuel"},
+        {"name": "Water Heater", "esReference": "tax_input.rets_water_heater.rets_water_heater"},
+        {"name": "Fireplace", "esReference": "tax_input.rets_fireplace.rets_fireplace", "booleanField": true},
+        {"name": "Fireplace Description", "esReference": "tax_input.rets_fireplaces.rets_fireplaces"},
+        {"name": "Heating Fuel", "esReference": "tax_input.rets_fuel_heat.rets_fuel_heat"}
       ]
     }
   ],
   "Neighborhood": [
     {
       "Schools": [
-        {"name": "Elementary School", "value": "tax_input.wpp_schools.elementary_school[0].name"},
-        {"name": "Middle School", "value": "tax_input.wpp_schools.middle_school[0].name"},
-        {"name": "High School", "value": "tax_input.wpp_schools.high_school[0].name"}
+        {"name": "Elementary School", "esReference": "tax_input.wpp_schools.elementary_school"},
+        {"name": "Middle School", "esReference": "tax_input.wpp_schools.middle_school"},
+        {"name": "High School", "esReference": "tax_input.wpp_schools.high_school"}
+      ]
+    },
+    {
+      "Homeowners Association": [
+        {"name": "HOA 1 Fees Requirement", "esReference": "tax_input.rets_hoa_1_fees_required.rets_hoa_1_fees_required", "booleanField": true},
+        {"name": "HOA 2 Fees Requirement", "esReference": "tax_input.rets_hoa_2_fees_required.rets_hoa_2_fees_required", "booleanField": true},
+        {"name": "HOA 1", "esReference": "post_meta.rets_hoa_1_mgmt[0]"},
+        {"name": "HOA 2", "esReference": "post_meta.rets_hoa_2_mgmt[0]"},
+        {"name": "HOA 1 fees amount", "esReference": "post_meta.rets_hoa_1_fees[0]"},
+        {"name": "HOA 2 fees amount", "esReference": "post_meta.rets_hoa_2_fees[0]"},
+        {"name": "HOA Phone", "esReference": "post_meta.rets_hoa_phone[0]"},
+        {"name": "HOA 1 Fee Payment Frequency", "esReference": "tax_input.rets_hoa_1_fee_payment.rets_hoa_1_fee_payment"},
+        {"name": "HOA 2 Fee Payment Frequency", "esReference": "tax_input.rets_hoa_2_fee_payment.rets_hoa_2_fee_payment"},
+        {"name": "HOA Fees Amount", "esReference": "post_meta.rets_hoa_fees_amount[0]"},
+        {"name": "HOA Payment Frequency", "esReference": "post_meta.rets_hoa_payment_frequency[0]"},
+        {"name": "HOA Fees Include", "esReference": "tax_input.rets_hoa_fees_include.rets_hoa_fees_include"}
       ]
     }
   ],
   "Property & Pricing": [
     {
       "Pricing & Terms": [
-        {"name": "Rental", "value": null},
-        {"name": "Sale Type", "value": "tax_input.wpp_listing_status.listing_status_sale[0].name"},
-        {"name": "Payment Period", "value": "post_meta.rets_payment_period[0]"},
-        {"name": "Security Deposit", "value": "post_meta.rets_security_deposit[0]"},
-        {"name": "Rental Terms", "value": null},
-        {"name": "Tenant Pays", "value": null},
-        {"name": "Pet Policy", "value": null},
-        {"name": "Restrictions", "value": null},
-        {"name": "Price", "value": "post_meta.rets_list_price[0]"},
-        {"name": "Price per SQFT", "value": null},
-        {"name": "Date Available", "value": "post_meta.rets_date_available[0]"}
+        {"name": "Rental", "esReference": "tax_input.rets_rental_terms.rets_rental_terms"},
+        {"name": "Sale Type", "esReference": "tax_input.wpp_listing_status.listing_status_sale[0].name"},
+        {"name": "Payment Period", "esReference": "post_meta.rets_payment_period[0]"},
+        {"name": "Security Deposit", "esReference": "post_meta.rets_security_deposit[0]"},
+        {"name": "Rental Terms", "esReference": "tax_input.rets_rental_terms.rets_rental_terms"},
+        {"name": "Tenant Pays", "esReference": "tax_input.rets_tenant_pays.rets_tenant_pays"},
+        {"name": "Pet Policy", "esReference": "tax_input.rets_pets.rets_pets"},
+        {"name": "Restrictions", "esReference": "tax_input.rets_restrictions.rets_restrictions", "booleanField": true},
+        {"name": "Price", "esReference": "post_meta.rets_list_price[0]"},
+        {"name": "Price per SQFT", "esReference": "post_meta.rets_price_per_sqft[0]"},
+        {"name": "Date Available", "esReference": "post_meta.rets_date_available[0]"}
       ]
     },
     {
       "Building": [
-        {"name": "Property Description", "value": null},
-        {"name": "Living Area Above Grade", "value": "post_meta.rets_living_area_above_grade[0]"},
-        {"name": "Design", "value": "post_meta.rets_living_area_above_grade[0]"},
-        {"name": "Total Living Area SQFT", "value": null},
-        {"name": "Year Built", "value": "post_meta.rets_year_built[0]"}
+        {"name": "Accessibility", "esReference": "tax_input.rets_accessibility.rets_accessibility"},
+        {"name": "Builder", "esReference": "post_meta.rets_builder_name[0]"},
+        {"name": "New Construction", "esReference": "tax_input.rets_new_construction.rets_new_construction", "booleanField": true},
+        {"name": "Property Description", "esReference": "tax_input.property_description.property_description"},
+        {"Name": "Detached Living Area Aqft", "esReference": "post_meta.rets_detached_living_area_sq_ft[0]"},
+        {"name": "Green Building Features", "esReference": "tax_input.rets_green_building_features.rets_green_building_features"},
+        {"name": "Green Building Certifications", "esReference": "tax_input.rets_green_building_cert.rets_green_building_cert"},
+        {"name": "Living Area Above Grade", "esReference": "post_meta.rets_living_area_above_grade[0]"},
+        {"name": "Living Area Below Grade", "esReference": "post_meta.rets_living_area_below_grade[0]"},
+        {"name": "Other Area Above Grade", "esReference": "post_meta.rets_other_area_above_grade[0]"},
+        {"name": "Other Area Below Grade", "esReference": "post_meta.rets_other_area_below_grade[0]"},
+        {"name": "Design", "esReference": "tax_input.rets_design.rets_design"},
+        {"name": "Style", "esReference": "tax_input.rets_style.rets_style"},
+        {"name": "Foundation", "esReference": "tax_input.rets_foundation.rets_foundation"},
+        {"name": "Hud Housing", "esReference": "tax_input.hud_housing.hud_housing"},
+        {"name": "Total Living Area SQFT", "esReference": "post_meta.rets_living_area[0]"},
+        {"name": "Total Other Area SQFT", "esReference": "post_meta.rets_total_other_area_sq_ft[0]"},
+        {"name": "Year Built", "esReference": "post_meta.rets_year_built[0]"}
       ]
     },
     {
       "Lot": [
-        {"name": "Approximate Lot Size", "value": "post_meta.rets_lot_size_area"}
+        {"name": "Restrictive Covenants", "esReference": "tax_input.rets_restrictive_covenants.rets_restrictive_covenants", "booleanField": true},
+        {"name": "Lot Number", "esReference": "post_meta.rets_lot_number[0]"},
+        {"name": "Lot Dimensions", "esReference": "post_meta.rets_lot_size_area[0]"},
+        {"name": "Acres", "esReference": "tax_input.rets_acres.rets_acres"},
+        {"name": "Approximate Lot SQFT", "esReference": "post_meta.rets_approx_lot_sq_ft[0]"},
+        {"name": "Lot Description", "esReference": "tax_input.rets_lot_description.rets_lot_description"},
+        {"name": "Zoning", "esReference": "post_meta.rets_zoning[0]"}
       ]
     }
   ]

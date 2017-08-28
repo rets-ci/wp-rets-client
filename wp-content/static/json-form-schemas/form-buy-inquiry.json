@@ -12,7 +12,7 @@
     "ignore_redirectmode": "Auto"
   },
   "schema": {
-    "action": "https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_629EB2C7BE16E61180E9C4346BACE2D4&tver=2013&c=1",
+    "action": "https://api.reddoorcompany.com/v1/form?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_280C1763D278E5118103C4346BB5981C&tver=2013&c=1",
     "type": "object",
     "required": [
       "powf_b8ba60f3be16e61180e9c4346bace2d4",
