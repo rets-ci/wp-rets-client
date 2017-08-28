@@ -3590,18 +3590,6 @@ p.propertypro-gentle-error {
         padding: 0;
     }
 
-    .propertypro-listing-wrap .propertypro-card {
-        margin-bottom: 0;
-    }
-
-    .propertypro-listing-wrap .propertypro-card:not(.propertypro-card-selected) {
-        border: 0;
-    }
-
-    .propertypro-listing-wrap .propertypro-card, .propertypro-listing-wrap .propertypro-card .propertypro-card-img img {
-        border-radius: 0;
-    }
-
     .propertypro-listing-control-nav {
         margin: 1.875rem 0 0;
     }
@@ -3901,6 +3889,18 @@ p.propertypro-gentle-error {
 
     .propertypro-listing-wrap .row > div {
         padding: 0;
+    }
+
+    .propertypro-listing-wrap .propertypro-card {
+        margin-bottom: 0;
+    }
+
+    .propertypro-listing-wrap .propertypro-card:not(.propertypro-card-selected) {
+        border: 0;
+    }
+
+    .propertypro-listing-wrap .propertypro-card, .propertypro-listing-wrap .propertypro-card .propertypro-card-img img {
+        border-radius: 0;
     }
 }
 

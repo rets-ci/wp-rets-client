@@ -246,13 +246,13 @@ class MapSearchResults extends Component {
         />
 
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
-          <div className={`col-sm-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+          <div className={`col-sm-6 col-lg-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
             { captionElement }
             { mapElement }
             { isMobile && sliderElement }
           </div>
 
-          <div className={`col-sm-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar ${this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+          <div className={`col-sm-6 col-lg-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar ${this.state.mapDisplay? 'hidden-xs-down': ''}`}>
             <SearchFilterDescriptionText
               bathrooms={searchFilters.bathrooms}
               bedrooms={searchFilters.bedrooms}
