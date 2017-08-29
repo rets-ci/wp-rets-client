@@ -13,7 +13,36 @@ namespace wpCloud\StatelessMedia {
       /**
        * @var false|null|string
        */
-      private $regenerate_ui = null;
+      public $setup_wizard_ui = null;
+
+      /**
+       * @var false|null|string
+       */
+      public $stateless_settings = null;
+
+      private $settings = array(
+          'mode'                   => array('WP_STATELESS_MEDIA_MODE', 'cdn'), 
+          'body_rewrite'           => array('WP_STATELESS_MEDIA_BODY_REWTITE', 'true'), 
+          'on_fly'                 => array('WP_STATELESS_MEDIA_ON_FLY', 'false'), 
+          'bucket'                 => array('WP_STATELESS_MEDIA_BUCKET', ''), 
+          'root_dir'               => array('WP_STATELESS_MEDIA_ROOT_DIR', ''), 
+          'key_json'               => array('WP_STATELESS_MEDIA_JSON_KEY', ''), 
+          'cache_control'          => array('WP_STATELESS_MEDIA_CACHE_CONTROL', ''), 
+          'delete_remote'          => array('WP_STATELESS_MEDIA_DELETE_REMOTE', 'true'), 
+          'custom_domain'          => array('WP_STATELESS_MEDIA_CUSTOM_DOMAIN', ''), 
+          'organize_media'         => array('', 'true'), 
+          'hashify_file_name'      => array('WP_STATELESS_MEDIA_HASH_FILENAME', 'true'), 
+        );
+
+      private $network_only_settings = array(
+          'hide_settings_panel'   => array('WP_STATELESS_MEDIA_HIDE_SETTINGS_PANEL', 'false'), 
+          'hide_setup_assistant'  => array('WP_STATELESS_MEDIA_HIDE_SETUP_ASSISTANT', 'false'), 
+        );
+
+      private $strings = array(
+          'network' => 'Currently configured via Network Settings.',
+          'constant' => 'Currently configured via a constant.',
+        );
 
       /**
        * Overriden construct
@@ -22,91 +51,203 @@ namespace wpCloud\StatelessMedia {
 
         add_action('admin_menu', array( $this, 'admin_menu' ));
 
+        
+        $this->save_media_settings();
+        
+
         /* Add 'Settings' link for SM plugin on plugins page. */
         $_basename = plugin_basename( ud_get_stateless_media()->boot_file );
-
-        add_filter( "plugin_action_links_" . $_basename, function( $links ) {
-          $settings_link = '<a href="options-media.php#stateless-media">' . __( 'Settings', ud_get_stateless_media()->domain ) . '</a>';
-          array_unshift($links, $settings_link);
-          return $links;
-        });
 
         parent::__construct( array(
           'store'       => 'options',
           'format'      => 'json',
           'data'        => array(
-            'sm' => array(
-              'mode' => get_option( 'sm_mode', 'disabled' ),
-              'bucket' => get_option( 'sm_bucket' ),
-              'root_dir' => get_option( 'sm_root_dir' ),
-              'key_json' => get_option( 'sm_key_json' ),
-              'body_rewrite' => get_option( 'sm_body_rewrite' ),
-              'on_fly' => get_option( 'sm_on_fly' ),
-              'delete_remote' => get_option( 'sm_delete_remote' ),
-              'hashify_file_name' => get_option( 'sm_hashify_file_name' ),
-              'override_cache_control' => get_option( 'sm_override_cache_control' ),
-              'cache_control' => get_option( 'sm_cache_control' )
-            )
+            'sm' => array()
           )
         ));
-
-        /* Use constant value for mode, if set. */
-        if( defined( 'WP_STATELESS_MEDIA_MODE' ) ) {
-          $this->set( 'sm.mode', WP_STATELESS_MEDIA_MODE );
-        }
-
-        /* Use constant value for Bucket, if set. */
-        if( defined( 'WP_STATELESS_MEDIA_BUCKET' ) ) {
-          $this->set( 'sm.bucket', WP_STATELESS_MEDIA_BUCKET );
-        }
-
-        /* Use constant value for Root Dir, if set. */
-        if( defined( 'WP_STATELESS_MEDIA_ROOT_DIR' ) ) {
-          $this->set( 'sm.root_dir', WP_STATELESS_MEDIA_ROOT_DIR );
-        }
-
-        /* Set default cacheControl in case it is empty */
-        $cache_control = trim( $this->get( 'sm.cache_control' ) );
-        if ( empty( $cache_control ) ) {
-          $this->set( 'sm.cache_control', 'public, max-age=36000, must-revalidate' );
-        }
+        
+        // Setting sm variable
+        $this->refresh();
 
         /**
          * Manage specific Network Settings
          */
-        if( ud_get_stateless_media()->is_network_detected() || !is_multisite() ) {
-
-          add_filter( 'wpmu_options', array( $this, 'register_network_settings' ) );
+        if( is_network_admin() ) {
           add_action( 'update_wpmu_options', array( $this, 'save_network_settings' ) );
+          add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ));
         }
 
+        $this->set('page_url.stateless_setup', ud_get_stateless_media()->get_settings_page_url('?page=stateless-setup'));
+        $this->set('page_url.stateless_settings', ud_get_stateless_media()->get_settings_page_url('?page=stateless-settings'));
+
         /** Register options */
-        add_action( 'admin_init', array( $this, 'register_settings' ) );
+        add_action( 'init', array( $this, 'init' ), 3 );
+      }
+
+      public function init(){
+
       }
 
       /**
        * Refresh settings
        */
       public function refresh() {
-        $this->set('sm', array(
-          'mode' => get_option( 'sm_mode', 'disabled' ),
-          'bucket' => get_option( 'sm_bucket' ),
-          'root_dir' => get_option( 'sm_root_dir' ),
-          'key_json' => get_option( 'sm_key_json' ),
-          'body_rewrite' => get_option( 'sm_body_rewrite' ),
-          'on_fly' => get_option( 'sm_on_fly' ),
-          'delete_remote' => get_option( 'sm_delete_remote' ),
-          'hashify_file_name' => get_option( 'sm_hashify_file_name' ),
-          'override_cache_control' => get_option( 'sm_override_cache_control' ),
-          'cache_control' => get_option( 'sm_cache_control' )
-        ));
+        $constant_mode = false;
+        $upload_data = wp_upload_dir();
+
+        foreach ($this->settings as $option => $array) {
+          $value    = '';
+          $_option  = 'sm_' . $option;
+          $constant = $array[0]; // Constant name
+          $default  = $array[1]; // Default value
+
+          if($option == 'organize_media'){
+            $_option = 'uploads_use_yearmonth_folders';
+          }
+
+          // Getting settings
+          $value = get_option($_option, $default);
+
+          // If constant is set then override by constant
+          if(defined($constant)){
+            $value = constant($constant);
+            $this->set( "sm.readonly.{$option}", "constant" );
+          }
+          // Getting network settings
+          elseif(is_multisite() && $option != 'organize_media'){
+            $network = get_site_option( $_option );
+            // If network settings available then override by network settings.
+            if($network || is_network_admin()){
+              $value = $network;
+              if(!is_network_admin())
+                $this->set( "sm.readonly.{$option}", "network" );
+            }
+
+          }
+
+          $this->set( "sm.$option", $value);
+        }
+
+        foreach ($this->network_only_settings as $option => $array) {
+          $value    = '';
+          $_option  = 'sm_' . $option;
+          $constant = $array[0]; // Constant name
+          $default  = $array[1]; // Default value
+
+          // If constant is set then override by constant
+          if(defined($constant)){
+            $value = constant($constant);
+          }
+          // Getting network settings
+          elseif(is_multisite()){
+            $value = get_site_option( $_option, $default );
+          }
+
+          $this->set( "sm.$option", $value);
+        }
+        
+        /**
+         * JSON key file path
+         */
+
+        /* Use constant value for JSON key file path, if set. */
+        if( defined( 'WP_STATELESS_MEDIA_KEY_FILE_PATH' ) ) {
+          /* Maybe fix the path to p12 file. */
+          $key_file_path = WP_STATELESS_MEDIA_KEY_FILE_PATH;
+
+          if( !empty( $key_file_path ) ) {
+            $upload_dir = wp_upload_dir();
+            /* Check if file exists */
+            switch( true ) {
+              /* Determine if default path is correct */
+              case (file_exists($key_file_path)):
+                /* Path is correct. Do nothing */
+                break;
+              /* Look using WP root. */
+              case (file_exists( ABSPATH . $key_file_path ) ):
+                $key_file_path = ABSPATH . $key_file_path;
+                break;
+              /* Look in wp-content dir */
+              case (file_exists( WP_CONTENT_DIR . $key_file_path ) ):
+                $key_file_path = WP_CONTENT_DIR . $key_file_path;
+                break;
+              /* Look in uploads dir */
+              case (file_exists( wp_normalize_path( $upload_dir[ 'basedir' ] ) . '/' . $key_file_path ) ):
+                $key_file_path = wp_normalize_path( $upload_dir[ 'basedir' ] ) . '/' . $key_file_path;
+                break;
+              /* Look using Plugin root */
+              case (file_exists(ud_get_stateless_media()->path( $key_file_path, 'dir') ) ):
+                $key_file_path = ud_get_stateless_media()->path( $key_file_path, 'dir' );
+                break;
+
+            }
+            if(file_exists($key_file_path)){
+              $this->set( 'sm.key_json', file_get_contents($key_file_path) );
+              $this->set( "sm.readonly.key_json", "constant" );
+            }
+          }
+        }
+
+        $this->set( 'sm.strings', $this->strings );
+      }
+
+      /**
+       * Remove settings
+       */
+      public function reset($network = false) {
+        foreach ($this->settings as $option => $array) {
+          if($option == 'organize_media')
+            continue;
+          $_option = 'sm_' . $option;
+
+          if($network && current_user_can('manage_network')){
+            delete_site_option($_option);
+            delete_option($_option);
+          }
+          else{
+            delete_option($_option);
+          }
+        }
+
+        foreach ($this->network_only_settings as $option => $array) {
+          $_option = 'sm_' . $option;
+          if($network && current_user_can('manage_network')){
+            delete_site_option($_option);
+            delete_option($_option);
+          }
+        }
+        
+        $this->set('sm', []);
+        $this->refresh();
       }
 
       /**
        * Add menu options
        */
       public function admin_menu() {
-        $this->regenerate_ui = add_management_page( __( 'Stateless Images Synchronisation', ud_get_stateless_media()->domain ), __( 'Stateless Sync', ud_get_stateless_media()->domain ), 'manage_options', 'stateless-regenerate', array($this, 'regenerate_interface') );
+        $key_json = $this->get('sm.key_json');
+        if($this->get('sm.hide_setup_assistant') != 'true' && empty($key_json) ){
+          $this->setup_wizard_ui = add_media_page( __( 'Stateless Setup', ud_get_stateless_media()->domain ), __( 'Stateless Setup', ud_get_stateless_media()->domain ), 'manage_options', 'stateless-setup', array($this, 'setup_wizard_interface') );
+        }
+
+        if($this->get('sm.hide_settings_panel') != 'true'){
+          $this->stateless_settings = add_media_page( __( 'Stateless Settings', ud_get_stateless_media()->domain ), __( 'Stateless Settings', ud_get_stateless_media()->domain ), 'manage_options', 'stateless-settings', array($this, 'settings_interface') );
+        }
+      }
+
+      /**
+       * Add menu options
+       */
+      public function network_admin_menu($slug) {
+        $this->setup_wizard_ui = add_submenu_page( 'settings.php', __( 'Stateless Setup', ud_get_stateless_media()->domain ), __( 'Stateless Setup', ud_get_stateless_media()->domain ), 'manage_options', 'stateless-setup', array($this, 'setup_wizard_interface') );
+        $this->stateless_settings = add_submenu_page( 'settings.php', __( 'Stateless Settings', ud_get_stateless_media()->domain ), __( 'Stateless Settings', ud_get_stateless_media()->domain ), 'manage_options', 'stateless-settings', array($this, 'settings_interface') );
+      }
+
+      /**
+       * Draw interface
+       */
+      public function settings_interface() {
+        include ud_get_stateless_media()->path( '/static/views/settings_interface.php', 'dir' );
       }
 
       /**
@@ -117,222 +258,49 @@ namespace wpCloud\StatelessMedia {
       }
 
       /**
-       * Handles saving network SM data.
-       *
-       * @action update_wpmu_options
-       * @author peshkov@UD
+       * Draw interface
        */
-      public function save_network_settings() {
-        $settings  = $_POST['sm'];
-        foreach ( $settings as $name => $value ) {
-          update_site_option( 'sm_'. $name, stripslashes($value) );
+      public function setup_wizard_interface() {
+        $step = !empty($_GET['step'])?$_GET['step']:'';
+        switch ($step) {
+          case 'google-login':
+          case 'setup-project':
+          case 'finish':
+            include ud_get_stateless_media()->path( '/static/views/setup_wizard_interface.php', 'dir' );
+            break;
+          
+          default:
+            include ud_get_stateless_media()->path( '/static/views/stateless_splash_screen.php', 'dir' );
+            break;
         }
       }
 
       /**
-       * Registers Network Settings in case plugin is Network Enabled.
+       * Handles saving SM data.
        *
-       * @action wpmu_options
-       * @author peshkov@UD
+       * @author alim@UD
        */
-      public function register_network_settings() {
-        ?>
-        <h3><?php _e( 'Stateless Media Settings', ud_get_stateless_media()->domain ); ?></h3>
-        <p><?php $this->section_callback(); ?></p>
-        <div class="key_type"><label><b><?php _e('Service Account JSON', ud_get_stateless_media()->domain) ?></b></label>
-          <div class="_key_type _sm_key_json">
-            <textarea id="sm_key_json" class="field regular-textarea sm_key_json" type="text" name="sm[key_json]"><?php echo get_site_option( 'sm_key_json' ); ?></textarea>
-          </div>
-        </div>
-      <?php
-      }
+      public function save_media_settings(){
+        if(isset($_POST['action']) && $_POST['action'] == 'stateless_settings' && wp_verify_nonce( $_POST['_smnonce'], 'wp-stateless-settings' )){ 
 
-      /**
-       * Adds options
-       */
-      public function register_settings() {
+          $settings = apply_filters('stateless::settings::save', $_POST['sm']);
+          foreach ( $settings as $name => $value ) {
+            $option = 'sm_'. $name;
 
-        //** Register Setting */
-        register_setting( 'media', 'sm', array( $this, 'validate' ) );
+            if($name == 'organize_media'){
+              $option = 'uploads_use_yearmonth_folders';
+            }
 
-        //** Add Section */
-        add_settings_section( 'sm', __( 'Stateless Media', ud_get_stateless_media()->domain ),array( $this, 'section_callback' ), 'media' );
-
-        //** Add Fields */
-        add_settings_field( 'sm.mode',  __( 'Mode', ud_get_stateless_media()->domain ),  array( $this, 'sm_fields_mode_callback' ), 'media',  'sm'  );
-
-        //** Add Fields */
-        add_settings_field( 'sm.credentials', __( 'Credentials', ud_get_stateless_media()->domain ), array( $this, 'sm_fields_credentials_callback' ), 'media', 'sm' );
-        add_settings_field( 'sm.advanced', __( 'Advanced', ud_get_stateless_media()->domain ), array( $this, 'sm_fields_advanced_callback' ), 'media', 'sm' );
-
-        if( defined( 'WP_DEBUG' ) && WP_DEBUG === true || WP_DEBUG === 'true' ) {
-          add_settings_field( 'sm.debug', __( 'Debug', ud_get_stateless_media()->domain ), array( $this, 'sm_fields_debug_callback' ), 'media', 'sm' );
-        }
-
-      }
-
-      /**
-       * Before save filter
-       * Used to sync options with options table
-       *
-       * @param type $input
-       * @return type
-       */
-      public function validate( $input ) {
-
-        if ( !empty( $input ) && is_array( $input ) ) {
-
-          $_has_updates = false;
-
-          foreach( $input as $_field => $_value ) {
-            if ( update_option( "sm_{$_field}", $_value ) ) {
-              $_has_updates = true;
+            if(is_network_admin()){
+              update_site_option( $option, $value );
+            }
+            else{
+              update_option( $option, $value );
             }
           }
 
-          if ( $_has_updates ) {
-            /* Reset all plugin's transients. */
-            ud_get_stateless_media()->flush_transients();
-          }
-
+          ud_get_stateless_media()->flush_transients();
         }
-
-        return $input;
-      }
-
-      /**
-       * Advanced Media Options
-       *
-       * @author potanin@UD
-       */
-      public function sm_fields_advanced_callback() {
-
-        $inputs = array();
-
-        // override cache control
-        $inputs[] = '<input type="hidden" name="sm[override_cache_control]" value="false" />';
-        $inputs[] = '<label for="sm_override_cache_control"><input id="sm_override_cache_control" type="checkbox" name="sm[override_cache_control]" value="true" '. checked( 'true', $this->get( 'sm.override_cache_control' ), false ) .'/>'.__( 'Override default Cache Control', ud_get_stateless_media()->domain ).'<small> '.__( '(Use input bellow to change cache control)', ud_get_stateless_media()->domain ).'</small></label>';
-
-        // cache control input
-        $inputs[] = '<input id="sm_cache_control" class="regular-text" type="text" name="sm[cache_control]" value="'.$this->get( 'sm.cache_control' ).'" />';
-
-        // body content rewrite
-        $inputs[] = '<input type="hidden" name="sm[body_rewrite]" value="false" />';
-        $inputs[] = '<label for="sm_body_rewrite"><input id="sm_body_rewrite" type="checkbox" name="sm[body_rewrite]" value="true" '. checked( 'true', $this->get( 'sm.body_rewrite' ), false ) .'/>'.__( 'Body content media URL rewrite.', ud_get_stateless_media()->domain ).'</label>';
-
-        // on fly generate
-        $inputs[] = '<input type="hidden" name="sm[on_fly]" value="false" />';
-        $inputs[] = '<label for="sm_on_fly"><input id="sm_on_fly" type="checkbox" name="sm[on_fly]" value="true" '. checked( 'true', $this->get( 'sm.on_fly' ), false ) .'/>'.__( 'Upload on-fly generated (by third-party scripts) images to GCS.', ud_get_stateless_media()->domain ).'<small> '.__( '(This option may slow down file upload processes)', ud_get_stateless_media()->domain ).'</small></label>';
-
-        // delete remote
-        $inputs[] = '<input type="hidden" name="sm[delete_remote]" value="false" />';
-        $inputs[] = '<label for="sm_delete_remote"><input id="sm_delete_remote" type="checkbox" name="sm[delete_remote]" value="true" '. checked( 'true', $this->get( 'sm.delete_remote' ), false ) .'/>'.__( 'Delete media from GCS when media is deleted from the site.', ud_get_stateless_media()->domain ).'<small> '.__( '(This option may slow down media deletion process)', ud_get_stateless_media()->domain ).'</small></label>';
-
-        // hashify
-        $inputs[] = '<input type="hidden" name="sm[hashify_file_name]" value="false" />';
-        $inputs[] = '<label for="sm_hashify_file_name"><input id="sm_hashify_file_name" type="checkbox" name="sm[hashify_file_name]" value="true" '. checked( 'true', $this->get( 'sm.hashify_file_name' ), false ) .'/>'.__( 'Randomize the filename of newly uploaded media files.', ud_get_stateless_media()->domain ).'<small> '.__( '(May help to avoid unwanted GCS caching)', ud_get_stateless_media()->domain ).'</small></label>';
-
-        echo '<section class="wp-stateless-media-options wp-stateless-media-advanced-options"><p>' . implode( "</p>\n<p>", (array) apply_filters( 'sm::settings::advanced', $inputs ) ) . '</p></section>';
-
-      }
-
-      /**
-       * Debug output
-       * @author potanin@UD
-       */
-      public function sm_fields_debug_callback() {
-
-        echo( '<pre style="width:600px;overflow:scroll;">' . print_r( json_decode($this->get()), true ) . '</pre>' );
-
-      }
-
-      /**
-       * Render Credential Inputs
-       *
-       */
-      public function sm_fields_credentials_callback() {
-
-        $inputs = array( '<section class="wp-stateless-media-options wp-stateless-credentials-options">' );
-
-        if( !defined( 'WP_STATELESS_MEDIA_BUCKET' ) ) {
-          $inputs[ ] = '<p><label for="sm_bucket">'.__( 'Bucket', ud_get_stateless_media()->domain ).'</label><div><input id="sm_bucket" class="regular-text" type="text" name="sm[bucket]" value="'. esc_attr( $this->get( 'sm.bucket' ) ) .'" /></div></p>';
-        } else {
-          $inputs[ ] = '<p><label for="sm_bucket">'.__( 'Bucket', ud_get_stateless_media()->domain ).'</label><div><input id="sm_bucket" class="regular-text" readonly="readonly" type="text" name="sm[bucket]" value="'. esc_attr( $this->get( 'sm.bucket' ) ) .'" /></div></p>';
-        }
-
-        if( !defined( 'WP_STATELESS_MEDIA_ROOT_DIR' ) ) {
-          $inputs[ ] = '<p><label for="sm_bucket">'.__( 'Root Directory', ud_get_stateless_media()->domain ).'<small> '.__('(With trailing slash!)', ud_get_stateless_media()->domain).'</small></label><div><input id="sm_bucket" class="regular-text" type="text" name="sm[root_dir]" value="'. esc_attr( $this->get( 'sm.root_dir' ) ) .'" /></div></p>';
-        } else {
-          $inputs[ ] = '<p><label for="sm_bucket">'.__( 'Root Directory', ud_get_stateless_media()->domain ).'<small> '.__('(With trailing slash!)', ud_get_stateless_media()->domain).'</small></label><div><input id="sm_bucket" class="regular-text" readonly="readonly" type="text" name="sm[root_dir]" value="'. esc_attr( $this->get( 'sm.root_dir' ) ) .'" /></div></p>';
-        }
-
-        if( ud_get_stateless_media()->is_network_detected() ) {
-
-          if( is_super_admin() ) {
-
-            $kjsn_readonly = get_site_option( 'sm_key_json' ) || defined( 'WP_STATELESS_MEDIA_KEY_FILE_PATH' ) ? 'readonly="readonly"' : '';
-
-            $inputs[] = '<div class="key_type"><label>'.__('Service Account JSON', ud_get_stateless_media()->domain).'</label>';
-            $inputs[] = '<div class="_key_type _sm_key_json">';
-            $inputs[] = '<textarea '.$kjsn_readonly.' id="sm_key_json" class="field regular-textarea sm_key_json" type="text" name="sm[key_json]" >'. esc_attr( $this->get( 'sm.key_json' ) ) .'</textarea>';
-            $inputs[] = '</div>';
-            $inputs[] = '</div>';
-
-            if( $kjsn_readonly ) {
-              $inputs[ ] = '<p class="description">' . sprintf( __( 'The account name can not be changed because it is set via <a href="%s">Network Settings.</a>' ), network_admin_url( 'settings.php' ) ) . '</p>';
-            }
-
-          }
-
-        } else {
-
-          $inputs[] = '<div class="key_type"><label>'.__('Service Account JSON', ud_get_stateless_media()->domain).'</label>';
-            $inputs[] = '<div class="_key_type _sm_key_json">';
-              $inputs[] = '<textarea id="sm_key_json" class="field regular-textarea sm_key_json" type="text" name="sm[key_json]" >'. esc_attr( $this->get( 'sm.key_json' ) ) .'</textarea>';
-            $inputs[] = '</div>';
-          $inputs[] = '</div>';
-        }
-
-        $inputs[] = '</section>';
-
-        echo implode( "\n", (array) apply_filters( 'sm::settings::credentials', $inputs ) );
-
-      }
-
-      /**
-       * Render inputs
-       */
-      public function sm_fields_mode_callback() {
-
-        $inputs = array(
-          '<p class="sm-mode"><label for="sm_mode_disabled"><input id="sm_mode_disabled" '. checked( 'disabled', $this->get( 'sm.mode' ), false ) .' type="radio" name="sm[mode]" value="disabled" />'.__( 'Disabled', ud_get_stateless_media()->domain ).''
-          . '<small class="description">'.__('Disable Stateless Media.', ud_get_stateless_media()->domain).'</small></label></p>',
-          '<p class="sm-mode"><label for="sm_mode_backup"><input id="sm_mode_backup" '. checked( 'backup', $this->get( 'sm.mode' ), false ) .' type="radio" name="sm[mode]" value="backup" />'.__( 'Backup', ud_get_stateless_media()->domain ).''
-          . '<small class="description">'.__('Push media files to Google Storage but keep using local ones.', ud_get_stateless_media()->domain).'</small></label></p>',
-          '<p class="sm-mode"><label for="sm_mode_cdn"><input id="sm_mode_cdn" '. checked( 'cdn', $this->get( 'sm.mode' ), false ) .' type="radio" name="sm[mode]" value="cdn" />'.__( 'CDN', ud_get_stateless_media()->domain ).''
-          . '<small class="description">'.__('Push media files to Google Storage and use them directly from there.', ud_get_stateless_media()->domain).'</small></label></p>'
-        );
-
-        echo implode( "\n", (array)apply_filters( 'sm::settings::mode', $inputs ) );
-
-      }
-
-      /**
-       * Description callback
-       */
-      public function section_callback() {
-        echo '<p id="stateless-media">' . __( 'Google Storage credentials and settings.', ud_get_stateless_media()->domain ) . '</p>';
-
-        //Imagick is installed
-        if( !extension_loaded('imagick') || !class_exists("Imagick" ) )  {
-          echo '<p id="stateless-media">' . __( 'Be advised, Imagick does not seem to be installed, thumbnails will not be generated not uploaded..', ud_get_stateless_media()->domain ) . '</p>';
-        }
-
-        // Check GD library.
-        if ( !extension_loaded('gd') || !function_exists('gd_info') ) {
-          echo '<p id="stateless-media">' . __( 'Be advised, GD does not seem to be installed, thumbnails will not be generated not uploaded..', ud_get_stateless_media()->domain ) . '</p>';
-        }
-
       }
 
       /**
@@ -344,9 +312,9 @@ namespace wpCloud\StatelessMedia {
        */
       public function set( $key = '', $value = false, $bypass_validation = false ) {
 
-        if (  $value !== false ) {
-          update_option( str_replace( '.', '_', $key ), $value );
-        }
+        //if (  $value !== false ) {
+        //  update_option( str_replace( '.', '_', $key ), $value );
+        //}
 
         return parent::set( $key, $value, $bypass_validation );
 

@@ -1,9 +1,29 @@
+#### 2.0.2
+* FIX - Fixed Fatal Errors which is caused by using PHP 5.4 and less.
+* FIX - Fixed Fatal Error which is caused on Media page when WP Smush Pro plugin is activated.
+* FIX - Fixed detection of plugin files paths. The issue was occurring on installations with custom file structures ( e.g. Bedrock platform ).
+* FIX - Fixed redirection URL to Setup Wizard on plugin activation.
+* ENHANCEMENT - Updated the minimum requirements for PHP to 5.5 to prevent fatal errors and possible warnings.
+
+#### 2.0.1
+* ENHANCEMENT - Added compatibility with Google SDK v1.x version to prevent conflicts with third-party plugins.
+* ENHANCEMENT - Added warning message if old Google SDK version is loaded by third-party plugin.
+
+#### 2.0.0
+* NEW - Added stateless mode.
+* NEW - Dedicated settings panel.
+* NEW - Setup assistant for initial plugin activation.
+* NEW - Support for replacing default GCS domain with a custom domain.
+* ENHANCEMENT - Expanded network setting overrides.
+* ENHANCEMENT - Expanded wp-config constants.
+* ENHANCEMENT - Relocated synchronization and regeneration tools to the new settings panel.
+
 #### 1.9.2
-* Added ability to modify default bucket link via 'wp_stateless_bucket_link' filter.
-* Added checking of connection to GCS once per four hours instead of doing it on every page load.
-* Google SDK was moved from vendor dir. So it's not loaded on every page load anymore, but only when it's required.
-* Updated Composer Autoload logic.
-* Reverted all changes included to 1.9.1 version because of conflicts.
+* ENHANCEMENT - Added ability to modify default bucket link via 'wp_stateless_bucket_link' filter.
+* ENHANCEMENT - Added checking of connection to GCS once per four hours instead of doing it on every page load.
+* ENHANCEMENT - Google SDK was moved from vendor dir. So it's not loaded on every page load anymore, but only when it's required.
+* ENHANCEMENT - Updated Composer Autoload logic.
+* ENHANCEMENT - Reverted all changes included to 1.9.1 version because of conflicts.
 
 #### 1.9.0
 * Added new ability to define cacheControl for remote objects.

@@ -2,13 +2,13 @@
 /**
  * Plugin Name: WP-Stateless
  * Plugin URI: https://www.usabilitydynamics.com
- * Description: Stores and serves WordPress media files directly from Google Cloud Storage.
+ * Description: Upload and serve your WordPress media files from Google Cloud Storage.
  * Author: Usability Dynamics, Inc.
- * Version: 1.9.2
+ * Version: 2.0.2
  * Text Domain: stateless-media
  * Author URI: https://www.usabilitydynamics.com
  *
- * Copyright 2012 - 2016 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
+ * Copyright 2012 - 2017 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
  *
  */
 

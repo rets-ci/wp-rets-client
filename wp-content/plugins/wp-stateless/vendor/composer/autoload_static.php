@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb5e88dc1aa6c70098c1201f0e715bc8a
+class ComposerStaticInitc00cd3c666f8dfa818cb7edfd488ed20
 {
     public static $prefixLengthsPsr4 = array (
         'C' => 
@@ -17,6 +17,16 @@ class ComposerStaticInitb5e88dc1aa6c70098c1201f0e715bc8a
         'Composer\\Installers\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'C' => 
+        array (
+            'ChromePhp' => 
+            array (
+                0 => __DIR__ . '/..' . '/ccampbell/chromephp',
+            ),
         ),
     );
 
@@ -39,9 +49,11 @@ class ComposerStaticInitb5e88dc1aa6c70098c1201f0e715bc8a
         'UsabilityDynamics\\WP\\TGM_Bulk_Installer_Skin' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-tgm-bulk-installer.php',
         'UsabilityDynamics\\WP\\TGM_Plugin_Activation' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-tgm-plugin-activation.php',
         'UsabilityDynamics\\WP\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-utility.php',
+        'wpCloud\\StatelessMedia\\API' => __DIR__ . '/../..' . '/lib/classes/class-api.php',
         'wpCloud\\StatelessMedia\\Ajax' => __DIR__ . '/../..' . '/lib/classes/class-ajax.php',
         'wpCloud\\StatelessMedia\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
         'wpCloud\\StatelessMedia\\GS_Client' => __DIR__ . '/../..' . '/lib/classes/class-gs-client.php',
+        'wpCloud\\StatelessMedia\\Logger' => __DIR__ . '/../..' . '/lib/classes/class-logger.php',
         'wpCloud\\StatelessMedia\\Settings' => __DIR__ . '/../..' . '/lib/classes/class-settings.php',
         'wpCloud\\StatelessMedia\\Sync' => __DIR__ . '/../..' . '/lib/classes/class-sync.php',
         'wpCloud\\StatelessMedia\\Upgrader' => __DIR__ . '/../..' . '/lib/classes/class-upgrader.php',
@@ -51,9 +63,10 @@ class ComposerStaticInitb5e88dc1aa6c70098c1201f0e715bc8a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb5e88dc1aa6c70098c1201f0e715bc8a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb5e88dc1aa6c70098c1201f0e715bc8a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb5e88dc1aa6c70098c1201f0e715bc8a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc00cd3c666f8dfa818cb7edfd488ed20::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc00cd3c666f8dfa818cb7edfd488ed20::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitc00cd3c666f8dfa818cb7edfd488ed20::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitc00cd3c666f8dfa818cb7edfd488ed20::$classMap;
 
         }, null, ClassLoader::class);
     }

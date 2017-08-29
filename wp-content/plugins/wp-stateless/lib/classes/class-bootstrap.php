@@ -25,7 +25,7 @@ namespace wpCloud\StatelessMedia {
        * @property $version
        * @type {Object}
        */
-      public static $version = '1.9.2';
+      public static $version = '2.0.2';
 
       /**
        * Singleton Instance Reference.
@@ -43,9 +43,32 @@ namespace wpCloud\StatelessMedia {
       public function init() {
 
         /**
+         * Copied from wp-property
+         * Duplicates UsabilityDynamics\WP\Bootstrap_Plugin::load_textdomain();
+         *
+         * There is a bug with localisation in lib-wp-bootstrap 1.1.3 and lower.
+         * So we load textdomain here again, in case old version lib-wp-bootstrap is being loaded
+         * by another plugin.
+         *
+         * @since 1.9.1
+         */
+        load_plugin_textdomain($this->domain, false, dirname(plugin_basename($this->boot_file)) . '/static/languages/');
+        
+        // Parse feature falgs, set constants.
+        $this->parse_feature_flags();
+
+        // Invoke REST API
+        add_action( 'rest_api_init', array( $this, 'api_init' ) );
+
+        /**
          * Register SM metaboxes
          */
         add_action( 'admin_init', array( $this, 'register_metaboxes' ) );
+
+        /**
+         * Init hook
+         */
+        add_action( 'admin_init', array( $this, 'admin_init' ) );
 
         /**
          * Add custom actions to media rows
@@ -107,7 +130,8 @@ namespace wpCloud\StatelessMedia {
           /**
            * Override Cache Control is option is enabled
            */
-          if ( $this->get( 'sm.override_cache_control' ) == 'true' ) {
+          $cacheControl = trim($this->get( 'sm.cache_control' ));
+          if ( !empty($cacheControl) ) {
             add_filter( 'sm:item:cacheControl', array( $this, 'override_cache_control' ) );
           }
 
@@ -121,26 +145,40 @@ namespace wpCloud\StatelessMedia {
             $this->errors->add( $is_connected->get_error_message() );
           }
 
+          if ( $googleSDKVersionConflictError = get_transient( "wp_stateless_google_sdk_conflict" ) ) {
+            $this->errors->add( $googleSDKVersionConflictError, 'warning' );
+          }
+
+          // To prevent fatal errors for users who use PHP 5.5 or less.
+          if( version_compare(PHP_VERSION, '5.5', '<') ) {
+            $this->errors->add( sprintf( __( 'The plugin requires PHP %s or higher. You current PHP version %s is too old.', ud_get_stateless_media()->domain ), '<b>5.5</b>', '<b>' . PHP_VERSION . '</b>' ) );
+          }
+
           /** Temporary fix to WP 4.4 srcset feature **/
-          add_filter( 'max_srcset_image_width', create_function( '', 'return 1;' ) );
+          //add_filter( 'max_srcset_image_width', create_function( '', 'return 1;' ) );
 
           /**
            * Carry on only if we do not have errors.
            */
           if( !$this->has_errors() ) {
 
-            if( $this->get( 'sm.mode' ) === 'cdn' ) {
+            if( $this->get( 'sm.mode' ) === 'cdn' || $this->get( 'sm.mode' ) === 'stateless' ) {
               add_filter( 'wp_get_attachment_image_attributes', array( $this, 'wp_get_attachment_image_attributes' ), 20, 3 );
               add_filter( 'wp_get_attachment_url', array( $this, 'wp_get_attachment_url' ), 20, 2 );
               add_filter( 'attachment_url_to_postid', array( $this, 'attachment_url_to_postid' ), 20, 2 );
 
               if ( $this->get( 'sm.body_rewrite' ) == 'true' ) {
                 add_filter( 'the_content', array( $this, 'the_content_filter' ) );
+                add_filter( 'get_post_metadata', array( $this, 'post_metadata_filter' ), 2, 4 );
+              }
+
+              if ( $this->get( 'sm.custom_domain' ) == $this->get( 'sm.bucket' ) ) {
+                add_filter( 'wp_stateless_bucket_link', array( $this, 'wp_stateless_bucket_link' ) );
               }
             }
 
             if ( $root_dir = $this->get( 'sm.root_dir' ) ) {
-              if ( trim( $root_dir ) !== '' ) {
+              if ( trim( $root_dir, '/ ' ) !== '' ) { // Remove any forward slash and empty space.
                 add_filter( 'wp_stateless_file_name', array( $this, 'handle_root_dir' ) );
               }
             }
@@ -149,11 +187,13 @@ namespace wpCloud\StatelessMedia {
              * Rewrite Image URLS
              */
             add_filter( 'image_downsize', array( $this, 'image_downsize' ), 99, 3 );
+            add_filter( 'wp_calculate_image_srcset', array($this, 'wp_calculate_image_srcset'), 10, 5 );
 
             /**
              * Extends metadata by adding GS information.
              */
             add_filter( 'wp_get_attachment_metadata', array( $this, 'wp_get_attachment_metadata' ), 10, 2 );
+            add_filter( 'wp_update_attachment_metadata', array( $this, 'add_media' ), 100, 2 );
 
             /**
              * Add/Edit Media
@@ -182,12 +222,78 @@ namespace wpCloud\StatelessMedia {
       }
 
       /**
+       * Rebuild srcset from gs_link.
+       * 
+       * 
+       */
+      public function wp_calculate_image_srcset($sources, $size_array, $image_src, $image_meta, $attachment_id){
+        foreach ($sources as $width => &$image) {
+          if(isset($image_meta['sizes']) && is_array($image_meta['sizes'])){
+            foreach ($image_meta['sizes'] as $key => $meta) {
+              if($width == $meta['width'] && isset($meta['gs_link']) && $meta['gs_link']){
+                $image['url'] = $meta['gs_link'];
+              }
+            }
+          }
+        }
+
+        return $sources;
+      }
+
+      /**
+       * Return gs host.
+       * If custom domain is set it's return bucket name as host,
+       * else return storage.googleapis.com as host and append bucket name at the end.
+       * @param none
+       * @return Host name to use
+       */
+      public function get_gs_host($sm = array()) {
+        $sm = $sm?$sm: $this->get( 'sm');
+        $image_host = 'https://storage.googleapis.com/';
+        if ( $sm['bucket'] && $sm['custom_domain'] == $sm['bucket']) {
+            $image_host = 'http://';  // bucketname will be host
+        }
+        return $image_host . $sm['bucket'];
+      }
+
+      /**
+       * Filter for wp_stateless_bucket_link if custom domain is set.
+       * It's get attachment url and remove "storage.googleapis.com" from url.
+       * So that custom url can be used.
+       * @param $new_blog
+       * @param $prev_blog_id
+       */
+      public function wp_stateless_bucket_link($fileLink) {
+        $bucketname = $this->get( 'sm.bucket' );
+        if ( strpos($fileLink, $bucketname) > 8) {
+          $fileLink = 'http://' . substr($fileLink, strpos($fileLink, $bucketname));
+        }
+        return $fileLink;
+      }
+
+      /**
+       * Return settings page url.
+       * @param $path
+       */
+      public function get_settings_page_url( $path = '' ) {
+        $url = get_admin_url( get_current_blog_id(), ( is_network_admin() ? 'network/settings.php' : 'upload.php' ) );
+        return $url . $path;
+      }
+
+      /**
        * Get new blog settings once switched blog.
        * @param $new_blog
        * @param $prev_blog_id
        */
       public function on_switch_blog( $new_blog, $prev_blog_id ) {
         $this->settings->refresh();
+      }
+
+      /**
+       * Remove all settings.
+       */
+      public function reset($network = false) {
+        $this->settings->reset($network);
       }
 
       /**
@@ -224,6 +330,27 @@ namespace wpCloud\StatelessMedia {
           'side',
           'low'
         );
+      }
+
+      /**
+       * Define REST API.
+       *
+       * // https://usabilitydynamics-sandbox-uds-io-stateless-testing.c.rabbit.ci/wp-json/wp-stateless/v1
+       *
+       * @author potanin@UD
+       */
+      public function api_init() {
+
+        register_rest_route( 'wp-stateless/v1', '/status', array(
+          'methods' => 'GET',
+          'callback' => array( 'wpCloud\StatelessMedia\API', 'status' ),
+        ) );
+
+        register_rest_route( 'wp-stateless/v1', '/jobs', array(
+          'methods' => 'GET',
+          'callback' => array( 'wpCloud\StatelessMedia\API', 'jobs' ),
+        ) );
+
       }
 
       /**
@@ -288,10 +415,10 @@ namespace wpCloud\StatelessMedia {
        */
       public function handle_root_dir( $current_path ) {
         $root_dir = $this->get( 'sm.root_dir' );
-        $root_dir = trim( $root_dir );
+        $root_dir = trim( $root_dir, '/ ' ); // Remove any forward slash and empty space.
 
         if ( !empty( $root_dir ) ) {
-          return $root_dir . $current_path;
+          return $root_dir . '/' . $current_path;
         }
 
         return $current_path;
@@ -307,15 +434,98 @@ namespace wpCloud\StatelessMedia {
 
           if ( !empty( $upload_data['baseurl'] ) && !empty( $content ) ) {
             $baseurl = preg_replace('/https?:\/\//','',$upload_data['baseurl']);
-            $root_dir = trim( $this->get( 'sm.root_dir' ) );
-            $root_dir = !empty( $root_dir ) ? $root_dir : false;
+            $root_dir = trim( $this->get( 'sm.root_dir' ), '/ ' ); // Remove any forward slash and empty space.
+            $root_dir = !empty( $root_dir ) ? $root_dir . '/' : false;
+            $image_host = $this->get_gs_host();
             $content = preg_replace( '/(href|src)=(\'|")(https?:\/\/'.str_replace('/', '\/', $baseurl).')\/(.+?)(\.jpg|\.png|\.gif|\.jpeg)(\'|")/i',
-                '$1=$2https://storage.googleapis.com/'.$this->get( 'sm.bucket' ).'/'.($root_dir?$root_dir:'').'$4$5$6', $content);
+                '$1=$2'.$image_host.'/'.($root_dir?$root_dir:'').'$4$5$6', $content);
           }
         }
 
         return $content;
       }
+
+      /**
+       * @param $value null unless other filter hooked in this function.
+       * @param $object_id post id
+       * @param $meta_key 
+       * @param $single
+       * @return mixed
+       */
+      public function post_metadata_filter($value, $object_id, $meta_key, $single){
+        if(empty($value)){
+          $meta_type = 'post';
+          $meta_cache = wp_cache_get($object_id, $meta_type . '_meta');
+
+          if ( !$meta_cache ) {
+              $meta_cache = update_meta_cache( $meta_type, array( $object_id ) );
+              $meta_cache = $meta_cache[$object_id];
+          }
+       
+          if ( ! $meta_key ) {
+              return $this->convert_to_gs_link($meta_cache);
+          }
+          
+          if ( isset($meta_cache[$meta_key]) ) {
+              return $this->convert_to_gs_link(array_map('maybe_unserialize', $meta_cache[$meta_key]));
+          }
+       
+          if ($single)
+              return '';
+          else
+              return array();
+        }
+
+        return $this->convert_to_gs_link($value);
+
+      }
+
+      /**
+       * Rplace all image link with gs link and return only if meta modified.
+       * @param $meta
+       * @return mixed
+       */
+      public function convert_to_gs_link($meta){
+        $updated = $this->_convert_to_gs_link($meta);
+        if($updated == $meta){
+          return null; // Not changed.
+        }
+        return $updated;
+      }
+
+      /**
+       * Rplace all image link with gs link
+       * @param $meta
+       * @return mixed
+       */
+      public function _convert_to_gs_link($meta){
+        if ( $meta && $upload_data = wp_upload_dir() ) {
+          if ( !empty( $upload_data['baseurl'] ) && !empty( $meta ) ) {
+            $baseurl = preg_replace('/https?:\/\//','',$upload_data['baseurl']);
+            $root_dir = trim( $this->get( 'sm.root_dir' ), '/ ' ); // Remove any forward slash and empty space.
+            $root_dir = !empty( $root_dir ) ? $root_dir . '/ ': false;
+            $image_host = $this->get_gs_host().'/'.($root_dir?$root_dir:'');
+
+            if(is_array($meta)){
+              foreach ($meta as $key => $value) {
+                $meta[$key] = $this->_convert_to_gs_link($value);
+              }
+              return $meta;
+            } elseif (is_object($meta) && $meta instanceof \stdClass ) {
+              foreach (get_object_vars($meta) as $key => $value) {
+                $meta->{$key} = $this->_convert_to_gs_link($value);
+              }
+              return $meta;
+            } elseif(is_string($meta)){
+              return preg_replace( '/(https?:\/\/'.str_replace('/', '\/', $baseurl).')\/(.+?)(\.jpg|\.png|\.gif|\.jpeg)/i', $image_host.'$2$3', $meta);
+            }
+          }
+        }
+
+        return $meta;
+      }
+
+
 
       /**
        * Handle images on fly
@@ -388,7 +598,10 @@ namespace wpCloud\StatelessMedia {
         if( is_multisite() ) {
           /* Looks through network enabled plugins to see if our one is there. */
           foreach (wp_get_active_network_plugins() as $path) {
-            if ($this->boot_file == $path) {
+            // Trying again using readlink in case it's a symlink file.
+            // boot_file is already solved.
+            // wp_normalize_path is helpfull in windows.
+            if (wp_normalize_path($this->boot_file) == wp_normalize_path($path) || (is_link($path) AND $this->boot_file == readlink($path))) {
               return true;
             }
           }
@@ -397,18 +610,76 @@ namespace wpCloud\StatelessMedia {
       }
 
       /**
+       * Initialization.
+       * Register scripts and styles
+       */
+      public function admin_init() {
+        wp_register_style( 'wp-stateless', $this->path( 'static/styles/wp-stateless.css', 'url'  ), array(), self::$version );
+
+        /* Attachment or upload page */
+        wp_register_script( 'wp-stateless-uploads-js', $this->path( 'static/scripts/wp-stateless-uploads.js', 'url'  ), array( 'jquery' ), self::$version );
+
+        /* Setup wizard styles and scripts. */
+        wp_register_style( 'wp-stateless-bootstrap', $this->path( 'static/styles/bootstrap.min.css', 'url'  ), array(), '3.3.7' );
+        wp_register_style( 'wp-stateless-setup-wizard', $this->path( 'static/styles/wp-stateless-setup-wizard.css', 'url'  ), array(), self::$version );
+
+        wp_register_script( 'async.min', ud_get_stateless_media()->path( 'static/scripts/async.js', 'url'  ), array(), ud_get_stateless_media()->version );
+        wp_register_script( 'jquery.history', ud_get_stateless_media()->path( 'static/scripts/jquery.history.js', 'url'  ), array( 'jquery' ), ud_get_stateless_media()->version, true );
+        wp_register_script( 'wp-stateless-validation', ud_get_stateless_media()->path( 'static/scripts/jquery.validation.js', 'url'  ), array( 'jquery' ), ud_get_stateless_media()->version, true );
+        wp_register_script( 'wp-stateless-loading', ud_get_stateless_media()->path( 'static/scripts/jquery.loading.js', 'url'  ), array( 'jquery' ), ud_get_stateless_media()->version, true );
+        wp_register_script( 'wp-stateless-comboBox', ud_get_stateless_media()->path( 'static/scripts/jquery.wp-stateless-combo-box.js', 'url'  ), array( 'jquery' ), ud_get_stateless_media()->version, true );
+        wp_register_script( 'wp-stateless-setup', ud_get_stateless_media()->path( 'static/scripts/wp-stateless-setup.js', 'url'  ), array( 'jquery-ui-core', 'wp-api', 'jquery.history' ), ud_get_stateless_media()->version, true );
+        wp_localize_script( 'wp-stateless-setup', 'stateless_l10n', $this->get_l10n_data() );
+
+        wp_register_script( 'wp-stateless-setup-wizard-js', ud_get_stateless_media()->path( 'static/scripts/wp-stateless-setup-wizard.js', 'url'  ), array( 'jquery', 'wp-api', 'async.min', 'wp-stateless-setup', 'wp-stateless-comboBox', 'wp-stateless-validation', 'wp-stateless-loading' ), ud_get_stateless_media()->version, true );
+
+
+        /* Stateless settings page */
+        wp_register_script( 'wp-stateless-settings', ud_get_stateless_media()->path( 'static/scripts/wp-stateless-settings.js', 'url'  ), array(), ud_get_stateless_media()->version );
+        wp_localize_script( 'wp-stateless-settings', 'stateless_l10n', $this->get_l10n_data() );
+        
+        wp_register_style( 'wp-stateless-settings', $this->path( 'static/styles/wp-stateless-settings.css', 'url'  ), array(), self::$version );
+
+        // Sync tab
+        if ( wp_script_is( 'jquery-ui-widget', 'registered' ) ){
+          wp_register_script( 'jquery-ui-progressbar', ud_get_stateless_media()->path('static/scripts/jquery-ui/jquery.ui.progressbar.min.js', 'url'), array( 'jquery-ui-core', 'jquery-ui-widget' ), '1.8.6' );
+        }
+        else{
+          wp_register_script( 'jquery-ui-progressbar', ud_get_stateless_media()->path( 'static/scripts/jquery-ui/jquery.ui.progressbar.min.1.7.2.js', 'url' ), array( 'jquery-ui-core' ), '1.7.2' );
+        }
+        wp_register_script( 'wp-stateless-angular', ud_get_stateless_media()->path( 'static/scripts/angular.min.js', 'url' ), array(), '1.5.0', true );
+        wp_register_script( 'wp-stateless', ud_get_stateless_media()->path( 'static/scripts/wp-stateless.js', 'url'  ), array( 'jquery-ui-core' ), ud_get_stateless_media()->version, true );
+
+        wp_localize_script('wp-stateless', 'wp_stateless_settings', ud_get_stateless_media()->get('sm'));
+        wp_register_style( 'jquery-ui-regenthumbs', ud_get_stateless_media()->path( 'static/scripts/jquery-ui/redmond/jquery-ui-1.7.2.custom.css', 'url' ), array(), '1.7.2' );
+
+      }
+
+      public function get_l10n_data($value=''){
+        include ud_get_stateless_media()->path( 'l10n.php', 'dir');
+        return $l10n;
+      }
+
+      /**
        *
        * @todo: it should not be loaded everywhere. peshkov@UD
+       * @param $hook
        */
       public function admin_enqueue_scripts( $hook ) {
 
-        wp_enqueue_style( 'wp-stateless', $this->path( 'static/styles/wp-stateless.css', 'url'  ), array(), self::$version );
+        wp_enqueue_style( 'wp-stateless');
 
         switch( $hook ) {
 
+          case 'options-media.php':
+            //wp_enqueue_script( 'wp-api' );
+
+            wp_enqueue_script( 'wp-stateless-setup' );
+          break;
+
           case 'upload.php':
 
-            wp_enqueue_script( 'wp-stateless-uploads-js', $this->path( 'static/scripts/wp-stateless-uploads.js', 'url'  ), array( 'jquery' ), self::$version );
+            wp_enqueue_script( 'wp-stateless-uploads-js' );
 
             break;
 
@@ -417,11 +688,32 @@ namespace wpCloud\StatelessMedia {
             global $post;
 
             if ( $post->post_type == 'attachment' ) {
-              wp_enqueue_script( 'wp-stateless-uploads-js', $this->path( 'static/scripts/wp-stateless-uploads.js', 'url'  ), array( 'jquery' ), self::$version );
+              wp_enqueue_script( 'wp-stateless-uploads-js' );
             }
 
             break;
 
+          case $this->settings->setup_wizard_ui:
+            wp_enqueue_style( 'wp-stateless-bootstrap' );
+            wp_enqueue_style( 'wp-stateless-setup-wizard' );
+
+            wp_enqueue_script( 'async.min' );
+            wp_enqueue_script( 'jquery.history' );
+            wp_enqueue_script( 'wp-stateless-validation' );
+            wp_enqueue_script( 'wp-stateless-loading' );
+            wp_enqueue_script( 'wp-stateless-comboBox' );
+            wp_enqueue_script( 'wp-stateless-setup' );
+            wp_enqueue_script( 'wp-stateless-setup-wizard-js' );
+            break;
+          case $this->settings->stateless_settings:
+            wp_enqueue_script( 'wp-stateless-settings' );
+            wp_enqueue_style( 'wp-stateless-settings' );
+            
+            // Sync tab
+            wp_enqueue_script( 'jquery-ui-progressbar' );
+            wp_enqueue_script( 'wp-stateless-angular' );
+            wp_enqueue_script( 'wp-stateless' );
+            wp_enqueue_style( 'jquery-ui-regenthumbs' );
           default: break;
         }
 
@@ -478,7 +770,7 @@ namespace wpCloud\StatelessMedia {
         /**
          * Check if enabled
          */
-        if ( $this->get( 'sm.mode' ) !== 'cdn' ) {
+        if ( $this->get( 'sm.mode' ) !== 'cdn' && $this->get( 'sm.mode' ) !== 'stateless' ) {
           return $false;
         }
 
@@ -496,6 +788,28 @@ namespace wpCloud\StatelessMedia {
           $is_intermediate = true;
         }
         //die( '<pre>' . print_r( $intermediate, true ) . '</pre>' );
+
+        /**
+         * maybe try to get images info from sm_cloud
+         * this case may happen when no local files
+         * @author korotkov@ud
+         */
+        if ( !$width && !$height ) {
+          $sm_cloud = get_post_meta( $id, 'sm_cloud', true );
+          if ( is_string($size) && !empty( $sm_cloud['sizes'] ) && !empty( $sm_cloud['sizes'][$size] ) ) {
+            global $_wp_additional_image_sizes;
+
+            $img_url = !empty( $sm_cloud['sizes'][$size]['fileLink'] ) ? $sm_cloud['sizes'][$size]['fileLink'] : $img_url;
+
+            if ( !empty( $_wp_additional_image_sizes[ $size ] ) ) {
+              $width = !empty( $_wp_additional_image_sizes[ $size ]['width'] ) ? $_wp_additional_image_sizes[ $size ]['width'] : $width;
+              $height = !empty( $_wp_additional_image_sizes[ $size ]['height'] ) ? $_wp_additional_image_sizes[ $size ]['height'] : $height;
+            }
+
+            $is_intermediate = true;
+          }
+        }
+
         if ( !$width && !$height && isset( $meta['width'], $meta['height'] ) ) {
 
           //** any other type: use the real image */
@@ -508,7 +822,7 @@ namespace wpCloud\StatelessMedia {
 
           //** we have the actual image size, but might need to further constrain it if content_width is narrower */
           list( $width, $height ) = image_constrain_size_for_editor( $width, $height, $size );
-
+          $img_url = apply_filters('wp_stateless_bucket_link', $img_url);
           return array( $img_url, $width, $height, $is_intermediate );
         }
 
@@ -533,14 +847,14 @@ namespace wpCloud\StatelessMedia {
         /* Determine if the media file has GS data at all. */
         $sm_cloud = get_post_meta( $attachment_id, 'sm_cloud', true );
         if( is_array( $sm_cloud ) && !empty( $sm_cloud[ 'fileLink' ] ) ) {
-          $metadata[ 'gs_link' ] = $sm_cloud[ 'fileLink' ];
+          $metadata[ 'gs_link' ] = apply_filters('wp_stateless_bucket_link', $sm_cloud[ 'fileLink' ]);
           $metadata[ 'gs_name' ] = isset( $sm_cloud[ 'name' ] ) ? $sm_cloud[ 'name' ] : false;
           $metadata[ 'gs_bucket' ] = isset( $sm_cloud[ 'bucket' ] ) ? $sm_cloud[ 'bucket' ] : false;
           if( !empty( $metadata[ 'sizes' ] ) && is_array( $metadata[ 'sizes' ] ) ) {
             foreach( $metadata[ 'sizes' ] as $k => $v ) {
               if( !empty( $sm_cloud[ 'sizes' ][ $k ][ 'name' ] ) ) {
                 $metadata['sizes'][$k]['gs_name'] = $sm_cloud[ 'sizes' ][ $k ][ 'name' ];
-                $metadata['sizes'][$k]['gs_link'] = $sm_cloud[ 'sizes' ][ $k ][ 'fileLink' ];
+                $metadata['sizes'][$k]['gs_link'] = apply_filters('wp_stateless_bucket_link', $sm_cloud[ 'sizes' ][ $k ][ 'fileLink' ]);
               }
             }
           }
@@ -592,13 +906,19 @@ namespace wpCloud\StatelessMedia {
             'hash' => md5( serialize( $this->get( 'sm' ) ) ),
           );
           $client = $this->get_client();
+
           if ( is_wp_error( $client ) ) {
             $trnst[ 'success' ] = 'false';
             $trnst[ 'error' ] = $client->get_error_message();
           } else {
-            if( !$client->is_connected() ) {
+            $connected = $client->is_connected();
+            if( $connected !== true ) {
+              $error = $connected->getErrors();
+              $error = reset($error);
               $trnst[ 'success' ] = 'false';
               $trnst[ 'error' ] = sprintf( __( 'Could not connect to Google Storage bucket. Please, be sure that bucket with name <b>%s</b> exists.', $this->domain ), $this->get( 'sm.bucket' ) );
+              if($error['reason'] == 'accessNotConfigured')
+                $trnst[ 'error' ] .= "<br>" . make_clickable($error['message']);
             }
           }
           set_transient( 'sm::is_connected_to_gs', $trnst, 4 * HOUR_IN_SECONDS );
@@ -623,7 +943,19 @@ namespace wpCloud\StatelessMedia {
        * Plugin Activation
        *
        */
-      public function activate() {}
+      public function activate() {
+        add_action( 'activated_plugin', array($this, 'redirect_to_splash') );
+      }
+
+      public function redirect_to_splash($plugin =''){
+        if( $plugin == plugin_basename( $this->boot_file ) ) {
+          $url = $this->get_settings_page_url('?page=stateless-setup&step=splash-screen');
+          if(json_decode(get_site_option('sm_key_json'))){
+            $url = $this->get_settings_page_url('?page=stateless-settings');
+          }
+          exit( wp_redirect($url));
+        }
+      }
 
       /**
        * Plugin Deactivation
@@ -641,7 +973,9 @@ namespace wpCloud\StatelessMedia {
       public function wp_get_attachment_url( $url = '', $post_id = '' ) {
         $sm_cloud = get_post_meta( $post_id, 'sm_cloud', 1 );
         if( is_array( $sm_cloud ) && !empty( $sm_cloud[ 'fileLink' ] ) ) {
-          return strpos( $sm_cloud[ 'fileLink' ], 'https://' ) === false ? ( 'https:' . $sm_cloud[ 'fileLink' ] ) : $sm_cloud[ 'fileLink' ];
+          $_url = parse_url($sm_cloud[ 'fileLink' ]);
+          $url = !isset($_url['scheme']) ? ( 'https:' . $sm_cloud[ 'fileLink' ] ) : $sm_cloud[ 'fileLink' ];
+          return apply_filters('wp_stateless_bucket_link', $url);
         }
         return $url;
       }
@@ -668,17 +1002,60 @@ namespace wpCloud\StatelessMedia {
       /**
        * Change Upload BaseURL when CDN Used.
        *
-       * @todo: is it used somewhere? peshkov@UD
-       *
        * @param $data
        * @return mixed
        */
       public function upload_dir( $data ) {
-
-        $data[ 'baseurl' ] = '//storage.googleapis.com/' . ( $this->get( 'sm.bucket' ) );
+        $data[ 'baseurl' ] = $this->get_gs_host();
         $data[ 'url' ] = $data[ 'baseurl' ] . $data[ 'subdir' ];
 
         return $data;
+
+      }
+
+      /**
+       * Set Feature Flag constants by parsing composer.json
+       *
+       * @todo Make sure settings from DB can override these.
+       *
+       * @author potanin@UD
+       * @return array|mixed|null|object
+       */
+      public function parse_feature_flags( ) {
+
+        try {
+
+          $_raw = file_get_contents( Utility::normalize_path( $this->root_path ) . 'composer.json' );
+
+          $_parsed = json_decode( $_raw  );
+
+          // @todo Catch poorly formatted JSON.
+          if( !is_object( $_parsed  ) ) {
+            // throw new Error( "unable to parse."  );
+          }
+
+          foreach( (array) $_parsed->extra->featureFlags as $_feature ) {
+
+            if( !defined( $_feature->constant  ) ) {
+              define( $_feature->constant, $_feature->enabled );
+
+              if( $_feature->enabled ) {
+                Utility::log( 'Feature flag ' . $_feature->name . ', [' . $_feature->constant . '] enabled.' );
+              } else {
+                Utility::log( 'Feature flag ' . $_feature->name . ', [' . $_feature->constant . '] disabled.' );
+              }
+            }
+
+          }
+
+        } catch ( Exception $e ) {
+          Utility::log( 'Unable to parse [composer.json] feature flags. Error: [' . $e->getMessage() . ']' );
+          // echo 'Caught exception: ', $e->getMessage(), "\n";
+        }
+
+
+        return isset( $_parsed ) ? $_parsed : null;
+
 
       }
 

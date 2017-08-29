@@ -17,6 +17,27 @@ namespace wpCloud\StatelessMedia {
     class Utility {
 
       /**
+       * ChromeLogger
+       *
+       * @author potanin@UD
+       * @param $data
+       */
+      static public function log( $data ) {
+
+        if( !class_exists( 'wpCloud\StatelessMedia\Logger' )) {
+          include_once( __DIR__ . '/class-logger.php' );
+        }
+
+
+        if( !class_exists( 'wpCloud\StatelessMedia\Logger' )) {
+          return;
+        }
+
+        Logger::log( '[wp-stateless]', $data );
+
+      }
+
+      /**
        * Override Cache Control
        * @param $cacheControl
        * @return mixed
@@ -111,7 +132,6 @@ namespace wpCloud\StatelessMedia {
 
       }
 
-
       /**
        * Add/Update Media to Bucket
        * Fired for every action with image add or update
@@ -123,9 +143,10 @@ namespace wpCloud\StatelessMedia {
        * @return bool|string
        */
       public static function add_media( $metadata, $attachment_id ) {
+        $upload_dir = wp_upload_dir();
 
         /* Get metadata in case if method is called directly. */
-        if( current_filter() !== 'wp_generate_attachment_metadata' ) {
+        if( current_filter() !== 'wp_generate_attachment_metadata' && current_filter() !== 'wp_update_attachment_metadata' ) {
           $metadata = wp_get_attachment_metadata( $attachment_id );
         }
 
@@ -135,13 +156,13 @@ namespace wpCloud\StatelessMedia {
 
           // Make non-images uploadable.
           if( empty( $metadata['file'] ) && $attachment_id ) {
-            $upload_dir = wp_upload_dir();
             $metadata = array( "file" => str_replace( trailingslashit( $upload_dir[ 'basedir' ] ), '', get_attached_file( $attachment_id ) ) );
           }
 
           $file = wp_normalize_path( $metadata[ 'file' ] );
 
-          $bucketLink = apply_filters('wp_stateless_bucket_link', 'https://storage.googleapis.com/' . ud_get_stateless_media()->get( 'sm.bucket' ) );
+          $image_host = ud_get_stateless_media()->get_gs_host();
+          $bucketLink = apply_filters('wp_stateless_bucket_link', $image_host);
 
           $_metadata = array(
             "width" => isset( $metadata[ 'width' ] ) ? $metadata[ 'width' ] : null,
@@ -234,9 +255,19 @@ namespace wpCloud\StatelessMedia {
                   'mediaLink' => $media[ 'mediaLink' ],
                   'selfLink' => $media[ 'selfLink' ]
                 );
-
+                
+                // Stateless mode: we don't need the local version.
+                if(ud_get_stateless_media()->get( 'sm.mode' ) === 'stateless'){
+                  unlink($absolutePath);
+                }
               }
 
+
+            }
+
+            // Stateless mode: we don't need the local version.
+            if(ud_get_stateless_media()->get( 'sm.mode' ) === 'stateless'){
+              unlink($upload_dir[ 'basedir' ] . '/' . $file);
             }
 
           }
