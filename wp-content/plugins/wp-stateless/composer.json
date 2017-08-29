@@ -21,7 +21,8 @@
     "php": ">=5.4",
     "composer/installers": "~1.0",
     "usabilitydynamics/lib-settings": "0.2.3",
-    "usabilitydynamics/lib-wp-bootstrap": "1.2.1"
+    "usabilitydynamics/lib-wp-bootstrap": "1.2.2",
+    "ccampbell/chromephp": "^4.1"
   },
   "require-dev": {
     "php": ">=5.4",
@@ -32,7 +33,6 @@
   },
   "archive": {
     "exclude": [
-      "vendor",
       "node_modules",
       ".gitignore",
       "test",
@@ -43,6 +43,22 @@
     ]
   },
   "extra": {
+    "featureFlags": [
+      {
+        "name": "Google Login",
+        "constant": "WP_STATELESS_GOOGLE_LOGIN",
+        "description": "Allows for quicker setup by letting admin login to their Google Account from the control panel. Fetches available projects and buckets.",
+        "since": "1.9.2",
+        "enabled": true
+      },
+      {
+        "name": "Legacy Settings",
+        "constant": "WP_STATELESS_LEGACY_SETTINGS",
+        "description": "Shows legacy settings options.",
+        "since": "1.9.2",
+        "enabled": false
+      }
+    ],
     "schemas": {
       "dependencies" : {
         "modules": {},

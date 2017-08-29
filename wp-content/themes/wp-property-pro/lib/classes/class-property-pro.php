@@ -176,7 +176,7 @@ namespace UsabilityDynamics {
 
           $user->images = array_map(function($image){
             return wp_get_attachment_image_src(unserialize($image)[0]);
-          }, $user->meta['agent_images']);
+          }, (isset($user->meta['agent_images']) ? $user->meta['agent_images'] : []));
 
           return $user;
         }, get_users(['role' => 'agent']))
