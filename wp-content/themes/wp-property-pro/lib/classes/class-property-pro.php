@@ -187,9 +187,9 @@ namespace UsabilityDynamics {
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
 
-      if ( function_exists('is_property_overview_page') && is_property_overview_page()) {
+      if ( (function_exists('is_property_overview_page') && is_property_overview_page()) || is_front_page() ) {
         $front_page_id = get_option('page_on_front');
-        if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
+        if ($post_data = get_post_meta($front_page_id, 'panels_data', true) && !is_front_page()) {
           $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
         }
 
@@ -209,7 +209,7 @@ namespace UsabilityDynamics {
         }));
 
         /** Array for filters modal */
-        $filters = [];
+        $property_search_options = [];
 
         /** Build search options and filters modal array */
         foreach ([
@@ -232,7 +232,7 @@ namespace UsabilityDynamics {
             $sale_type = 'Sale';
           }
 
-          $filters[$label][] = [
+          $property_search_options[$label][] = [
             'sale_type' => $sale_type,
             'property_types' => isset($types) && !empty($types) ? $types : $_property_types
           ];
@@ -244,8 +244,11 @@ namespace UsabilityDynamics {
           ];
         }
 
-        $params['search_options'] = $search_options;
-        $params['filters'] = $filters;
+        if(!is_front_page()){
+          $params['search_options'] = $search_options;
+        }
+
+        $params['property_search_options'] = $property_search_options;
       }
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
@@ -416,6 +419,34 @@ namespace UsabilityDynamics {
               ]
             ]
           ];
+        } elseif ($post->post_type === 'property') {
+
+          /** Get property sale type */
+          $status_terms = array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
+            return $term->parent;
+          });
+
+          if (count($status_terms) === 1) {
+            $status_term = reset($status_terms);
+
+            if (isset($status_term->slug) && !empty($status_term->slug)) {
+              $params['post']['sale_type'] = ucfirst(end(explode('-', $status_term->slug)));
+            }
+          }
+
+          /** Get property location */
+          $city_terms = array_filter(array_map(function ($term) {
+            $term->term_type = get_term_meta($term->term_id, '_type', true);
+            return $term;
+          }, wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false])), function ($term) {
+            return $term->term_type === 'wpp_location_city_state';
+          });
+
+          if(count($city_terms) === 1){
+            $city_term = reset($city_terms);
+            $params['post']['location'] = $city_term->name;
+          }
+
         }
       } /** Is blog page ? */
       elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
