@@ -515,4 +515,30 @@ var wpStatelessApp = angular.module('wpStatelessApp', [])
 
   }
 
-}]);
+}])
+.controller('wpStatelessSettings', function($scope, $filter) {
+  $scope.sm = wp_stateless_settings || {};
+
+  $scope.sm.showNotice = function(option){
+    if($scope.sm.readonly && $scope.sm.readonly[option]){
+      var slug = $scope.sm.readonly[option];
+      return $scope.sm.strings[slug];
+    }
+  }
+
+  $scope.sm.generatePreviewUrl = function() {
+    var host = 'https://storage.googleapis.com/';
+
+    if ( $scope.sm.bucket && $scope.sm.custom_domain == $scope.sm.bucket) {
+      host = 'http://';  // bucketname will be host
+    }
+    host += $scope.sm.bucket ? $scope.sm.bucket : '{bucket-name}';
+    var rootdir = $scope.sm.root_dir ? $scope.sm.root_dir + '/' : '';
+    var subdir = $scope.sm.organize_media == '1' ? $filter('date')(Date.now(), 'yyyy/MM') + '/' : '';
+    var hash = $scope.sm.hashify_file_name == 'true' ? Date.now().toString(36) + '-' : '';
+    $scope.sm.preview_url = host + "/" + rootdir + subdir + hash + "your-image-name.jpeg";
+  }
+
+  $scope.sm.generatePreviewUrl();
+
+});

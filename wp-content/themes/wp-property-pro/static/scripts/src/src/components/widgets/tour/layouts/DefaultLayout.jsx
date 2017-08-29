@@ -22,13 +22,14 @@ const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal})
                 : null
             }
           </div>
-          {
-            _.get(item, 'feature_groups', []).map((featureGroup, key) =>
-              <FeatureGroup browserHistoryPush={browserHistoryPush} featureGroup={featureGroup} ind={key} openFormModal={openFormModal} key={key}/>
-            )
-          }
         </div>
       </div>
+
+      {
+        _.get(item, 'feature_groups', []).map((featureGroup, key) =>
+          <FeatureGroup browserHistoryPush={browserHistoryPush} featureGroup={featureGroup} ind={key} openFormModal={openFormModal} key={key}/>
+        )
+      }
     </div>
   );
 };

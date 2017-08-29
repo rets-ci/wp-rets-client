@@ -934,6 +934,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-widget-inner {
     position: absolute;
     width: 100%;
+    left: 0;
 }
 
 .propertypro-widget-box {
