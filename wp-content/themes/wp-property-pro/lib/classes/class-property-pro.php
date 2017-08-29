@@ -187,9 +187,9 @@ namespace UsabilityDynamics {
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
 
-      if ( function_exists('is_property_overview_page') && is_property_overview_page()) {
+      if ( (function_exists('is_property_overview_page') && is_property_overview_page()) || is_front_page() ) {
         $front_page_id = get_option('page_on_front');
-        if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
+        if ($post_data = get_post_meta($front_page_id, 'panels_data', true) && !is_front_page()) {
           $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
         }
 
@@ -209,7 +209,7 @@ namespace UsabilityDynamics {
         }));
 
         /** Array for filters modal */
-        $filters = [];
+        $property_search_options = [];
 
         /** Build search options and filters modal array */
         foreach ([
@@ -232,7 +232,7 @@ namespace UsabilityDynamics {
             $sale_type = 'Sale';
           }
 
-          $filters[$label][] = [
+          $property_search_options[$label][] = [
             'sale_type' => $sale_type,
             'property_types' => isset($types) && !empty($types) ? $types : $_property_types
           ];
@@ -244,8 +244,11 @@ namespace UsabilityDynamics {
           ];
         }
 
-        $params['search_options'] = $search_options;
-        $params['filters'] = $filters;
+        if(!is_front_page()){
+          $params['search_options'] = $search_options;
+        }
+
+        $params['property_search_options'] = $property_search_options;
       }
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
