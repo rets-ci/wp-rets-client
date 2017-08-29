@@ -419,26 +419,29 @@ namespace UsabilityDynamics {
         } elseif ($post->post_type === 'property') {
 
           /** Get property sale type */
-          $terms = array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
+          $status_terms = array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
             return $term->parent;
           });
 
-          if (count($terms) === 1) {
-            $term = reset($terms);
+          if (count($status_terms) === 1) {
+            $status_term = reset($status_terms);
 
-            if (isset($term->slug) && !empty($term->slug)) {
-              $params['post']['sale_type'] = ucfirst(end(explode('-', $term->slug)));
+            if (isset($status_term->slug) && !empty($status_term->slug)) {
+              $params['post']['sale_type'] = ucfirst(end(explode('-', $status_term->slug)));
             }
           }
 
           /** Get property location */
-          $terms = array_filter(wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false]), function ($term) {
-            return strstr($term->description, 'city_state');
+          $city_terms = array_filter(array_map(function ($term) {
+            $term->term_type = get_term_meta($term->term_id, '_type', true);
+            return $term;
+          }, wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false])), function ($term) {
+            return $term->term_type === 'wpp_location_city_state';
           });
 
-          if(count($terms) === 1){
-            $term = reset($terms);
-            $params['post']['location'] = $term->name;
+          if(count($city_terms) === 1){
+            $city_term = reset($city_terms);
+            $params['post']['location'] = $city_term->name;
           }
 
         }
