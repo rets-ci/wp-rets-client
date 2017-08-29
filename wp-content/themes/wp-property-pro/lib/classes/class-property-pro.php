@@ -208,7 +208,10 @@ namespace UsabilityDynamics {
           return $t->parent && !in_array($parent_term->name, ['Land', 'Commercial']);
         }));
 
-        /** Build search options array */
+        /** Array for filters modal */
+        $filters = [];
+
+        /** Build search options and filters modal array */
         foreach ([
                    'Rent',
                    'Sale',
@@ -229,6 +232,11 @@ namespace UsabilityDynamics {
             $sale_type = 'Sale';
           }
 
+          $filters[$label][] = [
+            'sale_type' => $sale_type,
+            'property_types' => isset($types) && !empty($types) ? $types : $_property_types
+          ];
+
           $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
             'type' => 'checkbox',
             'default' => false,
@@ -237,6 +245,7 @@ namespace UsabilityDynamics {
         }
 
         $params['search_options'] = $search_options;
+        $params['filters'] = $filters;
       }
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
