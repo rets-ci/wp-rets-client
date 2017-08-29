@@ -416,6 +416,31 @@ namespace UsabilityDynamics {
               ]
             ]
           ];
+        } elseif ($post->post_type === 'property') {
+
+          /** Get property sale type */
+          $terms = array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
+            return $term->parent;
+          });
+
+          if (count($terms) === 1) {
+            $term = reset($terms);
+
+            if (isset($term->slug) && !empty($term->slug)) {
+              $params['post']['sale_type'] = ucfirst(end(explode('-', $term->slug)));
+            }
+          }
+
+          /** Get property location */
+          $terms = array_filter(wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false]), function ($term) {
+            return strstr($term->description, 'city_state');
+          });
+
+          if(count($terms) === 1){
+            $term = reset($terms);
+            $params['post']['location'] = $term->name;
+          }
+
         }
       } /** Is blog page ? */
       elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
