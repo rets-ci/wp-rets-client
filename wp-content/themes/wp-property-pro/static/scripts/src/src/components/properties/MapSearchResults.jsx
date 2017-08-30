@@ -25,7 +25,7 @@ import SearchResultListing from './SearchResultListing.jsx';
 import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import CarouselOnMap from './CarouselOnMap.jsx';
 
-const isMobile = window.innerWidth < Lib.MOBILE_WIDTH;
+const isMobile = window.innerWidth < 576;
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -143,10 +143,8 @@ class MapSearchResults extends Component {
   }
 
   clickMobileSwitcherHandler(mapDisplay) {
-    let state = this.state;
-    state.mapDisplay = mapDisplay;
     this.setState({
-      state
+      mapDisplay
     });
   }
 
@@ -246,45 +244,47 @@ class MapSearchResults extends Component {
         />
 
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
-          <div className={`col-sm-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+          <div className={`col-sm-6 col-lg-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
             { captionElement }
             { mapElement }
             { isMobile && sliderElement }
           </div>
 
-          <div className={`col-sm-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar ${this.state.mapDisplay? 'hidden-xs-down': ''}`}>
-            <SearchFilterDescriptionText
-              bathrooms={searchFilters.bathrooms}
-              bedrooms={searchFilters.bedrooms}
-              price={searchFilters.price}
-              saleType={searchFilters.sale_type}
-              total={this.props.resultsTotal}
-            />
-            
-            { this.props.displayedResults.length > 0
-              ?
-                <SearchResultListing
-                  allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
-                  isFetching={isFetching}
-                  properties={displayedResults}
-                  seeMoreHandler={this.seeMoreHandler}
-                  selectedProperty={filters.selected_property}
-                  total={this.props.resultsTotal}
-                />
-              :
-                (errorMessage
-                  ?
-                    <ErrorMessage message={errorMessage} />
-                  :
-                    (
-                      !isFetching ?
-                        <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
-                      : 
-                      null
-                    )
-                )
-            }
-          </div>
+          { (!isMobile || !this.state.mapDisplay) &&
+            <div className={`col-sm-6 col-lg-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`}>
+              <SearchFilterDescriptionText
+                bathrooms={searchFilters.bathrooms}
+                bedrooms={searchFilters.bedrooms}
+                price={searchFilters.price}
+                saleType={searchFilters.sale_type}
+                total={this.props.resultsTotal}
+              />
+
+              { this.props.displayedResults.length > 0
+                ?
+                  <SearchResultListing
+                    allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+                    isFetching={isFetching}
+                    properties={displayedResults}
+                    seeMoreHandler={this.seeMoreHandler}
+                    selectedProperty={filters.selected_property}
+                    total={this.props.resultsTotal}
+                  />
+                :
+                  (errorMessage
+                    ?
+                      <ErrorMessage message={errorMessage} />
+                    :
+                      (
+                        !isFetching ?
+                          <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
+                        :
+                        null
+                      )
+                  )
+              }
+            </div>
+          }
 
           { isMobile && mobileNavigatorElement }
 

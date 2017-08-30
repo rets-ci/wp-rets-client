@@ -78,14 +78,14 @@ export default class DefaultLayout extends Component {
             </div>
         }
         <div className={`${Lib.THEME_CLASSES_PREFIX}listing-control-nav text-center`}>
-          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}prev-nav mr-3 rounded-circle`}
+          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}nav-prev mr-3 rounded-circle`}
               onClick={e => {
                 e.preventDefault();
                 this.handleNavigation.bind(this)('prev');
               }}>
              <i className="fa fa-angle-left"></i>
           </a>
-          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}next-nav rounded-circle`}
+          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
               onClick={e => {
                 e.preventDefault();
                 this.handleNavigation.bind(this)('next');

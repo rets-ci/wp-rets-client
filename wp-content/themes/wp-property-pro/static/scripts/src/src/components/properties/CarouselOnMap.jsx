@@ -50,7 +50,7 @@ export default class CarouselOnMap extends Component {
     };
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap hidden-sm-up`}>
       { properties.length > 0 &&
         <Swiper {...swiperParams}>
         {

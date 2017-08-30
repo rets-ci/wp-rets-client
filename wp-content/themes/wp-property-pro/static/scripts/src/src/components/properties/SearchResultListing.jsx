@@ -95,7 +95,7 @@ class SearchResultListing extends Component {
                   zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')
                 };
                 return (
-                  <div className={`col-12 col-sm-6 col-xl-4`} key={i}>
+                  <div className={`col-12 col-md-12 col-lg-6 col-xl-4`} key={i}>
                     <PropertyCard data={item} highlighted={selectedProperty === p._id} ref={(r) => this.properties[p._id] = r} />
                   </div>
                 );
