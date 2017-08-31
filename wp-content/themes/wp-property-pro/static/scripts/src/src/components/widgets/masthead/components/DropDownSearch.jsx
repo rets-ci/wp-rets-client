@@ -9,8 +9,6 @@ class DropDownSearch extends Component {
     handleOptionSelect: PropTypes.func,
     labels: PropTypes.array,
     open: PropTypes.bool.isRequired,
-    propertyTypes: PropTypes.array.isRequired,
-    saleTypes: PropTypes.array.isRequired,
     selectedOption: PropTypes.string
   };
 
@@ -22,10 +20,10 @@ class DropDownSearch extends Component {
    this.props.handleChange(false);
  }
 
- selectOption(eve, option, saleType, propertyTypes) {
+ selectOption(eve, option) {
    // consume the event argument before calling the parent callback
    eve.preventDefault();
-   this.props.handleOptionSelect(option, saleType, propertyTypes);
+   this.props.handleOptionSelect(option);
  }
 
   shouldComponentUpdate() {
@@ -38,7 +36,7 @@ class DropDownSearch extends Component {
 
   componentDidMount(){
     if(this.props.labels.length === 1){
-      this.props.handleOptionSelect(this.props.labels[0], this.props.saleTypes[0], this.props.propertyTypes[0]);
+      this.props.handleOptionSelect(this.props.labels[0]);
     }
   }
 
@@ -59,7 +57,7 @@ class DropDownSearch extends Component {
           {this.props.labels.map((l, i) => {
             let instance = this;
             let linkClasses = this.props.selectedOption === l ? Lib.THEME_CLASSES_PREFIX+'active' : '';
-            return (<li key={i}><a href="#" className={linkClasses} onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
+            return (<li key={i}><a href="#" className={linkClasses} onClick={(eve) => self.selectOption.bind(this)(eve, l)}>{l}</a></li>)
           }
           )}
         </ul>

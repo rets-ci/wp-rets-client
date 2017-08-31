@@ -2,7 +2,6 @@ import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {property_type as propertyTypeOptions} from '../../staticFilters.js';
 import Util from '../../Util.jsx';
 
 class FilterBar extends Component {
@@ -58,8 +57,6 @@ class FilterBar extends Component {
     let lotSizeFilter = localFilters['lotSize'];
     let priceFilter = localFilters['price'];
     let priceElement;
-    let propertyTypeFilter = localFilters['property_type'];
-    let propertyTypeElement;
     let sqftFilter = localFilters['sqft'];
     let sqftElement;
 
@@ -87,13 +84,6 @@ class FilterBar extends Component {
       );
     }
 
-    if (propertyTypeFilter) {
-      let propertyFilterValue = propertyTypeOptions.filter(p => p.value === propertyTypeFilter).map(p => p.name);
-      propertyTypeElement = (
-        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('property_type')} display={propertyFilterValue} value={propertyTypeFilter} />
-      );
-    }
-
     if (sqftFilter) {
       sqftElement = (
         <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('sqft')} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
@@ -109,7 +99,6 @@ class FilterBar extends Component {
           {priceElement}
           {sqftElement}
           {lotSizeElement}
-          {propertyTypeElement}
           {!termFilterElement &&
             <input type="text" size="1" placeholder="Select bedroom type, amenities"/>
           }

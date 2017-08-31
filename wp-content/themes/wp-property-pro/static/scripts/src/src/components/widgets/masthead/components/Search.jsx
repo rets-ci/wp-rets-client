@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import MobileTabsSearch from './MobileTabsSearch.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
-import {openLocationModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
+import {openLocationModal, setPropertyTypeOptions, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx';
 import Util from '../../../Util.jsx';
 import _ from 'lodash';
@@ -12,6 +12,7 @@ const mapStateToProps = (state, history) => {
   return {
     currentState: state,
     searchType: _.get(state, 'searchType.searchType', ''),
+    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
     filterTerms: _.get(state, 'filterTermsState.filterTerms', []),
     history: history
   }
@@ -24,11 +25,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     setSearchType: (searchType, saleType, propertyTypes) => {
-      dispatch(setSearchType({
-          searchType: searchType,
-          saleType: saleType,
-          propertyTypes: propertyTypes
-      }));
+      dispatch(setSearchType(searchType));
+    },
+
+    setPropertyTypeOptions: (options) => {
+      dispatch(setPropertyTypeOptions(options));
     },
 
     clearTermFilter: () => {
@@ -43,50 +44,37 @@ class SearchContent extends Component {
     this.state = {
       dropDownOpen: false,
       labels: [],
-      saleTypes: [],
       propertyTypes: []
     };
   }
   static propTypes = {
     currentState: PropTypes.object.isRequired,
     filterTerms: PropTypes.array,
+    propertyTypeOptions: PropTypes.object.isRequired,
     searchType: PropTypes.string,
+    setPropertyTypeOptions: PropTypes.func.isRequired,
     clearTermFilter: PropTypes.func,
     options: PropTypes.object.isRequired
   };
-
-  componentDidMount() {
-    let {
-      labels,
-      saleTypes,
-      propertyTypes
-    } = Util.getSearchTypeParameters(this.props.options);
-    
-    this.setState({
-      labels,
-      saleTypes,
-      propertyTypes
-    });
-    this.props.setSearchType(labels.length ? labels[0] : '', saleTypes.length ? saleTypes[0] : '', propertyTypes.length ? propertyTypes[0] : '');
-  }
 
   handleSearchDropDownChange(open) {
     this.setState({dropDownOpen: open});
   }
 
-  handleSearchDropDownOptionSelect(option, saleType, propertyTypes) {
+  handleSearchDropDownOptionSelect(option) {
     this.setState({
       dropDownOpen: false
     });
-    this.props.setSearchType(option, saleType, propertyTypes);
+    this.props.setSearchType(option);
   }
 
   render() {
+    let searchTypes = Object.keys(this.props.propertyTypeOptions);
     let searchBtnClasses = `btn ${Lib.THEME_CLASSES_PREFIX}btn-search`;
 
-    if (this.state.labels.length === 0) {
+    if (searchTypes.length === 0) {
       return null;
-    } else if (this.state.labels.length === 1) {
+    } else if (searchTypes.length === 1) {
       searchBtnClasses += " " + Lib.THEME_CLASSES_PREFIX + "short-padding";
     }
 
@@ -98,16 +86,12 @@ class SearchContent extends Component {
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-box mx-auto`}>
         <MobileTabsSearch
-          labels={this.state.labels}
-          saleTypes={this.state.saleTypes}
-          propertyTypes={this.state.propertyTypes}
+          labels={searchTypes}
           selectedOption={this.props.searchType}
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
         <DropDownSearch
-          labels={this.state.labels}
-          saleTypes={this.state.saleTypes}
-          propertyTypes={this.state.propertyTypes}
+          labels={searchTypes}
           open={this.state.dropDownOpen}
           selectedOption={this.props.searchType}
           handleChange={this.handleSearchDropDownChange.bind(this)}

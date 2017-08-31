@@ -30,6 +30,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class Page extends Component {
   static propTypes = {
     openFormModal: PropTypes.func.isRequired,
+    property_search_options: PropTypes.object.isRequired,
     post: PropTypes.object,
     rows: PropTypes.array
   };
@@ -47,6 +48,7 @@ class Page extends Component {
     let {
       formModalOpen,
       openFormModal,
+      property_search_options,
       post,
       rows
     } = this.props;
@@ -59,7 +61,7 @@ class Page extends Component {
             return cells.map(((cell) => {
                   switch (_.get(cell, 'widget.panels_info.class', '')) {
                     case 'Property_Pro_Masthead_Widget':
-                      return <Masthead widget_cell={cell}/>;
+                      return <Masthead property_search_options={property_search_options} widget_cell={cell}/>;
                       break;
                     case 'Property_Pro_Subnavigation_Widget':
                       return <Subnavigation post_title={post.post_title} widget_cell={cell} currentUrl={_.get(this.props, 'post.post_url', '')}/>;

@@ -106,13 +106,6 @@ class Util extends React.Component {
     return `${Lib.GOOGLE_STREETVIEW_URL}?size=${params.size}&location=${params.location}&key=${key}`;
   }
 
-  static getSearchTypeOptions(front_page_post_content) {
-
-    let MastheadWidgetData = front_page_post_content[0].cells.filter(c => c.widget.panels_info.class === 'Property_Pro_Masthead_Widget');
-    let searchTypeData = MastheadWidgetData[0].widget.fields.search_options;
-    return searchTypeData;
-  }
-
   static getSearchTypeParameters(options) {
     // Hack for changing Sale to Buy in dropdown options
     // TODO: ideally this should be done in the server-side and send down to the client to not pollute the client-side code
@@ -133,6 +126,41 @@ class Util extends React.Component {
       saleTypes,
       propertyTypes
     };
+  }
+
+  static getSearchDataFromPropertyTypeOptionsBySearchType(searchType, propertyTypeOptionsObject) {
+    let returnObject = {
+      error: false,
+      msg: ''
+    };
+    if (!searchType) {
+      returnObject.error = true;
+      returnObject.msg = 'search type was not specified';
+      return returnObject;
+    }
+    if (!propertyTypeOptionsObject[searchType]) {
+      returnObject.error = true;
+      returnObject.msg = `search type ${searchType} wasn't found in property type options`;
+      return returnObject;
+    }
+    let propertyTypes = _.get(propertyTypeOptionsObject, `[${searchType}][0].property_types`);
+    let saleType = _.get(propertyTypeOptionsObject, `[${searchType}][0].sale_type`);
+    if (!propertyTypes) {
+      returnObject.error = true;
+      returnObject.msg = 'property types are missing from the data source';
+      return returnObject;
+    }
+    if (!saleType) {
+      returnObject.error = true;
+      returnObject.msg = 'sale type are missing from the data source';
+      return returnObject;
+    }
+    if (!(propertyTypes instanceof Array)) {
+      propertyTypes = Object.values(propertyTypes);
+    }
+    returnObject.propertyTypes = propertyTypes;
+    returnObject.saleType = saleType;
+    return returnObject;
   }
 
   static getQS(currentUrl, searchFilters) {

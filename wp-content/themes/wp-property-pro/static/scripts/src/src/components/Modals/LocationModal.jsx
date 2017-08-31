@@ -28,11 +28,10 @@ const mapStateToProps = (state, ownProps) => {
     open: state.locationModal ? state.locationModal.open : false,
     localFilters: localFilters,
     modifyType: state.locationModal.modifyType,
+    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
     searchMode: state.locationModal.searchMode,
     searchResults: _.get(state, 'locationModal.items', []),
-    searchType: _.get(state, 'searchType.searchType', ''),
-    saleType: _.get(state, 'searchType.saleType', ''),
-    propertyTypes: _.get(state, 'searchType.propertyTypes', '')
+    searchType: _.get(state, 'searchType.searchType', '')
   }
 };
 
@@ -106,7 +105,7 @@ class LocationModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.open !== nextProps.open) {
+    if (nextProps.open && this.props.open !== nextProps.open) {
       this.props.topQuery(nextProps.errorMessage);
     }
   }
@@ -116,45 +115,64 @@ class LocationModal extends Component {
     this.props.closeModal();
   }
 
-  handleResultClick(eve, tax, term, text, searchType, modifyType, saleType, propertyTypes, url) {
+  handleResultClick = (eve, tax, term, text, searchType, modifyType, url) => {
     eve.preventDefault();
-
-    if (url === null) {
-      // Properties results page
-      if (this.props.searchMode) {
-        // in searchMode, therefore we can assume that term filter also exists
-        let updatedTermFilter = [];
-        if (modifyType === 'replace') {
-          updatedTermFilter.push({[tax]: text});
-        } else if (modifyType === 'append') {
-          updatedTermFilter = this.props.localFilters.term.slice(0);
-          updatedTermFilter.push({[tax]: text});
-        }
-        this.props.updatePropertiesModalLocalFilter({
-          term: updatedTermFilter
-        });
-        this.props.closeModal();
-      } else {
-        let url = new URL();
-        url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
-        //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
-        let modifiedSaleType = saleType === 'Sale' ? 'Buy' : saleType;
-        url.setSearch({
-          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']']: encodeURIComponent(text),
-          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]']: propertyTypes,
-          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: modifiedSaleType
-        });
-        this.props.updatePropertiesModalLocalFilter({
-          term: [{[tax]: text}]
-        });
-        browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
-      }
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
+    if (searchOptions.error) {
+      console.log('%c ' + searchOptions.msg, 'color: #ff0000');
     } else {
-      // Single property page
-      browserHistory.push(url);
-    }
+      let {
+        propertyTypes,
+        saleType
+      } = searchOptions;
+      if (url === null) {
+        // Properties results page
+        if (this.props.searchMode) {
+          // in searchMode, therefore we can assume that term filter also exists
+          let updatedTermFilter = [];
+          if (modifyType === 'replace') {
+            updatedTermFilter.push({[tax]: text});
+          } else if (modifyType === 'append') {
+            updatedTermFilter = this.props.localFilters.term.slice(0);
+            updatedTermFilter.push({[tax]: text});
+          }
+          this.props.updatePropertiesModalLocalFilter({
+            term: updatedTermFilter
+          });
+          this.props.closeModal();
+        } else {
+          let url = new URL();
+          url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
+          //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
+          let modifiedSearchType = searchType === 'Sale' ? 'Buy' : searchType;
+          let URLSearchObject = {
+            [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']']: encodeURIComponent(text),
+            [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[search_type]']: modifiedSearchType,
+            [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType,
+          };
+ 
+          URLSearchObject = Object.assign({}, URLSearchObject, propertyTypes.map((p, i) => {
+            return {
+              [`${Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX}[property_type][${i}]`]: p
+            }
+          }).reduce((a, b) => {
+            let key = Object.keys(b)[0];
+            a[key] = b[key];
+            return a;
+          }, {}));
+          url.setSearch(URLSearchObject);
+          this.props.updatePropertiesModalLocalFilter({
+            term: [{[tax]: text}]
+          });
+          browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
+        }
+      } else {
+        // Single property page
+        browserHistory.push(url);
+      }
 
-    this.props.closeModal();
+      this.props.closeModal();
+    }
   }
 
   search() {
@@ -195,9 +213,7 @@ class LocationModal extends Component {
       isFetching,
       searchResults,
       searchType,
-      saleType,
-      modifyType,
-      propertyTypes
+      modifyType
     } = this.props;
     let self = this;
     let resultsElements = searchResults.map((s, k) => {
@@ -216,7 +232,7 @@ class LocationModal extends Component {
                     <div className="container">
                       <div className="row">
                         <a href="#" className="m-0"
-                           onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.term, c.text, searchType, modifyType, saleType, propertyTypes, _.get(c, 'url', null))}>
+                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.text, searchType, modifyType, _.get(c, 'url', null))}>
                           {c.text}
                         </a>
                       </div>
