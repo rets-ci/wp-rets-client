@@ -234,7 +234,7 @@ namespace UsabilityDynamics {
 
           $property_search_options[$label][] = [
             'sale_type' => $sale_type,
-            'property_types' => isset($types) && !empty($types) ? $types : $_property_types
+            'property_types' => isset($types) && !empty($types) ? array_values($types) : array_values($_property_types)
           ];
 
           $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
