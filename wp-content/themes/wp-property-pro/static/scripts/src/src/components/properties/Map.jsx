@@ -108,7 +108,6 @@ export default class Map extends Component {
 
   setMapCoordinates(coordinates) {
     if (!this.map) {
-      console.log('zoomControl: ', isMobile === false);
       this.map = new window.google.maps.Map(this.mapElement, {
         center: coordinates,
         mapTypeControlOptions: {mapTypeIds: []},
@@ -162,7 +161,6 @@ export default class Map extends Component {
     let bounds = this.map.getBounds();
     let ne = bounds.getNorthEast();
     let sw = bounds.getSouthWest();
-    console.log('%c Bounds changed!', 'background: red; color: #ffffff', ne.lat(), ne.lng(), sw.lat(), sw.lng() );
     this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
       {
         ne: {

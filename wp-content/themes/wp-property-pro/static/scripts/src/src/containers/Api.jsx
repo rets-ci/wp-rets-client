@@ -395,18 +395,17 @@ class Api {
     }
 
     if (params.sale_type) {
-      let saleType = params.sale_type.toLowerCase() === 'buy' ? 'sale' : params.sale_type.toLowerCase();
       query.bool.must.push({
         "term": {
-          "terms.wpp_listing_status.slug": 'for-' + saleType
+          "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
         }
       });
     }
 
-    if (params.property_types && params.property_types.length) {
+    if (params.property_type && params.property_type.length) {
       query.bool.must.push({
         "terms": {
-          "terms.wpp_listing_type.slug": params.property_types
+          "terms.wpp_listing_type.slug": params.property_type
         }
       });
     }
@@ -443,14 +442,6 @@ class Api {
       query.bool.must.push({
         "range": {
           "meta.rets_list_price.double": range
-        }
-      });
-    }
-
-    if (params.property_type) {
-      query.bool.must.push({
-        "term": {
-          "meta.property_type.value": params.property_type
         }
       });
     }
@@ -498,6 +489,9 @@ class Api {
         }
       });
     }
+    
+    console.log('query');
+    console.log(query);
 
     query = JSON.stringify(query);
 
@@ -564,21 +558,16 @@ class Api {
   }
 
   static makeStandardPropertySearch(params, callback) {
-    let {
-        property_types
-      } = params;
-      let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
-      let searchParams = {
-        ...params,
-        property_types: pt,
-        size: Lib.PROPERTY_PER_PAGE
-      };
-      
-      let query = this.createESSearchQuery(searchParams);
-      let url = this.getPropertySearchRequestURL();
-      this.search(url, query, (err, response) => {
-        callback(err, query, response);
-      });
+    let searchParams = {
+      ...params,
+      size: Lib.PROPERTY_PER_PAGE
+    };
+    
+    let query = this.createESSearchQuery(searchParams);
+    let url = this.getPropertySearchRequestURL();
+    this.search(url, query, (err, response) => {
+      callback(err, query, response);
+    });
   }
 
   static makeRequest(data, callback) {

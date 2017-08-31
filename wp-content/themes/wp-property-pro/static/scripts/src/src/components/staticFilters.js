@@ -34,17 +34,8 @@ let defaultPropertyFilters = {
     to: 'No Max'
   }
 };
-
-let property_type = [
-  {name: 'House', value: 'house'},
-  {name: 'Townhouse', value: 'townhouse'},
-  {name: 'Condo', value: 'condo'},
-  {name: 'Manufactured', value: 'manufactured'}
-];
-
 export {
   bathroom,
   bedroom,
   defaultPropertyFilters,
-  property_type
 };

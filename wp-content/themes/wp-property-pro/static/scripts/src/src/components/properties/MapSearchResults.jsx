@@ -33,7 +33,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     allQueryParams: allQueryParams,
     errorMessage: state.errorMessage,
-    front_page_post_content: ownProps.front_page_post_content,
     query: _.get(state, 'searchResults.query', []),
     isFetching: _.get(state, 'searchResults.isFetching', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
@@ -89,7 +88,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class MapSearchResults extends Component {
   static propTypes = {
     doSearchWithQuery: PropTypes.func.isRequired,
-    front_page_post_content: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     location: PropTypes.object,
     mapSearchResultsLoading: PropTypes.bool.isRequired,
@@ -113,7 +111,6 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     let filters = qs.parse(window.location.search.replace('?', ''));
-
     if (!_.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
       this.applyQueryFilters();
     }
@@ -175,7 +172,7 @@ class MapSearchResults extends Component {
       allQueryParams,
       errorMessage,
       displayedResults,
-      front_page_post_content,
+      property_search_options,
       isFetching,
       location,
       mapSearchResultsLoading,
@@ -240,7 +237,7 @@ class MapSearchResults extends Component {
 
         <PropertiesModal
           open={propertiesModalOpen}
-          front_page_post_content={front_page_post_content}
+          property_search_options={property_search_options}
         />
 
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>

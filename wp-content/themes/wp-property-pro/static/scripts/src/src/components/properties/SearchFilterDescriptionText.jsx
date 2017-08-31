@@ -5,7 +5,7 @@ import Util from '../Util.jsx';
 
 class SearchFilterDescription extends Component {
   static propTypes = {
-    bathrooms: PropTypes.number,
+    bathrooms: PropTypes.string,
     bedrooms: PropTypes.string,
     price: PropTypes.object,
     saleType: PropTypes.string.isRequired,

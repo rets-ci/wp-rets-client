@@ -13,7 +13,6 @@ import _ from 'lodash';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    front_page_post_content: ownProps.front_page_post_content,
     location: ownProps.location,
     saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
@@ -31,7 +30,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const HeaderContent = ({front_page_post_content, search_options, location, openLoginModal, openUserPanel, saleTypesPanelOpen}) => {
+const HeaderContent = ({property_search_options, search_options, location, openLoginModal, openUserPanel, saleTypesPanelOpen}) => {
   let pathname = _.get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
@@ -41,7 +40,7 @@ const HeaderContent = ({front_page_post_content, search_options, location, openL
     return null;
   } else if (pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')) {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
-    headerElement = <HeaderSearch front_page_post_content={front_page_post_content} search_options={search_options} openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
+    headerElement = <HeaderSearch property_search_options={property_search_options} search_options={search_options} openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search px-3";
 
     if (saleTypesPanelOpen) {
