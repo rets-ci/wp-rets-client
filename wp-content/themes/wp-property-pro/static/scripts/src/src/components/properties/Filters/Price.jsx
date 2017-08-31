@@ -63,10 +63,10 @@ class Price extends Component {
     let max;
     let step;
     if (saleType === 'Commercial') {
-      min = 125;
-      max = 5000;
+      min = 25000;
+      max = 1000000;
       formatter = sliderFormatter(min, max);
-      step = 125;
+      step = 25000;
     } else if (saleType === 'Rent') {
       min = 125;
       max = 5000;

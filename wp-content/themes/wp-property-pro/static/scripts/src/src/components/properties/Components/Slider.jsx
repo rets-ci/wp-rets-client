@@ -23,7 +23,7 @@ class Slider extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  createNoUiSlider(props) {
     let {
       formatter,
       handleOnClick,
@@ -32,7 +32,8 @@ class Slider extends Component {
       start,
       step,
       to
-    } = this.props;
+    } = props;
+
     let range = {
       min: min,
       max: max
@@ -58,7 +59,7 @@ class Slider extends Component {
         format: formatter ? formatter() : null
       },
       range: range,
-      start: [start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
+      start: [start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start,to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
       step: step,
       tooltips: true
     });
@@ -89,12 +90,23 @@ class Slider extends Component {
     }.bind(this));
   }
 
+  componentDidMount() {
+    this.createNoUiSlider(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.start !== this.props.start || nextProps.to !== this.props.to) {
       let start = nextProps.start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? this.props.min : nextProps.start;
       let to = nextProps.to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? this.props.max : nextProps.to;
       this.sliderElement.noUiSlider.set([start, to]);
     }
+
+    if (nextProps.min !== this.props.min || nextProps.max !== this.props.max) {
+      this.sliderElement.noUiSlider.destroy();
+      this.createNoUiSlider(nextProps);
+
+    }
+    
   }
 
   render() {

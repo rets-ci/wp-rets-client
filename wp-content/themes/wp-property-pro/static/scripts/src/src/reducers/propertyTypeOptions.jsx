@@ -1,14 +1,14 @@
 import {Lib} from "../lib.jsx";
 
-const searchProps = (state = {searchType: 'Rent'}, action) => {
+const propertyTypeOptions = (state = {}, action) => {
     switch (action.type) {
-        case Lib.SET_SEARCH_TYPE:
+        case Lib.SET_PROPERTY_TYPE_OPTIONS:
             return Object.assign({}, state, {
-                searchType: action.searchType
+                options: action.options
             });
         default:
             return state
     }
 };
 
-export default searchProps
+export default propertyTypeOptions;

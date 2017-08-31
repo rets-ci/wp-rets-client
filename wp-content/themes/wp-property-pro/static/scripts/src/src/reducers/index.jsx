@@ -11,6 +11,7 @@ import propertiesModal from './propertiesModal.jsx';
 import searchResults from './searchResults.jsx';
 import mapMarkersState from './mapMarkers.jsx';
 import mapSearchResultsLoading from './mapSearchResultsLoading.jsx';
+import propertyTypeOptions from './propertyTypeOptions.jsx';
 import searchType from './searchType.jsx';
 import filterTermsState from './filterTerms.jsx';
 import userPanel from './userPanel.jsx';
@@ -25,6 +26,7 @@ const propertyProApp = combineReducers({
     mapState,
     locationModal,
     propertiesModal,
+    propertyTypeOptions,
     searchResults,
     searchType,
     mapMarkersState,

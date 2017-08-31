@@ -108,12 +108,17 @@ export const receiveSearchResultsPosts = (query, searchResults, total, append) =
   }
 };
 
-export const setSearchType = searchObject => {
+export const setPropertyTypeOptions = options => {
+  return {
+    type: Lib.SET_PROPERTY_TYPE_OPTIONS,
+    options
+  }
+};
+
+export const setSearchType = searchType => {
   return {
     type: Lib.SET_SEARCH_TYPE,
-    searchType: searchObject.searchType,
-    saleType: searchObject.saleType,
-    propertyTypes: searchObject.propertyTypes
+    searchType: searchType
   }
 };
 
@@ -192,5 +197,12 @@ export const toggleLocationModalSearchMode = searchMode => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_SEARCH_MODE,
     searchMode: searchMode
+  }
+};
+
+export const togglePropertiesModalPropertyFilter = filter => {
+  return {
+    type: Lib.TOGGLE_PROPERTIES_MODAL_PROPERTY_FILTER,
+    filter: filter
   }
 };

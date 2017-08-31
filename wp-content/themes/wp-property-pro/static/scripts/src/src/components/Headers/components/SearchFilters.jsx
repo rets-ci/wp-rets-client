@@ -31,19 +31,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     removeLastLocationFilter() {
-      // TODO: this function is not pure, make it so by removing its dependency on window
-      let options = Util.getSearchTypeOptions(this.props.front_page_post_content);
-      let {
-        labels,
-        saleTypes,
-        propertyTypes
-      } = Util.getSearchTypeParameters(options);
-
-      dispatch(setSearchType({
-        searchType: labels.length ? labels[0] : '',
-        saleType: saleTypes.length ? saleTypes[0] : '',
-        propertyTypes: propertyTypes.length ? propertyTypes[0] : ''
-      }));
       dispatch(toggleLocationModalSearchMode(false));
       dispatch(openLocationModal(true, 'replace'));
     },
@@ -173,8 +160,6 @@ class searchFilters extends Component {
     let lotSizeFilter = filters['lotSize'];
     let priceFilter = filters['price'];
     let priceElement;
-    let propertyTypeFilter = filters['property_type'];
-    let propertyTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
 
@@ -208,13 +193,6 @@ class searchFilters extends Component {
       priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Price
       </span>);
-    }
-
-    if (propertyTypeFilter) {
-      let propertyFilterValue = propertyTypeOptions.filter(p => p.value === propertyTypeFilter).map(p => p.name);
-      propertyTypeElement = (
-        <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilterValue} value={propertyTypeFilter} />
-      );
     }
 
     if (sqftFilter) {
@@ -251,7 +229,6 @@ class searchFilters extends Component {
             {priceElement}
             {sqftElement}
             {lotSizeElement}
-            {propertyTypeElement}
             <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
               <span>+</span>
               More Filters
