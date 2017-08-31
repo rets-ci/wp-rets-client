@@ -489,9 +489,6 @@ class Api {
         }
       });
     }
-    
-    console.log('query');
-    console.log(query);
 
     query = JSON.stringify(query);
 
