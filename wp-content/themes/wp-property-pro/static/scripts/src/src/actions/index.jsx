@@ -110,7 +110,7 @@ export const receiveSearchResultsPosts = (query, searchResults, total, append) =
 
 export const setPropertyTypeOptions = options => {
   return {
-    type: Lib.SET_PROPERTY_TYPE_OPTIONS,
+    type: Lib.SET_PROPERTY_TYPE_OPTIONS_ACTION,
     options
   }
 };
@@ -202,7 +202,7 @@ export const toggleLocationModalSearchMode = searchMode => {
 
 export const togglePropertiesModalPropertyFilter = filter => {
   return {
-    type: Lib.TOGGLE_PROPERTIES_MODAL_PROPERTY_FILTER,
+    type: Lib.TOGGLE_PROPERTIES_MODAL_PROPERTY_FILTER_ACTION,
     filter: filter
   }
 };

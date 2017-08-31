@@ -42,7 +42,7 @@ const propertiesModal = (state = defaultState, action) => {
           open: action.open
         }
       );
-    case Lib.TOGGLE_PROPERTIES_MODAL_PROPERTY_FILTER:
+    case Lib.TOGGLE_PROPERTIES_MODAL_PROPERTY_FILTER_ACTION:
       let localFilters = Object.assign({}, state.localFilters);
       if (localFilters.property_type.indexOf(action.filter) >= 0) {
         localFilters.property_type = _.difference(localFilters.property_type, [action.filter]);
