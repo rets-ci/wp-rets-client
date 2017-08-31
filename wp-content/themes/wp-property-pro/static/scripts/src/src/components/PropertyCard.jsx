@@ -34,6 +34,7 @@ export default class PropertyCard extends Component {
   render() {
     let {
       address,
+      address_unit,
       baths,
       beds,
       city,
@@ -162,7 +163,7 @@ export default class PropertyCard extends Component {
           </div>
 
           <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`}>
-            <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address}</h4>
+            <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address} {address_unit}</h4>
             <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{city}, {state} {zip}</p>
             <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
           </div>

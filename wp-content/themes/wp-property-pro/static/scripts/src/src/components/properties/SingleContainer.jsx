@@ -17,6 +17,7 @@ let singlePropertyData = (data) => {
   } = data._source;
 
   let address = _.get(post_meta, 'rets_address', null);
+  let address_unit = _.get(post_meta, 'address_unit', null);
   let agentId = _.get(post_meta, 'rets_list_agent[0]', null);
   let agentName = _.get(tax_input, 'wpp_agency_agent.listing_agent[0].name', null);
   let agentPhoneNumber = _.get(post_meta, 'rets_la1_agent_phone1_number[0]', null);
@@ -43,6 +44,7 @@ let singlePropertyData = (data) => {
 
   return {
     address,
+    address_unit,
     agentId,
     agentName,
     agentPhoneNumber,

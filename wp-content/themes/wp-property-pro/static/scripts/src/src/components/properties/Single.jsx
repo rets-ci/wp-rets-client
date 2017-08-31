@@ -67,6 +67,7 @@ class Single extends Component {
       agentName,
       agentPhoneNumber,
       address,
+      address_unit,
       all,
       baths,
       beds,
