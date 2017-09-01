@@ -187,69 +187,67 @@ namespace UsabilityDynamics {
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
 
-      if ( (function_exists('is_property_overview_page') && is_property_overview_page()) || is_front_page() ) {
-        $front_page_id = get_option('page_on_front');
-        if ($post_data = get_post_meta($front_page_id, 'panels_data', true) && !is_front_page()) {
-          $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
-        }
-
-        /** Build search options array for search type dropDown at search result page */
-        $taxonomy = 'wpp_listing_type';
-
-        $search_options = [];
-        $delimiter = '-';
-
-        $_property_types = array_map(function($t){
-          return $t->slug;
-        }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
-          if($t->parent){
-            $parent_term = get_term($t->parent);
-          }
-          return $t->parent && !in_array($parent_term->name, ['Land', 'Commercial']);
-        }));
-
-        /** Array for filters modal */
-        $property_search_options = [];
-
-        /** Build search options and filters modal array */
-        foreach ([
-                   'Rent',
-                   'Sale',
-                   'Land',
-                   'Commercial'
-                 ] as $label) {
-
-
-          $sale_type = $label;
-          if (in_array($label, ['Rent', 'Sale']))
-            $key = implode($delimiter, $_property_types);
-          else {
-            $term = get_term_by('slug', $label, $taxonomy);
-            $types = array_map(function ($id) use ($taxonomy) {
-              return get_term_by('id', $id, $taxonomy)->slug;
-            }, get_term_children($term->term_id, $taxonomy));
-            $key = implode($delimiter, $types);
-            $sale_type = 'Sale';
-          }
-
-          $property_search_options[$label][] = [
-            'sale_type' => $sale_type,
-            'property_types' => isset($types) && !empty($types) ? array_values($types) : array_values($_property_types)
-          ];
-
-          $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
-            'type' => 'checkbox',
-            'default' => false,
-            'label' => __($label, 'wp-property-pro'),
-          ];
-        }
-
-        if(!is_front_page()){
-          $params['search_options'] = $search_options;
-        }
-
-        $params['property_search_options'] = $property_search_options;
+      $front_page_id = get_option('page_on_front');
+      if ($post_data = get_post_meta($front_page_id, 'panels_data', true) && !is_front_page()) {
+        $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
       }
+
+      /** Build search options array for search type dropDown at search result page */
+      $taxonomy = 'wpp_listing_type';
+
+      $search_options = [];
+      $delimiter = '-';
+
+      $_property_types = array_map(function($t){
+        return $t->slug;
+      }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
+        if($t->parent){
+          $parent_term = get_term($t->parent);
+        }
+        return $t->parent && !in_array($parent_term->name, ['Land', 'Commercial']);
+      }));
+
+      /** Array for filters modal */
+      $property_search_options = [];
+
+      /** Build search options and filters modal array */
+      foreach ([
+                 'Rent',
+                 'Sale',
+                 'Land',
+                 'Commercial'
+               ] as $label) {
+
+
+        $sale_type = $label;
+        if (in_array($label, ['Rent', 'Sale']))
+          $key = implode($delimiter, $_property_types);
+        else {
+          $term = get_term_by('slug', $label, $taxonomy);
+          $types = array_map(function ($id) use ($taxonomy) {
+            return get_term_by('id', $id, $taxonomy)->slug;
+          }, get_term_children($term->term_id, $taxonomy));
+          $key = implode($delimiter, $types);
+          $sale_type = 'Sale';
+        }
+
+        $property_search_options[$label][] = [
+          'sale_type' => $sale_type,
+          'property_types' => isset($types) && !empty($types) ? array_values($types) : array_values($_property_types)
+        ];
+
+        $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
+          'type' => 'checkbox',
+          'default' => false,
+          'label' => __($label, 'wp-property-pro'),
+        ];
+      }
+
+      if(!is_front_page()){
+        $params['search_options'] = $search_options;
+      }
+
+      $params['property_search_options'] = $property_search_options;
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
         $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
