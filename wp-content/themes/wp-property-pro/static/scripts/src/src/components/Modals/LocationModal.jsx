@@ -161,9 +161,6 @@ class LocationModal extends Component {
             return a;
           }, {}));
           url.setSearch(URLSearchObject);
-          this.props.updatePropertiesModalLocalFilter({
-            term: [{[tax]: text}]
-          });
           browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
         }
       } else {
