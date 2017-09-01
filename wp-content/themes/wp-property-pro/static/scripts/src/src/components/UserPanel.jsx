@@ -16,7 +16,7 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham%2C%20NC&wpp_search[property_types]=condo-house-manufactured-residential-apartment-residential-other-townhouse&wpp_search[sale_type]=Buy")}}
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Buy&wpp_search[sale_type]=Sale&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse")}}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home For Sale"
             >
@@ -42,7 +42,7 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham%2C%20NC&wpp_search[property_types]=condo-house-manufactured-residential-apartment-residential-other-townhouse&wpp_search[sale_type]=Rent")}}
+              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Rent&wpp_search[sale_type]=Rent&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse")}}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Homes for Rent"
             >
