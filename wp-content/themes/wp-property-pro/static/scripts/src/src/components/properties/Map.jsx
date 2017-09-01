@@ -158,6 +158,12 @@ export default class Map extends Component {
     if (this.map.getZoom() >= Lib.MAP_CHANGE_ZOOM_LIMIT) {
       return;
     }
+
+    // exclude initial auto zoom to prevent ES requests duplicate
+    if(this.props.properties.length === 0){
+      return;
+    }
+
     let bounds = this.map.getBounds();
     let ne = bounds.getNorthEast();
     let sw = bounds.getSouthWest();

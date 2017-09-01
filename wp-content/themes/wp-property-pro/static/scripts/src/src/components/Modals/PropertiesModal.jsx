@@ -162,7 +162,7 @@ class PropertiesModal extends Component {
     if (!this.props.searchMode) {
       this.props.enableLocationModalSearchMode();
     }
-    if (nextProps.localFilters !== this.props.localFilters) {
+    if (Object.keys(this.props.localFilters).length && nextProps.localFilters !== this.props.localFilters) {
       let filters = removeDefaultFilters(nextProps.localFilters, defaultFiltervalues);
       this.props.updateResultCount(filters);
     }
