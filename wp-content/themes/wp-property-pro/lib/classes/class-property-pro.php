@@ -706,174 +706,176 @@ namespace UsabilityDynamics {
       $posts_array_for_caching = [];
       $posts_cache = wp_cache_get('widget_posts_' . $post_id, 'property_pro');
 
-      foreach ($content['widgets'] as $key => $widget) {
-        $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
+      if(isset($content['widgets']) && is_array($content['widgets'])){
+        foreach ($content['widgets'] as $key => $widget) {
+          $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
 
-        /** Get image src */
-        if (isset($widget['image']))
-          $widget['image_src'] = $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '';
+          /** Get image src */
+          if (isset($widget['image']))
+            $widget['image_src'] = $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '';
 
-        /** Get menu items */
-        if (isset($widget['menu_select']))
-          $widget['menu_items'] = array_map(function ($item) {
-            $item->title = htmlspecialchars_decode($item->title);
-            $item->relative_url = str_replace(home_url(), "", $item->url);
-            return $item;
-          }, ($widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : []));
+          /** Get menu items */
+          if (isset($widget['menu_select']))
+            $widget['menu_items'] = array_map(function ($item) {
+              $item->title = htmlspecialchars_decode($item->title);
+              $item->relative_url = str_replace(home_url(), "", $item->url);
+              return $item;
+            }, ($widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : []));
 
 
-        /** Remove namespace from class name */
-        if (isset($widget['panels_info']['class'])) {
-          $classes = explode('\\', $widget['panels_info']['class']);
-          $widget['panels_info']['class'] = count($classes) ? end($classes) : '';
-        }
-
-        $fields = [];
-        foreach ($widget as $k => $field) {
-
-          if (is_array($field)) {
-
-            /** Exclude siteorigin system field */
-            if (isset($field['so_field_container_state']))
-              unset($field['so_field_container_state']);
-
-            foreach ($field as $item_key => $item)
-              if (is_array($item) && array_key_exists('image', $item))
-                $field[$item_key]['image_src'] = $item['image'] ? wp_get_attachment_image_src($item['image'], 'full')[0] : '';
+          /** Remove namespace from class name */
+          if (isset($widget['panels_info']['class'])) {
+            $classes = explode('\\', $widget['panels_info']['class']);
+            $widget['panels_info']['class'] = count($classes) ? end($classes) : '';
           }
 
-          /** Siteorigin system fields no need in fields array */
-          if (in_array($k, ['_sow_form_id', 'panels_info']))
-            continue;
+          $fields = [];
+          foreach ($widget as $k => $field) {
 
-          /** @TODO hack for array keys, because get_post_meta return keys without underscores */
-          if ($k === 'search_options' && is_array($field)) {
-            $new_field = [];
-            foreach ($field as $field_key => $value) {
-              if (!$value) {
-                continue;
-              }
+            if (is_array($field)) {
 
-              $new_field[str_replace(' ', '_', $field_key)] = $value;
+              /** Exclude siteorigin system field */
+              if (isset($field['so_field_container_state']))
+                unset($field['so_field_container_state']);
+
+              foreach ($field as $item_key => $item)
+                if (is_array($item) && array_key_exists('image', $item))
+                  $field[$item_key]['image_src'] = $item['image'] ? wp_get_attachment_image_src($item['image'], 'full')[0] : '';
             }
 
-            $field = $new_field;
-          }
+            /** Siteorigin system fields no need in fields array */
+            if (in_array($k, ['_sow_form_id', 'panels_info']))
+              continue;
 
-          if (in_array($k, ['title', 'subtitle'])) {
-            $field = htmlspecialchars_decode($field);
-          }
-
-          if ($k === 'posts') {
-            $formatted_posts = $posts_cache ? $posts_cache[$widget['panels_info']['id']] : [];
-
-            if (!$formatted_posts) {
-
-              $args = wp_parse_args(siteorigin_widget_post_selector_process_query($field));
-              $args['fields'] = 'ids';
-              $posts = get_posts($args);
-
-              /** Update posts array */
-              foreach ($posts as $postId) {
-                $formatted_post = new \stdClass();
-                $formatted_post->thumbnail = get_the_post_thumbnail_url($postId);
-                $formatted_post->post_name = get_post_field('post_name', $postId);
-                $formatted_post->relative_permalink = str_replace(home_url(), "", get_permalink($postId));
-                $property_detail = get_property($postId);
-
-                /** Build item object */
-                $formatted_post->property_type = isset($property_detail['property_type']) ? $property_detail['property_type'] : '';
-                $formatted_post->sqft = isset($property_detail['wpp_price_per_sqft']) ? $property_detail['wpp_price_per_sqft'] : 0;
-                $formatted_post->price = isset($property_detail['wpp_list_price']) ? $property_detail['wpp_list_price'] : '';
-                $formatted_post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
-                $formatted_post->living_area = isset($property_detail['wpp_total_living_are']) ? $property_detail['wpp_total_living_are'] : '';
-                $formatted_post->zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
-                $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
-                $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
-                $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
-
-                $types = get_the_terms($postId, 'wpp_listing_type');
-                foreach ($types as $type){
-                  if($type->parent === 0){
-                    $formatted_post->type = $type->slug;
-                  }else{
-                    $formatted_post->sub_type = $type->name;
-                  }
+            /** @TODO hack for array keys, because get_post_meta return keys without underscores */
+            if ($k === 'search_options' && is_array($field)) {
+              $new_field = [];
+              foreach ($field as $field_key => $value) {
+                if (!$value) {
+                  continue;
                 }
 
-                $wpp_location_terms = get_the_terms($postId, 'wpp_location');
+                $new_field[str_replace(' ', '_', $field_key)] = $value;
+              }
 
-                /** Get city  */
-                $city_term = array_filter(array_map(function ($term) {
-                  $term->term_type = get_term_meta($term->term_id, '_type', true);
-                  return $term;
-                }, $wpp_location_terms), function ($term) {
-                  return $term->term_type === 'wpp_location_city';
-                });
-                $formatted_post->city = $city_term ? array_shift($city_term)->name : '';
+              $field = $new_field;
+            }
 
-                /** Get city  */
-                $state_term = array_filter(array_map(function ($term) {
-                  $term->term_type = get_term_meta($term->term_id, '_type', true);
-                  return $term;
-                }, $wpp_location_terms), function ($term) {
-                  return $term->term_type === 'wpp_location_state';
-                });
-                $formatted_post->state = $state_term ? array_shift($state_term)->name : '';
+            if (in_array($k, ['title', 'subtitle'])) {
+              $field = htmlspecialchars_decode($field);
+            }
 
-                /** Get gallery images */
-                $formatted_post->gallery_images = [];
-                if ($attached_images = get_attached_media('image', $postId)) {
-                  foreach ($attached_images as $im) {
-                    if ($formatted_post->thumbnail === $im->guid) {
-                      continue;
+            if ($k === 'posts') {
+              $formatted_posts = $posts_cache ? $posts_cache[$widget['panels_info']['id']] : [];
+
+              if (!$formatted_posts) {
+
+                $args = wp_parse_args(siteorigin_widget_post_selector_process_query($field));
+                $args['fields'] = 'ids';
+                $posts = get_posts($args);
+
+                /** Update posts array */
+                foreach ($posts as $postId) {
+                  $formatted_post = new \stdClass();
+                  $formatted_post->thumbnail = get_the_post_thumbnail_url($postId);
+                  $formatted_post->post_name = get_post_field('post_name', $postId);
+                  $formatted_post->relative_permalink = str_replace(home_url(), "", get_permalink($postId));
+                  $property_detail = get_property($postId);
+
+                  /** Build item object */
+                  $formatted_post->property_type = isset($property_detail['property_type']) ? $property_detail['property_type'] : '';
+                  $formatted_post->sqft = isset($property_detail['wpp_price_per_sqft']) ? $property_detail['wpp_price_per_sqft'] : 0;
+                  $formatted_post->price = isset($property_detail['wpp_list_price']) ? $property_detail['wpp_list_price'] : '';
+                  $formatted_post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
+                  $formatted_post->living_area = isset($property_detail['wpp_total_living_are']) ? $property_detail['wpp_total_living_are'] : '';
+                  $formatted_post->zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
+                  $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
+                  $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
+                  $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
+
+                  $types = get_the_terms($postId, 'wpp_listing_type');
+                  foreach ($types as $type){
+                    if($type->parent === 0){
+                      $formatted_post->type = $type->slug;
+                    }else{
+                      $formatted_post->sub_type = $type->name;
                     }
+                  }
 
-                    $formatted_post->gallery_images[] = $im->guid;
+                  $wpp_location_terms = get_the_terms($postId, 'wpp_location');
+
+                  /** Get city  */
+                  $city_term = array_filter(array_map(function ($term) {
+                    $term->term_type = get_term_meta($term->term_id, '_type', true);
+                    return $term;
+                  }, $wpp_location_terms), function ($term) {
+                    return $term->term_type === 'wpp_location_city';
+                  });
+                  $formatted_post->city = $city_term ? array_shift($city_term)->name : '';
+
+                  /** Get city  */
+                  $state_term = array_filter(array_map(function ($term) {
+                    $term->term_type = get_term_meta($term->term_id, '_type', true);
+                    return $term;
+                  }, $wpp_location_terms), function ($term) {
+                    return $term->term_type === 'wpp_location_state';
+                  });
+                  $formatted_post->state = $state_term ? array_shift($state_term)->name : '';
+
+                  /** Get gallery images */
+                  $formatted_post->gallery_images = [];
+                  if ($attached_images = get_attached_media('image', $postId)) {
+                    foreach ($attached_images as $im) {
+                      if ($formatted_post->thumbnail === $im->guid) {
+                        continue;
+                      }
+
+                      $formatted_post->gallery_images[] = $im->guid;
+                    }
+                  }
+                  $formatted_posts[] = $formatted_post;
+                }
+
+                $posts_array_for_caching[$widget['panels_info']['id']] = $formatted_posts;
+              }
+
+              $field = $formatted_posts;
+            }
+
+            if ($k === 'image_position') {
+              $field = str_replace('_', ' ', $field);
+            }
+
+            /** Rebuild structure of feature groups and features */
+            if ($k === 'feature_groups' && is_array($field)) {
+              foreach ($field as &$fg) {
+                $fg['image_section']['image_src'] = $fg['image_section']['image'] ? wp_get_attachment_image_src($fg['image_section']['image'], 'full')[0] : '';
+                unset($fg['image_section']['so_field_container_state']);
+
+                $fg['image_section']['image_position'] = str_replace('_', ' ', $fg['image_section']['image_position']);
+
+                if (count($fg['features'])) {
+                  foreach ($fg['features'] as &$feature) {
+                    unset($feature['button_section']['so_field_container_state']);
+                    unset($feature['testimonial_section']['so_field_container_state']);
+                    $feature['testimonial_section']['image_src'] = $feature['testimonial_section']['image'] ? wp_get_attachment_image_src($feature['testimonial_section']['image'], 'full')[0] : '';
+                    $feature['title'] = htmlspecialchars_decode($feature['title']);
+                    $feature['description'] = htmlspecialchars_decode($feature['description']);
                   }
                 }
-                $formatted_posts[] = $formatted_post;
-              }
-
-              $posts_array_for_caching[$widget['panels_info']['id']] = $formatted_posts;
-            }
-
-            $field = $formatted_posts;
-          }
-
-          if ($k === 'image_position') {
-            $field = str_replace('_', ' ', $field);
-          }
-
-          /** Rebuild structure of feature groups and features */
-          if ($k === 'feature_groups' && is_array($field)) {
-            foreach ($field as &$fg) {
-              $fg['image_section']['image_src'] = $fg['image_section']['image'] ? wp_get_attachment_image_src($fg['image_section']['image'], 'full')[0] : '';
-              unset($fg['image_section']['so_field_container_state']);
-
-              $fg['image_section']['image_position'] = str_replace('_', ' ', $fg['image_section']['image_position']);
-
-              if (count($fg['features'])) {
-                foreach ($fg['features'] as &$feature) {
-                  unset($feature['button_section']['so_field_container_state']);
-                  unset($feature['testimonial_section']['so_field_container_state']);
-                  $feature['testimonial_section']['image_src'] = $feature['testimonial_section']['image'] ? wp_get_attachment_image_src($feature['testimonial_section']['image'], 'full')[0] : '';
-                  $feature['title'] = htmlspecialchars_decode($feature['title']);
-                  $feature['description'] = htmlspecialchars_decode($feature['description']);
-                }
               }
             }
+
+            $fields[$k] = $field;
           }
 
-          $fields[$k] = $field;
+          $widget['fields'] = $fields;
+
+          $rows[$widget['panels_info']['grid']]['cells'][] = [
+            'weight' => isset($content['grid_cells'][$key]) ? $content['grid_cells'][$key]['weight'] : 0,
+            'widget' => $widget
+          ];
         }
-
-        $widget['fields'] = $fields;
-
-        $rows[$widget['panels_info']['grid']]['cells'][] = [
-          'weight' => isset($content['grid_cells'][$key]) ? $content['grid_cells'][$key]['weight'] : 0,
-          'widget' => $widget
-        ];
       }
 
       if ($posts_array_for_caching) {
