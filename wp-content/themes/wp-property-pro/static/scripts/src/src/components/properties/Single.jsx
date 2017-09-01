@@ -67,6 +67,7 @@ class Single extends Component {
       agentName,
       agentPhoneNumber,
       address,
+      address_unit,
       all,
       baths,
       beds,
@@ -85,6 +86,7 @@ class Single extends Component {
       rets_middle_school,
       rets_postal_code,
       rets_year_built,
+      sqft,
       wpp_location_subdivision,
       wpp_location_city,
       listing_office,
@@ -109,8 +111,8 @@ class Single extends Component {
         }
         break;
       case 'commercial':
-        if (rets_living_area) {
-          info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+        if (sqft) {
+          info_box += `<li>${Util.formatSQFTValue(sqft)} SF</li>`;
         }
         break;
       default:
@@ -122,8 +124,12 @@ class Single extends Component {
           info_box += `<li>${baths} Baths</li>`;
         }
 
-        if (!!+rets_living_area) {
-          info_box += `<li>${Util.formatSQFTValue(rets_living_area)} SF</li>`;
+        if (!!+sqft) {
+          info_box += `<li>${Util.formatSQFTValue(sqft)} SF</li>`;
+        }
+
+        if (rets_lot_size_area) {
+          info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
         }
     }
     return (

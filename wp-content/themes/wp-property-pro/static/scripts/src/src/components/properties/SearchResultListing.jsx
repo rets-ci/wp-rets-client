@@ -77,6 +77,7 @@ class SearchResultListing extends Component {
               properties.map((p, i) => {
                 let item = {
                   address: _.get(p, '_source.post_meta.rets_address', [''])[0],
+                  address_unit: _.get(p, '_source.post_meta.address_unit', ''),
                   location: _.get(p, '_source.post_meta.wpp_location_pin', []),
                   baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
                   beds: _.get(p, '_source.post_meta.rets_beds', 0),
