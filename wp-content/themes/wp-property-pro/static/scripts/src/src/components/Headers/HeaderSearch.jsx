@@ -14,6 +14,7 @@ import Util from '../Util.jsx'
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
     saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
@@ -31,9 +32,9 @@ class HeaderSearch extends Component {
     super(props);
   }
 
-  handleSaleSelectionItemClick = (event, searchType, property_search_options) => {
+  handleSaleSelectionItemClick = (event, searchType, propertyTypeOptions) => {
     event.preventDefault();
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType === 'Buy' ? 'Sale' : searchType, property_search_options);
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType === 'Buy' ? 'Sale' : searchType, propertyTypeOptions);
     if (searchOptions.error) {
       // TODO: better handle these types of error
       console.log('%c ' + searchOptions.msg, 'color: #ff0000');
@@ -72,15 +73,14 @@ class HeaderSearch extends Component {
   }
 
   static propTypes = {
-    property_search_options: PropTypes.object.isRequired,
+    propertyTypeOptions: PropTypes.object.isRequired,
     searchFilters: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
 
   render() {
     let {
-      property_search_options,
-      search_options,
+      propertyTypeOptions,
       searchFilters
     } = this.props;
     
@@ -95,25 +95,25 @@ class HeaderSearch extends Component {
       <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
         <div className={containerClasses}>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Buy', property_search_options)}>
+            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Buy', propertyTypeOptions)}>
               <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
               <span>Buy</span>
             </a>
           </div>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Rent', property_search_options)}>
+            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Rent', propertyTypeOptions)}>
               <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
               <span>Rent</span>
             </a>
           </div>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Commercial', property_search_options)}>
+            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Commercial', propertyTypeOptions)}>
               <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
               <span>Commercial</span>
             </a>
           </div>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Land', property_search_options)}>
+            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Land', propertyTypeOptions)}>
               <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
               <span>Land</span>
             </a>
@@ -141,7 +141,7 @@ class HeaderSearch extends Component {
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{searchType} <i className="fa fa-caret-down"></i></a>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-10 col-md-7 col-lg-8 d-flex align-items-center"}>
-            <SearchFilters filters={searchFilters} property_search_options={property_search_options} />
+            <SearchFilters filters={searchFilters} propertyTypeOptions={propertyTypeOptions} />
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-0 col-md-1 d-flex align-items-center justify-content-end"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
