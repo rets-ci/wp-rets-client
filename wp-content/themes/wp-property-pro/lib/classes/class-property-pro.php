@@ -458,6 +458,7 @@ namespace UsabilityDynamics {
 
           foreach($params['property_search_options'] as $label => $option){
             $option = reset($option);
+            /** Define search type based on sale_type and property_type */
             if($option['sale_type'] === $params['post']['sale_type'] && in_array($property_type, $option['property_types'])){
               $params['post']['search_type'] = $label;
             }
