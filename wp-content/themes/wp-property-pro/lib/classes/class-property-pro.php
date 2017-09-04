@@ -463,9 +463,6 @@ namespace UsabilityDynamics {
               $params['post']['search_type'] = $label;
             }
           }
-
-          $params['property_search_options'];
-
         }
       } /** Is blog page ? */
       elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
