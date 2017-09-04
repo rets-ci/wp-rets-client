@@ -512,6 +512,7 @@ class Api {
       "post_meta.rets_thumbnail_url",
       "terms.wpp_listing_type",
       "post_meta.rets_address",
+      "post_meta.address_unit",
       "post_meta.rets_beds",
       "post_meta.rets_total_baths",
       "post_meta.rets_list_price",

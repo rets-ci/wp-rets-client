@@ -23,6 +23,7 @@ let singlePropertyData = (data) => {
   let agentPhoneNumber = _.get(post_meta, 'rets_la1_agent_phone1_number[0]', null);
   let baths  = _.get(post_meta, 'rets_total_baths', null);
   let beds = _.get(post_meta, 'rets_beds', null);
+  let city_state = _.get(tax_input, 'wpp_location.wpp_location_city_state[0].name', null);
   let elementary_school = _.get(tax_input, 'rets_state.wpp_schools.elementary_school', null);
   let formatted_address_simple = _.get(post_meta, 'formatted_address_simple', null);
   let images = wpp_media.map(w => w.url);
@@ -51,6 +52,7 @@ let singlePropertyData = (data) => {
     agentPhoneNumber,
     baths,
     beds,
+    city_state,
     elementary_school: _.get(elementary_school, '[0].name', null),
     id,
     images,
