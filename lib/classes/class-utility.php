@@ -12,7 +12,7 @@ namespace UsabilityDynamics\WPRETSC {
   if( !class_exists( 'UsabilityDynamics\WPRETSC\Utility' ) ) {
 
     final class Utility {
-    
+
       /**
        * Insert Term. (Port from WP-Property)
        *
@@ -185,7 +185,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
         return array_filter( $result );
       }
-      
+
       /**
        * Insert Multiple Terms. (Port from WP-Property)
        *
@@ -251,10 +251,10 @@ namespace UsabilityDynamics\WPRETSC {
           return false;
         }
 
-        if( isset( $_rets_media['updated'] ) ) {         
+        if( isset( $_rets_media['updated'] ) ) {
           ud_get_wp_rets_client()->write_log( "Running [insert_media] for [$_post_id], have [" .  count( $_rets_media['items'] ) . "] media items, updated [" . $_rets_media['updated'] ."].", 'debug' );
         } else {
-          ud_get_wp_rets_client()->write_log( "Running [insert_media] for [$_post_id], have [" .  count( $_rets_media['items'] ) . "] media items. No [updated] field.", 'debug' );        
+          ud_get_wp_rets_client()->write_log( "Running [insert_media] for [$_post_id], have [" .  count( $_rets_media['items'] ) . "] media items. No [updated] field.", 'debug' );
         }
 
         if( isset( $_rets_media[ 'updated' ] )) {
@@ -389,7 +389,7 @@ namespace UsabilityDynamics\WPRETSC {
 
                 if( isset( $_term_name[ '_id'] ) ) {
                   ud_get_wp_rets_client()->write_log( "Have hierarchical object term [$tax_name] with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
-                  
+
                   if( method_exists( 'WPP_F', 'insert_terms' ) ) {
                     $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                     ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
@@ -397,10 +397,10 @@ namespace UsabilityDynamics\WPRETSC {
                     $_insert_result = self::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                     ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
                   } else {
-                    ud_get_wp_rets_client()->write_log( "Failed to insert termsfor [$tax_name] taxonomy, missing WPP_F::insert_terms method.", 'error' );  
+                    ud_get_wp_rets_client()->write_log( "Failed to insert termsfor [$tax_name] taxonomy, missing WPP_F::insert_terms method.", 'error' );
                   }
-                  
-                
+
+
                 }
 
                 continue;
@@ -429,7 +429,7 @@ namespace UsabilityDynamics\WPRETSC {
               if( !$_term_parent ) {
                 ud_get_wp_rets_client()->write_log( "Did not find parent term [$tax_name] - [$_term_parent_value].", 'warn' );
 
-                
+
                 $_term_parent = wp_insert_term( $_term_parent_value, $tax_name, array(
                   "slug" => sanitize_title( $_term_parent_value )
                 ));
@@ -494,7 +494,7 @@ namespace UsabilityDynamics\WPRETSC {
 
               // Item is an array, which means this entry includes term meta.
               if( is_object( $_term_name ) || is_array( $_term_name ) && isset( $_term_name[ '_id'] ) ) {
-                
+
                 if( method_exists( 'WPP_F', 'insert_terms' ) ) {
                   $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                   ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
@@ -502,9 +502,9 @@ namespace UsabilityDynamics\WPRETSC {
                   $_insert_result = self::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                   ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
                 } else {
-                  ud_get_wp_rets_client()->write_log( "Failed to insert non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id. Missing WPP_F::insert_terms method.", 'error' );                  
+                  ud_get_wp_rets_client()->write_log( "Failed to insert non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id. Missing WPP_F::insert_terms method.", 'error' );
                 }
-                
+
               } else {
                 $_terms[] = $_term_name;
               }
@@ -530,6 +530,93 @@ namespace UsabilityDynamics\WPRETSC {
         $ids = array_keys($media);
         if(!empty($ids)) {
           update_post_meta( $_post_id, 'slideshow_images', $ids );
+        }
+      }
+
+      /**
+       * Create WP-Property attributes
+       * If WP-Property plugin installed and activated
+       * And WP-Property attribute with provided key does not exist
+       *
+       * @param $keys
+       */
+      static public function create_wpp_attributes( $keys = array() ) {
+        if( empty( $keys ) ) {
+          return;
+        }
+        // Break if WP-Property not activate
+        if( !function_exists( 'ud_get_wp_property' ) ) {
+          return;
+        }
+
+        $wpp_settings = get_option( 'wpp_settings' );
+
+        $added = false;
+
+        foreach( (array)$keys as $key ) {
+          // Break if Property Attribute already exists
+          if( !empty( $wpp_settings[ 'property_stats' ][ $key ] ) ) {
+            continue;
+          }
+
+          // Add attribute
+          if( !isset( $wpp_settings[ 'property_stats' ] ) || !is_array($wpp_settings[ 'property_stats' ]) ) {
+            $wpp_settings[ 'property_stats' ] = array();
+          }
+          // Make attribute hidden ( Admin Only ). So administrator would be able to manage it before it will be shown.
+          $wpp_settings[ 'property_stats' ][ $key ] = ucwords( str_replace( '_', ' ', $key ) );
+
+          if( !isset( $wpp_settings[ 'hidden_frontend_attributes' ] ) || !is_array($wpp_settings[ 'hidden_frontend_attributes' ]) ) {
+            $wpp_settings[ 'hidden_frontend_attributes' ] = array();
+          }
+          if( !in_array( $key, $wpp_settings[ 'hidden_frontend_attributes' ] ) ) {
+            $wpp_settings[ 'hidden_frontend_attributes' ][] = $key;
+          }
+
+          $added = true;
+        }
+
+        if($added) {
+          update_option( 'wpp_settings', $wpp_settings );
+        }
+      }
+
+      /**
+       * Create WP-Property taxonomies
+       * If WP-Property plugin installed and activated
+       * And WP-Property taxonomy with provided key does not exist
+       *
+       * @param $keys
+       */
+      static public function create_wpp_taxonomies( $keys = array() ) {
+
+        if( empty( $keys ) ) {
+          return;
+        }
+        // Break if WP-Property not activate
+        if( !function_exists( 'ud_get_wp_property' ) ) {
+          return;
+        }
+        // Break if WP-Property Terms not activate
+        if( !function_exists( 'ud_get_wpp_terms' ) ) {
+          return;
+        }
+
+        $wpp_settings = get_option( 'wpp_settings' );
+
+        $added = false;
+
+        foreach( (array)$keys as $key ) {
+          // Break if Property Attribute already exists
+          if( !empty( $wpp_settings[ 'taxonomies' ][ $key ] ) ) {
+            continue;
+          }
+          $wpp_settings[ 'taxonomies' ][ $key ] = ud_get_wpp_terms()->prepare_taxonomy( array(), ucwords( str_replace( '_', ' ', $key ) ) );
+          $added = true;
+        }
+
+        if($added) {
+          update_option( 'wpp_settings', $wpp_settings );
         }
       }
 
@@ -833,12 +920,12 @@ namespace UsabilityDynamics\WPRETSC {
           FROM {$wpdb->posts} posts
           LEFT JOIN {$wpdb->postmeta} pm_modified ON posts.ID = pm_modified.post_id
           LEFT JOIN {$wpdb->postmeta} pm_schedule ON posts.ID = pm_schedule.post_id
-          WHERE 
+          WHERE
             pm_schedule.meta_key='wpp_import_schedule_id' AND
             pm_schedule.meta_value='{$options->schedule}' AND
             pm_modified.meta_key='{$options->dateMetaField}' AND
-            pm_modified.meta_value between DATE('{$options->startDate} 00:00:00') AND DATE('{$options->endOfStartDate} 00:00:00') AND 
-            posts.post_type='property'  
+            pm_modified.meta_value between DATE('{$options->startDate} 00:00:00') AND DATE('{$options->endOfStartDate} 00:00:00') AND
+            posts.post_type='property'
             {$options->limit}";
 
         //echo($_query);
