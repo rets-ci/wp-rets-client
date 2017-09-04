@@ -128,7 +128,7 @@ class Single extends Component {
         }
         break;
       case 'commercial':
-        if (sqft) {
+        if (!!+sqft) {
           info_box += `<li>${Util.formatSQFTValue(sqft)} SF</li>`;
         }
         break;

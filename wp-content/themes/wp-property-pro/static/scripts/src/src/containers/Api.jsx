@@ -523,6 +523,7 @@ class Api {
       "post_meta.rets_street_name",
       "post_meta.rets_thumbnail_url",
       "post_meta.rets_postal_code",
+      "post_meta.sqft",
       "wpp_media",
       "wpp_location_pin",
       "tax_input"

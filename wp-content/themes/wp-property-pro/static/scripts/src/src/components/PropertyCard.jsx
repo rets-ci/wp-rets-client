@@ -47,6 +47,7 @@ export default class PropertyCard extends Component {
       property_type,
       post_name,
       state,
+      sqft,
       thumbnail,
       type,
       sub_type,
@@ -76,16 +77,12 @@ export default class PropertyCard extends Component {
       info_box += `<li>${beds} Bed</li><li>${baths} Bath</li>`;
     }
 
-    if (type !== 'land' && !!+living_area[0]) {
-      info_box += `<li>${Util.formatSQFTValue(living_area)} SF</li>`;
+    if (type !== 'land' && !!+sqft) {
+      info_box += `<li>${Util.formatSQFTValue(sqft)} SF</li>`;
     }
 
     if (type === 'land' && !!+lots_size) {
-      info_box += `<li>${lots_size} Acres</li>`;
-    }
-
-    if (type === 'commercial' && !!+lots_size) {
-      info_box += `<li>${lots_size} SQFT</li>`;
+      info_box += `<li>${Util.formatLotSizeValue(lots_size)} Acres</li>`;
     }
 
     classes = ['card', `${Lib.THEME_CLASSES_PREFIX}card`]
