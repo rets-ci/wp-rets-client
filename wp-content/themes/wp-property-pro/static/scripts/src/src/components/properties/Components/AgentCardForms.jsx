@@ -57,6 +57,7 @@ class AgentCardForms extends Component {
   static propTypes = {
     address: PropTypes.string,
     agents: PropTypes.array.isRequired,
+    correctScenario: PropTypes.string.isRequired,
     listingOffice: PropTypes.string,
     RETSAgent: PropTypes.object.isRequired,
     rdcListing: PropTypes.bool.isRequired,
@@ -89,20 +90,6 @@ class AgentCardForms extends Component {
     return agent;
   }
 
-  correctScenario = (saleType, rdcListing) => {
-    let scenario;
-    if (saleType === 'rent' && rdcListing) {
-      scenario = 'rentRDC';
-    } else if (saleType === 'rent' && !rdcListing) {
-      scenario = 'rentNOTRdc';
-    } else if (saleType === 'sale' && rdcListing) {
-      scenario = 'saleRDC';
-    } else if (saleType === 'sale' && !rdcListing) {
-      scenario = 'saleNotRdc';
-    }
-    return scenario;
-  }
-
   revealPhoneNumber = () => {
     this.setState({
       displayedPhoneNumber: this.state.realNumber
@@ -112,20 +99,15 @@ class AgentCardForms extends Component {
   componentDidMount = () => {
     //figure out the correct agent and which scenario here
     let agent = {};
-    let correctScenario;
     let realNumber;
-    if (this.props.saleType && this.props.rdcListing !== null) {
-       correctScenario = this.correctScenario(this.props.saleType, this.props.rdcListing)
-    }
     let displayedPhoneNumber;
-
     if (this.props.RETSAgent.id && this.props.agents && this.props.agents.length) {
       agent = this.correctAgent(
         this.props.RETSAgent.id,
         this.props.agents,
-        correctScenario
+        this.props.correctScenario
       );
-      if (correctScenario === 'rentNOTRdc') {
+      if (this.props.correctScenario === 'rentNOTRdc') {
         displayedPhoneNumber = agent.phone;
         realNumber = agent.phone;
       } else {
@@ -137,7 +119,7 @@ class AgentCardForms extends Component {
       agent,
       displayedPhoneNumber: displayedPhoneNumber,
       realNumber: realNumber,
-      scenario: correctScenario,
+      scenario: this.props.correctScenario,
     });
   }
 

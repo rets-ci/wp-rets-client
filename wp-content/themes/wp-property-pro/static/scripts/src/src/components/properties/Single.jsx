@@ -54,6 +54,21 @@ class Single extends Component {
     selectedAgentCardTab: PropTypes.string,
     setAgentCardTab: PropTypes.func
   }
+
+  correctScenario = (saleType, rdcListing) => {
+    let scenario;
+    if (saleType === 'rent' && rdcListing) {
+      scenario = 'rentRDC';
+    } else if (saleType === 'rent' && !rdcListing) {
+      scenario = 'rentNOTRdc';
+    } else if (saleType === 'sale' && rdcListing) {
+      scenario = 'saleRDC';
+    } else if (saleType === 'sale' && !rdcListing) {
+      scenario = 'saleNotRdc';
+    }
+    return scenario;
+  }
+
   requestButtonClicked = tab => {
     scrollToElement('#' + this.agentCardContainer.id, {
       duration: 500
@@ -94,6 +109,7 @@ class Single extends Component {
       listing_type,
       listing_sub_type,
     } = this.props;
+
     let daysOnWebsite = daysPassedSincePostedDate(post_date);
     let lastUpdated = getLastUpdated(post_date);
 
@@ -132,6 +148,11 @@ class Single extends Component {
           info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
         }
     }
+
+    
+    let correctScenario = this.correctScenario(saleType, this.props.rdcListing);
+    
+    let rdcListing = listing_office === 'Red Door Company';
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []}/>
@@ -150,13 +171,15 @@ class Single extends Component {
                 >
                   Request Showing
                 </button>
-                <button
-                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button card-link`}
-                  onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-application')}}
-                  type="button"
-                >
-                  Request Application
-                </button>
+                {correctScenario === 'rentRDC' &&
+                  <button
+                    className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button card-link`}
+                    onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-application')}}
+                    type="button"
+                  >
+                    Request Application
+                  </button>
+                }
               </div>
             </div>
           </div>
@@ -231,6 +254,7 @@ class Single extends Component {
           <div id="agentCardContainer" className="mb-5" ref={(r) => this.agentCardContainer = r}>
             <AgentCardForms
               address={address[0]}
+              correctScenario={correctScenario}
               agents={this.props.agents}
               listingOffice={this.props.listing_office}
               RETSAgent={{
@@ -238,7 +262,7 @@ class Single extends Component {
                 name: agentName,
                 phone: agentPhoneNumber,
               }}
-              rdcListing={listing_office === 'Red Door Company'}
+              rdcListing={rdcListing}
               setAgentCardTab={this.props.setAgentCardTab}
               selectedTab={this.props.selectedAgentCardTab}
               saleType={listing_status_sale.replace('for-', '')}
