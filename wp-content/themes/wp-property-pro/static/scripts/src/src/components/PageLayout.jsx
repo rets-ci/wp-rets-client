@@ -81,7 +81,6 @@ class PageLayout extends Component {
         }
         self.setState({
           agents: _.get(data, 'agents'),
-          property_search_options: data.property_search_options,
           search_options: _.get(data, 'search_options'),
           post: data.post
         });
@@ -127,7 +126,6 @@ class PageLayout extends Component {
               <Header location={location} />
               {React.Children.map(children, (child, i) => React.cloneElement(child, {
                 agents: _.get(this.state, 'agents', null),
-                property_search_options: _.get(this.state, 'property_search_options', null),
                 search_options: _.get(this.state, 'search_options', null),
                 post: _.get(this.state, 'post', {}),
                 rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []

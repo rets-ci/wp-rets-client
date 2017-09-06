@@ -1,15 +1,22 @@
 import {Lib} from "../lib.jsx";
 
-const locationModal = (state = {errorMessage: null, isFetching: false, open: false, modifyType: null, searchMode: false, items: []}, action) => {
+let defaultFilters = {
+  errorMessage: null,
+  isFetching: false,
+  items: [],
+  modifyType: null,
+  open: false,
+  propertiesModalMode: false,
+  searchMode: false
+};
+
+
+const locationModal = (state = defaultFilters, action) => {
   switch (action.type) {
     case Lib.TOGGLE_LOCATION_MODAL_ACTION:
       return Object.assign({}, state, {
         open: action.open,
         modifyType: action.modifyType
-      });
-    case Lib.TOGGLE_LOCATION_MODAL_SEARCH_MODE:
-      return Object.assign({}, state, {
-        searchMode: action.searchMode
       });
     case Lib.REQUEST_LOCATION_MODAL_POSTS_ACTION:
       return Object.assign({}, state, {
@@ -24,6 +31,10 @@ const locationModal = (state = {errorMessage: null, isFetching: false, open: fal
       return Object.assign({}, state, {
         isFetching: false,
         items: action.posts,
+      });
+    case Lib.TOGGLE_PROPERTIES_MODAL_MODE_IN_LOCATION_MODAL_ACTION:
+      return Object.assign({}, state, {
+        propertiesModalMode: action.on
       });
     default:
       return state

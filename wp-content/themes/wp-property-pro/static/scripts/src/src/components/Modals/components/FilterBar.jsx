@@ -8,85 +8,83 @@ class FilterBar extends Component {
   static propTypes = {
     deleteSingleLocalFilter: PropTypes.func.isRequired,
     deleteLocalFilterTerm: PropTypes.func.isRequired,
-    localFilters: PropTypes.object.isRequired,
-    removeLastLocationFilter: PropTypes.func.isRequired
+    filters: PropTypes.object.isRequired,
+    deleteLastLocalFilterTerm: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
   }
 
-  handleSingleFilterRemove(filterKey) {
-    this.props.deleteSingleLocalFilter(filterKey);
-  }
-
-  handleTermFilterRemove(filter) {
+  handleTermFilterRemove = filter => {
     let filterToRemove = {[filter.tax]: filter.value};
     this.props.deleteLocalFilterTerm(filterToRemove);
   }
 
+  handleDeleteLastLocalFilterTerm = filter => {
+    let filterToRemove = {[filter.tax]: filter.value};
+    this.props.deleteLastLocalFilterTerm(filterToRemove)
+  }
+
   render() {
     let {
-      localFilters,
-      removeLastLocationFilter
+      filters
     } = this.props;
 
     let termFilterElement;
     let termFilters = [];
-    let termFilter = localFilters['term'];
-
+    let termFilter = filters['term'];
     
     if (termFilter && termFilter.length) {
       termFilters = termFilter.map(t => {
         return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
       });
       if (termFilters.length === 1) {
-        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => removeLastLocationFilter()} display={termFilters[0].value} value={termFilters[0].value} />;
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.handleDeleteLastLocalFilterTerm(termFilters[0])} display={termFilters[0].value} value={termFilters[0].value} />;
       } else {
         termFilterElement = termFilters.map((t, i) =>
-          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.value} value={t.value} />
+          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove(t)} display={t.value} value={t.value} />
         );
       }
     }
 
     let bathroomsElement;
-    let bathroomsFilter = localFilters['bathrooms'];
-    let bedroomsFilter = localFilters['bedrooms'];
+    let bathroomsFilter = filters['bathrooms'];
+    let bedroomsFilter = filters['bedrooms'];
     let bedroomsElement;
     let lotSizeElement;
-    let lotSizeFilter = localFilters['lotSize'];
-    let priceFilter = localFilters['price'];
+    let lotSizeFilter = filters['lotSize'];
+    let priceFilter = filters['price'];
     let priceElement;
-    let sqftFilter = localFilters['sqft'];
+    let sqftFilter = filters['sqft'];
     let sqftElement;
-
     if (bathroomsFilter) {
       bathroomsElement = (
-        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('bathrooms')} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
+        <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('bathrooms')} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
       );
     }
 
     if (bedroomsFilter) {
       bedroomsElement = (
-        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('bedrooms')} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
+        <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('bedrooms')} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
       );
     }
 
     if (lotSizeFilter) {
       lotSizeElement = (
-        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('lotSize')} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
+        <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('lotSize')} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
       )
     }
 
     if (priceFilter) {
       priceElement = (
-        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('price')} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
+        <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('price')} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
       );
     }
 
     if (sqftFilter) {
       sqftElement = (
-        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('sqft')} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
+        <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('sqft')} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
       );
     }
 

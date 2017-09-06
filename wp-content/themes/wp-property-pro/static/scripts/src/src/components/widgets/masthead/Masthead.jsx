@@ -8,7 +8,7 @@ import LocationModal from '../../Modals/LocationModal.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const Masthead = ({widget_cell, returnToArchiveHandler, nextArticleHandler}) => {
+const Masthead = ({closeLocationModal, widget_cell, returnToArchiveHandler, nextArticleHandler}) => {
 
   if (!widget_cell) {
     return null;
@@ -22,7 +22,7 @@ const Masthead = ({widget_cell, returnToArchiveHandler, nextArticleHandler}) => 
   let modal;
 
   if (!_.isEmpty(_.get(widget_cell, 'widget.fields.search_options', {}))) {
-    modal = <LocationModal />;
+    modal = <LocationModal closeModal={closeLocationModal} />;
   }
 
   switch (widget_cell.widget.fields.layout) {

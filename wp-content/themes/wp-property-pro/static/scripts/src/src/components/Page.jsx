@@ -1,4 +1,4 @@
-import {openFormModal} from '../actions/index.jsx';
+import {openFormModal, openLocationModal} from '../actions/index.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
@@ -21,6 +21,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    closeLocationModal: () => {
+      dispatch(openLocationModal(false));
+    },
+
     openFormModal: (id, open) => {
       dispatch(openFormModal(id, open));
     }
@@ -45,6 +49,7 @@ class Page extends Component {
     }
 
     let {
+      closeLocationModal,
       formModalOpen,
       openFormModal,
       post,
@@ -59,7 +64,7 @@ class Page extends Component {
             return cells.map(((cell) => {
                   switch (_.get(cell, 'widget.panels_info.class', '')) {
                     case 'Property_Pro_Masthead_Widget':
-                      return <Masthead widget_cell={cell}/>;
+                      return <Masthead closeLocationModal={closeLocationModal} widget_cell={cell}/>;
                       break;
                     case 'Property_Pro_Subnavigation_Widget':
                       return <Subnavigation post_title={post.post_title} widget_cell={cell} currentUrl={_.get(this.props, 'post.post_url', '')}/>;
