@@ -5,7 +5,8 @@
   "main": "gruntfile.js",
   "scripts": {
     "test": "mocha test",
-    "theme-build": "npm --prefix ./wp-content/themes/wp-property-pro/static/scripts/src run build"
+    "theme-build": "npm --prefix ./wp-content/themes/wp-property-pro/static/scripts/src run build",
+    "post-merge": "curl -XPURGE https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbitci.com/ -k -H 'host:usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci'"
   },
   "repository": {
     "type": "git",
