@@ -1,4 +1,5 @@
 import {setAgentCardTab} from '../../actions/index.jsx';
+import Api from '../../containers/Api.jsx';
 import AgentCardForms from './Components/AgentCardForms.jsx';
 import FormFetcher from '../Forms/FormFetcher.jsx';
 import _ from 'lodash';
@@ -7,6 +8,7 @@ import moment from 'moment';
 import PropertyHighlights from './Components/PropertyHighlights.jsx';
 import PropertyInfoTabs from './Components/PropertyInfoTabs.jsx';
 import propertyDataStructure from '../../../static_data/property-data-structure.json';
+import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -14,6 +16,7 @@ import renderHTML from 'react-render-html';
 import scrollToElement from 'scroll-to-element';
 import ImageMixer from './Components/ImageMixer.jsx';
 import Util from '../Util.jsx';
+
 let getLastUpdated = lastUpdated => {
   let parsed = moment.utc(lastUpdated, 'YYYY-MM-D hh:mm:ss');
   if (!parsed.isValid()) {
@@ -37,7 +40,7 @@ let daysPassedSincePostedDate = postDate => {
 
 const mapStateToProps = (state) => {
   return {
-   selectedAgentCardTab: _.get(state, 'agentCardState.tab', null) 
+    selectedAgentCardTab: _.get(state, 'agentCardState.tab', null) 
   }
 };
 

@@ -1,11 +1,7 @@
 import {
-  deletePropertiesModalTermLocalFilter,
-  deletePropertiesModalSingleLocalFilter,
   openLocationModal,
-  setPropertiesModalLocalFilter,
   setSearchType,
-  openPropertiesModal,
-  toggleLocationModalSearchMode
+  openPropertiesModal
 } from '../../../actions/index.jsx';
 import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
@@ -22,21 +18,13 @@ let mobileViewCheck = () => window.innerWidth < Lib.MOBILE_WIDTH;
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    deleteLocalFilterTerm(termFilter) {
-      dispatch(deletePropertiesModalTermLocalFilter(termFilter));
-    },
-
-    deleteSingleLocalFilter(filterKey) {
-      dispatch(deletePropertiesModalSingleLocalFilter(filterKey));
-    },
-
-    removeLastLocationFilter() {
-      dispatch(toggleLocationModalSearchMode(false));
-      dispatch(openLocationModal(true, 'replace'));
-    },
 
     openPropertiesModal: open => {
       dispatch(openPropertiesModal(open));
+    },
+
+    openLocationModal: () => {
+      dispatch(openLocationModal(true));
     }
   }
 };
@@ -68,7 +56,6 @@ class searchFilters extends Component {
   }
 
   handleBathroomsFilterRemove(bathroomsFilter) {
-    this.props.deleteSingleLocalFilter('bathrooms');
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]']: bathroomsFilter
     };
@@ -77,7 +64,6 @@ class searchFilters extends Component {
   }
 
   handleBedroomsFilterRemove(bedroomFilter) {
-    this.props.deleteSingleLocalFilter('bedrooms');
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]']: bedroomFilter
     };
@@ -86,7 +72,6 @@ class searchFilters extends Component {
   }
 
   handleLotSizefilterRemove(lotSizeFilter) {
-    this.props.deleteSingleLocalFilter('lotSize');
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]"]: lotSizeFilter.start,
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]"]: lotSizeFilter.to,
@@ -96,7 +81,6 @@ class searchFilters extends Component {
   }
 
   handlePriceFilterRemove(priceFilter) {
-    this.props.deleteSingleLocalFilter('price');
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: priceFilter.start,
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: priceFilter.to,
@@ -106,7 +90,6 @@ class searchFilters extends Component {
   }
 
   handlePropertyTypeRemove(propertyFilter) {
-    this.props.deleteSingleLocalFilter('property_type');
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_type]']: propertyFilter
     };
@@ -115,7 +98,6 @@ class searchFilters extends Component {
   }
 
   handleSQFTFilterRemove(sqftFilter) {
-    this.props.deleteSingleLocalFilter('sqft');
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: sqftFilter.start,
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: sqftFilter.to,
@@ -126,7 +108,6 @@ class searchFilters extends Component {
 
   handleTermFilterRemove(termFilter) {
     let filterToRemove = {[termFilter.tax]: termFilter.value};
-    this.props.deleteLocalFilterTerm(filterToRemove);
     let currentQueryParam = window.location.search.replace('?', '');
     var parsedQs = qs.parse(currentQueryParam);
     var currentTermFilter = parsedQs[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'];
@@ -211,7 +192,7 @@ class searchFilters extends Component {
     }
     if (termFilters && termFilters.length) {
       if (termFilters.length === 1) {
-        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.props.removeLastLocationFilter.bind(this)()} display={termFilters[0].value} value={termFilters[0].value} />;
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={this.props.openLocationModal} display={termFilters[0].value} value={termFilters[0].value} />;
       } else {
         termFilterElement = termFilters.map((t, i) =>
           <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.value} value={t.value} />
