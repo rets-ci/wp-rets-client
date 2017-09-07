@@ -77,7 +77,7 @@ class SearchResultListing extends Component {
               properties.map((p, i) => {
                 let item = {
                   address: _.get(p, '_source.post_meta.rets_address', [''])[0],
-                  address_unit: _.get(p, '_source.post_meta.address_unit', ''),
+                  address_unit: _.get(p, '_source.post_meta.address_unit', '')[0],
                   location: _.get(p, '_source.post_meta.wpp_location_pin', []),
                   baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
                   beds: _.get(p, '_source.post_meta.rets_beds', 0),
@@ -90,6 +90,7 @@ class SearchResultListing extends Component {
                   post_name: _.get(p, '_source.post_name', 0),
                   state: _.get(p, '_source.tax_input.wpp_location.wpp_location_state[0].name', ''),
                   type: _.get(p, '_source.tax_input.wpp_listing_type.listing_type[0].slug', ''),
+                  sqft: _.get(p, '_source.post_meta.sqft[0]', ''),
                   sub_type: _.get(p, '_source.tax_input.wpp_listing_type.listing_sub_type[0].name', ''),
                   relative_permalink: _.get(p, '_source.permalink', ''),
                   thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', [''])[0],

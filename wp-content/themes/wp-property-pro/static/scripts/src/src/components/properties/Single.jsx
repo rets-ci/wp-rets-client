@@ -89,6 +89,7 @@ class Single extends Component {
       all,
       baths,
       beds,
+      city_state,
       elementary_school,
       images,
       post_content,
@@ -130,7 +131,7 @@ class Single extends Component {
         }
         break;
       case 'commercial':
-        if (sqft) {
+        if (!!+sqft) {
           info_box += `<li>${Util.formatSQFTValue(sqft)} SF</li>`;
         }
         break;
@@ -163,9 +164,9 @@ class Single extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]}</h4>
+                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]} {address_unit}</h4>
                 <h6
-                  className="mb-3 text-muted">{rets_city ? rets_city + "," : null} {rets_state} {rets_postal_code}</h6>
+                  className="mb-3 text-muted">{city_state} {rets_postal_code}</h6>
                 <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
                 <button
                   className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button card-link`}
