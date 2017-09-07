@@ -4,13 +4,11 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
+import SaleTypeHeaderSelection from './components/SaleTypeHeaderSelection.jsx';
 import {openSaleTypesPanel} from '../../actions/index.jsx';
 import _ from 'lodash';
 import NavigationIcons from './components/NavigationIcons.jsx';
-import URI from 'urijs';
 import UserPanelIcon from './components/UserPanelIcon.jsx';
-import qs from 'qs';
-import Util from '../Util.jsx'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -32,38 +30,8 @@ class HeaderSearch extends Component {
     super(props);
   }
 
-  handleSaleSelectionItemClick = (event, searchType, propertyTypeOptions) => {
-    event.preventDefault();
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType === 'Buy' ? 'Sale' : searchType, propertyTypeOptions);
-    if (searchOptions.error) {
-      // TODO: better handle these types of error
-      console.log('%c ' + searchOptions.msg, 'color: #ff0000');
-      return;
-    }
-
-    let {
-      propertyTypes,
-      saleType
-    } = searchOptions;
-    
-    let currentURL = new URI(window.location.href);
-    // reset setSearch
-    currentURL.search('');
-    let allQueryParams = Util.getQS(window.location.href, currentURL.search(true));
-    let modifiedQueryParams = Object.assign({}, allQueryParams);
-    // only keep term for now
-    modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX] = _.pickBy(allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX], (a, b) => {
-      return b.includes('term');
-    });
-
-    modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['sale_type'] = saleType;
-    modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['search_type'] = searchType;
-    modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['property_type'] = propertyTypes;
-    
-    let queryParam = decodeURIComponent(qs.stringify(modifiedQueryParams));
-    currentURL.search(queryParam);
+  closeSaleTypePanel = () => {
     this.props.doOpenSaleTypesPanel(false);
-    browserHistory.push(decodeURIComponent(currentURL.pathname() + currentURL.search()));
   }
 
   handleSaleTypeClick(event) {
@@ -93,32 +61,12 @@ class HeaderSearch extends Component {
 
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
-        <div className={containerClasses}>
-          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Buy', propertyTypeOptions)}>
-              <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
-              <span>Buy</span>
-            </a>
-          </div>
-          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Rent', propertyTypeOptions)}>
-              <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
-              <span>Rent</span>
-            </a>
-          </div>
-          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Commercial', propertyTypeOptions)}>
-              <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
-              <span>Commercial</span>
-            </a>
-          </div>
-          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => this.handleSaleSelectionItemClick(event, 'Land', propertyTypeOptions)}>
-              <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
-              <span>Land</span>
-            </a>
-          </div>
-        </div>
+        <SaleTypeHeaderSelection
+          currentURL={window.location.href}
+          closePanel={this.closeSaleTypePanel}
+          propertyTypeOptions={this.props.propertyTypeOptions}
+          open={this.props.saleTypesPanelOpen}
+        />
         <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
           <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-menu-left col-1 p-0 hidden-md-up d-flex align-items-center`}>
             <UserPanelIcon openUserPanel={this.props.openUserPanel} />

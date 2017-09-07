@@ -5,7 +5,7 @@ import {
   toggleUserPanel
 } from '../actions/index.jsx';
 import HeaderDefault from './Headers/HeaderDefault.jsx';
-import HeaderPropertiesSingle from './Headers/HeaderPropertySingle.jsx';
+import HeaderPropertySingle from './Headers/HeaderPropertySingle.jsx';
 import HeaderSearch from './Headers/HeaderSearch.jsx';
 import Util from './Util.jsx';
 import {Lib} from '../lib.jsx';
@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const HeaderContent = ({location, openLoginModal, openUserPanel, saleTypesPanelOpen}) => {
+const HeaderContent = ({location, locationTerm, openLoginModal, openUserPanel, saleType, saleTypesPanelOpen, searchType}) => {
   let pathname = _.get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
@@ -47,7 +47,7 @@ const HeaderContent = ({location, openLoginModal, openUserPanel, saleTypesPanelO
       sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
     }
   } else if (pathRoot.indexOf(_.get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
-    headerElement = <HeaderPropertiesSingle openUserPanel={openUserPanel}/>;
+    headerElement = <HeaderPropertySingle locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>;
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel} openLoginModal={openLoginModal} />;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";

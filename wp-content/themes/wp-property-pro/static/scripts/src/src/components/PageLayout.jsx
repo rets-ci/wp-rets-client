@@ -123,7 +123,12 @@ class PageLayout extends Component {
                 panelOpen={userPanelOpen}
                 />
               <LoginModal />
-              <Header location={location} />
+              <Header
+                location={location}
+                saleType={_.get(this.state, 'post.sale_type')}
+                searchType={_.get(this.state, 'post.search_type')}
+                locationTerm={_.get(this.state, 'post.location')}
+              />
               {React.Children.map(children, (child, i) => React.cloneElement(child, {
                 agents: _.get(this.state, 'agents', null),
                 search_options: _.get(this.state, 'search_options', null),

@@ -86,7 +86,8 @@ class PropertiesModal extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.open) {
       if (!isEqual(prevState.filters, this.state.filters)) {
-        this.props.doSearch(Object.assign({}, this.state.filters));
+        let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
+        this.props.doSearch(filters);
       }
     }
   }
@@ -96,7 +97,8 @@ class PropertiesModal extends Component {
       if (nextProps.open) {
         this.props.turnOnPropertiesModalModeInLocationModal();
         this.setInitialFilters(this.props.searchFilters, defaultFiltervalues);
-        this.props.doSearch(Object.assign({}, this.state.filters));
+        let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
+        this.props.doSearch(Object.assign({}, filters));
       } else {
         this.props.turnOffPropertiesModalModeInLocationModal();
       }
@@ -345,7 +347,6 @@ class PropertiesModal extends Component {
       value: d,
       selected: property_type && property_type.indexOf(d) >= 0
     }));
-
     return (
       <div>
         <LocationModal

@@ -1969,7 +1969,7 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-header-property-single {
-    padding: 1rem;
+    /* padding: 1rem; */
 }
 
 /* #propertypro-property-details .card .card-block {
