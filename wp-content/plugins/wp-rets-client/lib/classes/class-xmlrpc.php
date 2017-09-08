@@ -961,6 +961,8 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'Term counting complete for [' . $_post_id . '].', 'info' );
 
+        self::flush_cache( $_post_id );
+
         return array(
           "ok" => true,
           "post_id" => $_post_id,
@@ -1042,7 +1044,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'Property update finished, clearing cache.', 'debug' );
 
-        clean_post_cache( $post_data[ 'ID' ] );
+        self::flush_cache( $post_data[ 'ID' ] );
 
         return array(
           "ok" => true,
@@ -1229,6 +1231,8 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'Sending [wpp.editProperty] reponse.', 'debug' );
 
+        self::flush_cache( $_post_id );
+
         return $_response;
 
       }
@@ -1382,6 +1386,8 @@ namespace UsabilityDynamics\WPRETSC {
 
         $response['time' ] = timer_stop();
 
+        self::flush_cache( $post_id );
+
         return $response;
 
       }
@@ -1427,13 +1433,17 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id].", 'info' );
 
-        $wpdb->update( $wpdb->posts, array( 'post_status' => 'trash' ), array( 'ID' => $post_id ) );
+        // We must do 'trash' post using native function, instead of direct SQL requests....
+        // because of different bugs and issues with property status on end.... peshkov@UD
+        wp_trash_post( $post_id );
 
         ud_get_wp_rets_client()->write_log( $wpdb->last_error, 'info' );
 
         ud_get_wp_rets_client()->write_log( "Property [$post_id] trashed.", 'info' );
 
         $response['time' ] = timer_stop();
+
+        self::flush_cache( $post_id );
 
         return $response;
 
@@ -1810,6 +1820,17 @@ namespace UsabilityDynamics\WPRETSC {
 
         die( json_encode( $data, JSON_PRETTY_PRINT ) );
 
+      }
+
+      /**
+       * Flush Object Cache for particular property
+       *
+       * @param int $post_id
+       */
+      static protected function flush_cache( $post_id ) {
+        ud_get_wp_rets_client()->write_log( "Flushing object cache for [" . $post_id . "] post_id", 'info' );
+        clean_post_cache( $post_id );
+        do_action( 'wprc::xmlrpc::on_flush_cache', $post_id );
       }
 
     }
