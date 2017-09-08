@@ -72,7 +72,7 @@ class PropertiesModal extends Component {
     this.state = {
       filters: {},
       locationModalOpen: false,
-      showAllFilters: true
+      showAllFilters: false
     };
   }
 
@@ -80,7 +80,11 @@ class PropertiesModal extends Component {
     let {
       searchFilters
     } = this.props;
+    let showAllFilters = this.displayAllFilters(searchFilters);
     this.setInitialFilters(searchFilters, defaultFiltervalues);
+    this.setState({
+      showAllFilters
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -99,6 +103,10 @@ class PropertiesModal extends Component {
         this.setInitialFilters(this.props.searchFilters, defaultFiltervalues);
         let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
         this.props.doSearch(Object.assign({}, filters));
+        let showAllFilters = this.displayAllFilters(this.props.searchFilters);
+        this.setState({
+          showAllFilters
+        });
       } else {
         this.props.turnOffPropertiesModalModeInLocationModal();
       }
@@ -107,6 +115,10 @@ class PropertiesModal extends Component {
 
   componentWillUnmount() {
     this.props.turnOffPropertiesModalModeInLocationModal();
+  }
+
+  displayAllFilters(filters) {
+    return !!filters['bathrooms'] || !!filters['sqft'] || !!filters['lotSize'];
   }
 
   setInitialFilters(searchFilters, defaultFiltervalues) {
