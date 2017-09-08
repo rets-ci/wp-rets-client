@@ -20,8 +20,8 @@ const mapStateToProps = (state, history) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    openSearchModal: modifyType => {
-      dispatch(openLocationModal(true, modifyType));
+    openSearchModal: () => {
+      dispatch(openLocationModal(true));
     },
 
     setSearchType: (searchType, saleType, propertyTypes) => {
@@ -97,7 +97,7 @@ class SearchContent extends Component {
           handleChange={this.handleSearchDropDownChange.bind(this)}
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
-        <button className={searchBtnClasses} onClick={() => self.props.openSearchModal('replace')} type="button">
+        <button className={searchBtnClasses} onClick={self.props.openSearchModal} type="button">
           <i className="fa fa-search"></i> {placeholder}
         </button>
       </div>

@@ -9,11 +9,15 @@ import URI from 'urijs';
 import Api from '../../containers/Api.jsx';
 import {
   openPropertiesModal,
+  openLocationModal,
   raiseErrorMessage,
   receiveSearchResultsPosts,
   requestSearchResultsPostsResetFetching,
   requestSearchResultsPosts,
-  toggleMapSearchResultsLoading
+  setPropertiesModalResultCountLoading,
+  toggleMapSearchResultsLoading,
+  togglePropertiesModalModeInLocationModal,
+  updatePropertiesModalResultCount
 } from '../../actions/index.jsx';
 import Util from '../Util.jsx';
 import { Lib } from '../../lib.jsx';
@@ -38,7 +42,10 @@ const mapStateToProps = (state, ownProps) => {
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
     mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
-    propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
+    propertiesModalOpen: _.get(state, 'propertiesModal.open'),
+    propertiesModalResultCountButtonLoading: _.get(state, 'propertiesModal.resultCountButtonLoading'),
+    propertiesModalResultCount: _.get(state, 'propertiesModal.resultCount'),
+    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
     results: _.get(state, 'searchResults.searchResults', []),
     resultsTotal: _.get(state, 'searchResults.totalProps', 0),
     saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
@@ -47,21 +54,16 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    openPropertiesModal: open => {
-      dispatch(openPropertiesModal(open));
+    closeLocationModal: () => {
+      dispatch(openLocationModal(false));
     },
 
-    standardSearch: (errorMessage, params) => {
-      dispatch(requestSearchResultsPosts());
-      Api.makeStandardPropertySearch(params, (err, query, response) => {
-        if (err) {
-          dispatch(requestSearchResultsPostsResetFetching());
-          return dispatch(raiseErrorMessage(err));
-        }
-        if (!err && errorMessage) {
-          dispatch(resetErrorMessage());
-        }
-        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
+    doPropertiesModalSearch: (filters) => {
+      dispatch(setPropertiesModalResultCountLoading(true));
+      Api.makeStandardPropertySearch(filters, (err, query, response) => {
+        // we are ignoring handling the error here intentionally as the error is handled as soon as the modal is closed
+        dispatch(setPropertiesModalResultCountLoading(false));
+        dispatch(updatePropertiesModalResultCount(_.get(response, 'hits.total', null)));
       });
     },
 
@@ -79,19 +81,53 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
       });
     },
+
+    openPropertiesModal: open => {
+      dispatch(openPropertiesModal(open));
+    },
+
+    openLocationModal: () => {
+      dispatch(openLocationModal(true));
+    },
+
     resetSearchResults: () => {
       dispatch(receiveSearchResultsPosts({}, [], 0));
+    },
+
+    standardSearch: (errorMessage, params) => {
+      dispatch(requestSearchResultsPosts());
+      Api.makeStandardPropertySearch(params, (err, query, response) => {
+        if (err) {
+          dispatch(requestSearchResultsPostsResetFetching());
+          return dispatch(raiseErrorMessage(err));
+        }
+        if (!err && errorMessage) {
+          dispatch(resetErrorMessage());
+        }
+        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
+      });
+    },
+
+    togglePropertiesModalModeInLocationModal: on => {
+      dispatch(togglePropertiesModalModeInLocationModal(on));
     }
   };
 };
 
 class MapSearchResults extends Component {
   static propTypes = {
+    doPropertiesModalSearch: PropTypes.func.isRequired,
     doSearchWithQuery: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     location: PropTypes.object,
     mapSearchResultsLoading: PropTypes.bool.isRequired,
     params: PropTypes.object,
+    propertiesModalOpen: PropTypes.bool.isRequired,
+    propertiesModalResultCount: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+    propertiesModalResultCountButtonLoading: PropTypes.bool.isRequired,
     resetSearchResults: PropTypes.func.isRequired,
     results: PropTypes.array.isRequired
   };
@@ -172,12 +208,15 @@ class MapSearchResults extends Component {
       allQueryParams,
       errorMessage,
       displayedResults,
-      property_search_options,
+      doPropertiesModalSearch,
       isFetching,
       location,
       mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
+      propertiesModalResultCount,
+      propertiesModalResultCountButtonLoading,
+      propertyTypeOptions,
       results,
       resultsTotal,
     } = this.props;
@@ -233,11 +272,18 @@ class MapSearchResults extends Component {
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
 
-        <LocationModal />
-
         <PropertiesModal
+          closeLocationModal={this.props.closeLocationModal}
+          closeModal={() => openPropertiesModal(false)}
+          doSearch={doPropertiesModalSearch}
           open={propertiesModalOpen}
-          property_search_options={property_search_options}
+          openLocationModal={this.props.openLocationModal}
+          propertyTypeOptions={propertyTypeOptions}
+          resultCount={propertiesModalResultCount}
+          resultCountButtonLoading={propertiesModalResultCountButtonLoading}
+          searchFilters={searchFilters}
+          turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
+          turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}
         />
 
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
@@ -288,7 +334,6 @@ class MapSearchResults extends Component {
         </section>
       </div>
     );
-
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
         {elementToShow}

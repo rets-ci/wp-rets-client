@@ -1,12 +1,5 @@
 import {Lib} from '../lib.jsx'
 
-export const deletePropertiesModalSingleLocalFilter = filterKey => {
-  return {
-    type: Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION,
-    filterKey: filterKey
-  }
-};
-
 export const deletePropertiesModalTermLocalFilter = termFilter => {
   return {
     type: Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION,
@@ -31,10 +24,9 @@ export const openFormModal = (id, open) => {
   }
 };
 
-export const openLocationModal = (open, modifyType) => {
+export const openLocationModal = open => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
-    modifyType: modifyType || null,
     open: open
   }
 };
@@ -50,13 +42,6 @@ export const openPropertiesModal = (open) => {
   return {
     type: Lib.TOGGLE_PROPERTIES_MODAL_ACTION,
     open: open
-  }
-};
-
-export const setPropertiesModalLocalFilter = localFilters => {
-  return {
-    type: Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
-    localFilters: localFilters
   }
 };
 
@@ -158,13 +143,6 @@ export const setBlogPosts = (posts, allowPagination) => {
   }
 };
 
-export const updatePropertiesModalLocalFilter = filter => {
-  return {
-    type: Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
-    filter: filter
-  }
-};
-
 export const updatePropertiesModalResultCount = count => {
   return {
     type: Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT,
@@ -193,16 +171,9 @@ export const setAgentCardTab = tab => {
   }
 }
 
-export const toggleLocationModalSearchMode = searchMode => {
+export const togglePropertiesModalModeInLocationModal = on => {
   return {
-    type: Lib.TOGGLE_LOCATION_MODAL_SEARCH_MODE,
-    searchMode: searchMode
-  }
-};
-
-export const togglePropertiesModalPropertyFilter = filter => {
-  return {
-    type: Lib.TOGGLE_PROPERTIES_MODAL_PROPERTY_FILTER_ACTION,
-    filter: filter
+    type: Lib.TOGGLE_PROPERTIES_MODAL_MODE_IN_LOCATION_MODAL_ACTION,
+    on: on
   }
 };

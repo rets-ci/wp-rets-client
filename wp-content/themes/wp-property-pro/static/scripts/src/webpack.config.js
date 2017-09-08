@@ -80,5 +80,8 @@ module.exports = {
         'swiper-css': path.join(__dirname, '/node_modules/swiper/dist/css/swiper.min.css'),
         'nprogress-css': path.join(__dirname, '/node_modules/nprogress/nprogress.css'),
       }
+    },
+    watchOptions : {
+      poll: true
     }
 };

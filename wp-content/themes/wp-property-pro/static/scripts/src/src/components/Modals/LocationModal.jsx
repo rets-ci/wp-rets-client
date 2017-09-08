@@ -1,12 +1,10 @@
 import {
-  openLocationModal,
   setSearchProps,
   raiseErrorMessage,
   receiveLocationModalPosts,
   resetErrorMessage,
   requestLocationModalResetFetching,
-  requestLocationModalPosts,
-  updatePropertiesModalLocalFilter
+  requestLocationModalPosts
 } from '../../actions/index.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
 import PropTypes from 'prop-types';
@@ -21,15 +19,12 @@ import _ from 'lodash';
 import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
-  let localFilters = state.propertiesModal.localFilters;
   return {
     errorMessage: state.errorMessage,
     isFetching: state.locationModal.isFetching,
+    propertiesModalMode: _.get(state, 'locationModal.propertiesModalMode'),
     open: state.locationModal ? state.locationModal.open : false,
-    localFilters: localFilters,
-    modifyType: state.locationModal.modifyType,
     propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
-    searchMode: state.locationModal.searchMode,
     searchResults: _.get(state, 'locationModal.items', []),
     searchType: _.get(state, 'searchType.searchType', '')
   }
@@ -37,10 +32,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    closeModal: () => {
-      dispatch(openLocationModal(false));
-    },
-
     searchHandler: (term, saleType, propertyTypes, errorMessage) => {
 
       let searchParams = {
@@ -80,15 +71,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           dispatch(receiveLocationModalPosts(rows));
         }
       );
-    },
-
-    updatePropertiesModalLocalFilter(filter) {
-      dispatch(updatePropertiesModalLocalFilter(filter));
     }
   };
 };
 
 class LocationModal extends Component {
+
+  static propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    onTermSelect: PropTypes.func,
+    open: PropTypes.bool.isRequired,
+    propertiesModalMode: PropTypes.bool.isRequired,
+    propertyTypeOptions: PropTypes.object.isRequired,
+    searchHandler: PropTypes.func.isRequired,
+    topQuery: PropTypes.func.isRequired
+  }
 
   constructor(props) {
     super(props);
@@ -127,19 +124,10 @@ class LocationModal extends Component {
       } = searchOptions;
       if (url === null) {
         // Properties results page
-        if (this.props.searchMode) {
-          // in searchMode, therefore we can assume that term filter also exists
-          let updatedTermFilter = [];
-          if (modifyType === 'replace') {
-            updatedTermFilter.push({[tax]: text});
-          } else if (modifyType === 'append') {
-            updatedTermFilter = this.props.localFilters.term.slice(0);
-            updatedTermFilter.push({[tax]: text});
-          }
-          this.props.updatePropertiesModalLocalFilter({
-            term: updatedTermFilter
+        if (this.props.propertiesModalMode) {
+          this.props.onTermSelect({
+            [tax]: text
           });
-          this.props.closeModal();
         } else {
           let url = new URL();
           url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
@@ -162,13 +150,13 @@ class LocationModal extends Component {
           }, {}));
           url.setSearch(URLSearchObject);
           browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
+          this.props.closeModal();
         }
       } else {
         // Single property page
         browserHistory.push(url);
+        this.props.closeModal();
       }
-
-      this.props.closeModal();
     }
   }
 
