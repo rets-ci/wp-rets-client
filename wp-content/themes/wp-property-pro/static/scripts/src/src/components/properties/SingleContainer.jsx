@@ -37,12 +37,15 @@ let singlePropertyData = (data) => {
   let rets_state = _.get(tax_input, 'rets_state', null);
   let rets_year_built = _.get(post_meta, 'rets_year_built', null);
   let sqft = _.get(post_meta, 'sqft', null);
+  let mlsId = _.get(post_meta, 'rets_mls_number[0]');
   let listing_office = _.get(tax_input, 'wpp_office.listing_office[0].name', null);
   let listing_status_sale = _.get(tax_input, 'wpp_listing_status.listing_status_sale[0].slug', null);
   let listing_sub_type = _.get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
   let listing_type = _.get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
+  let officePhoneNumber = _.get(post_meta, 'rets_lo1_office_phone1_number[0]');
   let wpp_location_subdivision = _.get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
   let wpp_location_city = _.get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
+  let wpp_import_time = _.get(post_meta, 'wpp_import_time[0]', null);
 
   return {
     address,
@@ -56,6 +59,8 @@ let singlePropertyData = (data) => {
     elementary_school: _.get(elementary_school, '[0].name', null),
     id,
     images,
+    mlsId,
+    officePhoneNumber,
     post_date,
     post_content,
     post_modified,
@@ -77,6 +82,7 @@ let singlePropertyData = (data) => {
     listing_status_sale,
     listing_type,
     listing_sub_type,
+    wpp_import_time,
     ...data
   }
 }
