@@ -1,40 +1,9 @@
-
 import FormFetcher from '../../Forms/FormFetcher.jsx';import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 import JSONSchemaFormContainer from '../../Forms/JSONSchemaFormContainer.jsx';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
-let getAgentImage = (agentObject) => _.get(agentObject, 'data.images[0][0]', null);
-let getAgentName = (agentObject) => _.get(agentObject, 'data.display_name', null);
-let getAgentPhone = (agentObject) => _.get(agentObject, 'data.meta.phone_number[0]', null);
-
-let findAgentById = (agents, agentId) => {
-  let agent = {};
-  let foundAgent = agents.filter(function(a) {
-    return a.data.meta.triangle_mls_id ? a.data.meta.triangle_mls_id[0] === agentId : null;
-  });
-  if (foundAgent.length) {
-    agent.image = getAgentImage(foundAgent[0]);
-    agent.name = getAgentName(foundAgent[0]);
-    agent.phone = getAgentPhone(foundAgent[0]);;
-  }
-  return agent;
-}
-
-let findRandomAgentBySaleType = (agents, saleType) => {
-  let agent = {};
-  let agentsBySaleTypes = agents.filter(function(a) {
-    return a.data.meta.sale_type ? a.data.meta.sale_type[0].includes(saleType) : null;
-  });
-  if (agentsBySaleTypes.length) {
-    let randomAgent = agentsBySaleTypes[Math.floor(Math.random() * agentsBySaleTypes.length)];
-    agent.image = getAgentImage(randomAgent);;
-    agent.name = getAgentName(randomAgent);;
-    agent.phone = getAgentPhone(randomAgent);
-  }
-  return agent;
-}
+import Util from '../../Util.jsx';
 
 let hidePartsOfPhoneNumber = (phoneNumber) => {
   if (phoneNumber.includes('-')) {
@@ -55,39 +24,20 @@ let formIdMapper = {
 
 class AgentCardForms extends Component {
   static propTypes = {
+    agent: PropTypes.object,
     address: PropTypes.string,
-    agents: PropTypes.array.isRequired,
     correctScenario: PropTypes.string.isRequired,
     listingOffice: PropTypes.string,
-    RETSAgent: PropTypes.object.isRequired,
     rdcListing: PropTypes.bool.isRequired,
     saleType: PropTypes.string.isRequired
-  }
-
-  static defaultProps = {
-    RETSAgent: {}
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      agent: {},
-      displayedPhoneNumber: ''
+      displayedPhoneNumber: '',
+      realNumber: ''
     };
-  }
-
-  correctAgent = (agentId, agents, scenario) => {
-    let agent;
-    if (scenario === 'rentRDC') {
-      agent = findAgentById(agents, agentId);
-    } else if (scenario === 'rentNOTRdc') {
-      agent = this.props.RETSAgent;
-    } else if (scenario === 'saleRDC') {
-      agent = findAgentById(agents, agentId);
-    } else if (scenario === 'saleNotRdc') {
-      agent = findRandomAgentBySaleType(agents, 'Buy');
-    }
-    return agent;
   }
 
   revealPhoneNumber = () => {
@@ -96,50 +46,56 @@ class AgentCardForms extends Component {
     })
   }
 
-  componentDidMount = () => {
-    //figure out the correct agent and which scenario here
-    let agent = {};
+  componentDidMount() {
+    let {
+      agent
+    } = this.props;
+    this.setAgentData();
+  }
+
+  componentWillReceiveProps() {
+    if (this.props.agent && Object.keys(this.props.agent).length) {
+      this.setAgentData();
+    }
+  }
+
+  setAgentData = () => {
+    let {
+      agent,
+      correctScenario
+    } = this.props;
     let realNumber;
     let displayedPhoneNumber;
-    if (this.props.RETSAgent.id && this.props.agents && this.props.agents.length) {
-      agent = this.correctAgent(
-        this.props.RETSAgent.id,
-        this.props.agents,
-        this.props.correctScenario
-      );
-      if (this.props.correctScenario === 'rentNOTRdc') {
-        displayedPhoneNumber = agent.phone;
-        realNumber = agent.phone;
-      } else {
-        displayedPhoneNumber = agent.phone ? hidePartsOfPhoneNumber(agent.phone) : null;
-        realNumber = agent.phone;
-      }
+    
+    if (correctScenario === 'rentNOTRdc') {
+      displayedPhoneNumber = agent.phone;
+      realNumber = agent.phone;
+    } else {
+      displayedPhoneNumber = agent.phone ? hidePartsOfPhoneNumber(agent.phone) : null;
+      realNumber = agent.phone;
     }
+
     this.setState({
-      agent,
       displayedPhoneNumber: displayedPhoneNumber,
-      realNumber: realNumber,
-      scenario: this.props.correctScenario,
+      realNumber: realNumber
     });
   }
 
   render() {
     let {
       address,
-      agents,
+      agent,
+      correctScenario,
       listingOffice,
       selectedTab,
       setAgentCardTab
     } = this.props;
-    
-    let {
-      agent,
-      scenario
-    } = this.state;
     let defaultAgentImage = `${bundle.static_images_url}user-placeholder-image.png`;
     let contactElement;
 
-    switch(scenario) {
+    let listingOfficeValue = Util.decodeHtml(listingOffice);
+
+    switch(correctScenario) {
       case 'rentRDC':
         contactElement = (
           <div>
@@ -162,7 +118,7 @@ class AgentCardForms extends Component {
       case 'rentNOTRdc':
         contactElement = (
           <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
-            <p className={`${Lib.THEME_CLASSES_PREFIX}agent-card-description`}>Please contact {agent.name} at {listingOffice} direct by phone at {agent.phone}</p>
+            <p className={`${Lib.THEME_CLASSES_PREFIX}agent-card-description`}>Please contact {agent.name} at {listingOfficeValue} direct by phone at {agent.phone}</p>
           </div>
         )
         break;
@@ -196,7 +152,7 @@ class AgentCardForms extends Component {
             <img className={`d-flex align-self-start mr-3 ${Lib.THEME_CLASSES_PREFIX}agent-photo`} src={agent.image || defaultAgentImage} alt="Agent photo" width="100" />
               <div className={`media-body ${Lib.THEME_CLASSES_PREFIX}media-body`}>
                 <h5 className="mt-0">{agent.name}</h5>
-                <p className={`${Lib.THEME_CLASSES_PREFIX}primary-color ${Lib.THEME_CLASSES_PREFIX}secondary-text`}>Red Door Company</p>
+                <p className={`${Lib.THEME_CLASSES_PREFIX}primary-color ${Lib.THEME_CLASSES_PREFIX}secondary-text`}>{listingOfficeValue}</p>
                 <div className={`${Lib.THEME_CLASSES_PREFIX}phone-number`} onClick={this.revealPhoneNumber}>
                   {this.state.displayedPhoneNumber}
                 </div>

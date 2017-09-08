@@ -44,7 +44,7 @@ class PropertyInfoTabs extends Component {
   constructor(props) {
 		super(props);
 		this.state = {
-			selectedTab: 'Rooms'
+			selectedTab: 'All'
 		}
   }
   
