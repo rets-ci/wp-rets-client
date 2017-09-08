@@ -27,6 +27,10 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
           $this->connectors[] = new WPML();
         }
 
+        if ( function_exists( 'ud_get_wp_property' ) ) {
+          $this->connectors[] = new WPProperty();
+        }
+
       }
 
     }
