@@ -17,6 +17,8 @@ import scrollToElement from 'scroll-to-element';
 import ImageMixer from './Components/ImageMixer.jsx';
 import Util from '../Util.jsx';
 
+let commonFormat = 'YYYY-MM-D hh:mm:ss';
+
 let getAgentImage = (agentObject) => _.get(agentObject, 'data.images[0][0]', null);
 let getAgentName = (agentObject) => _.get(agentObject, 'data.display_name', null);
 let getAgentPhone = (agentObject) => _.get(agentObject, 'data.meta.phone_number[0]', null);
@@ -48,8 +50,8 @@ let findRandomAgentBySaleType = (agents, saleType) => {
   return agent;
 }
 
-let getLastUpdated = lastUpdated => {
-  let parsed = moment.utc(lastUpdated, 'YYYY-MM-D hh:mm:ss');
+let getLastUpdated = (lastUpdated, commonFormat) => {
+  let parsed = moment.utc(lastUpdated);
   if (!parsed.isValid()) {
     console.warn(`date ${lastUpdated} could not be parsed`);
     return false;
@@ -58,14 +60,14 @@ let getLastUpdated = lastUpdated => {
   }
 };
 
-let daysPassedSincePostedDate = postDate => {
-  let parsed = moment.utc(postDate, 'YYYY-MM-D hh:mm:ss');
+let daysPassedSincePostedDate = (postDate, commonFormat) => {
+  let parsed = moment.utc(postDate);
   if (!parsed.isValid()) {
     console.warn(`date ${postDate} could not be parsed`);
     return false;
   } else {
     let now = moment.utc();
-    return now.from(parsed);
+    return now.diff(parsed, 'days');
   }
 };
 
@@ -147,6 +149,7 @@ class Single extends Component {
       post_content,
       post_date,
       post_title,
+      post_modified,
       rets_city,
       rets_high_school,
       rets_state,
@@ -164,7 +167,8 @@ class Single extends Component {
       listing_status_sale,
       listing_type,
       listing_sub_type,
-      officePhoneNumber
+      officePhoneNumber,
+      wpp_import_time
     } = this.props;
 
     let agent;
@@ -186,10 +190,15 @@ class Single extends Component {
       );
     }
 
-    let daysOnWebsite = daysPassedSincePostedDate(post_date);
-    let lastUpdated = getLastUpdated(post_date);
+    let daysOnWebsite = daysPassedSincePostedDate(post_date, commonFormat);
+    let lastUpdated = getLastUpdated(post_date, commonFormat);
 
     let info_box = `<li>${listing_sub_type}</li>`;
+    let post_modified_moment = moment.utc(post_modified, commonFormat);
+    let wpp_import_time_moment = moment.utc(wpp_import_time, commonFormat);
+
+    let lastCheckedMoment = wpp_import_time ? (wpp_import_time_moment.isSameOrAfter(post_modified_moment) ? wpp_import_time_moment : post_modified_moment) : post_modified_moment;
+    let lastChecked = lastCheckedMoment.fromNow();
 
     if (rets_list_price) {
       info_box += `<li>${rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>`;
@@ -266,7 +275,7 @@ class Single extends Component {
           <div className="row mb-5">
             <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
               <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Last Checked</p>
-              <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>1 minute ago</p>
+              <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>{lastChecked}</p>
             </div>
             {lastUpdated &&
             <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
@@ -372,13 +381,13 @@ class Single extends Component {
                   <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Data Source: </span>  Triangle MLS Inc.
                 </li>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Checked: </span> N/A
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Checked: </span> {lastChecked}
                 </li>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Updated: </span> N/A
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Updated: </span> {lastUpdated}
                 </li>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Days on site: </span> N/A
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Days on Site: </span> {daysOnWebsite}
                 </li>
                 <li>
                   <img src={bundle.static_images_url + "triangle-mls-logo-large.gif"} alt="Buy"/>

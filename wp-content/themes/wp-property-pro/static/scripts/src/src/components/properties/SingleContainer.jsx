@@ -45,6 +45,7 @@ let singlePropertyData = (data) => {
   let officePhoneNumber = _.get(post_meta, 'rets_lo1_office_phone1_number[0]');
   let wpp_location_subdivision = _.get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
   let wpp_location_city = _.get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
+  let wpp_import_time = _.get(post_meta, 'wpp_import_time[0]', null);
 
   return {
     address,
@@ -81,6 +82,7 @@ let singlePropertyData = (data) => {
     listing_status_sale,
     listing_type,
     listing_sub_type,
+    wpp_import_time,
     ...data
   }
 }
