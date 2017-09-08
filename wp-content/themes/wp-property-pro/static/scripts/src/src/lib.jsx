@@ -3,6 +3,7 @@ import _ from 'lodash';
 export const Lib = {
   ADD_MAP_ACTION: 'ADD_MAP',
   ADD_MARKER_ACTION: 'ADD_MARKER',
+  COMMON_DATE_FORMAT_1: 'YYYY-MM-D hh:mm:ss',
   DEFAULT_MAP_COORDINATES: {
     lat: 36.0017455,
     lng: -79.0249944
