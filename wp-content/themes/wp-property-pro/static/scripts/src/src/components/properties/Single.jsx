@@ -17,6 +17,37 @@ import scrollToElement from 'scroll-to-element';
 import ImageMixer from './Components/ImageMixer.jsx';
 import Util from '../Util.jsx';
 
+let getAgentImage = (agentObject) => _.get(agentObject, 'data.images[0][0]', null);
+let getAgentName = (agentObject) => _.get(agentObject, 'data.display_name', null);
+let getAgentPhone = (agentObject) => _.get(agentObject, 'data.meta.phone_number[0]', null);
+
+let findAgentById = (agents, agentId) => {
+  let agent = {};
+  let foundAgent = agents.filter(function(a) {
+    return a.data.meta.triangle_mls_id ? a.data.meta.triangle_mls_id[0] === agentId : null;
+  });
+  if (foundAgent.length) {
+    agent.image = getAgentImage(foundAgent[0]);
+    agent.name = getAgentName(foundAgent[0]);
+    agent.phone = getAgentPhone(foundAgent[0]);;
+  }
+  return agent;
+}
+
+let findRandomAgentBySaleType = (agents, saleType) => {
+  let agent = {};
+  let agentsBySaleTypes = agents.filter(function(a) {
+    return a.data.meta.sale_type ? a.data.meta.sale_type[0].includes(saleType) : null;
+  });
+  if (agentsBySaleTypes.length) {
+    let randomAgent = agentsBySaleTypes[Math.floor(Math.random() * agentsBySaleTypes.length)];
+    agent.image = getAgentImage(randomAgent);;
+    agent.name = getAgentName(randomAgent);;
+    agent.phone = getAgentPhone(randomAgent);
+  }
+  return agent;
+}
+
 let getLastUpdated = lastUpdated => {
   let parsed = moment.utc(lastUpdated, 'YYYY-MM-D hh:mm:ss');
   if (!parsed.isValid()) {
@@ -58,6 +89,27 @@ class Single extends Component {
     setAgentCardTab: PropTypes.func
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      agent: {}
+    };
+  }
+
+  correctAgent = (RETSAgent, agents, scenario) => {
+    let agent;
+    if (scenario === 'rentRDC') {
+      agent = findAgentById(agents, RETSAgent.id);
+    } else if (scenario === 'rentNOTRdc') {
+      agent = RETSAgent;
+    } else if (scenario === 'saleRDC') {
+      agent = findAgentById(agents, RETSAgent.id);
+    } else if (scenario === 'saleNotRdc') {
+      agent = findRandomAgentBySaleType(agents, 'Buy');
+    }
+    return agent;
+  }
+
   correctScenario = (saleType, rdcListing) => {
     let scenario;
     if (saleType === 'rent' && rdcListing) {
@@ -81,17 +133,17 @@ class Single extends Component {
 
   render() {
     let {
-      agentId,
-      agentName,
-      agentPhoneNumber,
       address,
+      address2,
       address_unit,
+      agents,
       all,
       baths,
       beds,
       city_state,
       elementary_school,
       images,
+      mlsId,
       post_content,
       post_date,
       post_title,
@@ -112,12 +164,30 @@ class Single extends Component {
       listing_status_sale,
       listing_type,
       listing_sub_type,
+      officePhoneNumber
     } = this.props;
+
+    let agent;
+
+    let RETSAgent = {
+      id: this.props.agentId,
+      name: this.props.agentName,
+      phone: this.props.agentPhoneNumber,
+    };
+    let saleType = listing_status_sale.replace('for-', '');
+    let rdcListing = listing_office === 'Red Door Company';
+    let correctScenario = this.correctScenario(saleType, rdcListing);
+
+    if (RETSAgent.id && agents && agents.length) {
+      agent = this.correctAgent(
+        RETSAgent,
+        agents,
+        correctScenario
+      );
+    }
 
     let daysOnWebsite = daysPassedSincePostedDate(post_date);
     let lastUpdated = getLastUpdated(post_date);
-
-    let saleType = listing_status_sale.replace('for-', '');
 
     let info_box = `<li>${listing_sub_type}</li>`;
 
@@ -152,11 +222,6 @@ class Single extends Component {
           info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
         }
     }
-
-    
-    let correctScenario = this.correctScenario(saleType, this.props.rdcListing);
-    
-    let rdcListing = listing_office === 'Red Door Company';
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []}/>
@@ -238,7 +303,7 @@ class Single extends Component {
           {['commercial', 'land'].indexOf(listing_type) < 0 &&
             <div className="row">
               <div className="col-md-12 mb-3">
-                <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Property Details for {post_title}</h5>
+                <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Property Details for {address[0]} {address_unit}</h5>
               </div>
               <div className="col-md-12 mb-3">
                 <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>847 Estes Street is a house for
@@ -259,13 +324,8 @@ class Single extends Component {
             <AgentCardForms
               address={address[0]}
               correctScenario={correctScenario}
-              agents={this.props.agents}
+              agent={agent}
               listingOffice={this.props.listing_office}
-              RETSAgent={{
-                id: agentId,
-                name: agentName,
-                phone: agentPhoneNumber,
-              }}
               rdcListing={rdcListing}
               setAgentCardTab={this.props.setAgentCardTab}
               selectedTab={this.props.selectedAgentCardTab}
@@ -276,14 +336,54 @@ class Single extends Component {
 
           <div className="row">
             <div className="col-md-12 mt-3 mb-3">
-              <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Listing Provider for {post_title}</h5>
+              <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Listing Provider for {address[0]} {address_unit}</h5>
             </div>
 
-            <div className="col-md-12 mb-5">
+            <div className="col-md-12 mb-4">
               <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>
                 Information Not Guaranteed. © Triangle MLS Inc. All rights reserved. Listings marked with a TMLSidx icon
                 are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.
               </p>
+            </div>
+          </div>
+          <div className="row mb-5">
+            <div className={`col-md-6`}>
+              <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Agent:</span> {agent.name}
+                </li>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Agent Phone Number:</span> {agent.phone}
+                </li>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Office:</span> {this.props.listing_office}
+                </li>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Office Phone Number:</span> {officePhoneNumber}
+                </li>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>MLS ID:</span> {mlsId}
+                </li>
+              </ul>
+            </div>
+            <div className="col-md-6">
+              <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Data Source: </span>  Triangle MLS Inc.
+                </li>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Checked: </span> N/A
+                </li>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Updated: </span> N/A
+                </li>
+                <li>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Days on site: </span> N/A
+                </li>
+                <li>
+                  <img src={bundle.static_images_url + "triangle-mls-logo-large.gif"} alt="Buy"/>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

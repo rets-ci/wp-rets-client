@@ -67,7 +67,7 @@ class PropertySingleTabContent extends Component {
                   <div key={head + i}>
                     <div className={`${Lib.THEME_CLASSES_PREFIX}property-single-div`} key={head + JSON.stringify(p[head])}>
                       <h3>{head}</h3>
-                      <ul>
+                      <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
                         {getContent(p[head], data)}
                       </ul>
                     </div>

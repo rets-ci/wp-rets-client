@@ -31,6 +31,13 @@ class Util extends React.Component {
     return centerPoint;
   }
 
+  static decodeHtml(html) {
+    let txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
+
   static formatPriceValue(price) {
     return numeral(price).format('$0,0');
   }

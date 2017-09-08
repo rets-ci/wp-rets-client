@@ -2017,14 +2017,14 @@ p.propertypro-gentle-error {
     padding-top: 2.25rem;
 }
 
-.propertypro-property-single-div ul {
+ul.propertypro-details-list {
     list-style-type: none;
     margin: 0;
     padding: 0;
     padding-top: 0.4375rem;
 }
 
-.propertypro-property-single-div ul li {
+ul.propertypro-details-list li {
     border-bottom: 1px solid #e1e5e6;
     font-size: 0.875rem;
     margin: 0;
@@ -2033,19 +2033,17 @@ p.propertypro-gentle-error {
     padding-top: 0.5rem;
 }
 
-.propertypro-property-single-div ul li:first-child {
+ul.propertypro-details-list li:first-child {
     padding-top: 0;
 }
 
-.propertypro-property-single-div ul li:last-child {
+ul.propertypro-details-list li:last-child {
     border-bottom: none;
 }
 
-.propertypro-property-single-div ul li span.propertypro-item-name {
+ul.propertypro-details-list li span.propertypro-item-name {
     color: #8b8c8d;
 }
-
-
 
 /*-----------------------------------------------------------------------------------*/
 /*  Image Mixer
