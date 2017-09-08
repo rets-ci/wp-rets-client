@@ -1,3 +1,9 @@
+#### 0.3.4
+* Added WP-Property Agent matching for rets.ci listings based on [rets_id] user meta field.
+* Added automatic creation of non-existing WPP attributes and WPP taxonomies on listing creation/updating if specific options enabled. 
+* Added `insert_term` and `insert_terms` methods to Utility class to be used if WP-Property version with methods not available. Fixes issues with wp-property v2.2.0.2.
+* Added `wrc_property_published` handler for updating published properties in a standard way.
+ 
 #### 0.3.2
 * Added `insert_media` API/RPC endpoints and improved `insert_media` utility method to wipe all old attachments.
 * Allowing manual override of `ud_site_id` and `ud_site_secret_token` via constants.
