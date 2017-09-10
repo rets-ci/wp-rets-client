@@ -83,3 +83,23 @@ The new theme uses grunt to build files.
 cd /var/www/wp-content/themes/wp-reddoor
 nohup grunt watch &
 ```
+
+
+
+### Useful Commands
+
+SSH into container:
+```
+ssh usabilitydynamics.www.reddoorcompany.com.latest-v3@ssh.wpcloud.io -i ~/.ssh/github.pem -v
+ssh usabilitydynamics.www.reddoorcompany.com.production@ssh.wpcloud.io -i ~/.ssh/github.pem -v
+```
+
+Purge Cache:
+```
+curl -XPURGE https://c.rabbitci.com/products -H "host:www.reddoorcompany.com"
+```
+
+Show Database Tables:
+```
+wp db size --tables --all-tables --size_format=mb
+```
