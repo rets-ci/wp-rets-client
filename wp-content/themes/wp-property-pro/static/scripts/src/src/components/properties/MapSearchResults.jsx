@@ -154,6 +154,11 @@ class MapSearchResults extends Component {
     if (nextProps.displayedResults.length > 0 && !filters.selected_property && isMobile) {
       this.updateSelectedProperty(nextProps.displayedResults[0]._id);
     }
+    if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type) {
+      // this fixes the issue where changing "search_type" would keep the scrolling of the previous search type
+      let listingSidebar = this.listingSidebar;
+      listingSidebar.scrollTop = 0;
+    }
   }
 
   componentWillUnmount() {
@@ -294,7 +299,7 @@ class MapSearchResults extends Component {
           </div>
 
           { (!isMobile || !this.state.mapDisplay) &&
-            <div className={`col-sm-6 col-lg-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`}>
+            <div className={`col-sm-6 col-lg-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
               <SearchFilterDescriptionText
                 bathrooms={searchFilters.bathrooms}
                 bedrooms={searchFilters.bedrooms}
