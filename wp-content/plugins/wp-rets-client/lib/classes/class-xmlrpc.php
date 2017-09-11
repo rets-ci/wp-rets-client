@@ -872,7 +872,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         if( is_wp_error( $_post_id ) ) {
           ud_get_wp_rets_client()->write_log( 'wp_insert_post error <pre>' . print_r( $_post_id, true ) . '</pre>', 'error' );
-          ud_get_wp_rets_client()->write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>', 'error' );
+          //ud_get_wp_rets_client()->write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>', 'error' );
 
           return array(
             "ok" => false,
@@ -998,7 +998,7 @@ namespace UsabilityDynamics\WPRETSC {
           'createWPPTerms' => false
         ));
 
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.updateProperty] request.', 'debug' );
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.updateProperty] request.', 'info' );
 
         //if( !empty( $post_data[ 'ID' ] ) ) {}
 
@@ -1043,6 +1043,10 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         ud_get_wp_rets_client()->write_log( 'Property update finished, clearing cache.', 'debug' );
+
+        //if( function_exists( 'ep_sync_post' ) ) {
+        //  ep_sync_post( $post_data[ 'ID' ] );
+        //}
 
         self::flush_cache( $post_data[ 'ID' ] );
 
@@ -1316,9 +1320,9 @@ namespace UsabilityDynamics\WPRETSC {
        * @return array
        */
       public function delete_property( $args ) {
-        global $wp_xmlrpc_server, $wpdb;
+        global $wp_xmlrpc_server, $wpdb, $wrc_rets_id;
 
-        add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
+        add_filter( 'ep_sync_delete_permissions_bypass', '__return_true', 99, 2 );
 
         $data = self::parseRequest( $args );
         if( !empty( $wp_xmlrpc_server->error ) ) {
@@ -1352,6 +1356,9 @@ namespace UsabilityDynamics\WPRETSC {
         // wp_defer_term_counting( true );
 
         ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
+
+        // We need it to flush custom object cache
+        $wrc_rets_id = get_post_meta( $post_id, 'rets_id', true );
 
         do_action( 'wrc_before_property_deleted', $post_id );
 
@@ -1402,6 +1409,7 @@ namespace UsabilityDynamics\WPRETSC {
         global $wp_xmlrpc_server, $wpdb;
 
         add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
+        add_filter( 'ep_sync_delete_permissions_bypass', '__return_true', 99, 2 );
 
         $data = self::parseRequest( $args );
 
@@ -1823,14 +1831,22 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
-       * Flush Object Cache for particular property
+       * Flush Object Caches related to particular property
        *
        * @param int $post_id
        */
       static protected function flush_cache( $post_id ) {
+        global $wrc_rets_id;
+
         ud_get_wp_rets_client()->write_log( "Flushing object cache for [" . $post_id . "] post_id", 'info' );
         clean_post_cache( $post_id );
-        do_action( 'wprc::xmlrpc::on_flush_cache', $post_id );
+        do_action( 'wrc::xmlrpc::on_flush_cache', $post_id );
+
+        if( !empty( $wrc_rets_id ) ) {
+          ud_get_wp_rets_client()->write_log( "Flushing object cache [mls-id-" . $wrc_rets_id . "]", 'info' );
+          wp_cache_delete( 'mls-id-' . $wrc_rets_id, 'wp-rets-client' );
+        }
+
       }
 
     }
