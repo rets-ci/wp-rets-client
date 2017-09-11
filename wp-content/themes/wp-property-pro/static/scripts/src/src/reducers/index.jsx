@@ -8,6 +8,7 @@ import headerSearch from './headerSearch.jsx';
 import mapState from './map.jsx';
 import locationModal from './location-modal.jsx';
 import propertiesModal from './propertiesModal.jsx';
+import singleProperty from './single-property.jsx';
 import searchResults from './searchResults.jsx';
 import mapMarkersState from './mapMarkers.jsx';
 import mapSearchResultsLoading from './mapSearchResultsLoading.jsx';
@@ -26,6 +27,7 @@ const propertyProApp = combineReducers({
     mapState,
     locationModal,
     propertiesModal,
+    singleProperty,
     propertyTypeOptions,
     searchResults,
     searchType,

@@ -1,7 +1,6 @@
 import {Lib} from "../lib.jsx";
 
-let defaultFilters = {
-  errorMessage: null,
+let defaultState = {
   isFetching: false,
   items: [],
   modifyType: null,
@@ -11,7 +10,7 @@ let defaultFilters = {
 };
 
 
-const locationModal = (state = defaultFilters, action) => {
+const locationModal = (state = defaultState, action) => {
   switch (action.type) {
     case Lib.TOGGLE_LOCATION_MODAL_ACTION:
       return Object.assign({}, state, {

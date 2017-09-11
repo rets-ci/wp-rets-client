@@ -63,7 +63,7 @@ class PageLayout extends Component {
     // Get page content query
     let self = this;
     nprogress.start();
-    Api.makeRequest({
+    this.APIRequest = Api.makeRequest({
       query: {
         pageType: 'json',
       },
@@ -86,6 +86,10 @@ class PageLayout extends Component {
         });
       }
     });
+  }
+
+  componentWillUnMount() {
+    this.APIRequest.abort();
   }
 
   componentDidMount() {
