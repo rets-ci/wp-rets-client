@@ -33,7 +33,7 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
         /**
          * Flush all object caches (WPP) related to current property
          */
-        add_action( 'wprc::xmlrpc::on_flush_cache', function( $post_id ) {
+        add_action( 'wrc::xmlrpc::on_flush_cache', function( $post_id ) {
           if( method_exists( '\UsabilityDynamics\WPP\Property_Factory', 'flush_cache' ) ) {
             //ud_get_wp_rets_client()->write_log( "Flushing WPP object cache for [" . $post_id . "] psot_id", 'info' );
             \UsabilityDynamics\WPP\Property_Factory::flush_cache( $post_id );
