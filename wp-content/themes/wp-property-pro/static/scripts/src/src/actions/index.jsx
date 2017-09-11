@@ -93,6 +93,25 @@ export const receiveSearchResultsPosts = (query, searchResults, total, append) =
   }
 };
 
+export const requestPropertySingleResult = () => {
+  return {
+    type: Lib.REQUEST_PROPERTY_SINGLE_RESULT_ACTION
+  }
+};
+
+export const requestPropertySingleResetFetching = () => {
+  return {
+    type: Lib.REQUEST_PROPERTY_SINGLE_RESET_FETCHING_ACTION
+  }
+};
+
+export const receivePropertySingleResult = (property) => {
+  return {
+    type: Lib.RECEIVE_PROPERTY_SINGLE_RESULT_ACTION,
+    property: property
+  }
+}
+
 export const setPropertyTypeOptions = options => {
   return {
     type: Lib.SET_PROPERTY_TYPE_OPTIONS_ACTION,

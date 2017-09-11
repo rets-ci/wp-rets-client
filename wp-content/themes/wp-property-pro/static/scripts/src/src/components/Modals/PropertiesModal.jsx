@@ -72,7 +72,7 @@ class PropertiesModal extends Component {
     this.state = {
       filters: {},
       locationModalOpen: false,
-      showAllFilters: true
+      showAllFilters: false
     };
   }
 
@@ -80,7 +80,11 @@ class PropertiesModal extends Component {
     let {
       searchFilters
     } = this.props;
+    let showAllFilters = this.displayAllFilters(searchFilters);
     this.setInitialFilters(searchFilters, defaultFiltervalues);
+    this.setState({
+      showAllFilters
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -99,6 +103,10 @@ class PropertiesModal extends Component {
         this.setInitialFilters(this.props.searchFilters, defaultFiltervalues);
         let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
         this.props.doSearch(Object.assign({}, filters));
+        let showAllFilters = this.displayAllFilters(this.props.searchFilters);
+        this.setState({
+          showAllFilters
+        });
       } else {
         this.props.turnOffPropertiesModalModeInLocationModal();
       }
@@ -107,6 +115,10 @@ class PropertiesModal extends Component {
 
   componentWillUnmount() {
     this.props.turnOffPropertiesModalModeInLocationModal();
+  }
+
+  displayAllFilters(filters) {
+    return !!filters['bathrooms'] || !!filters['sqft'] || !!filters['lotSize'];
   }
 
   setInitialFilters(searchFilters, defaultFiltervalues) {
@@ -145,9 +157,13 @@ class PropertiesModal extends Component {
     this.setState({filters: filters});
   }
 
-  handleSearchTypeSelect = searchType => {
+  handleSearchTypeSelect = (searchType, propertyTypeOptions) => {
+    let modifiedSearchType = searchType === 'Buy' ? 'Sale' : searchType;
+    let options = propertyTypeOptions[modifiedSearchType];
     let filter = {
-      sale_type: saleType
+      property_type: _.get(options, '[0].property_types'),
+      sale_type: _.get(options, '[0].sale_type'),
+      search_type: searchType
     };
     let filters = Object.assign({}, this.state.filters, filter);
     this.setState({filters: filters});
@@ -271,9 +287,9 @@ class PropertiesModal extends Component {
   showFilterBasedOnSaleType(searchType, filter) {
     let filtersSaleTypeMap = {
       'Buy': ['bedrooms', 'bathrooms', 'location', 'lotSize', 'price', 'property_type', 'sqft'],
-      'Commercial': ['location', 'lotSize', 'price', 'sqft'],
+      'Commercial': ['location', 'lotSize', 'price', 'property_type', 'sqft'],
       'Rent': ['bathrooms', 'bedrooms', 'location', 'lotSize', 'price', 'property_type', 'sqft'],
-      'Land': ['location', 'lotSize', 'price']
+      'Land': ['location', 'lotSize', 'price', 'property_type']
     };
     if (!filtersSaleTypeMap[searchType]) {
       return false;
@@ -341,8 +357,8 @@ class PropertiesModal extends Component {
       }
     }
 
-    let modifiedSaleType = sale_type === 'Buy' ? 'Sale' : sale_type;
-    let property_types_options = Object.values(_.get(propertyTypeOptions, `[${modifiedSaleType}][0].property_types`, {})).map(d => ({
+    let modifiedSearchType = search_type === 'Buy' ? 'Sale' : search_type;
+    let property_types_options = Object.values(_.get(propertyTypeOptions, `[${modifiedSearchType}][0].property_types`, {})).map(d => ({
       name: d.split('-').map(e => { return e.charAt(0).toUpperCase() + e.slice(1).toLowerCase(); }).join(' '),
       value: d,
       selected: property_type && property_type.indexOf(d) >= 0
@@ -400,7 +416,7 @@ class PropertiesModal extends Component {
                   <div className="row">
                     <div className="card col-3">
                       <div className="card-img-top mt-4 text-center">
-                        <BuyIcon className={`icon-group ${search_type === 'Buy' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Buy')} />
+                      <BuyIcon className={`icon-group ${search_type === 'Buy' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Buy', this.props.propertyTypeOptions)} />
                       </div>
                       <div className="card-block">
                         <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Buy</h3>
@@ -408,7 +424,7 @@ class PropertiesModal extends Component {
                     </div>
                     <div className="card col-3">
                       <div className="card-img-top mt-4 text-center">
-                        <RentIcon className={`icon-group ${search_type === 'Rent' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Rent')} />
+                        <RentIcon className={`icon-group ${search_type === 'Rent' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Rent', this.props.propertyTypeOptions)} />
                       </div>
                       <div className="card-block">
                         <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Rent</h3>
@@ -416,7 +432,7 @@ class PropertiesModal extends Component {
                     </div>
                     <div className="card col-3">
                       <div className="card-img-top mt-4 text-center">
-                        <CommercialIcon className={`icon-group ${search_type === 'Commercial' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Commercial')} />
+                        <CommercialIcon className={`icon-group ${search_type === 'Commercial' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Commercial', this.props.propertyTypeOptions)} />
                       </div>
                       <div className="card-block">
                         <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Commercial</h3>
@@ -424,7 +440,7 @@ class PropertiesModal extends Component {
                     </div>
                     <div className="card col-3">
                       <div className="card-img-top mt-4 text-center">
-                        <LandIcon className={`icon-group ${search_type === 'Land' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Land')} />
+                        <LandIcon className={`icon-group ${search_type === 'Land' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Land', this.props.propertyTypeOptions)} />
                       </div>
                       <div className="card-block">
                         <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Land</h3>

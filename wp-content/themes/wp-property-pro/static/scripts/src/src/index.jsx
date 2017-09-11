@@ -17,7 +17,6 @@ import shims from './shims.js';
 
 require('swiper-css');
 
-
 // set up all relevant shims and polyfills for various browsers
 shims();
 
@@ -26,10 +25,19 @@ let store = createStore(propertyProApp);
 // Create an enhanced router history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
 
+let onRouteUpdate = () => {
+  window.scrollTo(0, 0);
+  let ourStore = store.getState();
+  if (ourStore.errorMessage) {
+    store.dispatch({
+      type: Lib.ROUTE_CHANGED_ACTION
+    });
+  }
+};
 
 render(
   <Provider store={store}>
-    <Router history={history} onUpdate={() => window.scrollTo(0, 0)}>
+    <Router history={history} onUpdate={onRouteUpdate}>
       <Route path="/" component={PageLayout}>
         <IndexRoute component={Page}/>
         {

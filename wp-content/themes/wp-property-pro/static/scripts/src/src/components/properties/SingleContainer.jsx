@@ -1,7 +1,15 @@
+import {
+  receivePropertySingleResult,
+  requestPropertySingleResetFetching,
+  requestPropertySingleResult,
+  raiseErrorMessage
+} from '../../actions/index.jsx'
 import _ from 'lodash';
 import Api from '../../containers/Api.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Single from './Single.jsx';
 
 let singlePropertyData = (data) => {
@@ -14,7 +22,7 @@ let singlePropertyData = (data) => {
     post_title,
     tax_input,
     wpp_media
-  } = data._source;
+  } = data;
 
   let address = _.get(post_meta, 'rets_address', null);
   let address_unit = _.get(post_meta, 'address_unit', null);
@@ -87,28 +95,19 @@ let singlePropertyData = (data) => {
   }
 }
 
-class SingleContainer extends Component {
 
-  static propTypes = {
-    post: (props, propName, componentName) => {
-      let errors = [];
-      if (props.post && !props.post.post_id) { errors.push('Post ID not defined'); }
-      return errors.length ? new Error(errors.join(', ')) : null; 
-    }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    errorMessage: state.errorMessage,
+    isFetching: state.singleProperty.isFetching,
+    property: state.singleProperty.property
   }
+};
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      property: null
-    };
-  }
-
-  render() {
-    let {
-      post_id : id
-    } = this.props.post;
-    if (!this.state.property) {
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    searchProperty: (id) => {
+      let url = 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=1';
       let query = {
         "query": {
           "bool": {
@@ -118,31 +117,82 @@ class SingleContainer extends Component {
           }
         }
       };
-      let url = 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=1';
+      dispatch(requestPropertySingleResult());
       Api.search(url, query, (err, data) => {
-        if (!_.get(data, 'hits.hits[0]', null)) {
-          this.setState({property: false});
-        } else {
-          this.setState({
-            property: data.hits.hits[0]
-          });
+        if (err) {
+          dispatch(requestPropertySingleResetFetching());
+          return dispatch(raiseErrorMessage(err));
         }
+        if (!_.get(data, 'hits.hits[0]', null)) {
+          dispatch(requestPropertySingleResetFetching());
+          return dispatch(raiseErrorMessage('property not found'));
+        }
+        dispatch(receivePropertySingleResult(_.get(data, 'hits.hits[0]._source')));
       });
     }
-    // property is null = initial state of property, data fetching hasn't even started
-    // property is false = property could not be found
-    // otherwise property is defined
+  }
+}
+
+class SingleContainer extends Component {
+  static propTypes = {
+    agents: PropTypes.array,
+    post: (props, propName, componentName) => {
+      let errors = [];
+      if (props.post && !props.post.post_id) { errors.push('Post ID not defined'); }
+      return errors.length ? new Error(errors.join(', ')) : null; 
+    },
+    errorMessage: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
+    isFetching: PropTypes.bool.isRequired,
+    property: PropTypes.object,
+    searchProperty: PropTypes.func.isRequired
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    if (!_.get(this.props, 'post.post_id', null)) {
+      console.log('property id is not defined');
+    } else {
+      this.props.searchProperty(this.props.post.post_id);
+    }
+  }
+
+  render() {
+    let {
+      agents,
+      post: {
+        errorMessage,
+        isFetching,
+        post_id : id
+      },
+      property
+    } = this.props;
     return (
-      this.state.property !== null ?
-        this.state.property ?
+      !property ?
+        (isFetching ?
+          <LoadingAccordion containerHeight="600px" verticallyCentered={true} /> :
+          (errorMessage ?
+            <ErrorMessage message={errorMessage} />
+          :
+          <p>Request property id {id} could not be found</p>)
+          ):
           <Single
-            agents={this.props.agents}
-            {...singlePropertyData(this.state.property)}
-            all={this.state.property._source}
+            agents={agents}
+            {...singlePropertyData(property)}
+            all={property}
           />
-        : <p>Request property id {id} could not be found</p>
-      : <LoadingCircle containerHeight="600px" verticallyCentered={true} />);
+
+    );
   }
 };
 
-export default SingleContainer;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SingleContainer);

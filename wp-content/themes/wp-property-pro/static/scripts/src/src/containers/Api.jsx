@@ -402,13 +402,11 @@ class Api {
       });
     }
 
-    if (params.property_type && params.property_type.length) {
-      query.bool.must.push({
-        "terms": {
-          "terms.wpp_listing_type.slug": params.property_type
-        }
-      });
-    }
+    query.bool.must.push({
+      "terms": {
+        "terms.wpp_listing_type.slug": params.property_type || []
+      }
+    });
 
     if (params.bathrooms) {
       query.bool.must.push({
