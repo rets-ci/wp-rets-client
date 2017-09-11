@@ -61,11 +61,17 @@ Connect to MySQL cluster:
 mysql --host=api.wpcloud.io --port=13038 --user=rdc --password=wpcvdvwyocbhnrfj
 ```
 
-Setup development tables:
+Setup database tables tables:
 ```mysql
-create database `www.reddoorcompany.com.develop`;
-GRANT USAGE on `www.reddoorcompany.com.develop`.* to `rdc`@`%` IDENTIFIED BY "wpcvdvwyocbhnrfj";  
-GRANT ALL PRIVILEGES on `www.reddoorcompany.com.develop`.* to `rdc`@`%`;
+create database `latest-v3`;
+GRANT USAGE on `latest-v3`.* to `rdc`@`%` IDENTIFIED BY "wpcvdvwyocbhnrfj";  
+GRANT ALL PRIVILEGES on `latest-v3`.* to `rdc`@`%`;
+create database `production-v2`;
+GRANT USAGE on `production-v2`.* to `rdc`@`%` IDENTIFIED BY "wpcvdvwyocbhnrfj";  
+GRANT ALL PRIVILEGES on `production-v2`.* to `rdc`@`%`;
+create database `production-v3`;
+GRANT USAGE on `production-v3`.* to `rdc`@`%` IDENTIFIED BY "wpcvdvwyocbhnrfj";  
+GRANT ALL PRIVILEGES on `production-v3`.* to `rdc`@`%`;
 ```
 
 ### Update MySQL Data on Staging/Latest
@@ -82,4 +88,24 @@ The new theme uses grunt to build files.
 ```
 cd /var/www/wp-content/themes/wp-reddoor
 nohup grunt watch &
+```
+
+
+
+### Useful Commands
+
+SSH into container:
+```
+ssh usabilitydynamics.www.reddoorcompany.com.latest-v3@ssh.wpcloud.io -i ~/.ssh/github.pem -v
+ssh usabilitydynamics.www.reddoorcompany.com.production@ssh.wpcloud.io -i ~/.ssh/github.pem -v
+```
+
+Purge Cache:
+```
+curl -XPURGE https://c.rabbitci.com/products -H "host:www.reddoorcompany.com"
+```
+
+Show Database Tables:
+```
+wp db size --tables --all-tables --size_format=mb
 ```

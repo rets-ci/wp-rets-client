@@ -1,5 +1,6 @@
 .htaccess
 *.sql
+*.sql.gz
 legacy/
 dev/
 /wp-content/plugins/wordfence/tmp

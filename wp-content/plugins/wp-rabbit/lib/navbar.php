@@ -11,11 +11,39 @@ namespace RabbitCI\Navbar {
 
   add_action( 'admin_bar_menu', array( 'RabbitCI\Navbar\Actions', 'admin_bar_menu' ), 35 );
 
+  class Utility {
+    
+    /**
+     * Get Git Branch from env-var or disk.
+     * 
+     * @author potanin@UD
+     */
+    public static function get_git_branch() {
+      
+      if( isset( $_SERVER['GIT_BRANCH'] ) ) {
+        return $_SERVER['GIT_BRANCH'];
+      }
+      
+			if( !file_exists( ABSPATH . '.git/HEAD' ) ) {
+				return null;
+			}
+			
+			$_head = str_replace( array( 'ref: refs/heads/' ), '', file_get_contents( ABSPATH . '.git/HEAD' ) );
+
+			if( $_head !== '' ) {
+				return trim($_head);
+			}
+			
+			return null;
+			
+    }
+    
+  }
 
   class Filters {}
 
   class Actions {
-
+    
     /**
      * Render Backend/Container Info
      *
@@ -52,28 +80,36 @@ namespace RabbitCI\Navbar {
         'title'		=> '<span class="ab-icon dashicons" style=""><img width="27" height="17" alt="rabbit.ci" src="' . $_image_data . '" /></span>'
       ));
 
+      
       $wp_admin_bar->add_node( array(
         'id' => 'wp-rabbit-inner',
         'parent' => 'wp-rabbit',
-        'title' => sprintf( __( 'Container: %s' ), $_backend ),
+        'title' => sprintf( __( 'Container: %s' ), isset( $_backend ) && !$_backend ? $_backend : 'Unknown' ),
+        'href' => '#'
+      ));
+      
+      if( Utility::get_git_branch() ) {
+        $wp_admin_bar->add_node( array(
+          'id' => 'wp-rabbit-inner-branch',
+          'parent' => 'wp-rabbit',
+          'title' => sprintf( __( 'Branch: %s' ), Utility::get_git_branch() ),
+          'href' => '#'
+        ) );
+      }
+
+      $wp_admin_bar->add_node( array(
+        'id' => 'wp-rabbit-inner-db-host',
+        'parent' => 'wp-rabbit',
+        'title' => sprintf( __( 'Database Host: %s' ), DB_HOST),
         'href' => '#'
       ));
 
       $wp_admin_bar->add_node( array(
         'id' => 'wp-rabbit-inner-db',
         'parent' => 'wp-rabbit',
-        'title' => sprintf( __( 'Database: %s' ), DB_NAME),
+        'title' => sprintf( __( 'Database Name: %s' ), DB_NAME),
         'href' => '#'
       ));
-
-      if( isset( $_SERVER['GIT_BRANCH'] ) ) {
-        $wp_admin_bar->add_node( array(
-          'id' => 'wp-rabbit-inner-branch',
-          'parent' => 'wp-rabbit',
-          'title' => sprintf( __( 'Branch: %s' ), $_SERVER['GIT_BRANCH'] ),
-          'href' => '#'
-        ) );
-      }
 
       if( wp_get_cache_type() !== 'Default' ) {
 
