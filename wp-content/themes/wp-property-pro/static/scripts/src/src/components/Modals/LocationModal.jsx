@@ -103,6 +103,9 @@ class LocationModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.open && this.props.open !== nextProps.open) {
+      this.setState({
+        searchValue: ''
+      });
       this.props.topQuery(nextProps.errorMessage);
     }
   }
