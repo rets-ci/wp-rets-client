@@ -9,6 +9,7 @@ $filtered_property_types = apply_filters( 'wpp::property_types', $wp_properties[
 $property_type_settings = array();
 $hidden_attributes_do_action    = array();
 $inherited_attributes_do_action = array();
+$property_type_settings_do_action = array();
 
 foreach ($filtered_property_types as $slug => $label) {
   ob_start();
@@ -40,7 +41,7 @@ $wpp_property_types_variables = apply_filters( 'wpp::settings::developer::types'
   <?php echo json_encode($wpp_property_types_variables);?>
 </script>
 <h3><?php printf( __( '%1s Types', ud_get_wp_property()->domain ), WPP_F::property_label() ); ?></h3>
-<table id="wpp_inquiry_property_types" class="ud_ui_dynamic_table widefat last_delete_row" allow_random_slug="true">
+<table id="wpp_inquiry_property_types" class="<?php echo apply_filters( 'wpp::css::wpp_inquiry_property_types::classes', 'ud_ui_dynamic_table widefat last_delete_row' ); ?>" allow_random_slug="true">
   <thead>
   <tr>
     <th><?php _e( 'Type', ud_get_wp_property()->domain ) ?></th>
