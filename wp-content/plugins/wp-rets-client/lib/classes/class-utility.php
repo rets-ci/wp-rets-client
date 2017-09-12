@@ -153,6 +153,7 @@ namespace UsabilityDynamics\WPRETSC {
           }
           $result['meta'][ ( $term_data['_type'] . '-' . $_meta_key ) ] = $meta_value;
         }
+
         $_term_update_detail = array_filter(array(
           'name' => isset( $term_data['name'] ) ? $term_data['name'] : null,
           'slug' => isset( $term_data['slug'] ) ? $term_data['slug'] : null,
@@ -160,29 +161,42 @@ namespace UsabilityDynamics\WPRETSC {
           'description' => isset( $term_data['description'] ) ? $term_data['description'] : null,
           'term_group' => isset( $term_data['term_group'] ) ? $term_data['term_group'] : null
         ));
-        if( $_exists && isset( $_exists['name'] ) && isset( $_term_update_detail[ 'name' ] ) && $_exists['name'] == $_term_update_detail[ 'name' ]) {
+
+        // If term already exists, we allow to use already existing name
+        // So, administrator has ability to re-name Term label
+        // Note: it makes sense ONLY if term has system '_id'
+        if( $_exists && isset( $_exists['name'] ) && isset( $_term_update_detail[ 'name' ] ) ) {
           unset( $_term_update_detail['name']);
         }
-        if( $_exists && isset( $_exists['slug'] ) && isset( $_term_update_detail[ 'slug' ] ) && $_exists['slug'] == $_term_update_detail[ 'slug' ]) {
+
+        // If term already exists, we allow to use already existing slug
+        // So, administrator has ability to re-name Term slug
+        // Note: it makes sense ONLY if term has system '_id'
+        if( $_exists && isset( $_exists['slug'] ) && isset( $_term_update_detail[ 'slug' ] ) ) {
           unset( $_term_update_detail['slug']);
         }
+
         if( $_exists && isset( $_exists['description'] ) &&  isset( $_term_update_detail[ 'description' ] ) && $_exists['description'] == $_term_update_detail[ 'description' ]) {
           unset( $_term_update_detail['description']);
         }
+
         if( $_exists && isset( $_exists['parent'] ) && isset( $_term_update_detail[ 'parent' ] ) && $_exists['parent'] == $_term_update_detail[ 'parent' ]) {
           unset( $_term_update_detail['parent']);
         }
+
         // Update other fields.
         if( !empty( $_term_update_detail ) ) {
           wp_update_term( $term_data['term_id'], $term_data['_taxonomy'], array_filter( $_term_update_detail ));
           $result['updated'] = array_merge( $result['updated'], $_term_update_detail );
         }
+
         if( isset( $result['updated'] ) && !empty( $result['updated'] ) ) {
           $result['_updated'] = time();
           update_term_meta( $term_data['term_id'], '_updated', $result['_updated'] );
           //error_log( '$result ' . print_r( $result, true ));
           //error_log( '$_existings_metadata ' . print_r( $_existings_metadata, true ));
         }
+
         return array_filter( $result );
       }
 
