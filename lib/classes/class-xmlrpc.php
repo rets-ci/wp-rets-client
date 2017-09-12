@@ -1334,7 +1334,7 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
         }
 
-        ud_get_wp_rets_client()->write_log( 'Have wpp.deleteProperty request.', 'info' );
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.deleteProperty].', 'info' );
 
         if( !$post_id || !is_numeric( $post_id ) ) {
           ud_get_wp_rets_client()->write_log(  'No post ID provided', 'info' );
@@ -1417,7 +1417,7 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
         }
 
-        ud_get_wp_rets_client()->write_log( 'Have [wpp.trashProperty] request. Post id: ' . $post_id, 'info' );
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.trashProperty]. Post id: ' . $post_id, 'info' );
 
         if( !$post_id || !is_numeric( $post_id ) ) {
           ud_get_wp_rets_client()->write_log(  'No post ID provided', 'info' );
@@ -1425,11 +1425,13 @@ namespace UsabilityDynamics\WPRETSC {
           return $response;
         }
 
-        ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]." );
+        ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id].", 'info' );
 
         $wpdb->update( $wpdb->posts, array( 'post_status' => 'trash' ), array( 'ID' => $post_id ) );
 
-        ud_get_wp_rets_client()->write_log( "Property [$post_id] trashed." );
+        ud_get_wp_rets_client()->write_log( $wpdb->last_error, 'info' );
+
+        ud_get_wp_rets_client()->write_log( "Property [$post_id] trashed.", 'info' );
 
         $response['time' ] = timer_stop();
 
