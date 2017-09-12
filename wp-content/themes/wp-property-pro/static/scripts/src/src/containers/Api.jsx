@@ -6,7 +6,7 @@ import Util from '../components/Util.jsx';
 class Api {
 
   static getPropertySearchRequestURL(size = Lib.PROPERTY_PER_PAGE) {
-    return 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=' + size;
+    return 'https://' + bundle.elasticsearch_host + '/v3/search/advanced?size=' + size;
   }
 
   static getAggregationsFields() {
@@ -577,7 +577,7 @@ class Api {
     let query = _.get(data, 'query', null);
 
     // @TODO Temporary hack for changing ElasticPress index
-    if (_.get(data, 'url').indexOf('newSearch') != -1 && !_.isEmpty(_.get(bundle, 'ep_index_name', null))) {
+    if (_.get(data, 'url').indexOf('search/advanced') != -1 && !_.isEmpty(_.get(bundle, 'ep_index_name', null))) {
       query.custom_ep_index = _.get(bundle, 'ep_index_name');
     }
 
