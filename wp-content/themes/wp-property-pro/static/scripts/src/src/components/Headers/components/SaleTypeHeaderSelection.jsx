@@ -56,7 +56,7 @@ class SaleTypeHeaderSelection extends Component {
     if (locationTerm) {
       modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = [{'wpp_location': locationTerm}];
     }
-    modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['property_type'] = propertyTypes;
+    modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['property_type'] = propertyTypes.map(p => p.slug);
     
     let queryParam = decodeURIComponent(qs.stringify(modifiedQueryParams));
     url.setSearch(queryParam);

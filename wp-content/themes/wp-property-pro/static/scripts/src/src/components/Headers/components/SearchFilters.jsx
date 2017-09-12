@@ -8,7 +8,6 @@ import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {property_type as propertyTypeOptions} from '../../staticFilters.js';
 import Util from '../../Util.jsx';
 import {isEqual} from 'lodash';
 import qs from 'qs';
@@ -84,14 +83,6 @@ class searchFilters extends Component {
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: priceFilter.start,
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: priceFilter.to,
-    };
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.updateURLWithQueryParam(queryParam);
-  }
-
-  handlePropertyTypeRemove(propertyFilter) {
-    let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_type]']: propertyFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
     this.updateURLWithQueryParam(queryParam);
