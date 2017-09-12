@@ -199,7 +199,10 @@ namespace UsabilityDynamics {
       $delimiter = '-';
 
       $_property_types = array_map(function($t){
-        return $t->slug;
+        return [
+          'slug' => $t->slug,
+          'title' => $t->name
+        ];
       }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
         if($t->parent){
           $parent_term = get_term($t->parent);
@@ -225,7 +228,10 @@ namespace UsabilityDynamics {
         else {
           $term = get_term_by('slug', $label, $taxonomy);
           $types = array_map(function ($id) use ($taxonomy) {
-            return get_term_by('id', $id, $taxonomy)->slug;
+            return [
+              'slug' => get_term_by('id', $id, $taxonomy)->slug,
+              'title' => get_term_by('id', $id, $taxonomy)->name
+            ];
           }, get_term_children($term->term_id, $taxonomy));
           $key = implode($delimiter, $types);
           $sale_type = 'Sale';
@@ -459,7 +465,10 @@ namespace UsabilityDynamics {
           foreach($params['property_search_options'] as $label => $option){
             $option = reset($option);
             /** Define search type based on sale_type and property_type */
-            if($option['sale_type'] === $params['post']['sale_type'] && in_array($property_type, $option['property_types'])){
+            $types = array_map(function($t){
+              return $t['slug'];
+            }, $option['property_types']);
+            if($option['sale_type'] === $params['post']['sale_type'] && in_array($property_type, $types)){
               $params['post']['search_type'] = $label;
             }
           }

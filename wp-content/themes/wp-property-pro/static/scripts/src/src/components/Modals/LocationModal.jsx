@@ -141,10 +141,9 @@ class LocationModal extends Component {
             [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[search_type]']: modifiedSearchType,
             [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType,
           };
- 
           URLSearchObject = Object.assign({}, URLSearchObject, propertyTypes.map((p, i) => {
             return {
-              [`${Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX}[property_type][${i}]`]: p
+              [`${Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX}[property_type][${i}]`]: p.slug
             }
           }).reduce((a, b) => {
             let key = Object.keys(b)[0];
@@ -164,12 +163,16 @@ class LocationModal extends Component {
   }
 
   search() {
-
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
+    let {
+      propertyTypes,
+      saleType
+    } = searchOptions;
     let val = this.state.searchValue;
     if (!val) {
       this.props.topQuery(this.props.errorMessage);
     } else {
-      this.props.searchHandler(val, _.get(this.props, 'saleType', ''), _.get(this.props, 'propertyTypes', ''), this.props.errorMessage);
+      this.props.searchHandler(val, saleType, propertyTypes.map(p => p.slug), this.props.errorMessage);
     }
   }
 
@@ -204,6 +207,7 @@ class LocationModal extends Component {
       modifyType
     } = this.props;
     let self = this;
+
     let resultsElements = searchResults.map((s, k) => {
       return (
         <div className="row" key={k}>

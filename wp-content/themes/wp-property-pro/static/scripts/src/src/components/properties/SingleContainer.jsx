@@ -107,7 +107,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     searchProperty: (id) => {
-      let url = 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=1';
+      let url = 'https://' + bundle.elasticsearch_host + '/v3/search/advanced?size=1';
       let query = {
         "query": {
           "bool": {
