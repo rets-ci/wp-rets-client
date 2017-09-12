@@ -359,9 +359,9 @@ class PropertiesModal extends Component {
 
     let modifiedSearchType = search_type === 'Buy' ? 'Sale' : search_type;
     let property_types_options = Object.values(_.get(propertyTypeOptions, `[${modifiedSearchType}][0].property_types`, {})).map(d => ({
-      name: d.split('-').map(e => { return e.charAt(0).toUpperCase() + e.slice(1).toLowerCase(); }).join(' '),
-      value: d,
-      selected: property_type && property_type.indexOf(d) >= 0
+      slug: d.slug,
+      title: d.title,
+      selected: property_type && property_type.indexOf(d.slug) >= 0
     }));
     return (
       <div>
@@ -545,10 +545,10 @@ class PropertiesModal extends Component {
                           <div className="filter-type">
                             {property_types_options.map(d =>
                               <a
-                                key={d.value}
+                                key={d.slug}
                                 href="#"
                                 className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : "")}`}
-                                onClick={() => this.handlePropertyTypeToggle(d.value)}>{d.name}</a>
+                                onClick={() => this.handlePropertyTypeToggle(d.slug)}>{d.title}</a>
                             )}
                           </div>
                         </div>
