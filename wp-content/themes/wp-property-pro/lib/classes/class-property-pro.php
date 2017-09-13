@@ -237,7 +237,7 @@ namespace UsabilityDynamics {
           $sale_type = 'Sale';
         }
 
-        $property_search_options[$label][] = [
+        $property_search_options[$label] = [
           'sale_type' => $sale_type,
           'property_types' => isset($types) && !empty($types) ? array_values($types) : array_values($_property_types)
         ];
@@ -782,7 +782,22 @@ namespace UsabilityDynamics {
                   continue;
                 }
 
-                $new_field[str_replace(' ', '_', $field_key)] = $value;
+                $options_array = explode('-', $field_key);
+                $label = $options_array[0];
+                $sale_type = $options_array[1];
+                unset($options_array[0]);
+                unset($options_array[1]);
+                $property_types = array_values($options_array);
+
+                $new_field[$label] = [
+                  'sale_type' => $sale_type,
+                  'property_types' => array_map(function($type){
+                    return [
+                      'title' => ucfirst($type),
+                      'slug' => str_replace('.', '-', $type)
+                    ];
+                  }, $property_types)
+                ];
               }
 
               $field = $new_field;

@@ -58,7 +58,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
       $delimiter = '-';
 
       $_property_types = array_map(function($t){
-        return $t->slug;
+        return str_replace('-', '.', $t->slug);
       }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
         if($t->parent){
           $parent_term = get_term($t->parent);
