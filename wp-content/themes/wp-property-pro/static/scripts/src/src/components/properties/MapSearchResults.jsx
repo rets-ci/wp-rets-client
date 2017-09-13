@@ -336,7 +336,7 @@ class MapSearchResults extends Component {
       </div>
     );
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container"}>
         {elementToShow}
       </div>
     );

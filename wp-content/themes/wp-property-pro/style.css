@@ -1762,6 +1762,7 @@ p.propertypro-gentle-error {
     position: relative;
     flex: 1 1 0;
     overflow: hidden;
+    height: calc(100% - 5rem);
 }
 
 .propertypro-search-map-container .propertypro-mobile-bottom-navbar {
@@ -3767,6 +3768,9 @@ ul.propertypro-details-list li span.propertypro-item-name {
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 35.938em) {
+    .propertypro-search-map-container {
+        height: calc(100% - 53px);
+    }
 
     .propertypro-search-modal .propertypro-close-panel {
         top: 1.6rem;
