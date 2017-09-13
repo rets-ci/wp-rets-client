@@ -271,7 +271,7 @@ class MapSearchResults extends Component {
 
 
     let elementToShow = (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map h-100`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
 
         <PropertiesModal
           closeLocationModal={this.props.closeLocationModal}
@@ -336,7 +336,7 @@ class MapSearchResults extends Component {
       </div>
     );
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
         {elementToShow}
       </div>
     );
