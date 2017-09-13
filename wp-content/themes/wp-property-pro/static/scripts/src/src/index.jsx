@@ -30,9 +30,12 @@ let onRouteUpdate = () => {
   let ourStore = store.getState();
   if (ourStore.errorMessage) {
     store.dispatch({
-      type: Lib.ROUTE_CHANGED_ACTION
+      type: Lib.RESET_ERROR_MESSAGE_ACTION
     });
   }
+  store.dispatch({
+    type: Lib.ROUTE_CHANGED_ACTION
+  });
 };
 
 render(

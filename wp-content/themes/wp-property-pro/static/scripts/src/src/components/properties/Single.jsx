@@ -355,10 +355,10 @@ class Single extends Component {
             <div className={`col-md-6`}>
               <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Agent:</span> {agent.name}
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Agent:</span> {RETSAgent.name}
                 </li>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Agent Phone Number:</span> {agent.phone}
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Agent Phone Number:</span> {RETSAgent.phone}
                 </li>
                 <li>
                   <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Office:</span> {this.props.listing_office}
