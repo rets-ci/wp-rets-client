@@ -99,6 +99,20 @@ namespace UsabilityDynamics\WPP {
           }
         });
 
+        // Add our custom class to Property Types table on Settings page
+        // So we could hide 'add/delete options' in property types UI.
+        add_filter( 'wpp::css::wpp_inquiry_property_types::classes', function( $classes ) {
+          if( is_string( $classes ) ) $classes .= " active-wpp-listing-type-terms";
+          else if ( is_array( $classes ) ) array_push( $classes, "active-wpp-listing-type-terms" );
+          return $classes;
+        } );
+        add_action('admin_enqueue_scripts', function() {
+          global $current_screen;
+          if( $current_screen->id == 'property_page_property_settings' ) {
+            wp_enqueue_style( 'wpp-terms-listing-type-settings', ud_get_wp_property()->path( 'lib/features/taxonomy-wpp-listing-type/static/styles/wpp.terms.listing_type.settings.css', 'url' ) );
+          }
+        });
+
         // WP-CLI commands:
         // `wp property scroll --do-action=wpp_listing_type`
         add_action( 'wpp::cli::scroll::wpp_listing_type', array( $this, 'cli_update_post_property_type' ), 10, 2 );
