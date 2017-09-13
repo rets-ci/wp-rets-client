@@ -1,5 +1,4 @@
 import {Lib} from "../lib.jsx";
-import {LOCATION_CHANGE} from 'react-router-redux';
 
 const userPanel = (state = {open: false}, action) => {
     switch (action.type) {
@@ -9,7 +8,7 @@ const userPanel = (state = {open: false}, action) => {
           open: action.open
         }
         break;
-      case LOCATION_CHANGE:
+      case Lib.ROUTE_CHANGED_ACTION:
         return {
           ...state,
           open: false
