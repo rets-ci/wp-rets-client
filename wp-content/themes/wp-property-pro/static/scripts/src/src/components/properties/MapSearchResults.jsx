@@ -41,7 +41,6 @@ const mapStateToProps = (state, ownProps) => {
     isFetching: _.get(state, 'searchResults.isFetching', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
-    mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
     propertiesModalOpen: _.get(state, 'propertiesModal.open'),
     propertiesModalResultCountButtonLoading: _.get(state, 'propertiesModal.resultCountButtonLoading'),
     propertiesModalResultCount: _.get(state, 'propertiesModal.resultCount'),
@@ -120,7 +119,6 @@ class MapSearchResults extends Component {
     doSearchWithQuery: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     location: PropTypes.object,
-    mapSearchResultsLoading: PropTypes.bool.isRequired,
     params: PropTypes.object,
     propertiesModalOpen: PropTypes.bool.isRequired,
     propertiesModalResultCount: PropTypes.oneOfType([
@@ -216,19 +214,17 @@ class MapSearchResults extends Component {
       doPropertiesModalSearch,
       isFetching,
       location,
-      mapSearchResultsLoading,
       openPropertiesModal,
       propertiesModalOpen,
       propertiesModalResultCount,
       propertiesModalResultCountButtonLoading,
       propertyTypeOptions,
       results,
-      resultsTotal,
+      resultsTotal
     } = this.props;
 
     let filters = qs.parse(window.location.search.replace('?', ''));
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
-
     const captionElement = (this.state.noticeDisplay && displayedResults.length > 0)
       ? (
           <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
@@ -286,7 +282,7 @@ class MapSearchResults extends Component {
           propertyTypeOptions={propertyTypeOptions}
           resultCount={propertiesModalResultCount}
           resultCountButtonLoading={propertiesModalResultCountButtonLoading}
-          searchFilters={searchFilters}
+          searchFilters={_.omit(searchFilters, ['geoCoordinates'])}
           turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
           turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}
         />

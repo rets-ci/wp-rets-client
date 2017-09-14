@@ -32,6 +32,7 @@ export default class Map extends Component {
     this.state = {
       dragMode: false
     };
+
   }
 
   calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
@@ -58,6 +59,7 @@ export default class Map extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.properties, this.props.properties)) {
+      this.updatingProperties = true;
       if (!this.state.dragMode) {
         let coordinates = this.getInitialCoordinates(null, nextProps.properties);
         this.setMapCoordinates(coordinates);
@@ -71,12 +73,16 @@ export default class Map extends Component {
           this.map.setZoom(defaultZoom);
         }
       }
+      this.updatingProperties = false;
     }
     let condition = !this.markers.filter(m => m.selected).length || nextProps.selectedProperty !== this.markers.filter(m => m.selected)[0].propertyId;
     if (condition) {
       this.deselectMarkers(this.markers);
       this.selectMarker(this.markers, nextProps.selectedProperty);
     }
+    this.setState({
+      dragMode: false
+    });
   }
 
   clearMarkers() {
@@ -149,21 +155,15 @@ export default class Map extends Component {
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     this.setMapCoordinates(coordinates);
     // this.setPropertyMarkers(this.props.properties);
-    this.map.addListener('dragend', this.onMapChange);
-    this.map.addListener('zoom_changed', this.onMapChange);
+    this.map.addListener('dragend', () => this.onMapChange);
+    this.map.addListener('zoom_changed', () => this.onMapChange);
   }
 
   onMapChange = () => {
-    // only trigger the Geo change at a certain zoom level
-    if (this.map.getZoom() >= Lib.MAP_CHANGE_ZOOM_LIMIT) {
+    // only trigger the Geo change at a certain zoom level and exclude initial auto zoom to prevent ES requests duplicate
+    if (this.map.getZoom() >= Lib.MAP_CHANGE_ZOOM_LIMIT || this.props.properties.length === 0 || this.updatingProperties) {
       return;
     }
-
-    // exclude initial auto zoom to prevent ES requests duplicate
-    if(this.props.properties.length === 0){
-      return;
-    }
-
     let bounds = this.map.getBounds();
     let ne = bounds.getNorthEast();
     let sw = bounds.getSouthWest();
@@ -178,7 +178,7 @@ export default class Map extends Component {
           lon: sw.lng()
         }
       }));
-    // set localState to distinguish between initial load and dragging in componentWillReceiveProps
+    // enable drag mode to distinguish between initial load and dragging in componentWillReceiveProps
     this.setState({
       dragMode: true
     });
