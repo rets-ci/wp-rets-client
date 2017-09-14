@@ -20,7 +20,21 @@ require('swiper-css');
 // set up all relevant shims and polyfills for various browsers
 shims();
 
-let store = createStore(propertyProApp);
+
+let devEnv = process && process.env && process.env.NODE_ENV === 'development';
+
+let store;
+
+if (devEnv) {
+  store = createStore(
+    propertyProApp,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
+} else {
+  store = createStore(
+    propertyProApp
+  );
+}
 
 // Create an enhanced router history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
