@@ -155,8 +155,8 @@ export default class Map extends Component {
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     this.setMapCoordinates(coordinates);
     // this.setPropertyMarkers(this.props.properties);
-    this.map.addListener('dragend', () => this.onMapChange);
-    this.map.addListener('zoom_changed', () => this.onMapChange);
+    this.map.addListener('dragend', this.onMapChange);
+    this.map.addListener('zoom_changed', this.onMapChange);
   }
 
   onMapChange = () => {
