@@ -58,7 +58,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
       $delimiter = '-';
 
       $_property_types = array_map(function($t){
-        return $t->slug;
+        return str_replace('-', '.', $t->slug);
       }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
         if($t->parent){
           $parent_term = get_term($t->parent);
@@ -81,7 +81,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         else {
           $term = get_term_by('slug', $label, $taxonomy);
           $types = array_map(function ($id) use ($taxonomy) {
-            return get_term_by('id', $id, $taxonomy)->slug;
+            return str_replace('-', '.', get_term_by('id', $id, $taxonomy)->slug);
           }, get_term_children($term->term_id, $taxonomy));
           $key = implode($delimiter, $types);
           $sale_type = 'Sale';

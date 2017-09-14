@@ -223,9 +223,7 @@ namespace UsabilityDynamics {
 
 
         $sale_type = $label;
-        if (in_array($label, ['Rent', 'Sale']))
-          $key = implode($delimiter, $_property_types);
-        else {
+        if (!in_array($label, ['Rent', 'Sale'])){
           $term = get_term_by('slug', $label, $taxonomy);
           $types = array_map(function ($id) use ($taxonomy) {
             return [
@@ -233,24 +231,14 @@ namespace UsabilityDynamics {
               'title' => get_term_by('id', $id, $taxonomy)->name
             ];
           }, get_term_children($term->term_id, $taxonomy));
-          $key = implode($delimiter, $types);
           $sale_type = 'Sale';
         }
 
-        $property_search_options[$label][] = [
+        $property_search_options[$label] = [
           'sale_type' => $sale_type,
           'property_types' => isset($types) && !empty($types) ? array_values($types) : array_values($_property_types)
         ];
 
-        $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
-          'type' => 'checkbox',
-          'default' => false,
-          'label' => __($label, 'wp-property-pro'),
-        ];
-      }
-
-      if(!is_front_page()){
-        $params['search_options'] = $search_options;
       }
 
       $params['property_search_options'] = $property_search_options;
@@ -782,7 +770,22 @@ namespace UsabilityDynamics {
                   continue;
                 }
 
-                $new_field[str_replace(' ', '_', $field_key)] = $value;
+                $options_array = explode('-', $field_key);
+                $label = $options_array[0];
+                $sale_type = $options_array[1];
+                unset($options_array[0]);
+                unset($options_array[1]);
+                $property_types = array_values($options_array);
+
+                $new_field[$label] = [
+                  'sale_type' => $sale_type,
+                  'property_types' => array_map(function($type){
+                    return [
+                      'title' => ucfirst(str_replace('.', ' ', $type)),
+                      'slug' => str_replace('.', '-', $type)
+                    ];
+                  }, $property_types)
+                ];
               }
 
               $field = $new_field;
