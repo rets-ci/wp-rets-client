@@ -100,6 +100,11 @@ export default class PropertyCard extends Component {
         : thumbnail
       )
 
+    let swiperImages = [ thumbnailSrc ]
+    _.each(gallery_images.slice(1), (e) => {
+      swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
+    })
+
     return (
       <div
         className={classes.join(' ')}>
@@ -121,14 +126,9 @@ export default class PropertyCard extends Component {
                 </span>
               </div>
               <Swiper {...swiperParams}>
-                <div className="swiper-slide" key={0}>
-                  <div className="swiper-lazy bg-card-img" data-background={ thumbnailSrc }>
-                    <div className="swiper-lazy-preloader"></div>
-                  </div>
-                </div>
-                {gallery_images.slice(1).map((d, k) =>
-                  <div className="swiper-slide" key={k + 1}>
-                    <div className="swiper-lazy bg-card-img" data-background={ Util.getThumbnailUrlBySize(d, Lib.PROPERTY_LISTING_IMAGE_SIZE) }>
+                {swiperImages.map((url, index) =>
+                  <div className="swiper-slide" key={index}>
+                    <div className="swiper-lazy bg-card-img" data-background={ url }>
                       <div className="swiper-lazy-preloader"></div>
                     </div>
                   </div>
