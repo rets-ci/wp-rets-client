@@ -359,7 +359,7 @@ class PropertiesModal extends Component {
     }
 
     let modifiedSearchType = search_type === 'Buy' ? 'Sale' : search_type;
-    let property_types_options = Object.values(_.get(propertyTypeOptions, `[${modifiedSearchType}][0].property_types`, {})).map(d => ({
+    let property_types_options = Object.values(_.get(propertyTypeOptions, `[${modifiedSearchType}].property_types`, {})).map(d => ({
       slug: d.slug,
       title: d.title,
       selected: property_type && property_type.indexOf(d.slug) >= 0
