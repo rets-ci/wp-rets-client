@@ -150,8 +150,8 @@ class Util extends React.Component {
       returnObject.msg = `search type ${searchType} wasn't found in property type options`;
       return returnObject;
     }
-    let propertyTypes = _.get(propertyTypeOptionsObject, `[${searchType}][0].property_types`);
-    let saleType = _.get(propertyTypeOptionsObject, `[${searchType}][0].sale_type`);
+    let propertyTypes = _.get(propertyTypeOptionsObject, `[${searchType}].property_types`);
+    let saleType = _.get(propertyTypeOptionsObject, `[${searchType}].sale_type`);
     if (!propertyTypes) {
       returnObject.error = true;
       returnObject.msg = 'property types are missing from the data source';

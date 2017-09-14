@@ -3,18 +3,15 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import MobileTabsSearch from './MobileTabsSearch.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
-import {openLocationModal, setPropertyTypeOptions, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
+import {openLocationModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx';
 import Util from '../../../Util.jsx';
 import _ from 'lodash';
 
 const mapStateToProps = (state, history) => {
   return {
-    currentState: state,
     searchType: _.get(state, 'searchType.searchType', ''),
-    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
-    filterTerms: _.get(state, 'filterTermsState.filterTerms', []),
-    history: history
+    filterTerms: _.get(state, 'filterTermsState.filterTerms', [])
   }
 };
 
@@ -26,10 +23,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     setSearchType: (searchType, saleType, propertyTypes) => {
       dispatch(setSearchType(searchType));
-    },
-
-    setPropertyTypeOptions: (options) => {
-      dispatch(setPropertyTypeOptions(options));
     },
 
     clearTermFilter: () => {
@@ -48,11 +41,8 @@ class SearchContent extends Component {
     };
   }
   static propTypes = {
-    currentState: PropTypes.object.isRequired,
     filterTerms: PropTypes.array,
-    propertyTypeOptions: PropTypes.object.isRequired,
     searchType: PropTypes.string,
-    setPropertyTypeOptions: PropTypes.func.isRequired,
     clearTermFilter: PropTypes.func,
     options: PropTypes.object.isRequired
   };
@@ -69,7 +59,7 @@ class SearchContent extends Component {
   }
 
   render() {
-    let searchTypes = Object.keys(this.props.propertyTypeOptions);
+    let searchTypes = Object.keys(this.props.options);
     let searchBtnClasses = `btn ${Lib.THEME_CLASSES_PREFIX}btn-search`;
 
     if (searchTypes.length === 0) {
