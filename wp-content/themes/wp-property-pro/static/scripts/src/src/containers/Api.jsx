@@ -365,17 +365,18 @@ class Api {
 
     let query = {
       "bool": {
-        "must": [
-          {
-            "exists": {
-              "field": "wpp_location_pin"
-            }
-          }
-        ]
+        "must": []
       }
     };
 
     if (params.geoCoordinates) {
+      query.bool.must.push(
+        {
+          "exists": {
+            "field": "wpp_location_pin"
+          }
+        }
+      );
       query.bool.must.push(
         {
           "geo_bounding_box": {

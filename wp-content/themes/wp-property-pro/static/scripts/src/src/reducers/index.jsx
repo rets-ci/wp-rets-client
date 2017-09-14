@@ -5,13 +5,10 @@ import {combineReducers} from 'redux';
 import formModal from './formModal.jsx';
 import loginModal from './loginModal.jsx';
 import headerSearch from './headerSearch.jsx';
-import mapState from './map.jsx';
 import locationModal from './location-modal.jsx';
 import propertiesModal from './propertiesModal.jsx';
 import singleProperty from './single-property.jsx';
 import searchResults from './searchResults.jsx';
-import mapMarkersState from './mapMarkers.jsx';
-import mapSearchResultsLoading from './mapSearchResultsLoading.jsx';
 import propertyTypeOptions from './propertyTypeOptions.jsx';
 import searchType from './searchType.jsx';
 import filterTermsState from './filterTerms.jsx';
@@ -24,15 +21,12 @@ const propertyProApp = combineReducers({
     errorMessage,
     formModal,
     loginModal,
-    mapState,
     locationModal,
     propertiesModal,
     singleProperty,
     propertyTypeOptions,
     searchResults,
     searchType,
-    mapMarkersState,
-    mapSearchResultsLoading,
     routing: routerReducer,
     filterTermsState,
     userPanel,

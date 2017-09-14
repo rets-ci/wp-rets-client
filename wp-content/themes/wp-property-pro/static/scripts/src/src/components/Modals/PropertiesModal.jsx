@@ -122,10 +122,11 @@ class PropertiesModal extends Component {
   }
 
   setInitialFilters(searchFilters, defaultFiltervalues) {
-    // if a filter is not set, use it's default. 
+    // if a filter is not set, use it's default.
+    let filters = Object.assign({}, defaultFiltervalues, searchFilters);
     this.setState({
-      initialFilters: Object.assign({}, defaultFiltervalues, searchFilters),
-      filters: Object.assign({}, defaultFiltervalues, searchFilters)
+      initialFilters: filters,
+      filters: filters
     });
   }
 

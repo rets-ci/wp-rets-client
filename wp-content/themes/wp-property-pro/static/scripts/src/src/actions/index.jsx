@@ -133,13 +133,6 @@ export const setFilterTerms = (filterTerms) => {
   }
 };
 
-export const toggleMapSearchResultsLoading = loading => {
-  return {
-    type: Lib.TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED,
-    loading: loading
-  }
-}
-
 export const toggleUserPanel = (open) => {
   return {
     type: Lib.TOGGLE_USER_PANEL,
