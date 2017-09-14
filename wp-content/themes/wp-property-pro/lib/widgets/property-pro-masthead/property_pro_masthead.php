@@ -81,7 +81,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         else {
           $term = get_term_by('slug', $label, $taxonomy);
           $types = array_map(function ($id) use ($taxonomy) {
-            return get_term_by('id', $id, $taxonomy)->slug;
+            return str_replace('-', '.', get_term_by('id', $id, $taxonomy)->slug);
           }, get_term_children($term->term_id, $taxonomy));
           $key = implode($delimiter, $types);
           $sale_type = 'Sale';
