@@ -1764,6 +1764,14 @@ p.propertypro-gentle-error {
     overflow: hidden;
 }
 
+.propertypro-search-map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .propertypro-search-map-container .propertypro-mobile-bottom-navbar {
     background-color: #ffffff;
     box-shadow: 0 0.1rem 0.5rem #000;
