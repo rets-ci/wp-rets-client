@@ -451,7 +451,6 @@ namespace UsabilityDynamics {
           }
 
           foreach($params['property_search_options'] as $label => $option){
-            $option = reset($option);
             /** Define search type based on sale_type and property_type */
             $types = array_map(function($t){
               return $t['slug'];
