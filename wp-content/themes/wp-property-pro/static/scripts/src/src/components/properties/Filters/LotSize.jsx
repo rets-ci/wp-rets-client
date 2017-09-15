@@ -40,6 +40,7 @@ class LotSize extends Component {
       start,
       to
     } = this.props;
+
     let defaults = {
       Commercial: {
         start: 1,
@@ -50,6 +51,10 @@ class LotSize extends Component {
         to: 3
       },
       Rent: {
+        start: 1,
+        to: 3
+      },
+      Land: {
         start: 1,
         to: 3
       }

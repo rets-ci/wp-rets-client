@@ -18,6 +18,7 @@ import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 import NavigationIcons from './components/NavigationIcons.jsx';
 import UserPanelIcon from './components/UserPanelIcon.jsx';
+import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -87,14 +88,14 @@ class HeaderPropertySingle extends Component {
   }
 
   render() {
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
     let searchType = this.props.searchType === 'Sale' ? 'Buy' : this.props.searchType;
-
     let propertySingleStaticFilters = {
+      property_type: searchOptions.propertyTypes.map(d => d.slug),
       sale_type: this.props.saleType,
       search_type: searchType,
       term: [{'wpp_location': this.props.locationTerm}]
     };
-
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single container-fluid`} >
         <PropertiesModal

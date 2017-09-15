@@ -48,13 +48,13 @@ let findRandomAgentBySaleType = (agents, saleType) => {
   return agent;
 }
 
-let getLastUpdated = (lastUpdated, format) => {
+let getLastUpdatedMoment = (lastUpdated, format) => {
   let parsed = moment.utc(lastUpdated, format);
   if (!parsed.isValid()) {
     console.warn(`date ${lastUpdated} could not be parsed`);
     return false;
   } else {
-    return parsed.format('MMM DD, YYYY');
+    return parsed;
   }
 };
 
@@ -65,7 +65,7 @@ let daysPassedSincePostedDate = (postDate, format) => {
     return false;
   } else {
     let now = moment.utc();
-    return now.diff(parsed, 'days');
+    return now.diff(parsed, 'days') !== 0 ? now.diff(parsed, 'days') : 'Today';
   }
 };
 
@@ -188,14 +188,13 @@ class Single extends Component {
       );
     }
     let daysOnWebsite = daysPassedSincePostedDate(post_date, Lib.COMMON_DATE_FORMAT_1);
-    let lastUpdated = getLastUpdated(post_date, Lib.COMMON_DATE_FORMAT_1);
+    let lastUpdated = getLastUpdatedMoment(post_date, Lib.COMMON_DATE_FORMAT_1);
 
     let info_box = `<li>${listing_sub_type}</li>`;
     let post_modified_moment = moment.utc(post_modified, Lib.COMMON_DATE_FORMAT_1);
     let wpp_import_time_moment = moment.utc(wpp_import_time, Lib.COMMON_DATE_FORMAT_1);
 
     let lastCheckedMoment = wpp_import_time ? (wpp_import_time_moment.isSameOrAfter(post_modified_moment) ? wpp_import_time_moment : post_modified_moment) : post_modified_moment;
-    let lastChecked = lastCheckedMoment.fromNow();
     if (rets_list_price) {
       info_box += `<li>${rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>`;
     }
@@ -271,19 +270,19 @@ class Single extends Component {
           <div className="row mb-5">
             <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
               <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Last Checked</p>
-              <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>{lastChecked}</p>
+              <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>{lastCheckedMoment.fromNow()}</p>
             </div>
-            {lastUpdated &&
-            <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
-              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Last Updated</p>
-              <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>{lastUpdated}</p>
-            </div>
+            {lastUpdated.isValid() &&
+              <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
+                <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Last Updated</p>
+                <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>{lastUpdated.format('MMM DD, YYYY')}</p>
+              </div>
             }
-            {daysOnWebsite &&
-            <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
-              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Days on Website</p>
-              <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>{daysOnWebsite}</p>
-            </div>
+            {daysOnWebsite !== null &&
+              <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}small-info-box`}>
+                <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}top`}>Days on Website</p>
+                <p className={`${Lib.THEME_CLASSES_PREFIX}bottom`}>{daysOnWebsite}</p>
+              </div>
             }
           </div>
 
@@ -330,8 +329,9 @@ class Single extends Component {
               address={address[0]}
               correctScenario={correctScenario}
               agent={agent}
-              listingOffice={this.props.listing_office}
+              listingOffice={correctScenario.includes('sale') ? "Red Door Company" : Util.decodeHtml(this.props.listing_office)}
               rdcListing={rdcListing}
+              officePhoneNumber={officePhoneNumber}
               setAgentCardTab={this.props.setAgentCardTab}
               selectedTab={this.props.selectedAgentCardTab}
               saleType={listing_status_sale.replace('for-', '')}
@@ -377,10 +377,10 @@ class Single extends Component {
                   <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Data Source: </span>  Triangle MLS Inc.
                 </li>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Checked: </span> {lastChecked}
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Checked: </span> {lastCheckedMoment.isValid() ? lastCheckedMoment.format('LLL') + ' UTC' : ''}
                 </li>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Updated: </span> {lastUpdated}
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Last Updated: </span> {lastUpdated.isValid() ? lastUpdated.format('LLL') + ' UTC' : ''}
                 </li>
                 <li>
                   <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Days on Site: </span> {daysOnWebsite}

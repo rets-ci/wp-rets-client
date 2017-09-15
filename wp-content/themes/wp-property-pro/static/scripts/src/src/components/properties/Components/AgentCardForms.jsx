@@ -5,17 +5,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Util from '../../Util.jsx';
 
-let hidePartsOfPhoneNumber = (phoneNumber) => {
-  if (phoneNumber.includes('-')) {
-    let n = phoneNumber.split('-');
-    let visibleParts = n.shift();
-    let hiddenParts = n.map(d => Array(d.length).join('X'));
-    return [visibleParts].concat(hiddenParts).join('-');
-  } else {
-    return null;
-  }
-}
-
 let formIdMapper = {
   'request-showing-rent': 'form-rent-inquiry',
   'request-showing-buy': 'form-buy-inquiry-listing',
@@ -27,6 +16,7 @@ class AgentCardForms extends Component {
     agent: PropTypes.object,
     address: PropTypes.string,
     correctScenario: PropTypes.string.isRequired,
+    officePhoneNumber: PropTypes.string.isRequired,
     listingOffice: PropTypes.string,
     rdcListing: PropTypes.bool.isRequired,
     saleType: PropTypes.string.isRequired
@@ -34,51 +24,7 @@ class AgentCardForms extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      displayedPhoneNumber: '',
-      realNumber: ''
-    };
-  }
-
-  revealPhoneNumber = () => {
-    this.setState({
-      displayedPhoneNumber: this.state.realNumber
-    })
-  }
-
-  componentDidMount() {
-    let {
-      agent
-    } = this.props;
-    this.setAgentData();
-  }
-
-  componentWillReceiveProps() {
-    if (this.props.agent && Object.keys(this.props.agent).length) {
-      this.setAgentData();
-    }
-  }
-
-  setAgentData = () => {
-    let {
-      agent,
-      correctScenario
-    } = this.props;
-    let realNumber;
-    let displayedPhoneNumber;
-    
-    if (correctScenario === 'rentNOTRdc') {
-      displayedPhoneNumber = agent.phone;
-      realNumber = agent.phone;
-    } else {
-      displayedPhoneNumber = agent.phone ? hidePartsOfPhoneNumber(agent.phone) : null;
-      realNumber = agent.phone;
-    }
-
-    this.setState({
-      displayedPhoneNumber: displayedPhoneNumber,
-      realNumber: realNumber
-    });
+    this.state = {};
   }
 
   render() {
@@ -86,14 +32,13 @@ class AgentCardForms extends Component {
       address,
       agent,
       correctScenario,
+      officePhoneNumber,
       listingOffice,
       selectedTab,
       setAgentCardTab
     } = this.props;
     let defaultAgentImage = `${bundle.static_images_url}user-placeholder-image.png`;
     let contactElement;
-
-    let listingOfficeValue = Util.decodeHtml(listingOffice);
 
     switch(correctScenario) {
       case 'rentRDC':
@@ -118,7 +63,7 @@ class AgentCardForms extends Component {
       case 'rentNOTRdc':
         contactElement = (
           <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
-            <p className={`${Lib.THEME_CLASSES_PREFIX}agent-card-description`}>Please contact {agent.name} at {listingOfficeValue} direct by phone at {agent.phone}</p>
+            <p className={`${Lib.THEME_CLASSES_PREFIX}agent-card-description`}>Please contact {agent.name} at {listingOffice} direct by phone at {agent.phone}. You may also reach {listingOffice} by phone at {officePhoneNumber}. </p>
           </div>
         )
         break;
@@ -152,9 +97,9 @@ class AgentCardForms extends Component {
             <img className={`d-flex align-self-start mr-3 ${Lib.THEME_CLASSES_PREFIX}agent-photo`} src={agent.image || defaultAgentImage} alt="Agent photo" width="100" />
               <div className={`media-body ${Lib.THEME_CLASSES_PREFIX}media-body`}>
                 <h5 className="mt-0">{agent.name}</h5>
-                <p className={`${Lib.THEME_CLASSES_PREFIX}primary-color ${Lib.THEME_CLASSES_PREFIX}secondary-text`}>{listingOfficeValue}</p>
-                <div className={`${Lib.THEME_CLASSES_PREFIX}phone-number`} onClick={this.revealPhoneNumber}>
-                  {this.state.displayedPhoneNumber}
+                <p className={`${Lib.THEME_CLASSES_PREFIX}primary-color ${Lib.THEME_CLASSES_PREFIX}secondary-text`}>{listingOffice}</p>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}phone-number`}>
+                  {this.props.agent.phone}
                 </div>
               </div>
           </div>
