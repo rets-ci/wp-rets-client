@@ -314,7 +314,7 @@ class PropertiesModal extends Component {
       filters: {
         bedrooms,
         bathrooms,
-        lotsize,
+        lotSize,
         price,
         property_type,
         sale_type,
@@ -528,9 +528,9 @@ class PropertiesModal extends Component {
                           style={{display: showAllFilters ? 'block' : 'none'}}>
                           <h3>Lot Size <span>(Acres)</span></h3>
                           <div>
-                            {search_type && lotsize.start && lotsize.to ?
-                              <LotSize saleType={search_type} start={lotsize.start}
-                                      to={lotsize.to} handleOnClick={this.handleLotSizeSelect}/>
+                            {search_type && lotSize.start && lotSize.to ?
+                              <LotSize saleType={search_type} start={lotSize.start}
+                                      to={lotSize.to} handleOnClick={this.handleLotSizeSelect}/>
                               : null}
                           </div>
                           <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
