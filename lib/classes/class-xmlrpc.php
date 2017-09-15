@@ -1835,7 +1835,7 @@ namespace UsabilityDynamics\WPRETSC {
        *
        * @param int $post_id
        */
-      static protected function flush_cache( $post_id ) {c
+      static protected function flush_cache( $post_id ) {
         global $wrc_rets_id;
 
         ud_get_wp_rets_client()->write_log( "Flushing object cache for [" . $post_id . "] post_id", 'debug' );
