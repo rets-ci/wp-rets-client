@@ -124,6 +124,31 @@ class searchFilters extends Component {
     let {
       filters
     } = this.props;
+    let staticFilters = {
+      'bedrooms': false,
+      'lotSize': false,
+      'price': false,
+      'sqft': false
+    };
+
+    switch (filters.search_type) {
+      case 'Buy':
+        staticFilters['bedrooms'] = true;
+        staticFilters['price'] = true;
+        break;
+      case 'Rent':
+        staticFilters['bedrooms'] = true;
+        staticFilters['price'] = true;
+        break;
+      case 'Commercial':
+        staticFilters['sqft'] = true;
+        staticFilters['price'] = true;
+        break;
+      case 'Land':
+        staticFilters['lotSize'] = true
+        staticFilters['price'] = true;
+    }
+
     let bathroomsElement;
     let bathroomsFilter = filters['bathrooms'];
     let bedroomsFilter = filters['bedrooms'];
@@ -139,13 +164,17 @@ class searchFilters extends Component {
       bathroomsElement = (
         <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
       );
+    } else if (staticFilters['bathrooms']) {
+      bathroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+        <span>+</span> Bathroom
+      </span>);
     }
 
     if (bedroomsFilter) {
       bedroomsElement = (
         <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
       );
-    } else {
+    } else if (staticFilters['bedrooms']) {
       bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Bedroom
       </span>);
@@ -155,13 +184,17 @@ class searchFilters extends Component {
       lotSizeElement = (
         <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
       )
+    } else if (staticFilters['lotSize']) {
+      lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+        <span>+</span> Lot size
+      </span>);
     }
 
     if (priceFilter) {
       priceElement = (
         <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
       );
-    } else {
+    } else if (staticFilters['price']) {
       priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Price
       </span>);
@@ -171,6 +204,10 @@ class searchFilters extends Component {
       sqftElement = (
         <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
       );
+    } else if (staticFilters['sqft']) {
+      sqftElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+        <span>+</span> SQFT
+      </span>);
     }
 
     let termFilter = filters['term'];
@@ -198,9 +235,9 @@ class searchFilters extends Component {
             {termFilterElement}
             {bathroomsElement}
             {bedroomsElement}
+            {lotSizeElement}
             {priceElement}
             {sqftElement}
-            {lotSizeElement}
             <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
               <span>+</span>
               More Filters
