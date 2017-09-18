@@ -4,7 +4,21 @@ const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
+const fs = require('fs');
+
+let reactPackageJSON;
+let reactMainLocation;
+try {
+  reactPackageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '/node_modules/react/package.json')));
+  reactMainLocation = reactPackageJSON.main
+} catch (err) {
+  console.log('couldnt load react\'s package.json');
+}
+
 let plugins = [
+  new webpack.ProvidePlugin({
+    'React': 'react'
+  }),
   new AssetsPlugin({
     filename: 'assets.json',
     prettyPrint: true,
@@ -16,15 +30,12 @@ let plugins = [
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
     }
   }),
-  new webpack.optimize.DedupePlugin(),
-  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-  // function() {
-  //   this.plugin("done", function(stats) {
-  //     require("fs").writeFileSync(
-  //       path.join(__dirname, "hash.json"),
-  //       JSON.stringify({hash: stats.hash}));
-  //   });
-  // }
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  new webpack.LoaderOptionsPlugin({
+     options: {
+       context: __dirname
+     }
+   })
 ];
 
 
@@ -45,19 +56,27 @@ module.exports = {
         filename: 'bundle.js'
     },
     module: {
-        loaders: [
+        rules: [
           {
             test: /\.css$/,
-            loader: 'style-loader!css-loader'
+            use: [
+              {
+                loader:  "style-loader"
+              },
+              {
+                loader: 'css-loader'
+              }
+            ]
           },
           {
             test: /\.(js|jsx)$/,
             exclude: /node_modules/,
-            loader: 'babel',
-            query: { presets: ['es2015', 'react', 'stage-0'] }
-          },
-          {
-            test: /\.json$/, loader: 'json'
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['es2015', 'react', 'stage-0']
+              }
+            }
           },
           {
             test: /\.(ico|png|jpg)(\?.*)?$/,
@@ -66,20 +85,23 @@ module.exports = {
           },
           {
             test: /\.svg$/,
-            exclude: /node_modules/,
-            loader: 'svg-react'
+            use: {
+              loader: 'svg-react-loader'
+            }
           }
         ]
     },
     plugins: plugins,
     resolve: {
-      fallback: [
-        'node_modules'
-      ],
       alias: {
+        // this is so we can work with svg-react-loader after webpack upgrade
+        'react$': path.join(__dirname, `/node_modules/react/${reactMainLocation}`),
         'swiper-css': path.join(__dirname, '/node_modules/swiper/dist/css/swiper.min.css'),
         'nprogress-css': path.join(__dirname, '/node_modules/nprogress/nprogress.css'),
-      }
+      },
+      modules: [
+        'node_modules'
+      ]
     },
     watchOptions : {
       poll: true
