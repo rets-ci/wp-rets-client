@@ -100,19 +100,19 @@ namespace UsabilityDynamics {
     {
       global $post;
 
-      wp_enqueue_script('property-pro-jquery');
-      wp_enqueue_script('property-pro-tether', $this->_scriptsDir . '/src/tether.min.js');
-      wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js');
+      wp_enqueue_script('property-pro-jquery', '', [], null, true);
+      wp_enqueue_script('property-pro-tether', $this->_scriptsDir . '/src/tether.min.js', [], null, true);
+      wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js', [], null, true);
       wp_enqueue_style('property-pro-bootstrap-css', $this->_stylesDir . '/src/bootstrap.min.css');
       wp_enqueue_style('style', get_stylesheet_uri());
 
 
     
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
-      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ));
+      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ), null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
-        wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
+        wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
       }
 
       $params = $this->property_pro_get_base_info();
