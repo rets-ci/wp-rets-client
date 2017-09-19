@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,500,500i,600,700|Playfair+Display" />
     <title><?php bloginfo('name'); ?> <?php wp_title(); ?></title>
   <?php wp_head(); ?>
+    <noscript><p class="no-js-header">This site uses Javascript extensively to work. Please enable Javascript on your browser to continue!</p></noscript>
     <!-- Google Analytics -->
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
