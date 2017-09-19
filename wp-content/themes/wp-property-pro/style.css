@@ -60,6 +60,11 @@ p {
     line-height: 1.4;
 }
 
+p.no-js-header {
+    padding: 0.625rem;
+    color: #000000;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*  Layouts
 /*-----------------------------------------------------------------------------------*/
@@ -4050,4 +4055,8 @@ ul.propertypro-details-list li span.propertypro-item-name {
         margin-top: 1rem;
         text-align: center;
     }
+}
+
+.propertypro-listing-carousel .propertypro-card {
+    margin-right: 1.25rem;
 }
