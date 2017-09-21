@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Util from '../../../../Util.jsx';
 
 
-const Desktop = ({currentUrl, items, openFormModal, pageModalData}) => {
+const Desktop = ({currentUrl, historyPush, items, openFormModal, pageModalData}) => {
   let btn = {};
   let links = [];
   for (let i in items) {
@@ -29,9 +29,9 @@ const Desktop = ({currentUrl, items, openFormModal, pageModalData}) => {
               {
                 links.map((link, key) => {
                     if (link.url === currentUrl) {
-                      return (<li key={key} className={Lib.THEME_CLASSES_PREFIX + "active"}><TextItem item={link}/></li>)
+                      return (<li key={key} className={Lib.THEME_CLASSES_PREFIX + "active"}><TextItem historyPush={historyPush} item={link}/></li>)
                     } else {
-                      return (<li key={key}><TextItem item={link}/></li>)
+                      return (<li key={key}><TextItem historyPush={historyPush} item={link}/></li>)
                     }
                   }
                 )

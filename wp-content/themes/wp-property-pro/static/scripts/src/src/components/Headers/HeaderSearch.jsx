@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
 import SaleTypeHeaderSelection from './components/SaleTypeHeaderSelection.jsx';
@@ -41,6 +40,7 @@ class HeaderSearch extends Component {
   }
 
   static propTypes = {
+    historyPush: PropTypes.func.isRequired,
     propertyTypeOptions: PropTypes.object.isRequired,
     searchFilters: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired
@@ -48,6 +48,7 @@ class HeaderSearch extends Component {
 
   render() {
     let {
+      historyPush,
       propertyTypeOptions,
       searchFilters
     } = this.props;
@@ -64,6 +65,7 @@ class HeaderSearch extends Component {
         <SaleTypeHeaderSelection
           currentURL={window.location.href}
           closePanel={this.closeSaleTypePanel}
+          historyPush={historyPush}
           propertyTypeOptions={this.props.propertyTypeOptions}
           open={this.props.saleTypesPanelOpen}
         />
@@ -77,7 +79,7 @@ class HeaderSearch extends Component {
                 ?
                 <a href={_.get(bundle, 'site_url', '')} onClick={(eve) => {
                   eve.preventDefault();
-                  browserHistory.push('')
+                  this.props.historyPush('');
                 }} title={_.get(bundle, 'site_name', '')}>
                   <img src={bundle.logos.square_logo} alt={_.get(bundle, 'site_name', '')}
                        className={`${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>

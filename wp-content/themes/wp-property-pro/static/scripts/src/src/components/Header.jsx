@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
 import {
   openLoginModal,
   toggleUserPanel
@@ -30,7 +31,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const HeaderContent = ({location, locationTerm, openLoginModal, openUserPanel, saleType, saleTypesPanelOpen, searchType}) => {
+const HeaderContent = ({history, location, locationTerm, openLoginModal, openUserPanel, saleType, saleTypesPanelOpen, searchType}) => {
   let pathname = _.get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
@@ -40,16 +41,16 @@ const HeaderContent = ({location, locationTerm, openLoginModal, openUserPanel, s
     return null;
   } else if (pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')) {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
-    headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
+    headerElement = <HeaderSearch historyPush={history.push} openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search px-3";
 
     if (saleTypesPanelOpen) {
       sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
     }
   } else if (pathRoot.indexOf(_.get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
-    headerElement = <HeaderPropertySingle locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>;
+    headerElement = <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>;
   } else {
-    headerElement = <HeaderDefault openUserPanel={openUserPanel} openLoginModal={openLoginModal} />;
+    headerElement = <HeaderDefault historyPush={history.push} openUserPanel={openUserPanel} openLoginModal={openLoginModal} />;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";
   }
 
@@ -60,9 +61,9 @@ const HeaderContent = ({location, locationTerm, openLoginModal, openUserPanel, s
   );
 };
 
-const Header = connect(
+const Header = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(HeaderContent);
+)(HeaderContent));
 
 export default Header;

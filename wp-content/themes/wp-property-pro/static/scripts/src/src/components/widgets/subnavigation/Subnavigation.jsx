@@ -3,8 +3,9 @@ import IconLayout from './layouts/IconLayout.jsx';
 import TextLayout from './layouts/TextLayout.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
+import { withRouter } from 'react-router'
 
-const Subnavigation = ({currentUrl, post_title, widget_cell}) => {
+const Subnavigation = ({currentUrl, history, post_title, widget_cell}) => {
 
   if (!widget_cell) {
     return null;
@@ -17,12 +18,12 @@ const Subnavigation = ({currentUrl, post_title, widget_cell}) => {
   switch (widget_cell.widget.fields.layout) {
     case 'icon_layout':
       classes += ` ${Lib.THEME_CLASSES_PREFIX}subnavigation-icon-layout`;
-      container = <IconLayout items={items} currentUrl={currentUrl}/>;
+      container = <IconLayout historyPush={history.push} items={items} currentUrl={currentUrl}/>;
       break;
     case 'text_layout':
       classes += ` ${Lib.THEME_CLASSES_PREFIX}subnavigation-text-layout`;
     default:
-      container = <TextLayout items={items} currentUrl={currentUrl}/>
+      container = <TextLayout historyPush={history.push} items={items} currentUrl={currentUrl}/>
       break;
   }
   return (
@@ -36,4 +37,4 @@ const Subnavigation = ({currentUrl, post_title, widget_cell}) => {
   );
 };
 
-export default Subnavigation;
+export default withRouter(Subnavigation);

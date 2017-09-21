@@ -21,8 +21,6 @@ import LocationModal from './LocationModal.jsx';
 import SQFT from '../properties/Filters/SQFT.jsx';
 import LotSize from '../properties/Filters/LotSize.jsx';
 
-import {browserHistory} from 'react-router';
-
 import qs from 'qs';
 import URI from 'urijs';
 import Util from '../Util.jsx';
@@ -54,6 +52,7 @@ class PropertiesModal extends Component {
     closeModal: PropTypes.func.isRequired,
     closeLocationModal: PropTypes.func.isRequired,
     doSearch: PropTypes.func.isRequired,
+    historyPush: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     openLocationModal: PropTypes.func.isRequired,
     resultCount: PropTypes.oneOfType([
@@ -281,8 +280,7 @@ class PropertiesModal extends Component {
     let queryParam = decodeURIComponent(qs.stringify(allFilters))
     url.setSearch(queryParam);
     this.props.closeModal();
-    browserHistory.push(decodeURIComponent(searchResultURL + url.search()));
-    
+    this.props.historyPush(decodeURIComponent(searchResultURL + url.search()));
   }
 
   showFilterBasedOnSaleType(searchType, filter) {

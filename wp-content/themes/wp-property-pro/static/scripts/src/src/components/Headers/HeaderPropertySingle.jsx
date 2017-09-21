@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import SaleTypeHeaderSelection from './components/SaleTypeHeaderSelection.jsx';
 import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
@@ -66,6 +65,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class HeaderPropertySingle extends Component {
   static propTypes = {
     doOpenSaleTypesPanel: PropTypes.func.isRequired,
+    historyPush: PropTypes.func.isRequired,
     locationTerm: PropTypes.string.isRequired,
     openUserPanel: PropTypes.func.isRequired,
     propertyTypeOptions: PropTypes.object.isRequired,
@@ -88,6 +88,7 @@ class HeaderPropertySingle extends Component {
   }
 
   render() {
+    console.log('HeaderPropertySingle');
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
     let searchType = this.props.searchType === 'Sale' ? 'Buy' : this.props.searchType;
     let propertySingleStaticFilters = {
@@ -102,6 +103,7 @@ class HeaderPropertySingle extends Component {
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => this.props.openPropertiesModal(false)}
           doSearch={this.props.doPropertiesModalSearch}
+          historyPush={this.props.historyPush}
           open={this.props.propertiesModalOpen}
           openLocationModal={this.props.openLocationModal}
           propertyTypeOptions={this.props.propertyTypeOptions}
@@ -113,6 +115,7 @@ class HeaderPropertySingle extends Component {
         />
         <SaleTypeHeaderSelection
           closePanel={this.closeSaleTypePanel}
+          historyPush={this.props.historyPush}
           locationTerm={this.props.locationTerm}
           propertyTypeOptions={this.props.propertyTypeOptions}
           open={this.props.saleTypesPanelOpen}
@@ -127,7 +130,7 @@ class HeaderPropertySingle extends Component {
                 ?
                 <a href={_.get(bundle, 'site_url', '')} onClick={(eve) => {
                   eve.preventDefault();
-                  browserHistory.push('')
+                  this.props.historyPush('');
                 }} title={_.get(bundle, 'site_name', '')}>
                   <img src={bundle.logos.square_logo} alt={_.get(bundle, 'site_name', '')}
                        className={`${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>

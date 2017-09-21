@@ -1,6 +1,6 @@
+import createHistory from 'history/createBrowserHistory'
 import numeral from 'numeral';
 import React from 'react';
-import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import qs from 'qs';
 import {Lib} from '../lib.jsx';
@@ -210,15 +210,6 @@ class Util extends React.Component {
         lon: topLeft.lon
       }
     }
-  }
-
-  static goToUrl(url) {
-
-    if (_.isEmpty(url)) {
-      return null;
-    }
-
-    browserHistory.push(url);
   }
 
   static removeQueryFromURL(currentUrl, key, value) {

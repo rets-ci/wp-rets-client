@@ -3,7 +3,7 @@ import React from 'react';
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
-const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
+const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
   return (
     <BootstrapModal
       classes={["sidebar", "sidebar-right"]}
@@ -16,7 +16,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Buy&wpp_search[sale_type]=Sale&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Buy&wpp_search[sale_type]=Sale&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse");
+                }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home For Sale"
             >
@@ -29,7 +32,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/buy")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/buy")
+              }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home Buying"
             >
@@ -42,7 +48,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Rent&wpp_search[sale_type]=Rent&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Rent&wpp_search[sale_type]=Rent&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse")
+              }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Homes for Rent"
             >
@@ -55,7 +64,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/rent")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/rent");
+              }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home Renting"
             >
@@ -68,7 +80,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/sell")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/sell")
+              }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home Selling"
             >
@@ -80,7 +95,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/management")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/management");
+              }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Property Management"
             >
@@ -92,7 +110,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/about")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/about");
+                }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="About Us"
             >
@@ -105,7 +126,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/about/careers/")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/about/careers/");
+              }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Careers"
             >
@@ -118,7 +142,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/blog")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/blog");
+                }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Blog"
             >
@@ -131,7 +158,10 @@ const UserPanel = ({closeUserPanel, panelOpen, browserHistoryPush}) => {
           <li>
             <a
               href="#"
-              onClick={(event) => {event.preventDefault(); browserHistoryPush("/contact")}}
+              onClick={(event) => {
+                event.preventDefault();
+                historyPush("/contact");
+              }}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Contact"
             >

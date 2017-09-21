@@ -1,25 +1,28 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import numeral from 'numeral';
+import {withRouter} from 'react-router';
 import renderHTML from 'react-render-html';
 import Swiper from 'react-id-swiper';
-import { browserHistory, Link } from 'react-router';
+import {Link} from 'react-router-dom';
 import _ from 'lodash';
 
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
 
 
-export default class PropertyCard extends Component {
+class PropertyCard extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    propertiesDOM: PropTypes.object
   }
 
   handlePropertyClick(eve, url) {
     eve.preventDefault();
 
-    browserHistory.push(url);
-
+    this.props.history.push(url);
     this.swiper = null;
   }
 
@@ -104,10 +107,11 @@ export default class PropertyCard extends Component {
     _.each(gallery_images.slice(1), (e) => {
       swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
     })
-
     return (
       <div
-        className={classes.join(' ')}>
+        className={classes.join(' ')}
+        ref={(r) => this.props.propertiesDOM ? this.props.propertiesDOM[id] = r : null}
+      >
         <Link
           to={link}
         >
@@ -169,3 +173,5 @@ export default class PropertyCard extends Component {
     );
   }
 }
+
+export default withRouter(PropertyCard);

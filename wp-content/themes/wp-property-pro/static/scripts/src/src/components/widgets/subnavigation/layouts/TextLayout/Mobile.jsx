@@ -7,6 +7,7 @@ import Util from '../../../../Util.jsx';
 
 class Mobile extends Component {
   static propTypes = {
+    historyPush: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired,
     currentUrl: PropTypes.string.isRequired,
     dropDownOpen: PropTypes.bool.isRequired,
@@ -48,7 +49,7 @@ class Mobile extends Component {
   selectOption(eve, url) {
     eve.preventDefault();
 
-    Util.goToUrl(url);
+    historyPush(url);
   }
 
   handleChange(open) {

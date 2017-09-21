@@ -1,9 +1,8 @@
 import React from 'react';
-import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const FooterTop = ({menu}) => {
+const FooterTopMenu = ({historyPush, menu}) => {
 
   return (
     <div className="col-6 col-sm-6 col-lg-3">
@@ -20,7 +19,7 @@ const FooterTop = ({menu}) => {
                   menu.items.map((item, i) =>
                     <li className={Lib.THEME_CLASSES_PREFIX+"footer-top-menu-link"} key={i}><a href={item.url} onClick={(eve) => {
                       eve.preventDefault();
-                      Util.goToUrl(_.get(item, 'relative_url', null))
+                      historyPush(_.get(item, 'relative_url', null));
                     }}>{item.title}</a></li>
                   )
                   : null
@@ -32,4 +31,4 @@ const FooterTop = ({menu}) => {
   );
 };
 
-export default FooterTop;
+export default FooterTopMenu;

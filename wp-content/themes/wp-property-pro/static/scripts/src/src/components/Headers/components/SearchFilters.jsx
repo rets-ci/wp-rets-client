@@ -7,6 +7,7 @@ import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import Util from '../../Util.jsx';
 import {isEqual} from 'lodash';
@@ -30,7 +31,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class searchFilters extends Component {
   static propTypes = {
-    filters: PropTypes.object.isRequired
+    filters: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -117,7 +121,7 @@ class searchFilters extends Component {
   }
 
   updateURLWithQueryParam(queryParam) {
-    Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
+    this.props.history.push(window.location.pathname + decodeURIComponent(queryParam))
   }
 
   render() {
@@ -251,7 +255,7 @@ class searchFilters extends Component {
   }
 };
 
-export default connect(
+export default withRouter(connect(
   null,
   mapDispatchToProps
-)(searchFilters);
+)(searchFilters));

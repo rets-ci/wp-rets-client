@@ -21,6 +21,7 @@ const isMobile = window.innerWidth < Lib.MOBILE_WIDTH;
 export default class Map extends Component {
   static propTypes = {
     currentGeoBounds: PropTypes.object,
+    historyPush: PropTypes.func.isRequired,
     searchByCoordinates: PropTypes.func.isRequired,
     properties: PropTypes.array.isRequired
   };
@@ -140,7 +141,8 @@ export default class Map extends Component {
       marker.addListener('click', () => {
         let filter = {'selected_property': marker.propertyId};
         let queryParam = Util.updateQueryFilter(window.location.href, filter, 'set', false);
-        Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
+        // TODO: use the location object passed in
+        this.props.historyPush(window.location.pathname + decodeURIComponent(queryParam));
       });
       this.markers.push(marker);
       this.bounds.extend(loc);

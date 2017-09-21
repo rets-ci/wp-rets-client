@@ -1,10 +1,9 @@
 import React from 'react';
 import FooterTopMenu from './Menus/FooterTopMenu.jsx';
-import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 
-const FooterTop = () => {
+const FooterTop = ({historyPush}) => {
 
   return (
     <div className={Lib.THEME_CLASSES_PREFIX + "top-footer"}>
@@ -16,7 +15,7 @@ const FooterTop = () => {
                 ?
                 <a href={bundle.site_url} title={bundle.site_name} onClick={(eve) => {
                   eve.preventDefault();
-                  Util.goToUrl('/')
+                  historyPush('/');
                 }}>
                   <img src={bundle.logos.vertical_logo} alt={bundle.site_name}
                        className={`${Lib.THEME_CLASSES_PREFIX}svg ${Lib.THEME_CLASSES_PREFIX}vertical-logo`}/>
@@ -32,7 +31,7 @@ const FooterTop = () => {
                 {
                   _.get(bundle, 'footer.top_footer', null)
                     ? bundle.footer.top_footer.map((menu, i) =>
-                      <FooterTopMenu key={i} menu={menu}/>
+                      <FooterTopMenu historyPush={historyPush} key={i} menu={menu}/>
                     )
                     : null
                 }

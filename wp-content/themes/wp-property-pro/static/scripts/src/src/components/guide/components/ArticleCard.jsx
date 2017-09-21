@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
 class ArticleCard extends Component {
   static propTypes = {
     article: PropTypes.object,
+    historyPush: PropTypes.func.isRequired,
     last: PropTypes.bool
   };
 
@@ -30,7 +30,7 @@ class ArticleCard extends Component {
                       ? <h2 className={Lib.THEME_CLASSES_PREFIX + "article-title"}><a
                         href={_.get(this.props.article, 'url', '')} onClick={(eve) => {
                         eve.preventDefault();
-                        Util.goToUrl(_.get(this.props.article, 'relative_url', ''));
+                        historyPush(_.get(this.props.article, 'relative_url', ''));
                       }}>{_.get(this.props.article, 'title')}</a></h2>
                       : null
                   }

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
 class CategoryCard extends Component {
   static propTypes = {
     category: PropTypes.object,
+    historyPush: PropTypes.func.isRequired,
     last: PropTypes.bool
   };
 
@@ -29,7 +29,7 @@ class CategoryCard extends Component {
                       ? <h2 className={Lib.THEME_CLASSES_PREFIX + "category-title"}><a
                         href={_.get(this.props.category, 'url', '')} onClick={(eve) => {
                         eve.preventDefault();
-                        Util.goToUrl(_.get(this.props.category, 'relative_url', ''));
+                        historyPush(_.get(this.props.category, 'relative_url', ''));
                       }}>{_.get(this.props.category, 'title')}</a></h2>
                       : null
                   }
@@ -44,7 +44,7 @@ class CategoryCard extends Component {
                             _.get(item, 'title', null) && _.get(item, 'relative_url', null)
                               ? <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}category-navigation-item border-0 p-0`} key={key}><a href={_.get(item, 'relative_url')} onClick={(eve) => {
                                 eve.preventDefault();
-                                Util.goToUrl(_.get(item, 'relative_url'));
+                                historyPush(_.get(item, 'relative_url'));
                               }}>{_.get(item, 'title')}</a></li>
                               : null
                           )

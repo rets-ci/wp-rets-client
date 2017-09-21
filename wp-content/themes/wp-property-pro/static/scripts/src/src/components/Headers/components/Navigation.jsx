@@ -1,9 +1,8 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const Navigation = ({openUserPanel, openLoginModal}) => (
+const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
   <nav className={`navbar navbar-toggleable-md ${Lib.THEME_CLASSES_PREFIX}navigation-navbar`}>
     <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-items mx-3`}>
       {
@@ -18,7 +17,7 @@ const Navigation = ({openUserPanel, openLoginModal}) => (
          href={_.get(bundle, 'site_url', '')}
          onClick={(eve) => {
            eve.preventDefault();
-           browserHistory.push('')
+           historyPush('')
          }} title={_.get(bundle, 'site_name', '')}>
         {
           _.get(bundle, 'logos.horizontal_logo', null)

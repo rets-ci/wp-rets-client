@@ -1,7 +1,6 @@
 import {openFormModal, openLocationModal} from '../actions/index.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import Masthead from './widgets/masthead/Masthead.jsx';
 import Callout from './widgets/callout/Callout.jsx';
@@ -33,13 +32,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class Page extends Component {
   static propTypes = {
+    history: PropTypes.object.isRequired,
     openFormModal: PropTypes.func.isRequired,
     post: PropTypes.object,
     rows: PropTypes.array
   };
 
   render() {
-
+    let {
+      closeLocationModal,
+      formModalOpen,
+      history,
+      openFormModal,
+      post,
+      rows
+    } = this.props;
     if (_.get(this.props, 'post.is_blog_single', null)) {
       return <Single post={_.get(this.props, 'post', {})}/>
     }
@@ -47,14 +54,6 @@ class Page extends Component {
     if (_.get(this.props, 'post.is_guide_single', null)) {
       return <GuideSingle post={_.get(this.props, 'post', {})}/>
     }
-
-    let {
-      closeLocationModal,
-      formModalOpen,
-      openFormModal,
-      post,
-      rows
-    } = this.props;
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}page-content row no-gutters`}>
         {
@@ -67,10 +66,10 @@ class Page extends Component {
                       return <Masthead closeLocationModal={closeLocationModal} widget_cell={cell}/>;
                       break;
                     case 'Property_Pro_Subnavigation_Widget':
-                      return <Subnavigation post_title={post.post_title} widget_cell={cell} currentUrl={_.get(this.props, 'post.post_url', '')}/>;
+                      return <Subnavigation currentUrl={_.get(this.props, 'post.post_url', '')} post_title={post.post_title} widget_cell={cell} />;
                       break;
                     case 'Property_Pro_Tour_Widget':
-                      return <Tour browserHistoryPush={browserHistory.push} openFormModal={openFormModal} widget_cell={cell}/>;
+                      return <Tour browserHistoryPush={history.push} openFormModal={openFormModal} widget_cell={cell}/>;
                       break;
                     case 'Property_Pro_Listing_Carousel_Widget':
                       return <ListingCarousel widget_cell={cell}/>;

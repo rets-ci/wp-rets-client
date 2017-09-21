@@ -13,7 +13,7 @@ class PropertyCardList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.properties = {};
+    this.propertiesDOM = {};
   }
 
   componentDidMount() {
@@ -29,10 +29,10 @@ class PropertyCardList extends Component {
   }
 
   scrollToProperty(propertyId) {
-    if (!this.properties[propertyId]) {
+    if (!this.propertiesDOM[propertyId]) {
      console.log('chosen property was not found in the results');
     } else {
-      let node = findDOMNode(this.properties[propertyId]);
+      let node = findDOMNode(this.propertiesDOM[propertyId]);
       node.scrollIntoView({ behaviour: 'smooth' });
     }
   }
@@ -74,7 +74,7 @@ class PropertyCardList extends Component {
             };
             return (
               <div className={`col-12 col-md-12 col-lg-6 col-xl-4`} key={p._id}>
-                <PropertyCard data={item} highlighted={selectedProperty === p._id} ref={(r) => this.properties[p._id] = r} />
+                <PropertyCard data={item} highlighted={selectedProperty === p._id} propertiesDOM={this.propertiesDOM} />
               </div>
             );
           })
