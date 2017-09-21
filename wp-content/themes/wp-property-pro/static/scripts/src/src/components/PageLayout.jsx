@@ -1,5 +1,7 @@
 import {
   raiseErrorMessage,
+  resetErrorMessage,
+  routeChanged,
   setPropertyTypeOptions,
   toggleUserPanel
 } from '../actions/index.jsx';
@@ -23,14 +25,9 @@ import UserPanel from './UserPanel.jsx';
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
-// import PropertiesSingleContainer from './properties/SingleContainer.jsx';
-// import MapSearchResults from './properties/MapSearchResults.jsx';
 
 import Page from './Page.jsx';
-// import Archive from './blog/Archive.jsx';
-// import GuideArchive from './guide/Archive.jsx';
 
-// import loadPage from 'bundle-loader?lazy!./Page.jsx';
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
 import loadGuideArchive from 'bundle-loader?lazy&name=GuideArchive!./guide/Archive.jsx';
 import loadPropertySingle from 'bundle-loader?lazy&name=SingleProperties!./properties/SingleContainer.jsx';
@@ -58,6 +55,14 @@ const mapDispatchToProps = dispatch => {
 
     raiseError: (msg) => {
       dispatch(raiseErrorMessage(msg))
+    },
+
+    resetErrorMessage: () => {
+      dispatch(resetErrorMessage());
+    },
+
+    routeChanged: () => {
+      dispatch(routeChanged());
     },
 
     setPropertyTypeOptions: (options) => {
@@ -130,6 +135,13 @@ class PageLayout extends Component {
     this.APIRequest.abort();
   }
 
+  routeUpdate = () => {
+    if (this.props.errorMessage) {
+      this.props.resetErrorMessage();
+    }
+    this.props.routeChanged();
+  }
+
   render() {
     let {
       children,
@@ -147,6 +159,10 @@ class PageLayout extends Component {
       post: _.get(this.state, 'post', {}),
       rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
     };
+
+    this.props.history.listen((location, action) => {
+      this.routeUpdate();
+    });
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container h-100"}>
         {Object.keys(this.state.post).length ?
@@ -206,7 +222,7 @@ class PageLayout extends Component {
                 } />
               }
               {_.get(bundle, 'category_base', null) &&
-                <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle"} render={props =>
+                <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/:categoryTitle"} render={props =>
                   <Bundle load={loadArchive} nprogress={nprogress}>
                     {(Comp) => (Comp
                       ? <Comp {...paramsToSet} />
@@ -216,7 +232,7 @@ class PageLayout extends Component {
                 } />
               }
               {_.get(bundle, 'guide_category_base', null) &&
-                <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle"} render={props =>
+                <Route path={"/" + _.get(bundle, 'guide_category_base').replace(/\//g, '') + "/:guideCategoryTitle"} render={props =>
                   <Bundle load={loadGuideArchive} nprogress={nprogress}>
                     {(Comp) => (Comp
                       ? <Comp {...paramsToSet} />

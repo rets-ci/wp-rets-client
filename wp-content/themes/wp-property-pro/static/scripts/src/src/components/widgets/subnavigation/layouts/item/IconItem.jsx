@@ -1,5 +1,4 @@
 import React from 'react';
-import Util from '../../../../Util.jsx';
 import _ from 'lodash';
 
 const IconItem = ({historyPush, item}) =>

@@ -88,7 +88,6 @@ class HeaderPropertySingle extends Component {
   }
 
   render() {
-    console.log('HeaderPropertySingle');
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
     let searchType = this.props.searchType === 'Sale' ? 'Buy' : this.props.searchType;
     let propertySingleStaticFilters = {

@@ -1,4 +1,3 @@
-import createHistory from 'history/createBrowserHistory'
 import numeral from 'numeral';
 import React from 'react';
 import URI from 'urijs';

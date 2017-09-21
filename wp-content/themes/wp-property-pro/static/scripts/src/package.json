@@ -58,7 +58,7 @@
     "uglify-js": "^3.0.27"
   },
   "scripts": {
-    "clean": "rm dist/*",
+    "clean": "rm -f dist/*",
     "build": "npm run clean && NODE_ENV=production webpack --progress",
     "watch": "npm run clean && NODE_ENV=development webpack --watch --progress"
   },

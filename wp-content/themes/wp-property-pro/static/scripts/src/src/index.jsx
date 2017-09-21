@@ -1,4 +1,3 @@
-import createHistory from 'history/createBrowserHistory';
 import React from 'react';
 import {render} from 'react-dom';
 import {
@@ -32,21 +31,6 @@ if (devEnv) {
     propertyProApp
   );
 }
-
-// Create an enhanced router history that syncs navigation events with the store
-const history = createHistory()
-history.listen((location, action) => {
-  window.scrollTo(0, 0);
-  let ourStore = store.getState();
-  if (ourStore.errorMessage) {
-    store.dispatch({
-      type: Lib.RESET_ERROR_MESSAGE_ACTION
-    });
-  }
-  store.dispatch({
-    type: Lib.ROUTE_CHANGED_ACTION
-  });
-});
 
 render(
   <Provider store={store}>
