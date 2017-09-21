@@ -208,7 +208,6 @@ class MapSearchResults extends Component {
   }
 
   render() {
-    console.log('MapSearchResults render');
     let {
       allQueryParams,
       errorMessage,

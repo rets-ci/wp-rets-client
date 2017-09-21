@@ -1,5 +1,4 @@
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -15,10 +14,6 @@ try {
 }
 
 let plugins = [
-  new WebpackCleanupPlugin({verbose: true}),
-  new webpack.LoaderOptionsPlugin({
-    debug: true
-  }),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
@@ -47,7 +42,7 @@ module.exports = {
     entry: './src/index.jsx',
     output: {
         path: path.join(__dirname, 'dist'),
-        publicPath: path.join(__dirname, 'dist/').replace('var/www/', ''),
+        publicPath: '/wp-content/themes/wp-property-pro/static/scripts/src/dist/',
         chunkFilename: '[name].bundle.js',
         filename: 'bundle.js'
     },
