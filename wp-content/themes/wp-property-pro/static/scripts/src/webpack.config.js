@@ -96,7 +96,7 @@ module.exports = {
         'node_modules'
       ]
     },
-    devtool: !PROD ? 'source-map' : false,
+    // devtool: !PROD ? 'source-map' : false,
     watchOptions : {
       poll: true
     }

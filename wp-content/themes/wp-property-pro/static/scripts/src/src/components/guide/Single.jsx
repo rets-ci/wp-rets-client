@@ -4,7 +4,7 @@ import renderHTML from 'react-render-html';
 import Masthead from '../widgets/masthead/Masthead.jsx';
 import HeaderGuide from '../Headers/HeaderGuide.jsx'
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import {get, isEmpty} from 'lodash';
 
 import {withRouter} from 'react-router';
 
@@ -17,24 +17,24 @@ class Single extends Component {
   };
 
   returnToArchiveHandler = (historyPush) => {
-    let parent_category_relative_link = _.get(this.props.post, 'guide_single_content.parent_category_relative_link', '');
+    let parent_category_relative_link = get(this.props.post, 'guide_single_content.parent_category_relative_link', '');
 
-    if (!_.isEmpty(parent_category_relative_link)) {
+    if (!isEmpty(parent_category_relative_link)) {
       historyPush(parent_category_relative_link);
     }
   }
 
   nextArticleHandler = (historyPush) => {
-    let next_article_relative_link = _.get(this.props.post, 'guide_single_content.next_article_relative_link', '');
+    let next_article_relative_link = get(this.props.post, 'guide_single_content.next_article_relative_link', '');
 
-    if (!_.isEmpty(next_article_relative_link)) {
+    if (!isEmpty(next_article_relative_link)) {
       historyPush(next_article_relative_link)
     }
   }
 
   render() {
 
-    let content = _.get(this.props.post, 'guide_single_content', {});
+    let content = get(this.props.post, 'guide_single_content', {});
 
     return (
       <article className={Lib.THEME_CLASSES_PREFIX + "guide-post"}>
@@ -44,7 +44,7 @@ class Single extends Component {
               <div className="container-fluid">
                 <div className="row">
                   <HeaderGuide historyPush={this.props.history.push} />
-                  <Masthead widget_cell={_.get(content, 'masthead', '')}
+                  <Masthead widget_cell={get(content, 'masthead', '')}
                             returnToArchiveHandler={() => this.returnToArchiveHandler(this.props.history.push)}
                             nextArticleHandler={() => this.nextArticleHandler(this.props.history.push)}/>
                 </div>
@@ -54,9 +54,9 @@ class Single extends Component {
               <div className="container-fluid">
                 <div className="row">
                   {
-                    _.get(content, 'content', null)
+                    get(content, 'content', null)
                       ? <section
-                        className={Lib.THEME_CLASSES_PREFIX + "article-content"}>{renderHTML(_.get(content, 'content'))}</section>
+                        className={Lib.THEME_CLASSES_PREFIX + "article-content"}>{renderHTML(get(content, 'content'))}</section>
                       : null
                   }
                 </div>

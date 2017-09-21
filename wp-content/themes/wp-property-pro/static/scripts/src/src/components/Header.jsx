@@ -10,12 +10,12 @@ import HeaderPropertySingle from './Headers/HeaderPropertySingle.jsx';
 import HeaderSearch from './Headers/HeaderSearch.jsx';
 import Util from './Util.jsx';
 import {Lib} from '../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     location: ownProps.location,
-    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -32,14 +32,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const HeaderContent = ({history, location, locationTerm, openLoginModal, openUserPanel, saleType, saleTypesPanelOpen, searchType}) => {
-  let pathname = _.get(location, 'pathname', '');
+  let pathname = get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
   let headerElement;
   let sectionClassnames = Lib.THEME_CLASSES_PREFIX + "toolbar";
   if (pathRoot.indexOf('guide') !== -1) {
     return null;
-  } else if (pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')) {
+  } else if (pathRoot === get(wpp, 'instance.settings.configuration.base_slug', '')) {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
     headerElement = <HeaderSearch historyPush={history.push} openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search px-3";
@@ -47,7 +47,7 @@ const HeaderContent = ({history, location, locationTerm, openLoginModal, openUse
     if (saleTypesPanelOpen) {
       sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
     }
-  } else if (pathRoot.indexOf(_.get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
+  } else if (pathRoot.indexOf(get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
     headerElement = <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>;
   } else {
     headerElement = <HeaderDefault historyPush={history.push} openUserPanel={openUserPanel} openLoginModal={openLoginModal} />;

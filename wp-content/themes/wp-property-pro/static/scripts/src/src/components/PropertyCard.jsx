@@ -56,7 +56,6 @@ class PropertyCard extends Component {
       sub_type,
       zip
     } = this.props.data;
-
     const swiperParams = {
       preloadImages: false,
       lazyLoading: true,
@@ -106,7 +105,7 @@ class PropertyCard extends Component {
     let swiperImages = [ thumbnailSrc ]
     _.each(gallery_images.slice(1), (e) => {
       swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
-    })
+    });
     return (
       <div
         className={classes.join(' ')}

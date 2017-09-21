@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import DefaultLayout from './layouts/DefaultLayout.jsx';
 import {setTestimonialsActiveItem} from '../../../actions/index.jsx';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 const mapStateToProps = (state) => {
   return {
-    activeItem: _.get(state, 'testimonialsCarouselState.activeItem', 0)
+    activeItem: get(state, 'testimonialsCarouselState.activeItem', 0)
   }
 };
 
@@ -25,7 +25,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
     return null;
   }
 
-  let testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
+  let testimonials_reviews = get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
     <li className={i === activeItem ? Lib.THEME_CLASSES_PREFIX + "active-slide" : ""} key={i}>
       <blockquote>
         <div className={`${Lib.THEME_CLASSES_PREFIX}rating mx-auto`}>
@@ -36,7 +36,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
           <i className="fa fa-star" aria-hidden="true"></i>
         </div>
 
-        <p className={`${Lib.THEME_CLASSES_PREFIX}testimonial-text m-0 px-4`}>{_.get(testimonial, 'review', '')}</p>
+        <p className={`${Lib.THEME_CLASSES_PREFIX}testimonial-text m-0 px-4`}>{get(testimonial, 'review', '')}</p>
       </blockquote>
     </li>
   ));
@@ -47,7 +47,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
     'ml-auto'
   ];
 
-  let testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
+  let testimonials_authors = get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
     <li className={Lib.THEME_CLASSES_PREFIX + "user-item" + (i === activeItem ? " " + Lib.THEME_CLASSES_PREFIX + "active" : "")} key={i}>
       <a href="#" className={linkClasses[i]} onClick={(event) => {
         switchActiveTestimonial(i);
@@ -57,18 +57,18 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
         <div className={Lib.THEME_CLASSES_PREFIX + "user-box"}>
           <div className={Lib.THEME_CLASSES_PREFIX + "user-image"}>
             {
-              _.get(testimonial, 'image_src', '')
+              get(testimonial, 'image_src', '')
                 ? <img src={testimonial.image_src} className="rounded-circle" alt={testimonial.title}/>
                 : null
             }
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "user-info"}>
-            {    _.get(testimonial, 'title', '')
+            {    get(testimonial, 'title', '')
               ? <p className="hidden-sm-down">{testimonial.title}</p>
               : null
             }
             {
-              _.get(testimonial, 'subtitle', '')
+              get(testimonial, 'subtitle', '')
                 ? <span className="hidden-sm-down">{testimonial.subtitle}</span>
                 : null
             }

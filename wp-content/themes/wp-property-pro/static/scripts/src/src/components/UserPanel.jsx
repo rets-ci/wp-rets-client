@@ -1,7 +1,6 @@
 import BootstrapModal from './Modals/components/BootstrapModal.jsx'
 import React from 'react';
 import {Lib} from '../lib.jsx';
-import _ from 'lodash';
 
 const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
   return (

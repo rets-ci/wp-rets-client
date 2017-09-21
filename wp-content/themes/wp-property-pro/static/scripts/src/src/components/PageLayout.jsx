@@ -23,8 +23,7 @@ import LoadingAccordion from './LoadingAccordion.jsx';
 import nprogress from 'nprogress/nprogress.js';
 import UserPanel from './UserPanel.jsx';
 import {Lib} from '../lib.jsx';
-import _ from 'lodash';
-
+import {get} from 'lodash';
 
 import Page from './Page.jsx';
 
@@ -99,14 +98,14 @@ class PageLayout extends Component {
         nprogress.done();
         return self.props.raiseError(err);
       }
-      if (_.get(data, 'post', null)) {
-        document.title = _.get(data, 'page_title', '');
+      if (get(data, 'post', null)) {
+        document.title = get(data, 'page_title', '');
         if (data.property_search_options) {
           self.props.setPropertyTypeOptions(data.property_search_options);
         }
         self.setState({
-          agents: _.get(data, 'agents'),
-          search_options: _.get(data, 'search_options'),
+          agents: get(data, 'agents'),
+          search_options: get(data, 'search_options'),
           post: data.post
         });
       }
@@ -152,12 +151,12 @@ class PageLayout extends Component {
       userPanelOpen
     } = this.props;
     let paramsToSet = {
-      agents: _.get(this.state, 'agents', null),
+      agents: get(this.state, 'agents', null),
       history: history,
       location: location,
-      search_options: _.get(this.state, 'search_options', null),
-      post: _.get(this.state, 'post', {}),
-      rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
+      search_options: get(this.state, 'search_options', null),
+      post: get(this.state, 'post', {}),
+      rows: get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
     };
 
     this.props.history.listen((location, action) => {
@@ -177,9 +176,9 @@ class PageLayout extends Component {
             <Header
               history={history}
               location={location}
-              saleType={_.get(this.state, 'post.sale_type')}
-              searchType={_.get(this.state, 'post.search_type')}
-              locationTerm={_.get(this.state, 'post.location')}
+              saleType={get(this.state, 'post.sale_type')}
+              searchType={get(this.state, 'post.search_type')}
+              locationTerm={get(this.state, 'post.location')}
             />
             <Switch>
               <Route exact path="/" render={(props) => {
@@ -191,8 +190,8 @@ class PageLayout extends Component {
                 />
                 }
               } />
-              {_.get(bundle, 'property_single_url', null) &&
-                <Route exact path={"/" + _.get(bundle, 'property_single_url') + "/:propertySlug"} render={props =>
+              {get(bundle, 'property_single_url', null) &&
+                <Route exact path={"/" + get(bundle, 'property_single_url') + "/:propertySlug"} render={props =>
                   <Bundle load={loadPropertySingle} nprogress={nprogress}>
                     {(Comp) => (Comp
                       ? <Comp {...paramsToSet} />
@@ -201,8 +200,8 @@ class PageLayout extends Component {
                   </Bundle>
                 } />
               }
-              {_.get(wpp, 'instance.settings.configuration.base_slug', null) &&
-                <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} render={props => {
+              {get(wpp, 'instance.settings.configuration.base_slug', null) &&
+                <Route path={"/" + get(wpp, 'instance.settings.configuration.base_slug')} render={props => {
                   return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
                     {(Comp) => (Comp
                       ? <Comp {...paramsToSet} />
@@ -211,8 +210,8 @@ class PageLayout extends Component {
                   </Bundle>
                 }} />
               }
-              {_.get(bundle, 'blog_base', null) &&
-                <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '')} render={props =>
+              {get(bundle, 'blog_base', null) &&
+                <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '')} render={props =>
                   <Bundle load={loadArchive} nprogress={nprogress}>
                     {(Comp) => (Comp
                       ? <Comp {...paramsToSet} />
@@ -221,8 +220,8 @@ class PageLayout extends Component {
                   </Bundle>
                 } />
               }
-              {_.get(bundle, 'category_base', null) &&
-                <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/:categoryTitle"} render={props =>
+              {get(bundle, 'category_base', null) &&
+                <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '') + "/:categoryTitle"} render={props =>
                   <Bundle load={loadArchive} nprogress={nprogress}>
                     {(Comp) => (Comp
                       ? <Comp {...paramsToSet} />
@@ -231,8 +230,8 @@ class PageLayout extends Component {
                   </Bundle>
                 } />
               }
-              {_.get(bundle, 'guide_category_base', null) &&
-                <Route path={"/" + _.get(bundle, 'guide_category_base').replace(/\//g, '') + "/:guideCategoryTitle"} render={props =>
+              {get(bundle, 'guide_category_base', null) &&
+                <Route path={"/" + get(bundle, 'guide_category_base').replace(/\//g, '') + "/:guideCategoryTitle"} render={props =>
                   <Bundle load={loadGuideArchive} nprogress={nprogress}>
                     {(Comp) => (Comp
                       ? <Comp {...paramsToSet} />

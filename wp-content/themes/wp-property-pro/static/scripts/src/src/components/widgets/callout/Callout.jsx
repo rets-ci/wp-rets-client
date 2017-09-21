@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import DefaultLayout from './layouts/DefaultLayout.jsx';
 import {Lib} from '../../../lib.jsx';
 import {openFormModal} from '../../../actions/index.jsx';
-import _ from 'lodash';
 
 const mapStateToProps = (state) => {
   return {}

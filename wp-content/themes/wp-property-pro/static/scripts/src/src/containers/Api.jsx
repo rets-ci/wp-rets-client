@@ -1,6 +1,6 @@
 import React from 'react';
 import {Lib} from '../lib.jsx';
-import _ from 'lodash';
+import {get, isEmpty, replace} from 'lodash';
 import Util from '../components/Util.jsx';
 
 class Api {
@@ -165,7 +165,7 @@ class Api {
           "field": "term_suggest",
           "size": Lib.TERM_SUGGEST_COUNT,
           "contexts": {
-            "term_type": [i, _.get(agg, 'old_key', '')]
+            "term_type": [i, get(agg, 'old_key', '')]
           }
         }
       };
@@ -190,7 +190,7 @@ class Api {
         let data = null;
         let _buckets = [];
 
-        let suggestResponse = _.get(response, 'suggest');
+        let suggestResponse = get(response, 'suggest');
         for (let i in suggestResponse) {
           let terms = suggestResponse[i];
           if (i === 'post-suggest') {
@@ -201,20 +201,20 @@ class Api {
 
             let term = terms[tInd];
 
-            if (_.get(term, 'options', null) === null) {
+            if (get(term, 'options', null) === null) {
               continue;
             }
 
             for (let ind in term.options) {
               let option = term.options[ind];
 
-              if (_.get(option, '_source.term_type', null) === aggregationKey || _.get(option, '_source.term_type', null) === _.get(aggregationsFields[aggregationKey], 'old_key', null)) {
+              if (get(option, '_source.term_type', null) === aggregationKey || get(option, '_source.term_type', null) === get(aggregationsFields[aggregationKey], 'old_key', null)) {
                 _buckets.push({
-                  id: _.get(option, '_id', ''),
-                  text: _.get(option, '_source.name', ''),
-                  term: _.get(option, '_source.slug', ''),
-                  count: _.get(option, 'score', ''),
-                  taxonomy: _.get(option, '_source.taxonomy', '')
+                  id: get(option, '_id', ''),
+                  text: get(option, '_source.name', ''),
+                  term: get(option, '_source.slug', ''),
+                  count: get(option, 'score', ''),
+                  taxonomy: get(option, '_source.taxonomy', '')
                 });
 
               }
@@ -235,23 +235,23 @@ class Api {
       let data = null;
       let _buckets = [];
 
-      let postsSuggest = _.get(response, 'suggest.post-suggest');
+      let postsSuggest = get(response, 'suggest.post-suggest');
       for (let c in postsSuggest) {
         let posts = postsSuggest[c];
 
-        if (_.get(posts, 'options', null) === null) {
+        if (get(posts, 'options', null) === null) {
           continue;
         }
 
         for (let ind in posts.options) {
           let option = posts.options[ind];
 
-          if (_.get(option, '_source', null) !== null) {
+          if (get(option, '_source', null) !== null) {
 
             _buckets.push({
-              id: _.get(option, '_source.post_title', ''),
-              text: [_.get(option, '_source.post_meta.formatted_address_simple', ''), _.get(option, '_source.post_meta.rets_postal_code', '')].join(' '),
-              url: _.get(option, '_source.post_name', null) ? [_.get(bundle, 'property_single_url'), _.get(option, '_source.post_name', null)].join('/') : ''
+              id: get(option, '_source.post_title', ''),
+              text: [get(option, '_source.post_meta.formatted_address_simple', ''), get(option, '_source.post_meta.rets_postal_code', '')].join(' '),
+              url: get(option, '_source.post_name', null) ? [get(bundle, 'property_single_url'), get(option, '_source.post_name', null)].join('/') : ''
             });
           }
         }
@@ -296,7 +296,7 @@ class Api {
 
       body.aggs[aggIndex] = {
         "terms": {
-          "field": _.get(aggregation, 'terms.field', ''),
+          "field": get(aggregation, 'terms.field', ''),
           "size": params.size || 0
         }
       }
@@ -311,7 +311,7 @@ class Api {
       if (err) {
         return callback(err);
       }
-      let responseAggs = _.get(response, 'aggregations');
+      let responseAggs = get(response, 'aggregations');
 
       for (let i in responseAggs) {
 
@@ -323,19 +323,19 @@ class Api {
         let _buckets = [];
         let term = responseAggs[i];
 
-        if (_.get(term, 'buckets', null) === null) {
+        if (get(term, 'buckets', null) === null) {
           continue;
         }
 
         for (let ind in term.buckets) {
           let bucket = term.buckets[ind];
 
-          if (_.get(bucket, 'key', null) !== null) {
+          if (get(bucket, 'key', null) !== null) {
             _buckets.push({
-              id: _.get(bucket, 'key', ''),
-              text: _.get(bucket, 'key', ''),
-              term: _.get(responseAggs[_.replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
-              count: _.get(bucket, 'doc_count', ''),
+              id: get(bucket, 'key', ''),
+              text: get(bucket, 'key', ''),
+              term: get(responseAggs[replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
+              count: get(bucket, 'doc_count', ''),
               taxonomy: 'wpp_location'
             });
 
@@ -345,7 +345,7 @@ class Api {
         if (_buckets.length > 0) {
           data = Object.assign({}, data, {
             key: i,
-            text: _.get(aggregations[i], 'terms.title'),
+            text: get(aggregations[i], 'terms.title'),
             children: _buckets
           });
 
@@ -570,20 +570,20 @@ class Api {
 
   static makeRequest(data, callback) {
 
-    if (_.isEmpty(_.get(data, 'url', null))) {
+    if (isEmpty(get(data, 'url', null))) {
       console.log('Missing url');
       return false;
     }
 
-    let query = _.get(data, 'query', null);
+    let query = get(data, 'query', null);
 
     // @TODO Temporary hack for changing ElasticPress index
-    if (_.get(data, 'url').indexOf('search/advanced') != -1 && !_.isEmpty(_.get(bundle, 'ep_index_name', null))) {
-      query.custom_ep_index = _.get(bundle, 'ep_index_name');
+    if (get(data, 'url').indexOf('search/advanced') != -1 && !isEmpty(get(bundle, 'ep_index_name', null))) {
+      query.custom_ep_index = get(bundle, 'ep_index_name');
     }
 
     jQuery.ajax({
-      url: _.get(data, 'url'),
+      url: get(data, 'url'),
       dataType: 'json',
       type: 'GET',
       contentType: 'text/plain',

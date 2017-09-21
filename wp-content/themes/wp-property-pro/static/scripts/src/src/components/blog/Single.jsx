@@ -4,7 +4,7 @@ import Masthead from '../widgets/masthead/Masthead.jsx';
 import PostCard from './components/PostCard.jsx';
 import PostContent from './components/PostContent.jsx';
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 class Single extends Component {
   static propTypes = {
@@ -13,7 +13,7 @@ class Single extends Component {
 
   render() {
 
-    let posts = _.get(this.props.post, 'related_posts', []);
+    let posts = get(this.props.post, 'related_posts', []);
     let groups = [];
 
     if (posts) {
@@ -33,24 +33,24 @@ class Single extends Component {
         <div className="row">
           <article>
             {
-              _.get(this.props.post, 'widgets.masthead', null)
-                ? <Masthead widget_cell={_.get(this.props.post, 'widgets.masthead')}/>
+              get(this.props.post, 'widgets.masthead', null)
+                ? <Masthead widget_cell={get(this.props.post, 'widgets.masthead')}/>
                 : null
             }
             {
-              _.get(this.props.post, 'content', null)
+              get(this.props.post, 'content', null)
                 ? <PostContent content={this.props.post.content}/>
                 : null
             }
           </article>
           {
-            _.get(this.props.post, 'related_posts', []).length
+            get(this.props.post, 'related_posts', []).length
               ?
               <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
                 <div className="container">
                   <div className="row">
                     {
-                      _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
+                      get(this.props.post, 'category_title', null) && get(this.props.post, 'related_posts', []).length
                         ? <div className={`${Lib.THEME_CLASSES_PREFIX}more-posts text-center`}>
                           <h4>More {this.props.post.category_title} Articles</h4>
                         </div>

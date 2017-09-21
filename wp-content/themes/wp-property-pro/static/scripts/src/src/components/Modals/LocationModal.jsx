@@ -15,18 +15,18 @@ import URL from 'urijs';
 import Api from '../../containers/Api.jsx';
 import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     errorMessage: state.errorMessage,
     isFetching: state.locationModal.isFetching,
-    propertiesModalMode: _.get(state, 'locationModal.propertiesModalMode'),
+    propertiesModalMode: get(state, 'locationModal.propertiesModalMode'),
     open: state.locationModal ? state.locationModal.open : false,
-    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
-    searchResults: _.get(state, 'locationModal.items', []),
-    searchType: _.get(state, 'searchType.searchType', '')
+    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
+    searchResults: get(state, 'locationModal.items', []),
+    searchType: get(state, 'searchType.searchType', '')
   }
 };
 
@@ -136,7 +136,7 @@ class LocationModal extends Component {
           });
         } else {
           let url = new URL();
-          url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
+          url.resource(get(wpp, 'instance.settings.configuration.base_slug'));
           //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
           let modifiedSearchType = searchType === 'Sale' ? 'Buy' : searchType;
           let URLSearchObject = {
@@ -228,7 +228,7 @@ class LocationModal extends Component {
                     <div className="container">
                       <div className="row">
                         <a href="#" className="m-0"
-                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.text, searchType, modifyType, _.get(c, 'url', null), history.push)}>
+                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.text, searchType, modifyType, get(c, 'url', null), history.push)}>
                           {c.text}
                         </a>
                       </div>

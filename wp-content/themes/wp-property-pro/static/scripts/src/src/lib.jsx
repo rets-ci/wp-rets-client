@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import {get} from 'lodash';
 
 export const Lib = {
   COMMON_DATE_FORMAT_1: 'YYYY-MM-D hh:mm:ss',
@@ -52,7 +52,7 @@ export const Lib = {
   TERM_SUGGEST_COUNT: 20,
   PROPERTIES_LIST_CAROUSEL: "carousel",
   PROPERTIES_LIST_DEFAULT: "default",
-  THEME_CLASSES_PREFIX: _.get(bundle, 'theme_prefix', ''),
+  THEME_CLASSES_PREFIX: get(bundle, 'theme_prefix', ''),
   AJAX_GET_POSTS_ACTION: "get_posts",
   QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
   SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,

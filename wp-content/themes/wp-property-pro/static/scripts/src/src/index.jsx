@@ -9,7 +9,6 @@ import {createStore} from 'redux';
 import PageLayout from './components/PageLayout.jsx';
 import propertyProApp from './reducers/index.jsx';
 import {Lib} from './lib.jsx';
-import _ from 'lodash';
 import shims from './shims.js';
 
 require('swiper-css');

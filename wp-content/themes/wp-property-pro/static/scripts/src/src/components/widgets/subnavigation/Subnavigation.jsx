@@ -2,7 +2,7 @@ import React from 'react';
 import IconLayout from './layouts/IconLayout.jsx';
 import TextLayout from './layouts/TextLayout.jsx';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 import { withRouter } from 'react-router'
 
 const Subnavigation = ({currentUrl, history, post_title, widget_cell}) => {
@@ -11,7 +11,7 @@ const Subnavigation = ({currentUrl, history, post_title, widget_cell}) => {
     return null;
   }
 
-  let items = _.get(widget_cell, 'widget.fields.menu_items', []);
+  let items = get(widget_cell, 'widget.fields.menu_items', []);
 
   let container;
   let classes = Lib.THEME_CLASSES_PREFIX + "subnavigation";
