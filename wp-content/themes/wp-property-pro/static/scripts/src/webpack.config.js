@@ -3,6 +3,7 @@
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
 const path = require('path');
 const webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const fs = require('fs');
 
@@ -35,7 +36,7 @@ let plugins = [
 
 if (PROD) {
   console.log('in production mode');
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
+  plugins.push(new UglifyJSPlugin({
     compress: { warnings: false },
     mangle: true
   }));
