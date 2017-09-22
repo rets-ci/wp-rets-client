@@ -77,6 +77,9 @@
   }
 }
 
+/************************************
+  Search Modal Animation
+*************************************/
 .propertypro-search-modal {
   &.propertypro-display {
     transform: scaleY(.01) scaleX(0);
@@ -121,4 +124,18 @@
       opacity: 0;
     }
   }*/
+}
+
+/************************************
+  Side Panel Animation
+*************************************/
+.propertypro-modal.sidebar-right {
+  .modal-dialog {
+    transform: translateX(100%);
+    transition: -webkit-transform 0.3s ease-out;
+  }
+
+  &.show .modal-dialog {
+    transform: translateX(0%);
+  }
 }
