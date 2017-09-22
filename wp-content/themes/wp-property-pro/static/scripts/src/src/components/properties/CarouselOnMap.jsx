@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Swiper from 'react-id-swiper';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 import { Lib } from '../../lib.jsx';
 import PropertyCard from '../PropertyCard.jsx';

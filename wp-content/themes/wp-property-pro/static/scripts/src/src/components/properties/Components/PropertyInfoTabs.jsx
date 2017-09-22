@@ -1,7 +1,7 @@
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {merge} from 'lodash';
+import merge from 'lodash/merge';
 
 import PropertySingleTabContent from './PropertySingleTabContent.jsx';
 

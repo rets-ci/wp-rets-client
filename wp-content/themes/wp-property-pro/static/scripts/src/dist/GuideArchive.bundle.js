@@ -1,6 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 549:
+/***/ 716:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20,27 +20,29 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(20);
+var _reactRouter = __webpack_require__(23);
 
-var _Masthead = __webpack_require__(65);
+var _Masthead = __webpack_require__(88);
 
 var _Masthead2 = _interopRequireDefault(_Masthead);
 
-var _CategoryCard = __webpack_require__(590);
+var _CategoryCard = __webpack_require__(746);
 
 var _CategoryCard2 = _interopRequireDefault(_CategoryCard);
 
-var _ArticleCard = __webpack_require__(591);
+var _ArticleCard = __webpack_require__(747);
 
 var _ArticleCard2 = _interopRequireDefault(_ArticleCard);
 
-var _HeaderGuide = __webpack_require__(211);
+var _HeaderGuide = __webpack_require__(288);
 
 var _HeaderGuide2 = _interopRequireDefault(_HeaderGuide);
 
 var _lib = __webpack_require__(1);
 
-var _lodash = __webpack_require__(3);
+var _get = __webpack_require__(3);
+
+var _get2 = _interopRequireDefault(_get);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64,14 +66,14 @@ var Archive = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var content = (0, _lodash.get)(this.props.post, 'guide_content', {});
+      var content = (0, _get2.default)(this.props.post, 'guide_content', {});
 
-      var cards = (0, _lodash.get)(content, 'items', []).map(function (item, i) {
-        var last = (0, _lodash.get)(content, 'items', []).length === i + 1;
+      var cards = (0, _get2.default)(content, 'items', []).map(function (item, i) {
+        var last = (0, _get2.default)(content, 'items', []).length === i + 1;
         return _react2.default.createElement(
           'li',
           { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-list-item border-0', key: i },
-          (0, _lodash.get)(item, 'children', null) ? _react2.default.createElement(_CategoryCard2.default, { category: item, historyPush: _this2.props.history.push, last: last }) : _react2.default.createElement(_ArticleCard2.default, { article: item, historyPush: _this2.props.history.push, last: last })
+          (0, _get2.default)(item, 'children', null) ? _react2.default.createElement(_CategoryCard2.default, { category: item, historyPush: _this2.props.history.push, last: last }) : _react2.default.createElement(_ArticleCard2.default, { article: item, historyPush: _this2.props.history.push, last: last })
         );
       });
       return _react2.default.createElement(
@@ -90,7 +92,7 @@ var Archive = function (_Component) {
                 'div',
                 { className: 'row' },
                 _react2.default.createElement(_HeaderGuide2.default, { historyPush: this.props.history.push }),
-                _react2.default.createElement(_Masthead2.default, { widget_cell: (0, _lodash.get)(content, 'masthead') })
+                _react2.default.createElement(_Masthead2.default, { widget_cell: (0, _get2.default)(content, 'masthead') })
               )
             )
           ),
@@ -133,7 +135,7 @@ exports.default = (0, _reactRouter.withRouter)(Archive);
 
 /***/ }),
 
-/***/ 590:
+/***/ 746:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -155,7 +157,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _lib = __webpack_require__(1);
 
-var _lodash = __webpack_require__(3);
+var _get = __webpack_require__(3);
+
+var _get2 = _interopRequireDefault(_get);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -203,37 +207,37 @@ var CategoryCard = function (_Component) {
                 _react2.default.createElement(
                   'header',
                   { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-header" },
-                  (0, _lodash.get)(this.props.category, 'title', null) ? _react2.default.createElement(
+                  (0, _get2.default)(this.props.category, 'title', null) ? _react2.default.createElement(
                     'h2',
                     { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-title" },
                     _react2.default.createElement(
                       'a',
                       {
-                        href: (0, _lodash.get)(this.props.category, 'url', ''), onClick: function onClick(eve) {
+                        href: (0, _get2.default)(this.props.category, 'url', ''), onClick: function onClick(eve) {
                           eve.preventDefault();
-                          historyPush((0, _lodash.get)(_this2.props.category, 'relative_url', ''));
+                          historyPush((0, _get2.default)(_this2.props.category, 'relative_url', ''));
                         } },
-                      (0, _lodash.get)(this.props.category, 'title')
+                      (0, _get2.default)(this.props.category, 'title')
                     )
                   ) : null
                 ),
-                (0, _lodash.get)(this.props.category, 'children', null) ? _react2.default.createElement(
+                (0, _get2.default)(this.props.category, 'children', null) ? _react2.default.createElement(
                   'nav',
                   { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-navigation" },
                   _react2.default.createElement(
                     'ul',
                     { className: 'list-group' },
-                    (0, _lodash.get)(this.props.category, 'children', []).map(function (item, key) {
-                      return (0, _lodash.get)(item, 'title', null) && (0, _lodash.get)(item, 'relative_url', null) ? _react2.default.createElement(
+                    (0, _get2.default)(this.props.category, 'children', []).map(function (item, key) {
+                      return (0, _get2.default)(item, 'title', null) && (0, _get2.default)(item, 'relative_url', null) ? _react2.default.createElement(
                         'li',
                         { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'category-navigation-item border-0 p-0', key: key },
                         _react2.default.createElement(
                           'a',
-                          { href: (0, _lodash.get)(item, 'relative_url'), onClick: function onClick(eve) {
+                          { href: (0, _get2.default)(item, 'relative_url'), onClick: function onClick(eve) {
                               eve.preventDefault();
-                              historyPush((0, _lodash.get)(item, 'relative_url'));
+                              historyPush((0, _get2.default)(item, 'relative_url'));
                             } },
-                          (0, _lodash.get)(item, 'title')
+                          (0, _get2.default)(item, 'title')
                         )
                       ) : null;
                     })
@@ -244,8 +248,8 @@ var CategoryCard = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'col-sm-4' },
-              (0, _lodash.get)(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
-                  background: "url(" + (0, _lodash.get)(this.props.category, 'image_src') + ") 50% 50% no-repeat"
+              (0, _get2.default)(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
+                  background: "url(" + (0, _get2.default)(this.props.category, 'image_src') + ") 50% 50% no-repeat"
                 }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
             )
           )
@@ -266,7 +270,7 @@ exports.default = CategoryCard;
 
 /***/ }),
 
-/***/ 591:
+/***/ 747:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -288,7 +292,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _lib = __webpack_require__(1);
 
-var _lodash = __webpack_require__(3);
+var _get = __webpack_require__(3);
+
+var _get2 = _interopRequireDefault(_get);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -336,24 +342,24 @@ var ArticleCard = function (_Component) {
                 _react2.default.createElement(
                   'header',
                   { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-                  (0, _lodash.get)(this.props.article, 'title', null) ? _react2.default.createElement(
+                  (0, _get2.default)(this.props.article, 'title', null) ? _react2.default.createElement(
                     'h2',
                     { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
                     _react2.default.createElement(
                       'a',
                       {
-                        href: (0, _lodash.get)(this.props.article, 'url', ''), onClick: function onClick(eve) {
+                        href: (0, _get2.default)(this.props.article, 'url', ''), onClick: function onClick(eve) {
                           eve.preventDefault();
-                          historyPush((0, _lodash.get)(_this2.props.article, 'relative_url', ''));
+                          historyPush((0, _get2.default)(_this2.props.article, 'relative_url', ''));
                         } },
-                      (0, _lodash.get)(this.props.article, 'title')
+                      (0, _get2.default)(this.props.article, 'title')
                     )
                   ) : null,
-                  (0, _lodash.get)(this.props.article, 'excerpt', null) ? _react2.default.createElement(
+                  (0, _get2.default)(this.props.article, 'excerpt', null) ? _react2.default.createElement(
                     'p',
                     {
                       className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-                    (0, _lodash.get)(this.props.article, 'excerpt')
+                    (0, _get2.default)(this.props.article, 'excerpt')
                   ) : null
                 )
               )
@@ -361,8 +367,8 @@ var ArticleCard = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'col-sm-4' },
-              (0, _lodash.get)(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
-                  background: "url(" + (0, _lodash.get)(this.props.article, 'image_src') + ") 50% 50% no-repeat"
+              (0, _get2.default)(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
+                  background: "url(" + (0, _get2.default)(this.props.article, 'image_src') + ") 50% 50% no-repeat"
                 }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
             )
           )

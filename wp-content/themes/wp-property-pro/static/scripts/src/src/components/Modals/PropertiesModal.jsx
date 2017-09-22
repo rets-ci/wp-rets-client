@@ -14,7 +14,9 @@ import RentIcon from '../../../../../images/src/rent-icon-standard.svg';
 import CommercialIcon from '../../../../../images/src/commercial-icon-standard.svg';
 import LandIcon from '../../../../../images/src/land-icon-standard.svg';
 
-import {difference, get, isEqual} from 'lodash';
+import difference from 'lodash/difference';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 
 import LocationModal from './LocationModal.jsx';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 import Util from '../../../Util.jsx';
 
 const DefaultLayout = ({item, openFormModal}) => {

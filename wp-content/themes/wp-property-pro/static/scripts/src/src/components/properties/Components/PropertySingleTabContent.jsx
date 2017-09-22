@@ -2,7 +2,7 @@ import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 function showContentValue(data, esReference, booleanField) {
   if (!esReference || (!get(data, esReference, null) && !booleanField )) { return 'N/A'; }

@@ -15,7 +15,7 @@ import URL from 'urijs';
 import Api from '../../containers/Api.jsx';
 import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {

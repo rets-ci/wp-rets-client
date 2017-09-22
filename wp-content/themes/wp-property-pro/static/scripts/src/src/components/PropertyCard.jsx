@@ -4,8 +4,9 @@ import {withRouter} from 'react-router';
 import renderHTML from 'react-render-html';
 import Swiper from 'react-id-swiper';
 import {Link} from 'react-router-dom';
-import {each, get, isEmpty} from 'lodash';
-
+import each from 'lodash/each';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const TextItem = ({historyPush, item}) =>
   isEmpty(item)

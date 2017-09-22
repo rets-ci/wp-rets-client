@@ -1,7 +1,7 @@
 import React from 'react';
 import IconItem from './item/IconItem.jsx';
 import {Lib} from '../../../../lib.jsx';
-import {isEmpty} from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 const IconLayout = ({historyPush, items, currentUrl}) =>
   isEmpty(items)

@@ -10,7 +10,7 @@ import HeaderPropertySingle from './Headers/HeaderPropertySingle.jsx';
 import HeaderSearch from './Headers/HeaderSearch.jsx';
 import Util from './Util.jsx';
 import {Lib} from '../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const mapStateToProps = (state, ownProps) => {
   return {

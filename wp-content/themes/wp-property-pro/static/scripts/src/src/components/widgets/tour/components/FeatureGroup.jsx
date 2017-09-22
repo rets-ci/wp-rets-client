@@ -1,7 +1,7 @@
 import React from 'react';
 import Feature from './Feature.jsx';
 import {Lib} from '../../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const FeatureGroup = ({browserHistoryPush, featureGroup, ind, openFormModal}) => {
 

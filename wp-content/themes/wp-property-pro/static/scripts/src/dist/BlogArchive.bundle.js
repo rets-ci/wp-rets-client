@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 548:
+/***/ 715:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,17 +16,17 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(11);
+var _reactRedux = __webpack_require__(12);
 
-var _Masthead = __webpack_require__(65);
+var _Masthead = __webpack_require__(88);
 
 var _Masthead2 = _interopRequireDefault(_Masthead);
 
-var _Subnavigation = __webpack_require__(209);
+var _Subnavigation = __webpack_require__(286);
 
 var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
-var _Posts = __webpack_require__(589);
+var _Posts = __webpack_require__(745);
 
 var _Posts2 = _interopRequireDefault(_Posts);
 
@@ -34,11 +34,13 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _index = __webpack_require__(13);
+var _index = __webpack_require__(14);
 
 var _lib = __webpack_require__(1);
 
-var _lodash = __webpack_require__(3);
+var _get = __webpack_require__(3);
+
+var _get2 = _interopRequireDefault(_get);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57,7 +59,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
     getPosts: function getPosts(from, categoryId) {
 
       jQuery.ajax({
-        url: (0, _lodash.get)(bundle, 'admin_ajax_url', ''),
+        url: (0, _get2.default)(bundle, 'admin_ajax_url', ''),
         type: 'get',
         data: {
           action: _lib.Lib.AJAX_GET_POSTS_ACTION,
@@ -66,7 +68,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
         },
         dataType: 'json',
         success: function success(data) {
-          if ((0, _lodash.get)(data, 'posts', null)) dispatch((0, _index.setBlogPosts)((0, _lodash.get)(data, 'posts', []), (0, _lodash.get)(data, 'allowPagination', false)));
+          if ((0, _get2.default)(data, 'posts', null)) dispatch((0, _index.setBlogPosts)((0, _get2.default)(data, 'posts', []), (0, _get2.default)(data, 'allowPagination', false)));
         },
         error: function error(jqXHR, textStatus, errorThrown) {
           console.log(textStatus, errorThrown);
@@ -88,16 +90,16 @@ var ArchiveContent = function (_Component) {
   _createClass(ArchiveContent, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var content = (0, _lodash.get)(this.props.post, 'blog_content', {});
+      var content = (0, _get2.default)(this.props.post, 'blog_content', {});
 
       // Initial get posts
-      this.props.getPosts(0, (0, _lodash.get)(content, 'category_id', 0));
+      this.props.getPosts(0, (0, _get2.default)(content, 'category_id', 0));
     }
   }, {
     key: 'render',
     value: function render() {
 
-      var content = (0, _lodash.get)(this.props.post, 'blog_content', {});
+      var content = (0, _get2.default)(this.props.post, 'blog_content', {});
 
       return _react2.default.createElement(
         'div',
@@ -105,10 +107,10 @@ var ArchiveContent = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'row' },
-          _react2.default.createElement(_Masthead2.default, { widget_cell: (0, _lodash.get)(content, 'masthead') }),
-          _react2.default.createElement(_Subnavigation2.default, { widget_cell: (0, _lodash.get)(content, 'subnavigation'),
-            currentUrl: (0, _lodash.get)(this.props.post, 'post_url', '') }),
-          _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: (0, _lodash.get)(content, 'category_id') })
+          _react2.default.createElement(_Masthead2.default, { widget_cell: (0, _get2.default)(content, 'masthead') }),
+          _react2.default.createElement(_Subnavigation2.default, { widget_cell: (0, _get2.default)(content, 'subnavigation'),
+            currentUrl: (0, _get2.default)(this.props.post, 'post_url', '') }),
+          _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: (0, _get2.default)(content, 'category_id') })
         )
       );
     }
@@ -128,7 +130,7 @@ exports.default = Archive;
 
 /***/ }),
 
-/***/ 557:
+/***/ 723:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -199,7 +201,7 @@ exports.default = LoadingCircle;
 
 /***/ }),
 
-/***/ 589:
+/***/ 745:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -219,19 +221,25 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(11);
+var _reactRedux = __webpack_require__(12);
 
-var _LoadingCircle = __webpack_require__(557);
+var _LoadingCircle = __webpack_require__(723);
 
 var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
-var _PostCard = __webpack_require__(210);
+var _PostCard = __webpack_require__(287);
 
 var _PostCard2 = _interopRequireDefault(_PostCard);
 
 var _lib = __webpack_require__(1);
 
-var _lodash = __webpack_require__(3);
+var _get = __webpack_require__(3);
+
+var _get2 = _interopRequireDefault(_get);
+
+var _isEmpty = __webpack_require__(10);
+
+var _isEmpty2 = _interopRequireDefault(_isEmpty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -243,8 +251,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    posts: (0, _lodash.get)(state, 'blogPostsState.posts', []),
-    allowPagination: (0, _lodash.get)(state, 'blogPostsState.allowPagination', false)
+    posts: (0, _get2.default)(state, 'blogPostsState.posts', []),
+    allowPagination: (0, _get2.default)(state, 'blogPostsState.allowPagination', false)
   };
 };
 
@@ -263,7 +271,7 @@ var Posts = function (_Component) {
   _createClass(Posts, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.posts !== this.props.posts || (0, _lodash.isEmpty)(nextProps.posts)) {
+      if (nextProps.posts !== this.props.posts || (0, _isEmpty2.default)(nextProps.posts)) {
         this.setState({ loading: false });
       }
     }
@@ -282,7 +290,7 @@ var Posts = function (_Component) {
 
       var self = this;
 
-      var posts = (0, _lodash.get)(this.props, 'posts', []);
+      var posts = (0, _get2.default)(this.props, 'posts', []);
       var groups = [];
 
       if (posts) {
@@ -310,13 +318,13 @@ var Posts = function (_Component) {
 
               var groupPosts = g.map(function (p, i) {
                 return _react2.default.createElement(_PostCard2.default, { data: {
-                    title: (0, _lodash.get)(p, 'title', ''),
-                    excerpt: (0, _lodash.get)(p, 'excerpt', ''),
-                    image_src: (0, _lodash.get)(p, 'image_src', ''),
-                    image_title: (0, _lodash.get)(p, 'image_title', ''),
-                    image_alt: (0, _lodash.get)(p, 'image_alt', ''),
-                    url: (0, _lodash.get)(p, 'url', ''),
-                    relative_url: (0, _lodash.get)(p, 'relative_url', '')
+                    title: (0, _get2.default)(p, 'title', ''),
+                    excerpt: (0, _get2.default)(p, 'excerpt', ''),
+                    image_src: (0, _get2.default)(p, 'image_src', ''),
+                    image_title: (0, _get2.default)(p, 'image_title', ''),
+                    image_alt: (0, _get2.default)(p, 'image_alt', ''),
+                    url: (0, _get2.default)(p, 'url', ''),
+                    relative_url: (0, _get2.default)(p, 'relative_url', '')
 
                   }, key: i });
               });

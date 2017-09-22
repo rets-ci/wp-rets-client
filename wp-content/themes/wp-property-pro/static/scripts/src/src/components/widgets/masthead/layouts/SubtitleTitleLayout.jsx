@@ -1,7 +1,8 @@
 import React from 'react';
 import Search from '../components/Search.jsx';
 import {Lib} from '../../../../lib.jsx';
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const SubtitleTitleLayout = ({widget_cell}) => {
   return (

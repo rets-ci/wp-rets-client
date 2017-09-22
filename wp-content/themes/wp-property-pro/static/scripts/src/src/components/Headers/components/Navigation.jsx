@@ -1,6 +1,6 @@
 import React from 'react';
 import {Lib} from '../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
   <nav className={`navbar navbar-toggleable-md ${Lib.THEME_CLASSES_PREFIX}navigation-navbar`}>

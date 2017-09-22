@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import onClickOutside from 'react-onclickoutside';
 import {Lib} from '../../../../../lib.jsx';
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import Util from '../../../../Util.jsx';
 
 class Mobile extends Component {

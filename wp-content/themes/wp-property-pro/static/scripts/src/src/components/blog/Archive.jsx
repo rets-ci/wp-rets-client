@@ -6,7 +6,7 @@ import Posts from './components/Posts.jsx';
 import PropTypes from 'prop-types';
 import {setBlogPosts} from '../../actions/index.jsx';
 import {Lib} from '../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const mapStateToProps = (state) => {
   return {}

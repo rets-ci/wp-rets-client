@@ -6,7 +6,8 @@ import GuideLayout from './layouts/GuideLayout.jsx'
 import GuideSingleLayout from './layouts/GuideSingleLayout.jsx'
 import LocationModal from '../../Modals/LocationModal.jsx';
 import {Lib} from '../../../lib.jsx';
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const Masthead = ({closeLocationModal, widget_cell, returnToArchiveHandler, nextArticleHandler}) => {
 

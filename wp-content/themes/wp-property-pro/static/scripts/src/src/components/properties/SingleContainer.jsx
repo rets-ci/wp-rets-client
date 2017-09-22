@@ -4,7 +4,7 @@ import {
   requestPropertySingleResult,
   raiseErrorMessage
 } from '../../actions/index.jsx'
-import {get} from 'lodash';
+import get from 'lodash/get';
 import Api from '../../containers/Api.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
 import PropTypes from 'prop-types';

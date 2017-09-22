@@ -4,7 +4,8 @@ import renderHTML from 'react-render-html';
 import Masthead from '../widgets/masthead/Masthead.jsx';
 import HeaderGuide from '../Headers/HeaderGuide.jsx'
 import {Lib} from '../../lib.jsx';
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 import {withRouter} from 'react-router';
 

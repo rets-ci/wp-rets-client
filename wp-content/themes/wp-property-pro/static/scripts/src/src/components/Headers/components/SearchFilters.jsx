@@ -10,7 +10,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import Util from '../../Util.jsx';
-import {isEqual} from 'lodash';
+import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 
 

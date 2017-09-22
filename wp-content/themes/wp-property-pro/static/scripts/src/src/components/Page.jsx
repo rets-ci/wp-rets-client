@@ -12,7 +12,7 @@ import Subnavigation from './widgets/subnavigation/Subnavigation.jsx';
 import Tour from './widgets/tour/Tour.jsx';
 import Single from './blog/Single.jsx';
 import GuideSingle from './guide/Single.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const mapStateToProps = (state) => {
   return {}

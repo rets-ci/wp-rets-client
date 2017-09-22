@@ -3,7 +3,7 @@ import {withRouter} from 'react-router';
 import FooterBottomMenu from "./Menus/FooterBottomMenu.jsx";
 import FooterBottomSocialMenu from "./Menus/FooterBottomSocialMenu.jsx";
 import {Lib} from '../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const FooterBottom = ({historyPush}) => {
 

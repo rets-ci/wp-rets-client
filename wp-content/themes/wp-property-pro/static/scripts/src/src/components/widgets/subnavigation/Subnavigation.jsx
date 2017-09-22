@@ -2,7 +2,7 @@ import React from 'react';
 import IconLayout from './layouts/IconLayout.jsx';
 import TextLayout from './layouts/TextLayout.jsx';
 import {Lib} from '../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 import { withRouter } from 'react-router'
 
 const Subnavigation = ({currentUrl, history, post_title, widget_cell}) => {

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import DefaultLayout from './layouts/DefaultLayout.jsx';
 import {setTestimonialsActiveItem} from '../../../actions/index.jsx';
 import {Lib} from '../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const mapStateToProps = (state) => {
   return {

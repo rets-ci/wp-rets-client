@@ -6,7 +6,7 @@ import CategoryCard from './components/CategoryCard.jsx';
 import ArticleCard from './components/ArticleCard.jsx';
 import HeaderGuide from '../Headers/HeaderGuide.jsx'
 import {Lib} from '../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 class Archive extends Component {
   static propTypes = {

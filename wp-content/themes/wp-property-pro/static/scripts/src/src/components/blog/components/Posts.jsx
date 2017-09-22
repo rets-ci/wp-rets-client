@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import LoadingCircle from '../../LoadingCircle.jsx';
 import PostCard from './PostCard.jsx';
 import {Lib} from '../../../lib.jsx';
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const mapStateToProps = (state) => {
   return {

@@ -1,6 +1,6 @@
 import {Lib} from '../../../../lib.jsx';
 import React from 'react';
-import {get} from 'lodash';
+import get from 'lodash/get';
 import FeatureGroup from './../components/FeatureGroup.jsx';
 
 const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal}) => {

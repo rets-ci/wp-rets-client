@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
-import {isEmpty} from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 class PostCard extends Component {
   static propTypes = {

@@ -1,3 +1,5 @@
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
 const path = require('path');
 const webpack = require('webpack');
@@ -21,19 +23,22 @@ let plugins = [
   }),
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   new webpack.LoaderOptionsPlugin({
-     options: {
-       context: __dirname
-     }
-   })
+    options: {
+      context: __dirname
+    }
+  }),
+  // new BundleAnalyzerPlugin({
+  //   analyzerMode: 'server'
+  // })
 ];
 
 
 if (PROD) {
   console.log('in production mode');
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress: { warnings: false },
-    mangle: true
-  }));
+  // plugins.push(new webpack.optimize.UglifyJsPlugin({
+  //   compress: { warnings: false },
+  //   mangle: true
+  // }));
 } else {
   console.log('NOT in production mode');
 }

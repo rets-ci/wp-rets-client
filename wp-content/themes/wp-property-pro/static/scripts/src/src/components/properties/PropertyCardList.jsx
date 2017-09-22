@@ -1,4 +1,5 @@
-import {difference, get} from 'lodash';
+import difference from 'lodash/difference';
+import get from 'lodash/get';
 import PropertyCard from '../PropertyCard.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';

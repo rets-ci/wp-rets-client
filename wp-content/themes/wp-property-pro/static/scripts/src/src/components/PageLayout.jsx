@@ -23,7 +23,7 @@ import LoadingAccordion from './LoadingAccordion.jsx';
 import nprogress from 'nprogress/nprogress.js';
 import UserPanel from './UserPanel.jsx';
 import {Lib} from '../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 import Page from './Page.jsx';
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Lib} from '../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 class ArticleCard extends Component {
   static propTypes = {

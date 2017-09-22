@@ -4,7 +4,8 @@ import React, {Component} from 'react';
 import qs from 'qs';
 import URI from 'urijs';
 import Util from '../../Util.jsx';
-import {get, pickBy} from 'lodash';
+import get from 'lodash/get';
+import pickBy from 'lodash/pickBy';
 
 class SaleTypeHeaderSelection extends Component {
   static propTypes = {

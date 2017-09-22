@@ -4,7 +4,7 @@ import Masthead from '../widgets/masthead/Masthead.jsx';
 import PostCard from './components/PostCard.jsx';
 import PostContent from './components/PostContent.jsx';
 import {Lib} from '../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 class Single extends Component {
   static propTypes = {

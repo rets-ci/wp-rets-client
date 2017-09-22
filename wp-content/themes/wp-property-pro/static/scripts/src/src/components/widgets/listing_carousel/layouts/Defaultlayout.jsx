@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import PropertyCard from '../../../PropertyCard.jsx';
 import Swiper from 'react-id-swiper';
 import {Lib} from '../../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 require('slick-css');
 

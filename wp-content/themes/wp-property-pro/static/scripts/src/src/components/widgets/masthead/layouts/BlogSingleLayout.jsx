@@ -1,6 +1,6 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const BlogSingleLayout = ({widget_cell}) => {
 

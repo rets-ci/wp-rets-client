@@ -1,6 +1,6 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, nextArticleHandler}) => {
 

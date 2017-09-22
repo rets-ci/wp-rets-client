@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropertyCardList from './PropertyCardList.jsx';
 import PropTypes from 'prop-types';
 import Waypoint from 'react-waypoint';
-import {difference} from 'lodash';
+import difference from 'lodash/difference';
 
 import LoadingCircle from '../LoadingCircle.jsx';
 import { Lib } from '../../lib.jsx';

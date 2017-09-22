@@ -4,7 +4,7 @@ import {Lib} from '../lib.jsx'
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const mapStateToProps = (state) => {
   return {

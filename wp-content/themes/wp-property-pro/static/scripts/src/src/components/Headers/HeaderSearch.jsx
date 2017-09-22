@@ -5,7 +5,7 @@ import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
 import SaleTypeHeaderSelection from './components/SaleTypeHeaderSelection.jsx';
 import {openSaleTypesPanel} from '../../actions/index.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 import NavigationIcons from './components/NavigationIcons.jsx';
 import UserPanelIcon from './components/UserPanelIcon.jsx';
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import renderHTML from 'react-render-html';
 import {Lib} from '../../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 class PostContent extends Component {
   static propTypes = {

@@ -2,7 +2,7 @@ import {setAgentCardTab} from '../../actions/index.jsx';
 import Api from '../../containers/Api.jsx';
 import AgentCardForms from './Components/AgentCardForms.jsx';
 import FormFetcher from '../Forms/FormFetcher.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 import {Lib} from '../../lib.jsx';
 import moment from 'moment';
 import PropertyHighlights from './Components/PropertyHighlights.jsx';

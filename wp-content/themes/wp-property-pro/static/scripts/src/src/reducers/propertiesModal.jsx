@@ -1,4 +1,4 @@
-import {isEqual} from 'lodash';
+import isEqual from 'lodash/isEqual';
 import {Lib} from "../lib.jsx";
 
 let defaultState = {

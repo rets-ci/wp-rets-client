@@ -1,6 +1,7 @@
 import React from 'react';
 import {Lib} from '../../../lib.jsx'
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const FooterTop = ({menu}) => {
 

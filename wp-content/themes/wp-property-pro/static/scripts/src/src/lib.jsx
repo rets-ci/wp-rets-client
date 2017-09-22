@@ -1,4 +1,4 @@
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 export const Lib = {
   COMMON_DATE_FORMAT_1: 'YYYY-MM-D hh:mm:ss',

@@ -1,7 +1,8 @@
 import React from 'react';
 import TextItem from '../item/TextItem.jsx';
 import {Lib} from '../../../../../lib.jsx';
-import {get, isEmpty} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import Util from '../../../../Util.jsx';
 
 

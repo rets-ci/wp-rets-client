@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {get, isEqual, omit} from 'lodash';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
 import qs from 'qs';
 import URI from 'urijs';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import FooterTopMenu from './Menus/FooterTopMenu.jsx';
 import {Lib} from '../../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const FooterTop = ({historyPush}) => {
 

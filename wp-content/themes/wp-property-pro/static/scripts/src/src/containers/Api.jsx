@@ -1,6 +1,8 @@
 import React from 'react';
 import {Lib} from '../lib.jsx';
-import {get, isEmpty, replace} from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import replace from 'lodash/replace';
 import Util from '../components/Util.jsx';
 
 class Api {

@@ -3,18 +3,18 @@ import {withRouter} from 'react-router';
 import FooterTop from "./Footer/FooterTop.jsx"
 import FooterBottom from "./Footer/FooterBottom.jsx"
 import {Lib} from '../lib.jsx';
-import {get} from 'lodash';
+import get from 'lodash/get';
 
 const Footer = ({history}) => {
-  let pathRoot = _get(location, 'pathname', '').replace(/\//g, '');
+  let pathRoot = get(location, 'pathname', '').replace(/\//g, '');
 
   // Don't display footer for properties base page and guide
-  if(pathRoot === _get(wpp, 'instance.settings.configuration.base_slug', '') || pathRoot.indexOf('guide') !== -1){
+  if(pathRoot === get(wpp, 'instance.settings.configuration.base_slug', '') || pathRoot.indexOf('guide') !== -1){
     return null;
   }
 
   return (
-    _get(bundle, 'footer', null)
+    get(bundle, 'footer', null)
       ?
       <footer className={`${Lib.THEME_CLASSES_PREFIX}footer-container row no-gutters`}>
         <FooterTop historyPush={history.push} />

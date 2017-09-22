@@ -1,7 +1,7 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
 import renderHTML from 'react-render-html';
-import {get} from 'lodash';
+import get from 'lodash/get';
 import Util from '../../../Util.jsx';
 
 const Feature = ({browserHistoryPush, feature, last, openFormModal, ind}) => {

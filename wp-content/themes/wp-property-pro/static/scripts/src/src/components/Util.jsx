@@ -3,7 +3,13 @@ import React from 'react';
 import URI from 'urijs';
 import qs from 'qs';
 import {Lib} from '../lib.jsx';
-import {get, isEmpty, last, replace, join, split} from 'lodash';
+
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import last from 'lodash/last';
+import replace from 'lodash/replace';
+import join from 'lodash/join';
+import split from 'lodash/split';
 
 class Util extends React.Component {
 
