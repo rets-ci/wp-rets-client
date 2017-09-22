@@ -1582,6 +1582,104 @@ button.swiper-pagination-bullet {
 @keyframes swiper-preloader-spin {
   100% {
     transform: rotate(360deg); } }
+@keyframes unfoldIn {
+  0% {
+    transform: scaleY(0.005) scaleX(0); }
+  50% {
+    transform: scaleY(0.005) scaleX(1); }
+  100% {
+    transform: scaleY(1) scaleX(1); } }
+
+@keyframes unfoldOut {
+  0% {
+    transform: scaleY(1) scaleX(1); }
+  50% {
+    transform: scaleY(0.005) scaleX(1); }
+  100% {
+    transform: scaleY(0.005) scaleX(0); } }
+
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-500px); }
+  60% {
+    opacity: 1;
+    transform: translateY(30px); }
+  80% {
+    transform: translateY(-10px); }
+  100% {
+    transform: translateY(0); } }
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3); }
+  50% {
+    opacity: 1;
+    transform: scale(1.1); }
+  80% {
+    transform: scale(0.89); }
+  100% {
+    opacity: 1;
+    transform: scale(1); } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes blowUpModal {
+  0% {
+    opacity: 0;
+    transform: scaleY(0); }
+  100% {
+    opacity: 1;
+    transform: scaleY(1); } }
+
+/************************************
+  Search Modal Animation
+*************************************/
+.propertypro-search-modal {
+  /*  &.propertypro-hide {
+    .propertypro-modal-header .filter-container {
+      transform: translateY(-500px);
+    }
+    .propertypro-filter-section {
+      opacity: 0;
+    }
+  }*/ }
+  .propertypro-search-modal.propertypro-display {
+    transform: scaleY(0.01) scaleX(0);
+    animation: unfoldIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+  .propertypro-search-modal.propertypro-hide {
+    transform: scale(1);
+    animation: unfoldOut 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+  .propertypro-search-modal.propertypro-location-modal .propertypro-modal-header .filter-container {
+    transform: translateY(-500px);
+    animation: bounceInDown .3s .5s linear forwards; }
+  .propertypro-search-modal.propertypro-location-modal .propertypro-search-result-group {
+    opacity: 0;
+    transform-origin: 0 0;
+    animation: blowUpModal .2s .3s ease-in-out forwards; }
+  .propertypro-search-modal.propertypro-advanced-filter .propertypro-modal-header .filter-container {
+    opacity: 0;
+    animation: bounceIn .3s .5s linear forwards; }
+  .propertypro-search-modal.propertypro-advanced-filter .propertypro-filter-section {
+    opacity: 0;
+    animation: fadeIn 1s .5s ease-in-out forwards; }
+
+/************************************
+  Side Panel Animation
+*************************************/
+.propertypro-modal.sidebar-right .modal-dialog {
+  transform: translateX(100%);
+  transition: -webkit-transform 0.3s ease-out; }
+
+.propertypro-modal.sidebar-right.show .modal-dialog {
+  transform: translateX(0%); }
+
+/* @TODO split this file into components */
 /**
  * Theme Name: PropertyPro
  * Description: Property Pro Theme
