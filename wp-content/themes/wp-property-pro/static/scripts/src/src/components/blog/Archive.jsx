@@ -6,7 +6,7 @@ import Posts from './components/Posts.jsx';
 import PropTypes from 'prop-types';
 import {setBlogPosts} from '../../actions/index.jsx';
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 const mapStateToProps = (state) => {
   return {}
@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     getPosts: (from, categoryId) => {
 
       jQuery.ajax({
-        url: _.get(bundle, 'admin_ajax_url', ''),
+        url: get(bundle, 'admin_ajax_url', ''),
         type: 'get',
         data: {
           action: Lib.AJAX_GET_POSTS_ACTION,
@@ -26,8 +26,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         dataType: 'json',
         success: function (data) {
-          if (_.get(data, 'posts', null))
-            dispatch(setBlogPosts(_.get(data, 'posts', []), _.get(data, 'allowPagination', false)));
+          if (get(data, 'posts', null))
+            dispatch(setBlogPosts(get(data, 'posts', []), get(data, 'allowPagination', false)));
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log(textStatus, errorThrown);
@@ -43,23 +43,23 @@ class ArchiveContent extends Component {
   };
 
   componentDidMount() {
-    let content = _.get(this.props.post, 'blog_content', {});
+    let content = get(this.props.post, 'blog_content', {});
 
     // Initial get posts
-    this.props.getPosts(0, _.get(content, 'category_id', 0));
+    this.props.getPosts(0, get(content, 'category_id', 0));
   }
 
   render() {
 
-    let content = _.get(this.props.post, 'blog_content', {});
+    let content = get(this.props.post, 'blog_content', {});
 
     return (
       <div className="container-fluid">
         <div className="row">
-          <Masthead widget_cell={_.get(content, 'masthead')}/>
-          <Subnavigation widget_cell={_.get(content, 'subnavigation')}
-                         currentUrl={_.get(this.props.post, 'post_url', '')}/>
-          <Posts seeMoreHandler={this.props.getPosts} categoryId={_.get(content, 'category_id')}/>
+          <Masthead widget_cell={get(content, 'masthead')}/>
+          <Subnavigation widget_cell={get(content, 'subnavigation')}
+                         currentUrl={get(this.props.post, 'post_url', '')}/>
+          <Posts seeMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
         </div>
       </div>
     )

@@ -1,7 +1,7 @@
 import React from 'react';
 import FooterTopMenu from './Menus/FooterTopMenu.jsx';
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 const FooterTop = ({historyPush}) => {
 
@@ -11,7 +11,7 @@ const FooterTop = ({historyPush}) => {
         <div className="row no-gutters">
           <div className={`col-lg-3 ${Lib.THEME_CLASSES_PREFIX}footer-logo text-center`}>
             {
-              _.get(bundle, 'logos.vertical_logo', null)
+              get(bundle, 'logos.vertical_logo', null)
                 ?
                 <a href={bundle.site_url} title={bundle.site_name} onClick={(eve) => {
                   eve.preventDefault();
@@ -29,7 +29,7 @@ const FooterTop = ({historyPush}) => {
             <div className="container-fluid">
               <div className="row">
                 {
-                  _.get(bundle, 'footer.top_footer', null)
+                  get(bundle, 'footer.top_footer', null)
                     ? bundle.footer.top_footer.map((menu, i) =>
                       <FooterTopMenu historyPush={historyPush} key={i} menu={menu}/>
                     )

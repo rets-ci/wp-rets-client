@@ -6,7 +6,7 @@ import CategoryCard from './components/CategoryCard.jsx';
 import ArticleCard from './components/ArticleCard.jsx';
 import HeaderGuide from '../Headers/HeaderGuide.jsx'
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 class Archive extends Component {
   static propTypes = {
@@ -17,14 +17,14 @@ class Archive extends Component {
   };
 
   render() {
-    let content = _.get(this.props.post, 'guide_content', {});
+    let content = get(this.props.post, 'guide_content', {});
 
-    let cards = _.get(content, 'items', []).map((item, i) => {
-      let last = _.get(content, 'items', []).length === i + 1;
+    let cards = get(content, 'items', []).map((item, i) => {
+      let last = get(content, 'items', []).length === i + 1;
       return (
         <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}guide-list-item border-0`} key={i}>
           {
-            _.get(item, 'children', null)
+            get(item, 'children', null)
               ? <CategoryCard category={item} historyPush={this.props.history.push} last={last}/>
               : <ArticleCard article={item} historyPush={this.props.history.push} last={last}/>
           }
@@ -38,7 +38,7 @@ class Archive extends Component {
             <div className="container-fluid">
               <div className="row">
                 <HeaderGuide historyPush={this.props.history.push} />
-                <Masthead widget_cell={_.get(content, 'masthead')}/>
+                <Masthead widget_cell={get(content, 'masthead')}/>
               </div>
             </div>
           </div>

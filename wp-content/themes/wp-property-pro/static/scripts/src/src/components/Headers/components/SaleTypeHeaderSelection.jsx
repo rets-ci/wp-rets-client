@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import qs from 'qs';
 import URI from 'urijs';
 import Util from '../../Util.jsx';
+import {get, pickBy} from 'lodash';
 
 class SaleTypeHeaderSelection extends Component {
   static propTypes = {
@@ -26,7 +27,7 @@ class SaleTypeHeaderSelection extends Component {
       saleType
     } = searchOptions;
 
-    let searchResultURL = '/' + _.get(wpp, 'instance.settings.configuration.base_slug');
+    let searchResultURL = '/' + get(wpp, 'instance.settings.configuration.base_slug');
     
     let url;
 
@@ -44,7 +45,7 @@ class SaleTypeHeaderSelection extends Component {
       let allQueryParams = Util.getQS(currentURL, url.search(true));
       modifiedQueryParams = Object.assign({}, allQueryParams);
       // only keep term for now
-      modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX] = _.pickBy(allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX], (a, b) => {
+      modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX] = pickBy(allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX], (a, b) => {
         return b.includes('term');
       });
     } else {

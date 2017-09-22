@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Swiper from 'react-id-swiper';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 import { Lib } from '../../lib.jsx';
 import PropertyCard from '../PropertyCard.jsx';
@@ -56,24 +56,24 @@ export default class CarouselOnMap extends Component {
         {
           properties.map((p, key) => {
             const item = {
-              address: _.get(p, '_source.post_meta.rets_address', [''])[0],
-              address_unit: _.get(p, '_source.post_meta.address_unit', ''),
-              location: _.get(p, '_source.post_meta.wpp_location_pin', []),
-              baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
-              beds: _.get(p, '_source.post_meta.rets_beds', 0),
-              city: _.get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
-              gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
+              address: get(p, '_source.post_meta.rets_address', [''])[0],
+              address_unit: get(p, '_source.post_meta.address_unit', ''),
+              location: get(p, '_source.post_meta.wpp_location_pin', []),
+              baths: get(p, '_source.post_meta.rets_total_baths', 0),
+              beds: get(p, '_source.post_meta.rets_beds', 0),
+              city: get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
+              gallery_images: get(p, '_source.wpp_media', []).map((media) => media.url),
               id: p._id,
-              living_area: _.get(p, '_source.post_meta.rets_living_area', 0),
-              lots_size: _.get(p, '_source.post_meta.rets_lot_size_area', 0),
-              price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
-              post_name: _.get(p, '_source.post_name', 0),
-              state: _.get(p, '_source.tax_input.wpp_location.wpp_location_state[0].name', ''),
-              type: _.get(p, '_source.tax_input.wpp_listing_type.listing_type[0].slug', ''),
-              sub_type: _.get(p, '_source.tax_input.wpp_listing_type.listing_sub_type[0].name', ''),
-              relative_permalink: _.get(p, '_source.permalink', ''),
-              thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', [''])[0],
-              zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')
+              living_area: get(p, '_source.post_meta.rets_living_area', 0),
+              lots_size: get(p, '_source.post_meta.rets_lot_size_area', 0),
+              price: get(p, '_source.post_meta.rets_list_price[0]', 0),
+              post_name: get(p, '_source.post_name', 0),
+              state: get(p, '_source.tax_input.wpp_location.wpp_location_state[0].name', ''),
+              type: get(p, '_source.tax_input.wpp_listing_type.listing_type[0].slug', ''),
+              sub_type: get(p, '_source.tax_input.wpp_listing_type.listing_sub_type[0].name', ''),
+              relative_permalink: get(p, '_source.permalink', ''),
+              thumbnail: get(p, '_source.post_meta.rets_thumbnail_url', [''])[0],
+              zip: get(p, '_source.post_meta.rets_postal_code[0]', '')
             };
 
             return (

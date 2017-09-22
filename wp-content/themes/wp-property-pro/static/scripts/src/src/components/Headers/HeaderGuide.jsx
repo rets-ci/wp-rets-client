@@ -1,6 +1,6 @@
 import React from 'react';
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 const HeaderGuide = ({historyPush}) => {
 
@@ -9,21 +9,21 @@ const HeaderGuide = ({historyPush}) => {
       <nav className="navbar navbar-toggleable-md">
         <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-items mx-3`}>
         {
-          _.get(bundle, 'template_url', null)
+          get(bundle, 'template_url', null)
             ?
-            <a className="navbar-brand mr-auto" href={_.get(bundle, 'site_url', '')} onClick={(eve) => {
+            <a className="navbar-brand mr-auto" href={get(bundle, 'site_url', '')} onClick={(eve) => {
               eve.preventDefault();
               historyPush('/');
             }}>
               {
-                _.get(bundle, 'logos.horizontal_logo', null)
-                  ? <img src={bundle.logos.horizontal_logo} alt={_.get(bundle, 'site_name')}
+                get(bundle, 'logos.horizontal_logo', null)
+                  ? <img src={bundle.logos.horizontal_logo} alt={get(bundle, 'site_name')}
                          className={`hidden-sm-down ${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}horizontal-logo`}/>
                   : null
               }
               {
-                _.get(bundle, 'logos.square_logo', null)
-                  ? <img src={bundle.logos.square_logo} alt={_.get(bundle, 'site_name')}
+                get(bundle, 'logos.square_logo', null)
+                  ? <img src={bundle.logos.square_logo} alt={get(bundle, 'site_name')}
                          className={`hidden-md-up ${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>
                   : null
               }
@@ -31,7 +31,7 @@ const HeaderGuide = ({historyPush}) => {
             : null
         }
         {
-          _.get(bundle, 'site_url', null)
+          get(bundle, 'site_url', null)
             ?
             <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
               <li className="nav-item">

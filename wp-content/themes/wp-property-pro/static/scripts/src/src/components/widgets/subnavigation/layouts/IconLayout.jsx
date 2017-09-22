@@ -1,10 +1,10 @@
 import React from 'react';
 import IconItem from './item/IconItem.jsx';
 import {Lib} from '../../../../lib.jsx';
-import _ from 'lodash';
+import {isEmpty} from 'lodash';
 
 const IconLayout = ({historyPush, items, currentUrl}) =>
-  _.isEmpty(items)
+  isEmpty(items)
     ? null
     : <nav>
       <ul>

@@ -6,12 +6,12 @@ import DropDownSearch from './DropDownSearch.jsx';
 import {openLocationModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx';
 import Util from '../../../Util.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 const mapStateToProps = (state, history) => {
   return {
-    searchType: _.get(state, 'searchType.searchType', ''),
-    filterTerms: _.get(state, 'filterTermsState.filterTerms', [])
+    searchType: get(state, 'searchType.searchType', ''),
+    filterTerms: get(state, 'filterTermsState.filterTerms', [])
   }
 };
 

@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import PropertyCard from '../../../PropertyCard.jsx';
 import Swiper from 'react-id-swiper';
 import {Lib} from '../../../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 require('slick-css');
 
@@ -37,7 +37,7 @@ export default class DefaultLayout extends Component {
 
   render() {
     let { item } = this.props;
-    let posts = _.get(item, 'posts', []);
+    let posts = get(item, 'posts', []);
 
     const slickParams = {
       arrows: false,
@@ -76,13 +76,13 @@ export default class DefaultLayout extends Component {
       <div className={Lib.THEME_CLASSES_PREFIX + "listing-carousel-container"}>
         <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel-info mx-auto text-center`}>
           {
-            _.get(item, 'title', null)
-              ? <h3 className="mx-auto">{_.get(item, 'title')}</h3>
+            get(item, 'title', null)
+              ? <h3 className="mx-auto">{get(item, 'title')}</h3>
               : null
           }
           {
-            _.get(item, 'subtitle', null)
-              ? <p>{_.get(item, 'subtitle')}</p>
+            get(item, 'subtitle', null)
+              ? <p>{get(item, 'subtitle')}</p>
               : null
           }
         </div>

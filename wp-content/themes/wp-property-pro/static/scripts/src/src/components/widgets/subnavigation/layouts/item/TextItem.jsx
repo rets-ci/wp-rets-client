@@ -1,12 +1,12 @@
 import React from 'react';
-import _ from 'lodash';
+import {get, isEmpty} from 'lodash';
 
 const TextItem = ({historyPush, item}) =>
-  _.isEmpty(item)
+  isEmpty(item)
     ? null
     : <a href={item.url} onClick={(eve) => {
       eve.preventDefault();
-      historyPush(_.get(item, 'relative_url', null));
+      historyPush(get(item, 'relative_url', null));
     }}>{item.title}</a>;
 
 

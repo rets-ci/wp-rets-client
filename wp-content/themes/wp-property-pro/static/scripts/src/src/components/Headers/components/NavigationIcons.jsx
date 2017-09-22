@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import UserPanelIcon from './UserPanelIcon.jsx';
 
 const NavigationIcons = ({openUserPanel}) => (

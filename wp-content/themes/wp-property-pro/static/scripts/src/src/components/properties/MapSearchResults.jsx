@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
+import {get, isEqual, omit} from 'lodash';
 import qs from 'qs';
 import URI from 'urijs';
 
@@ -36,17 +36,17 @@ const mapStateToProps = (state, ownProps) => {
   return {
     allQueryParams: allQueryParams,
     errorMessage: state.errorMessage,
-    query: _.get(state, 'searchResults.query', []),
-    isFetching: _.get(state, 'searchResults.isFetching', []),
-    displayedResults: _.get(state, 'searchResults.displayedResults', []),
+    query: get(state, 'searchResults.query', []),
+    isFetching: get(state, 'searchResults.isFetching', []),
+    displayedResults: get(state, 'searchResults.displayedResults', []),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
-    propertiesModalOpen: _.get(state, 'propertiesModal.open'),
-    propertiesModalResultCountButtonLoading: _.get(state, 'propertiesModal.resultCountButtonLoading'),
-    propertiesModalResultCount: _.get(state, 'propertiesModal.resultCount'),
-    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
-    results: _.get(state, 'searchResults.searchResults', []),
-    resultsTotal: _.get(state, 'searchResults.totalProps', 0),
-    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
+    propertiesModalOpen: get(state, 'propertiesModal.open'),
+    propertiesModalResultCountButtonLoading: get(state, 'propertiesModal.resultCountButtonLoading'),
+    propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
+    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
+    results: get(state, 'searchResults.searchResults', []),
+    resultsTotal: get(state, 'searchResults.totalProps', 0),
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -61,7 +61,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       Api.makeStandardPropertySearch(filters, (err, query, response) => {
         // we are ignoring handling the error here intentionally as the error is handled as soon as the modal is closed
         dispatch(setPropertiesModalResultCountLoading(false));
-        dispatch(updatePropertiesModalResultCount(_.get(response, 'hits.total', null)));
+        dispatch(updatePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
     },
 
@@ -76,7 +76,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         if (!err && errorMessage) {
           dispatch(resetErrorMessage());
         }
-        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
+        dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), append));
       });
     },
 
@@ -102,7 +102,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         if (!err && errorMessage) {
           dispatch(resetErrorMessage());
         }
-        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
+        dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), false));
       });
     },
 
@@ -145,7 +145,7 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     let filters = qs.parse(window.location.search.replace('?', ''));
-    if (!_.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
+    if (!isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
       this.applyQueryFilters();
     }
 
@@ -286,7 +286,7 @@ class MapSearchResults extends Component {
           propertyTypeOptions={propertyTypeOptions}
           resultCount={propertiesModalResultCount}
           resultCountButtonLoading={propertiesModalResultCountButtonLoading}
-          searchFilters={_.omit(searchFilters, ['geoCoordinates'])}
+          searchFilters={omit(searchFilters, ['geoCoordinates'])}
           turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
           turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}
         />

@@ -14,7 +14,7 @@ import RentIcon from '../../../../../images/src/rent-icon-standard.svg';
 import CommercialIcon from '../../../../../images/src/commercial-icon-standard.svg';
 import LandIcon from '../../../../../images/src/land-icon-standard.svg';
 
-import {difference, isEqual} from 'lodash';
+import {difference, get, isEqual} from 'lodash';
 
 import LocationModal from './LocationModal.jsx';
 
@@ -161,8 +161,8 @@ class PropertiesModal extends Component {
     let modifiedSearchType = searchType === 'Buy' ? 'Sale' : searchType;
     let options = propertyTypeOptions[modifiedSearchType];
     let filter = {
-      property_type: _.get(options, '[0].property_types'),
-      sale_type: _.get(options, '[0].sale_type'),
+      property_type: get(options, '[0].property_types'),
+      sale_type: get(options, '[0].sale_type'),
       search_type: searchType
     };
     let filters = Object.assign({}, this.state.filters, filter);
@@ -269,7 +269,7 @@ class PropertiesModal extends Component {
   }
 
   saveFilters = () => {
-    let searchResultURL = '/' + _.get(wpp, 'instance.settings.configuration.base_slug');
+    let searchResultURL = '/' + get(wpp, 'instance.settings.configuration.base_slug');
     let url = new URI();
     // reset URL search to not carry forward curent query params
     url.search("");
@@ -357,7 +357,7 @@ class PropertiesModal extends Component {
     }
 
     let modifiedSearchType = search_type === 'Buy' ? 'Sale' : search_type;
-    let property_types_options = Object.values(_.get(propertyTypeOptions, `[${modifiedSearchType}].property_types`, {})).map(d => ({
+    let property_types_options = Object.values(get(propertyTypeOptions, `[${modifiedSearchType}].property_types`, {})).map(d => ({
       slug: d.slug,
       title: d.title,
       selected: property_type && property_type.indexOf(d.slug) >= 0

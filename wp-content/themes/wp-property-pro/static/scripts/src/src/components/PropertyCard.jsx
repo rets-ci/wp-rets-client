@@ -4,7 +4,7 @@ import {withRouter} from 'react-router';
 import renderHTML from 'react-render-html';
 import Swiper from 'react-id-swiper';
 import {Link} from 'react-router-dom';
-import _ from 'lodash';
+import {each, get, isEmpty} from 'lodash';
 
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
@@ -92,18 +92,18 @@ class PropertyCard extends Component {
       classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
     }
 
-    const thumbnailSrc = _.isEmpty(thumbnail)
+    const thumbnailSrc = isEmpty(thumbnail)
       ? Util.getGoogleStreetViewThumbnailURL({
           size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
-          location: !_.isEmpty(location) ? location.join(',') : ''
+          location: !isEmpty(location) ? location.join(',') : ''
         })
-      : (!_.get(this.props.data, 'full_image', false)
+      : (!get(this.props.data, 'full_image', false)
         ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)
         : thumbnail
       )
 
     let swiperImages = [ thumbnailSrc ]
-    _.each(gallery_images.slice(1), (e) => {
+    each(gallery_images.slice(1), (e) => {
       swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
     });
     return (

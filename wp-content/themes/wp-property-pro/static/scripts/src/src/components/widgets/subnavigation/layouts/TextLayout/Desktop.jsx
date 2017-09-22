@@ -1,7 +1,7 @@
 import React from 'react';
 import TextItem from '../item/TextItem.jsx';
 import {Lib} from '../../../../../lib.jsx';
-import _ from 'lodash';
+import {get, isEmpty} from 'lodash';
 import Util from '../../../../Util.jsx';
 
 
@@ -10,7 +10,7 @@ const Desktop = ({currentUrl, historyPush, items, openFormModal, pageModalData})
   let links = [];
   for (let i in items) {
     let item = items[i];
-    if (_.get(items[i], 'classes.0', null) === 'btn') {
+    if (get(items[i], 'classes.0', null) === 'btn') {
       btn = item;
       btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
     } else {
@@ -18,7 +18,7 @@ const Desktop = ({currentUrl, historyPush, items, openFormModal, pageModalData})
     }
   }
   
-  return (_.isEmpty(items)
+  return (isEmpty(items)
       ? null
       :
       <div className={`${Lib.THEME_CLASSES_PREFIX}subnavigation-desktop hidden-sm-down`}>
@@ -37,7 +37,7 @@ const Desktop = ({currentUrl, historyPush, items, openFormModal, pageModalData})
                 )
               }
               {
-                _.isEmpty(btn)
+                isEmpty(btn)
                   ? null
                   :
                   <li className={Lib.THEME_CLASSES_PREFIX + "subnavigation-btn"}>

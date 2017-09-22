@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import {isEmpty} from 'lodash';
 
 class PostCard extends Component {
   static propTypes = {
@@ -31,7 +31,7 @@ class PostCard extends Component {
             this.props.history.push(relative_url);
           }
           }>
-            <img src={image_src} alt={_.isEmpty(image_alt) ? image_title : image_alt} className="img-fluid"/>
+            <img src={image_src} alt={isEmpty(image_alt) ? image_title : image_alt} className="img-fluid"/>
           </a>
         </div>
         <div className="card-block p-0">

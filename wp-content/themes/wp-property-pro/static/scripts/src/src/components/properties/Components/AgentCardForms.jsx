@@ -1,5 +1,4 @@
 import FormFetcher from '../../Forms/FormFetcher.jsx';import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
 import JSONSchemaFormContainer from '../../Forms/JSONSchemaFormContainer.jsx';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';

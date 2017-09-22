@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 
 class ArticleCard extends Component {
   static propTypes = {
@@ -26,18 +26,18 @@ class ArticleCard extends Component {
               <div className={Lib.THEME_CLASSES_PREFIX + "article-card-content"}>
                 <header className={Lib.THEME_CLASSES_PREFIX + "article-header"}>
                   {
-                    _.get(this.props.article, 'title', null)
+                    get(this.props.article, 'title', null)
                       ? <h2 className={Lib.THEME_CLASSES_PREFIX + "article-title"}><a
-                        href={_.get(this.props.article, 'url', '')} onClick={(eve) => {
+                        href={get(this.props.article, 'url', '')} onClick={(eve) => {
                         eve.preventDefault();
-                        historyPush(_.get(this.props.article, 'relative_url', ''));
-                      }}>{_.get(this.props.article, 'title')}</a></h2>
+                        historyPush(get(this.props.article, 'relative_url', ''));
+                      }}>{get(this.props.article, 'title')}</a></h2>
                       : null
                   }
                   {
-                    _.get(this.props.article, 'excerpt', null)
+                    get(this.props.article, 'excerpt', null)
                       ? <p
-                        className={Lib.THEME_CLASSES_PREFIX + "article-excerpt"}>{_.get(this.props.article, 'excerpt')}</p>
+                        className={Lib.THEME_CLASSES_PREFIX + "article-excerpt"}>{get(this.props.article, 'excerpt')}</p>
                       : null
                   }
                 </header>
@@ -45,10 +45,10 @@ class ArticleCard extends Component {
             </div>
             <div className="col-sm-4">
               {
-                _.get(this.props.article, 'image_src', null)
+                get(this.props.article, 'image_src', null)
                   ?
                   <div style={{
-                    background: "url(" + _.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
+                    background: "url(" + get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
                   }} className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"}></div>
                   : null
               }

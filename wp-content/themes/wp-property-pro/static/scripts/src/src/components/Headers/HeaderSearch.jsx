@@ -5,14 +5,14 @@ import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
 import SaleTypeHeaderSelection from './components/SaleTypeHeaderSelection.jsx';
 import {openSaleTypesPanel} from '../../actions/index.jsx';
-import _ from 'lodash';
+import {get} from 'lodash';
 import NavigationIcons from './components/NavigationIcons.jsx';
 import UserPanelIcon from './components/UserPanelIcon.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
-    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
+    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -75,13 +75,13 @@ class HeaderSearch extends Component {
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-1 col-md-2 col-lg-1 my-auto p-0`}>
             {
-              _.get(bundle, 'logos.square_logo', null)
+              get(bundle, 'logos.square_logo', null)
                 ?
-                <a href={_.get(bundle, 'site_url', '')} onClick={(eve) => {
+                <a href={get(bundle, 'site_url', '')} onClick={(eve) => {
                   eve.preventDefault();
                   this.props.historyPush('');
-                }} title={_.get(bundle, 'site_name', '')}>
-                  <img src={bundle.logos.square_logo} alt={_.get(bundle, 'site_name', '')}
+                }} title={get(bundle, 'site_name', '')}>
+                  <img src={bundle.logos.square_logo} alt={get(bundle, 'site_name', '')}
                        className={`${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>
                 </a>
                 : null

@@ -2,9 +2,11 @@ import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import {get} from 'lodash';
+
 function showContentValue(data, esReference, booleanField) {
-  if (!esReference || (!_.get(data, esReference, null) && !booleanField )) { return 'N/A'; }
-  let v = _.get(data, esReference);
+  if (!esReference || (!get(data, esReference, null) && !booleanField )) { return 'N/A'; }
+  let v = get(data, esReference);
   let value;
   if (v instanceof Array) {
     value = v.map(d => d.name).join(', ');
