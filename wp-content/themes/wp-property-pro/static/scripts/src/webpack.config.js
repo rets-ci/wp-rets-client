@@ -3,6 +3,7 @@
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const fs = require('fs');
@@ -17,6 +18,7 @@ try {
 }
 
 let plugins = [
+  new ExtractTextPlugin('../../../../style.css'),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
@@ -55,15 +57,11 @@ module.exports = {
     module: {
         rules: [
           {
-            test: /\.css$/,
-            use: [
-              {
-                loader:  "style-loader"
-              },
-              {
-                loader: 'css-loader'
-              }
-            ]
+            test: /(\.scss|\.css)$/,
+            use: ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: ['css-loader', 'sass-loader']
+            })
           },
           {
             test: /\.(js|jsx)$/,
