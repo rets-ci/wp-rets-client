@@ -18,7 +18,7 @@ try {
 }
 
 let plugins = [
-  new ExtractTextPlugin('../../../../style.css'),
+  new ExtractTextPlugin('../../../styles/dist.css'),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
