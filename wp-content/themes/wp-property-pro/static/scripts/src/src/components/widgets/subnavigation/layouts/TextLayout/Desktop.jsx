@@ -1,16 +1,17 @@
 import React from 'react';
 import TextItem from '../item/TextItem.jsx';
 import {Lib} from '../../../../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import Util from '../../../../Util.jsx';
 
 
-const Desktop = ({currentUrl, items, openFormModal, pageModalData}) => {
+const Desktop = ({currentUrl, historyPush, items, openFormModal, pageModalData}) => {
   let btn = {};
   let links = [];
   for (let i in items) {
     let item = items[i];
-    if (_.get(items[i], 'classes.0', null) === 'btn') {
+    if (get(items[i], 'classes.0', null) === 'btn') {
       btn = item;
       btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
     } else {
@@ -18,7 +19,7 @@ const Desktop = ({currentUrl, items, openFormModal, pageModalData}) => {
     }
   }
   
-  return (_.isEmpty(items)
+  return (isEmpty(items)
       ? null
       :
       <div className={`${Lib.THEME_CLASSES_PREFIX}subnavigation-desktop hidden-sm-down`}>
@@ -29,15 +30,15 @@ const Desktop = ({currentUrl, items, openFormModal, pageModalData}) => {
               {
                 links.map((link, key) => {
                     if (link.url === currentUrl) {
-                      return (<li key={key} className={Lib.THEME_CLASSES_PREFIX + "active"}><TextItem item={link}/></li>)
+                      return (<li key={key} className={Lib.THEME_CLASSES_PREFIX + "active"}><TextItem historyPush={historyPush} item={link}/></li>)
                     } else {
-                      return (<li key={key}><TextItem item={link}/></li>)
+                      return (<li key={key}><TextItem historyPush={historyPush} item={link}/></li>)
                     }
                   }
                 )
               }
               {
-                _.isEmpty(btn)
+                isEmpty(btn)
                   ? null
                   :
                   <li className={Lib.THEME_CLASSES_PREFIX + "subnavigation-btn"}>

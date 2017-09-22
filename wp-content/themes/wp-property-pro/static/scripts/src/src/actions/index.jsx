@@ -112,6 +112,12 @@ export const receivePropertySingleResult = (property) => {
   }
 }
 
+export const routeChanged = () => {
+  return {
+    type: Lib.ROUTE_CHANGED_ACTION
+  }
+}
+
 export const setPropertyTypeOptions = options => {
   return {
     type: Lib.SET_PROPERTY_TYPE_OPTIONS_ACTION,

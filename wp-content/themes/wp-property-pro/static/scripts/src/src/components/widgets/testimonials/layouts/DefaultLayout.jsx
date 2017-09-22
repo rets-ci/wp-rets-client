@@ -1,6 +1,7 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}) => {
   return (
@@ -8,13 +9,13 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
       <div className="row">
         <div className={`${Lib.THEME_CLASSES_PREFIX}testimonials-container mx-auto`} >
              {
-               _.get(widget_cell, 'widget.fields.title', '')
+               get(widget_cell, 'widget.fields.title', '')
                  ? <h4>{widget_cell.widget.fields.title}</h4>
                  : null
              }
 
              {
-               _.isEmpty(testimonials_reviews)
+               isEmpty(testimonials_reviews)
                  ? null
                  :
                  <div className={Lib.THEME_CLASSES_PREFIX + "slider-content"}>
@@ -25,7 +26,7 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
              }
 
              {
-               _.isEmpty(testimonials_authors)
+               isEmpty(testimonials_authors)
                  ? null
                  :
                  <div className={Lib.THEME_CLASSES_PREFIX + "author-info"}>

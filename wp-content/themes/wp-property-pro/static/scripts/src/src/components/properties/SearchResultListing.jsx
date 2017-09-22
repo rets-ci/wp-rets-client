@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropertyCardList from './PropertyCardList.jsx';
 import PropTypes from 'prop-types';
 import Waypoint from 'react-waypoint';
-import _ from 'lodash';
+import difference from 'lodash/difference';
 
 import LoadingCircle from '../LoadingCircle.jsx';
 import { Lib } from '../../lib.jsx';
@@ -26,7 +26,7 @@ class SearchResultListing extends Component {
   shouldComponentUpdate(nextProps) {
     let update = nextProps.allowPagination !== this.props.allowPagination || 
       nextProps.isFetching !== this.props.isFetching ||
-      _.difference(nextProps.properties, this.props.properties).length ||
+      difference(nextProps.properties, this.props.properties).length ||
       nextProps.selectedProperty !== this.props.selectedProperty ||
       nextProps.total !== this.props.total;
     return update;

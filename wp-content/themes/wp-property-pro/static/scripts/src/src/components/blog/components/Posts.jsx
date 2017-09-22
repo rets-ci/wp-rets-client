@@ -4,12 +4,13 @@ import {connect} from 'react-redux';
 import LoadingCircle from '../../LoadingCircle.jsx';
 import PostCard from './PostCard.jsx';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const mapStateToProps = (state) => {
   return {
-    posts: _.get(state, 'blogPostsState.posts', []),
-    allowPagination: _.get(state, 'blogPostsState.allowPagination', false)
+    posts: get(state, 'blogPostsState.posts', []),
+    allowPagination: get(state, 'blogPostsState.allowPagination', false)
   }
 };
 
@@ -25,7 +26,7 @@ class Posts extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.posts !== this.props.posts || _.isEmpty(nextProps.posts)) {
+    if (nextProps.posts !== this.props.posts || isEmpty(nextProps.posts)) {
       this.setState({loading: false});
     }
   }
@@ -40,7 +41,7 @@ class Posts extends Component {
   render() {
     let self = this;
 
-    let posts = _.get(this.props, 'posts', []);
+    let posts = get(this.props, 'posts', []);
     let groups = [];
 
     if (posts) {
@@ -64,13 +65,13 @@ class Posts extends Component {
 
                   let groupPosts = g.map((p, i) =>
                     <PostCard data={{
-                      title: _.get(p, 'title', ''),
-                      excerpt: _.get(p, 'excerpt', ''),
-                      image_src: _.get(p, 'image_src', ''),
-                      image_title: _.get(p, 'image_title', ''),
-                      image_alt: _.get(p, 'image_alt', ''),
-                      url: _.get(p, 'url', ''),
-                      relative_url: _.get(p, 'relative_url', ''),
+                      title: get(p, 'title', ''),
+                      excerpt: get(p, 'excerpt', ''),
+                      image_src: get(p, 'image_src', ''),
+                      image_title: get(p, 'image_title', ''),
+                      image_alt: get(p, 'image_alt', ''),
+                      url: get(p, 'url', ''),
+                      relative_url: get(p, 'relative_url', ''),
 
                     }} key={i}/>
                   );

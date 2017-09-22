@@ -4,11 +4,11 @@ import {Lib} from '../lib.jsx'
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
+import get from 'lodash/get';
 
 const mapStateToProps = (state) => {
   return {
-    results: _.get(state, 'mapPropsState.mapProps', [])
+    results: get(state, 'mapPropsState.mapProps', [])
   }
 };
 

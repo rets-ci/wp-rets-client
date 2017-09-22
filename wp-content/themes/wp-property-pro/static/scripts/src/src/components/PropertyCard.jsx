@@ -1,25 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import numeral from 'numeral';
+import {withRouter} from 'react-router';
 import renderHTML from 'react-render-html';
 import Swiper from 'react-id-swiper';
-import { browserHistory, Link } from 'react-router';
-import _ from 'lodash';
-
+import {Link} from 'react-router-dom';
+import each from 'lodash/each';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
 
 
-export default class PropertyCard extends Component {
+class PropertyCard extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    propertiesDOM: PropTypes.object
   }
 
   handlePropertyClick(eve, url) {
     eve.preventDefault();
 
-    browserHistory.push(url);
-
+    this.props.history.push(url);
     this.swiper = null;
   }
 
@@ -53,7 +57,6 @@ export default class PropertyCard extends Component {
       sub_type,
       zip
     } = this.props.data;
-
     const swiperParams = {
       preloadImages: false,
       lazyLoading: true,
@@ -90,24 +93,25 @@ export default class PropertyCard extends Component {
       classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
     }
 
-    const thumbnailSrc = _.isEmpty(thumbnail)
+    const thumbnailSrc = isEmpty(thumbnail)
       ? Util.getGoogleStreetViewThumbnailURL({
           size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
-          location: !_.isEmpty(location) ? location.join(',') : ''
+          location: !isEmpty(location) ? location.join(',') : ''
         })
-      : (!_.get(this.props.data, 'full_image', false)
+      : (!get(this.props.data, 'full_image', false)
         ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)
         : thumbnail
       )
 
     let swiperImages = [ thumbnailSrc ]
-    _.each(gallery_images.slice(1), (e) => {
+    each(gallery_images.slice(1), (e) => {
       swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
-    })
-
+    });
     return (
       <div
-        className={classes.join(' ')}>
+        className={classes.join(' ')}
+        ref={(r) => this.props.propertiesDOM ? this.props.propertiesDOM[id] = r : null}
+      >
         <Link
           to={link}
         >
@@ -169,3 +173,5 @@ export default class PropertyCard extends Component {
     );
   }
 }
+
+export default withRouter(PropertyCard);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
 
 const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, nextArticleHandler}) => {
 
@@ -17,12 +17,12 @@ const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, ne
       <header className={Lib.THEME_CLASSES_PREFIX + "article-header"}>
         <div className={`${Lib.THEME_CLASSES_PREFIX}article-header-container mx-auto text-center`}>
           {
-            _.get(widget_cell, 'widget.fields.title', '')
+            get(widget_cell, 'widget.fields.title', '')
               ? <h1 className={`${Lib.THEME_CLASSES_PREFIX}guide-title`}>{widget_cell.widget.fields.title}</h1>
               : null
           }
           {
-            _.get(widget_cell, 'widget.fields.subtitle', '')
+            get(widget_cell, 'widget.fields.subtitle', '')
               ? <p className={`hidden-xs-down ${Lib.THEME_CLASSES_PREFIX}article-excerpt`}>{widget_cell.widget.fields.subtitle}</p>
               : null
           }

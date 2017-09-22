@@ -2,7 +2,7 @@ import {setAgentCardTab} from '../../actions/index.jsx';
 import Api from '../../containers/Api.jsx';
 import AgentCardForms from './Components/AgentCardForms.jsx';
 import FormFetcher from '../Forms/FormFetcher.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
 import {Lib} from '../../lib.jsx';
 import moment from 'moment';
 import PropertyHighlights from './Components/PropertyHighlights.jsx';
@@ -17,9 +17,9 @@ import scrollToElement from 'scroll-to-element';
 import ImageMixer from './Components/ImageMixer.jsx';
 import Util from '../Util.jsx';
 
-let getAgentImage = (agentObject) => _.get(agentObject, 'data.images[0][0]', null);
-let getAgentName = (agentObject) => _.get(agentObject, 'data.display_name', null);
-let getAgentPhone = (agentObject) => _.get(agentObject, 'data.meta.phone_number[0]', null);
+let getAgentImage = (agentObject) => get(agentObject, 'data.images[0][0]', null);
+let getAgentName = (agentObject) => get(agentObject, 'data.display_name', null);
+let getAgentPhone = (agentObject) => get(agentObject, 'data.meta.phone_number[0]', null);
 
 let findAgentById = (agents, agentId) => {
   let agent = {};
@@ -71,7 +71,7 @@ let daysPassedSincePostedDate = (postDate, format) => {
 
 const mapStateToProps = (state) => {
   return {
-    selectedAgentCardTab: _.get(state, 'agentCardState.tab', null) 
+    selectedAgentCardTab: get(state, 'agentCardState.tab', null) 
   }
 };
 

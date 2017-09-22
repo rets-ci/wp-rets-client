@@ -1,19 +1,21 @@
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {browserHistory} from 'react-router';
 import qs from 'qs';
 import URI from 'urijs';
 import Util from '../../Util.jsx';
+import get from 'lodash/get';
+import pickBy from 'lodash/pickBy';
 
 class SaleTypeHeaderSelection extends Component {
   static propTypes = {
+    historyPush: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     closePanel: PropTypes.func.isRequired,
     locationTerm: PropTypes.string
   }
 
-  handleSaleSelectionItemClick = (currentURL, locationTerm, searchType, propertyTypeOptions) => {
+  handleSaleSelectionItemClick = (currentURL, locationTerm, searchType, propertyTypeOptions, historyPush) => {
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType === 'Buy' ? 'Sale' : searchType, propertyTypeOptions);
     if (searchOptions.error) {
       // TODO: better handle these types of error
@@ -26,7 +28,7 @@ class SaleTypeHeaderSelection extends Component {
       saleType
     } = searchOptions;
 
-    let searchResultURL = '/' + _.get(wpp, 'instance.settings.configuration.base_slug');
+    let searchResultURL = '/' + get(wpp, 'instance.settings.configuration.base_slug');
     
     let url;
 
@@ -44,7 +46,7 @@ class SaleTypeHeaderSelection extends Component {
       let allQueryParams = Util.getQS(currentURL, url.search(true));
       modifiedQueryParams = Object.assign({}, allQueryParams);
       // only keep term for now
-      modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX] = _.pickBy(allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX], (a, b) => {
+      modifiedQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX] = pickBy(allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX], (a, b) => {
         return b.includes('term');
       });
     } else {
@@ -61,11 +63,12 @@ class SaleTypeHeaderSelection extends Component {
     let queryParam = decodeURIComponent(qs.stringify(modifiedQueryParams));
     url.setSearch(queryParam);
     this.props.closePanel();
-    browserHistory.push(decodeURIComponent(searchResultURL + url.search()));
+    historyPush((decodeURIComponent(searchResultURL + url.search())));
   }
 
   render() {
     let {
+      historyPush,
       locationTerm,
       open,
       propertyTypeOptions
@@ -78,25 +81,25 @@ class SaleTypeHeaderSelection extends Component {
     return (
       <div className={containerClasses}>
         <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Buy', propertyTypeOptions)}}>
+          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Buy', propertyTypeOptions, historyPush)}}>
             <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
             <span>Buy</span>
           </a>
         </div>
         <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Rent', propertyTypeOptions) }}>
+          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Rent', propertyTypeOptions, historyPush) }}>
             <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
             <span>Rent</span>
           </a>
         </div>
         <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Commercial', propertyTypeOptions); }}>
+          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Commercial', propertyTypeOptions, historyPush); }}>
             <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
             <span>Commercial</span>
           </a>
         </div>
         <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Land', propertyTypeOptions); }}>
+          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Land', propertyTypeOptions, historyPush); }}>
             <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
             <span>Land</span>
           </a>

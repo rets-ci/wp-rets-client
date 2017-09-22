@@ -19,6 +19,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class TextLayoutContent extends Component {
   static propTypes = {
+    historyPush: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired,
     currentUrl: PropTypes.string.isRequired
   };
@@ -37,9 +38,9 @@ class TextLayoutContent extends Component {
   render() {
     return (
       <nav>
-        <Mobile items={this.props.items} currentUrl={this.props.currentUrl} dropDownOpen={this.state.dropDownOpen}
+        <Mobile historyPush={this.props.historyPush} items={this.props.items} currentUrl={this.props.currentUrl} dropDownOpen={this.state.dropDownOpen}
                 handleChange={this.handleSearchDropDownChange.bind(this)} openFormModal={this.props.openFormModal} />
-        <Desktop items={this.props.items} currentUrl={this.props.currentUrl} openFormModal={this.props.openFormModal} />
+        <Desktop historyPush={this.props.historyPush} items={this.props.items} currentUrl={this.props.currentUrl} openFormModal={this.props.openFormModal} />
       </nav>
     );
   }

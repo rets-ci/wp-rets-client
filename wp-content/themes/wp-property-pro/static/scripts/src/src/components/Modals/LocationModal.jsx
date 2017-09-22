@@ -9,24 +9,24 @@ import {
 import ErrorMessage from '../ErrorMessage.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import URL from 'urijs';
 import Api from '../../containers/Api.jsx';
 import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
 import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     errorMessage: state.errorMessage,
     isFetching: state.locationModal.isFetching,
-    propertiesModalMode: _.get(state, 'locationModal.propertiesModalMode'),
+    propertiesModalMode: get(state, 'locationModal.propertiesModalMode'),
     open: state.locationModal ? state.locationModal.open : false,
-    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
-    searchResults: _.get(state, 'locationModal.items', []),
-    searchType: _.get(state, 'searchType.searchType', '')
+    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
+    searchResults: get(state, 'locationModal.items', []),
+    searchType: get(state, 'searchType.searchType', '')
   }
 };
 
@@ -79,6 +79,9 @@ class LocationModal extends Component {
 
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     onTermSelect: PropTypes.func,
     open: PropTypes.bool.isRequired,
     propertiesModalMode: PropTypes.bool.isRequired,
@@ -115,7 +118,7 @@ class LocationModal extends Component {
     this.props.closeModal();
   }
 
-  handleResultClick = (eve, tax, term, text, searchType, modifyType, url) => {
+  handleResultClick = (eve, tax, term, text, searchType, modifyType, url, historyPush) => {
     eve.preventDefault();
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
     if (searchOptions.error) {
@@ -133,7 +136,7 @@ class LocationModal extends Component {
           });
         } else {
           let url = new URL();
-          url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
+          url.resource(get(wpp, 'instance.settings.configuration.base_slug'));
           //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
           let modifiedSearchType = searchType === 'Sale' ? 'Buy' : searchType;
           let URLSearchObject = {
@@ -151,12 +154,12 @@ class LocationModal extends Component {
             return a;
           }, {}));
           url.setSearch(URLSearchObject);
-          browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
+          historyPush('/' + decodeURIComponent(url.pathname() + url.search()));
           this.props.closeModal();
         }
       } else {
         // Single property page
-        browserHistory.push(url);
+        historyPush(url)
         this.props.closeModal();
       }
     }
@@ -201,6 +204,7 @@ class LocationModal extends Component {
   render() {
     let {
       errorMessage,
+      history,
       isFetching,
       searchResults,
       searchType,
@@ -224,7 +228,7 @@ class LocationModal extends Component {
                     <div className="container">
                       <div className="row">
                         <a href="#" className="m-0"
-                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.text, searchType, modifyType, _.get(c, 'url', null))}>
+                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.text, searchType, modifyType, get(c, 'url', null), history.push)}>
                           {c.text}
                         </a>
                       </div>
@@ -314,7 +318,7 @@ class LocationModal extends Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(LocationModal);
+)(LocationModal));

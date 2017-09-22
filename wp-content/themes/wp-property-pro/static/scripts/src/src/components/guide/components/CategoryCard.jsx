@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
 
 class CategoryCard extends Component {
   static propTypes = {
     category: PropTypes.object,
+    historyPush: PropTypes.func.isRequired,
     last: PropTypes.bool
   };
 
@@ -25,27 +25,27 @@ class CategoryCard extends Component {
               <div className={Lib.THEME_CLASSES_PREFIX + "category-card-content"}>
                 <header className={Lib.THEME_CLASSES_PREFIX + "category-header"}>
                   {
-                    _.get(this.props.category, 'title', null)
+                    get(this.props.category, 'title', null)
                       ? <h2 className={Lib.THEME_CLASSES_PREFIX + "category-title"}><a
-                        href={_.get(this.props.category, 'url', '')} onClick={(eve) => {
+                        href={get(this.props.category, 'url', '')} onClick={(eve) => {
                         eve.preventDefault();
-                        Util.goToUrl(_.get(this.props.category, 'relative_url', ''));
-                      }}>{_.get(this.props.category, 'title')}</a></h2>
+                        historyPush(get(this.props.category, 'relative_url', ''));
+                      }}>{get(this.props.category, 'title')}</a></h2>
                       : null
                   }
                 </header>
                 {
-                  _.get(this.props.category, 'children', null)
+                  get(this.props.category, 'children', null)
                     ?
                     <nav className={Lib.THEME_CLASSES_PREFIX + "category-navigation"}>
                       <ul className="list-group">
                         {
-                          _.get(this.props.category, 'children', []).map((item, key) =>
-                            _.get(item, 'title', null) && _.get(item, 'relative_url', null)
-                              ? <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}category-navigation-item border-0 p-0`} key={key}><a href={_.get(item, 'relative_url')} onClick={(eve) => {
+                          get(this.props.category, 'children', []).map((item, key) =>
+                            get(item, 'title', null) && get(item, 'relative_url', null)
+                              ? <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}category-navigation-item border-0 p-0`} key={key}><a href={get(item, 'relative_url')} onClick={(eve) => {
                                 eve.preventDefault();
-                                Util.goToUrl(_.get(item, 'relative_url'));
-                              }}>{_.get(item, 'title')}</a></li>
+                                historyPush(get(item, 'relative_url'));
+                              }}>{get(item, 'title')}</a></li>
                               : null
                           )
                         }
@@ -57,9 +57,9 @@ class CategoryCard extends Component {
             </div>
             <div className="col-sm-4">
               {
-                _.get(this.props.category, 'image_src', null)
+                get(this.props.category, 'image_src', null)
                   ? <div style={{
-                    background: "url(" + _.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
+                    background: "url(" + get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
                   }} className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"}></div>
 
                   : null

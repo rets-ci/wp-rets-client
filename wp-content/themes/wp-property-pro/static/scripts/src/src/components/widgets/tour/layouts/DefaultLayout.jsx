@@ -1,6 +1,6 @@
 import {Lib} from '../../../../lib.jsx';
 import React from 'react';
-import _ from 'lodash';
+import get from 'lodash/get';
 import FeatureGroup from './../components/FeatureGroup.jsx';
 
 const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal}) => {
@@ -10,13 +10,13 @@ const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal})
         <div className="row">
           <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle mx-auto text-center`}>
             {
-              _.get(item, 'title', null)
+              get(item, 'title', null)
                 ?
                 <h2>{item.title}</h2>
                 : null
             }
             {
-              _.get(item, 'subtitle', null)
+              get(item, 'subtitle', null)
                 ?
                 <p>{item.subtitle}</p>
                 : null
@@ -26,7 +26,7 @@ const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal})
       </div>
 
       {
-        _.get(item, 'feature_groups', []).map((featureGroup, key) =>
+        get(item, 'feature_groups', []).map((featureGroup, key) =>
           <FeatureGroup browserHistoryPush={browserHistoryPush} featureGroup={featureGroup} ind={key} openFormModal={openFormModal} key={key}/>
         )
       }

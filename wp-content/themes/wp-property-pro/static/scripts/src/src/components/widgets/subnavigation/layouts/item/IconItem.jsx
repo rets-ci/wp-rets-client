@@ -1,15 +1,15 @@
 import React from 'react';
-import Util from '../../../../Util.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
-const IconItem = ({item}) =>
-  _.isEmpty(item)
+const IconItem = ({historyPush, item}) =>
+  isEmpty(item)
     ? null
     : <a href={item.url} title={item.title} onClick={(eve) => {
       eve.preventDefault();
-      Util.goToUrl(_.get(item, 'relative_url', null))
+      historyPush(get(item, 'relative_url', null))
     }}>
-      <img src={bundle.static_images_url + _.get(item, 'classes.0', '') + "-icon.svg"}
+      <img src={bundle.static_images_url + get(item, 'classes.0', '') + "-icon.svg"}
            alt={item.title}/>
       <span>{item.title}</span>
     </a>;

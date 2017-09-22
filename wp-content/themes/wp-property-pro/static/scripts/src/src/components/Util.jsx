@@ -1,10 +1,15 @@
 import numeral from 'numeral';
 import React from 'react';
-import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import qs from 'qs';
 import {Lib} from '../lib.jsx';
-import _ from 'lodash';
+
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import last from 'lodash/last';
+import replace from 'lodash/replace';
+import join from 'lodash/join';
+import split from 'lodash/split';
 
 class Util extends React.Component {
 
@@ -56,10 +61,10 @@ class Util extends React.Component {
 
     let searchFilter = {};
     let uri = new URI(url);
-    if (!_.isEmpty(uri.query())) {
+    if (!isEmpty(uri.query())) {
       if (withoutPrefix) {
         let query = qs.parse(uri.query());
-        searchFilter = _.get(query, Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX, {});
+        searchFilter = get(query, Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX, {});
       } else {
         let query = uri.search(true);
         for (var k in query) {
@@ -73,26 +78,26 @@ class Util extends React.Component {
   }
 
   static getThumbnailUrlBySize(thumbnailUrl = '', size = Lib.PROPERTY_LISTING_IMAGE_SIZE) {
-    let urlArray = _.split(thumbnailUrl, Lib.URL_DELIMITER);
-    let fileName = !_.isEmpty(urlArray) ? _.last(urlArray) : '';
-    let fileNameArray = _.split(fileName, Lib.EXTENSION_DELIMITER)
+    let urlArray = split(thumbnailUrl, Lib.URL_DELIMITER);
+    let fileName = !isEmpty(urlArray) ? last(urlArray) : '';
+    let fileNameArray = split(fileName, Lib.EXTENSION_DELIMITER)
 
-    if (_.isEmpty(fileNameArray)) {
+    if (isEmpty(fileNameArray)) {
       return '';
     }
 
-    let fileNameWithSize = _.join([
+    let fileNameWithSize = join([
       fileNameArray[0],
       size
     ], Lib.STRING_ARRAY_DELIMITER);
 
-    let newFileName = _.join([
+    let newFileName = join([
         fileNameWithSize,
         fileNameArray[1]
       ],
       Lib.EXTENSION_DELIMITER);
 
-    return _.replace(thumbnailUrl, fileName, newFileName);
+    return replace(thumbnailUrl, fileName, newFileName);
   }
 
   static getFormModalIdFromCSSClass(classes) {
@@ -103,7 +108,7 @@ class Util extends React.Component {
 
   static getGoogleStreetViewThumbnailURL(params) {
 
-    let key = _.get(bundle, 'google_api_key', null);
+    let key = get(bundle, 'google_api_key', null);
 
     if (!params.size || !params.location || !key) {
       console.log('Missed params');
@@ -150,8 +155,8 @@ class Util extends React.Component {
       returnObject.msg = `search type ${searchType} wasn't found in property type options`;
       return returnObject;
     }
-    let propertyTypes = _.get(propertyTypeOptionsObject, `[${searchType}].property_types`);
-    let saleType = _.get(propertyTypeOptionsObject, `[${searchType}].sale_type`);
+    let propertyTypes = get(propertyTypeOptionsObject, `[${searchType}].property_types`);
+    let saleType = get(propertyTypeOptionsObject, `[${searchType}].sale_type`);
     if (!propertyTypes) {
       returnObject.error = true;
       returnObject.msg = 'property types are missing from the data source';
@@ -212,15 +217,6 @@ class Util extends React.Component {
     }
   }
 
-  static goToUrl(url) {
-
-    if (_.isEmpty(url)) {
-      return null;
-    }
-
-    browserHistory.push(url);
-  }
-
   static removeQueryFromURL(currentUrl, key, value) {
     let uri = new URI(currentUrl);
     uri.removeSearch({[key]: value});
@@ -235,11 +231,11 @@ class Util extends React.Component {
 
       scriptNode.type = 'text/javascript';
 
-      if (_.get(script, 'src', null)) {
-        scriptNode.src = _.get(script, 'src');
+      if (get(script, 'src', null)) {
+        scriptNode.src = get(script, 'src');
       }
-      if (_.get(script, 'content', null)) {
-        scriptNode.text = _.get(script, 'content');
+      if (get(script, 'content', null)) {
+        scriptNode.text = get(script, 'content');
       }
 
       scriptNode.async = true;

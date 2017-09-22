@@ -6,7 +6,8 @@ import GuideLayout from './layouts/GuideLayout.jsx'
 import GuideSingleLayout from './layouts/GuideSingleLayout.jsx'
 import LocationModal from '../../Modals/LocationModal.jsx';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 const Masthead = ({closeLocationModal, widget_cell, returnToArchiveHandler, nextArticleHandler}) => {
 
@@ -15,13 +16,13 @@ const Masthead = ({closeLocationModal, widget_cell, returnToArchiveHandler, next
   }
 
   let headerStyle = {
-    background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + _.get(widget_cell, 'widget.fields.image_position', '') + " no-repeat"
+    background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + get(widget_cell, 'widget.fields.image_position', '') + " no-repeat"
   };
 
   let container;
   let modal;
 
-  if (!_.isEmpty(_.get(widget_cell, 'widget.fields.search_options', {}))) {
+  if (!isEmpty(get(widget_cell, 'widget.fields.search_options', {}))) {
     modal = <LocationModal closeModal={closeLocationModal} />;
   }
 

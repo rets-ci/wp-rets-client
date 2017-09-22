@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
 import qs from 'qs';
 import URI from 'urijs';
 
@@ -33,21 +34,21 @@ const isMobile = window.innerWidth < 576;
 
 
 const mapStateToProps = (state, ownProps) => {
-  let allQueryParams = ownProps.location.query ? qs.parse(ownProps.location.query) : {};
+  let allQueryParams = qs.parse(ownProps.location.search.replace('?', ''));
   return {
     allQueryParams: allQueryParams,
     errorMessage: state.errorMessage,
-    query: _.get(state, 'searchResults.query', []),
-    isFetching: _.get(state, 'searchResults.isFetching', []),
-    displayedResults: _.get(state, 'searchResults.displayedResults', []),
+    query: get(state, 'searchResults.query', []),
+    isFetching: get(state, 'searchResults.isFetching', []),
+    displayedResults: get(state, 'searchResults.displayedResults', []),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
-    propertiesModalOpen: _.get(state, 'propertiesModal.open'),
-    propertiesModalResultCountButtonLoading: _.get(state, 'propertiesModal.resultCountButtonLoading'),
-    propertiesModalResultCount: _.get(state, 'propertiesModal.resultCount'),
-    propertyTypeOptions: _.get(state, 'propertyTypeOptions.options'),
-    results: _.get(state, 'searchResults.searchResults', []),
-    resultsTotal: _.get(state, 'searchResults.totalProps', 0),
-    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
+    propertiesModalOpen: get(state, 'propertiesModal.open'),
+    propertiesModalResultCountButtonLoading: get(state, 'propertiesModal.resultCountButtonLoading'),
+    propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
+    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
+    results: get(state, 'searchResults.searchResults', []),
+    resultsTotal: get(state, 'searchResults.totalProps', 0),
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -62,7 +63,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       Api.makeStandardPropertySearch(filters, (err, query, response) => {
         // we are ignoring handling the error here intentionally as the error is handled as soon as the modal is closed
         dispatch(setPropertiesModalResultCountLoading(false));
-        dispatch(updatePropertiesModalResultCount(_.get(response, 'hits.total', null)));
+        dispatch(updatePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
     },
 
@@ -77,7 +78,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         if (!err && errorMessage) {
           dispatch(resetErrorMessage());
         }
-        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
+        dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), append));
       });
     },
 
@@ -103,7 +104,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         if (!err && errorMessage) {
           dispatch(resetErrorMessage());
         }
-        dispatch(receiveSearchResultsPosts(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
+        dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), false));
       });
     },
 
@@ -117,6 +118,7 @@ class MapSearchResults extends Component {
   static propTypes = {
     doPropertiesModalSearch: PropTypes.func.isRequired,
     doSearchWithQuery: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
     location: PropTypes.object,
     params: PropTypes.object,
@@ -145,7 +147,7 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     let filters = qs.parse(window.location.search.replace('?', ''));
-    if (!_.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
+    if (!isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
       this.applyQueryFilters();
     }
 
@@ -187,7 +189,8 @@ class MapSearchResults extends Component {
   updateSelectedProperty = (propertyId) => {
     let filter = {'selected_property': propertyId};
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'set', false);
-    Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
+    // TODO: use location passed in
+    this.props.history.push(window.location.pathname + decodeURIComponent(queryParam))
   }
 
   updateURIGeoCoordinates(geoCoordinates) {
@@ -203,7 +206,7 @@ class MapSearchResults extends Component {
     currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'] = geoCoordinates;
     let newSearchQuery = '?' + qs.stringify(currentFilters);
     let constructedQuery = decodeURIComponent(url.pathname() + newSearchQuery);
-    browserHistory.push(constructedQuery);
+    this.props.history.push(constructedQuery);
   }
 
   render() {
@@ -212,6 +215,7 @@ class MapSearchResults extends Component {
       errorMessage,
       displayedResults,
       doPropertiesModalSearch,
+      history,
       isFetching,
       location,
       openPropertiesModal,
@@ -222,7 +226,6 @@ class MapSearchResults extends Component {
       results,
       resultsTotal
     } = this.props;
-
     let filters = qs.parse(window.location.search.replace('?', ''));
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     const captionElement = (this.state.noticeDisplay && displayedResults.length > 0)
@@ -254,8 +257,10 @@ class MapSearchResults extends Component {
 
     const mapElement = (
       <Map
-        properties={displayedResults}
         currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} 
+        historyPush={history.push}
+        location={this.props.location}
+        properties={displayedResults}
         searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}
         selectedProperty={filters.selected_property}
       />
@@ -277,12 +282,13 @@ class MapSearchResults extends Component {
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => openPropertiesModal(false)}
           doSearch={doPropertiesModalSearch}
+          historyPush={history.push}
           open={propertiesModalOpen}
           openLocationModal={this.props.openLocationModal}
           propertyTypeOptions={propertyTypeOptions}
           resultCount={propertiesModalResultCount}
           resultCountButtonLoading={propertiesModalResultCountButtonLoading}
-          searchFilters={_.omit(searchFilters, ['geoCoordinates'])}
+          searchFilters={omit(searchFilters, ['geoCoordinates'])}
           turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
           turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}
         />

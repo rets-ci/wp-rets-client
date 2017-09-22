@@ -1,6 +1,6 @@
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
-const AssetsPlugin = require('assets-webpack-plugin');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -16,15 +16,6 @@ try {
 }
 
 let plugins = [
-  new AssetsPlugin({
-    filename: 'assets.json',
-    prettyPrint: true,
-    update: true
-  }),
-  new webpack.LoaderOptionsPlugin({
-    debug: true
-  }),
-  new WebpackCleanupPlugin({verbose: false}),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
@@ -32,10 +23,13 @@ let plugins = [
   }),
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   new webpack.LoaderOptionsPlugin({
-     options: {
-       context: __dirname
-     }
-   })
+    options: {
+      context: __dirname
+    }
+  }),
+  // new BundleAnalyzerPlugin({
+  //   analyzerMode: 'server'
+  // })
 ];
 
 
@@ -53,6 +47,8 @@ module.exports = {
     entry: './src/index.jsx',
     output: {
         path: path.join(__dirname, 'dist'),
+        publicPath: '/wp-content/themes/wp-property-pro/static/scripts/src/dist/',
+        chunkFilename: '[name].bundle.js',
         filename: 'bundle.js'
     },
     module: {
@@ -105,7 +101,7 @@ module.exports = {
         'node_modules'
       ]
     },
-    // devtool: 'source-map',
+    // devtool: !PROD ? 'source-map' : false,
     watchOptions : {
       poll: true
     }

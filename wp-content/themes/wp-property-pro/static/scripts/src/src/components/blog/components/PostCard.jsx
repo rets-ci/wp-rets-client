@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {withRouter} from 'react-router';
 import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
-export default class PostCard extends Component {
+class PostCard extends Component {
   static propTypes = {
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   };
 
   render() {
@@ -24,10 +28,10 @@ export default class PostCard extends Component {
         <div className={`card-img-top ${Lib.THEME_CLASSES_PREFIX}post-image`}>
           <a href={url} title={title} onClick={(e) => {
             e.preventDefault();
-            Util.goToUrl(relative_url);
+            this.props.history.push(relative_url);
           }
           }>
-            <img src={image_src} alt={_.isEmpty(image_alt) ? image_title : image_alt} className="img-fluid"/>
+            <img src={image_src} alt={isEmpty(image_alt) ? image_title : image_alt} className="img-fluid"/>
           </a>
         </div>
         <div className="card-block p-0">
@@ -35,7 +39,7 @@ export default class PostCard extends Component {
             <h5 className={`card-title ${Lib.THEME_CLASSES_PREFIX}post-title`}>
               <a href={url} onClick={(e) => {
                 e.preventDefault();
-                Util.goToUrl(relative_url);
+                this.props.history.push(relative_url);
               }
               }>{title}</a>
             </h5>
@@ -46,3 +50,5 @@ export default class PostCard extends Component {
     );
   }
 }
+
+export default withRouter(PostCard);

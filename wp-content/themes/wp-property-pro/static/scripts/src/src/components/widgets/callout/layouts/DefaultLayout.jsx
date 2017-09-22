@@ -1,10 +1,10 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
 import Util from '../../../Util.jsx';
 
 const DefaultLayout = ({item, openFormModal}) => {
-  let formModalId = _.get(item, 'button.css_class', null) ? Util.getFormModalIdFromCSSClass(item.button.css_class.split(' ')) : null;
+  let formModalId = get(item, 'button.css_class', null) ? Util.getFormModalIdFromCSSClass(item.button.css_class.split(' ')) : null;
   return (
     <div className="container">
       <div className="row">
@@ -12,13 +12,13 @@ const DefaultLayout = ({item, openFormModal}) => {
           <nav className="navbar navbar-toggleable-md">
             <div className={Lib.THEME_CLASSES_PREFIX + "callout-items"}>
               {
-                _.get(item, 'title', null)
+                get(item, 'title', null)
                   ?
                   <p className="navbar-brand mr-auto my-auto">{item.title}</p>
                   : null
               }
               {
-                _.get(item, 'button.label', null)
+                get(item, 'button.label', null)
                   ?
                   <ul className="navbar-nav">
                     <li>

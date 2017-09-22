@@ -1,13 +1,13 @@
 import React from 'react';
-import Util from '../../../../Util.jsx';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
-const TextItem = ({item}) =>
-  _.isEmpty(item)
+const TextItem = ({historyPush, item}) =>
+  isEmpty(item)
     ? null
     : <a href={item.url} onClick={(eve) => {
       eve.preventDefault();
-      Util.goToUrl(_.get(item, 'relative_url', null));
+      historyPush(get(item, 'relative_url', null));
     }}>{item.title}</a>;
 
 
