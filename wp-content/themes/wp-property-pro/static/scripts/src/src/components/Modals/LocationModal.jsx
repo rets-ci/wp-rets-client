@@ -261,7 +261,7 @@ class LocationModal extends Component {
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
               <div className="container">
 
-                <div className="d-flex flex-row">
+                <div className="d-flex flex-row filter-container">
                   <div className="p-2 my-auto">
                     <i className="fa fa-search"></i>
                   </div>
