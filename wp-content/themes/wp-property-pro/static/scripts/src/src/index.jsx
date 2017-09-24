@@ -11,7 +11,8 @@ import propertyProApp from './reducers/index.jsx';
 import {Lib} from './lib.jsx';
 import shims from './shims.js';
 
-require('swiper-css');
+import 'swiper-css';
+import '../../../styles/app/index.scss';
 
 // set up all relevant shims and polyfills for various browsers
 shims();
