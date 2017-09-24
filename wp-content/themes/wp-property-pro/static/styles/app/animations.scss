@@ -23,20 +23,20 @@
 }
 
 @keyframes bounceInDown {
- 0% {
-  opacity: 0;
-  transform: translateY(-500px);
- }
- 60% {
-  opacity: 1;
-  transform: translateY(30px);
- }
- 80% {
-  transform: translateY(-10px);
- }
- 100% {
-  transform: translateY(0);
- }
+  0% {
+    opacity: 0;
+    transform: translateY(-500px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+  80% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes bounceIn {
@@ -81,14 +81,22 @@
   Search Modal Animation
 *************************************/
 .propertypro-search-modal {
-  &.propertypro-display {
-    transform: scaleY(.01) scaleX(0);
-    animation: unfoldIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(.5);
+  transition: transform .4s ease,opacity .4s ease;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
   }
 
-  &.propertypro-hide {
+  &.remove {
+    opacity: 0;
+    transition: .3s all;
     transform: scale(1);
-    animation: unfoldOut 1s .3s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
   }
 
   &.propertypro-location-modal {
@@ -116,26 +124,12 @@
     }
   }
 
-/*  &.propertypro-hide {
+  &.remove {
     .propertypro-modal-header .filter-container {
       transform: translateY(-500px);
     }
     .propertypro-filter-section {
       opacity: 0;
     }
-  }*/
-}
-
-/************************************
-  Side Panel Animation
-*************************************/
-.propertypro-modal.sidebar-right {
-  .modal-dialog {
-    transform: translateX(100%);
-    transition: -webkit-transform 0.3s ease-out;
-  }
-
-  &.show .modal-dialog {
-    transform: translateX(0%);
   }
 }
