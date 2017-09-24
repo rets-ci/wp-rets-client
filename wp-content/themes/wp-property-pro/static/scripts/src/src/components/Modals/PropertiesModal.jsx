@@ -371,7 +371,7 @@ class PropertiesModal extends Component {
           closeModal={this.handleLocationModalClose}
         />
         <div
-          className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${open ? Lib.THEME_CLASSES_PREFIX + "display" : Lib.THEME_CLASSES_PREFIX + "hide"}`}>
+          className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${open ? "active" : "remove"}`}>
           <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`} role="document">
             <div className="modal-content">
               <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header hidden-md-down`}>

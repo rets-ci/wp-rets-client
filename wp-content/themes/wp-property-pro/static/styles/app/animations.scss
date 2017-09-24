@@ -52,7 +52,6 @@
     transform: scale(0.89);
   }
   100% {
-    opacity: 1;
     transform: scale(1);
   }
 }
@@ -82,10 +81,7 @@
 *************************************/
 .propertypro-search-modal {
   display: block;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(.5);
-  transition: transform .4s ease,opacity .4s ease;
+  transition: transform .3s ease-in-out, opacity .5s ease-in-out, visibility .5s ease-in-out;
 
   &.active {
     opacity: 1;
@@ -95,14 +91,16 @@
 
   &.remove {
     opacity: 0;
-    transition: .3s all;
-    transform: scale(1);
+    visibility: hidden;
+    transform: scale(0);
   }
 
   &.propertypro-location-modal {
-    .propertypro-modal-header .filter-container {
-      transform: translateY(-500px);
-      animation: bounceInDown .3s .5s linear forwards;
+    &.active {
+      .filter-container {
+        transform: translateY(-500px);
+        animation: bounceInDown .3s .5s ease-in-out forwards;
+      }
     }
 
     .propertypro-search-result-group {
@@ -113,23 +111,16 @@
   }
 
   &.propertypro-advanced-filter {
-    .propertypro-modal-header .filter-container {
-      opacity: 0;
-      animation: bounceIn .3s .5s linear forwards;
+    &.active {
+      .filter-container {
+        transform: translateY(-500px);
+        animation: bounceInDown .3s .5s ease-in-out forwards;
+      }
     }
 
     .propertypro-filter-section {
       opacity: 0;
       animation: fadeIn 1s .5s ease-in-out forwards;
-    }
-  }
-
-  &.remove {
-    .propertypro-modal-header .filter-container {
-      transform: translateY(-500px);
-    }
-    .propertypro-filter-section {
-      opacity: 0;
     }
   }
 }

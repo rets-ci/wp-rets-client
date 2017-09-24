@@ -249,9 +249,9 @@ class LocationModal extends Component {
       inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}with-padding`
     }
 
-    let searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}display`;
+    let searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal active`;
     if (!this.props.open) {
-      searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}hide`;
+      searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal remove`;
     }
 
     return (
