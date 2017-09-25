@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,500,500i,600,700|Playfair+Display" />
+    <link rel="manifest" href="/wp-content/themes/wp-property-pro/static/scripts/src/manifest.json">
     <title><?php bloginfo('name'); ?> <?php wp_title(); ?></title>
   <?php wp_head(); ?>
     <noscript><p class="no-js-header">This site uses Javascript extensively to work. Please enable Javascript on your browser to continue!</p></noscript>

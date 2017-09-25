@@ -184,16 +184,6 @@ class searchFilters extends Component {
       </span>);
     }
 
-    if (lotSizeFilter) {
-      lotSizeElement = (
-        <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
-      )
-    } else if (staticFilters['lotSize']) {
-      lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-        <span>+</span> Lot size
-      </span>);
-    }
-
     if (priceFilter) {
       priceElement = (
         <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
@@ -201,6 +191,16 @@ class searchFilters extends Component {
     } else if (staticFilters['price']) {
       priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Price
+      </span>);
+    }
+
+    if (lotSizeFilter) {
+      lotSizeElement = (
+        <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
+      )
+    } else if (staticFilters['lotSize']) {
+      lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+        <span>+</span> Lot Size
       </span>);
     }
 
@@ -239,8 +239,8 @@ class searchFilters extends Component {
             {termFilterElement}
             {bathroomsElement}
             {bedroomsElement}
-            {lotSizeElement}
             {priceElement}
+            {lotSizeElement}
             {sqftElement}
             <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
               <span>+</span>

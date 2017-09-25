@@ -2206,9 +2206,11 @@ ul.propertypro-listing-info-box li:last-child {
   color: #ffffff; }
 
 .propertypro-direction-nav .propertypro-nav-prev:before {
+  cursor: pointer;
   content: '\F104'; }
 
 .propertypro-direction-nav .propertypro-nav-next:before {
+  cursor: pointer;
   content: '\F105'; }
 
 .propertypro-card:hover .propertypro-direction-nav .propertypro-nav-prev,
