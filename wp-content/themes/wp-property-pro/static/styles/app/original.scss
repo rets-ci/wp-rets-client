@@ -626,10 +626,12 @@ ul.propertypro-listing-info-box li:last-child {
 }
 
 .propertypro-direction-nav .propertypro-nav-prev:before {
+    cursor: pointer;
     content: '\f104';
 }
 
 .propertypro-direction-nav .propertypro-nav-next:before {
+    cursor: pointer;
     content: '\f105';
 }
 

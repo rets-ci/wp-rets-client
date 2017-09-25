@@ -143,22 +143,22 @@ class ImageMixer extends Component {
         <div className={`${Lib.THEME_CLASSES_PREFIX}direction-nav-container`}>
           <ul className={`${Lib.THEME_CLASSES_PREFIX}direction-nav nav text-center`}>
             <li className="nav-item mr-auto">
-              <a href="#"
+              <span
                 className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`}
                 onClick={e => {
                   e.preventDefault();
                   this.handleNavigation.bind(this)('prev');
                 }}
-              ></a>
+              ></span>
             </li>
             <li className="nav-item">
-              <a href="#"
+              <span
                 className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
                 onClick={e => {
                   e.preventDefault();
                   this.handleNavigation.bind(this)('next');
                 }}
-              ></a>
+              ></span>
             </li>
           </ul>
         </div>
