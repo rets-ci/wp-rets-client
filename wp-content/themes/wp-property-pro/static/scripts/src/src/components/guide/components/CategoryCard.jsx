@@ -11,6 +11,9 @@ class CategoryCard extends Component {
   };
 
   render() {
+    let {
+      historyPush
+    } = this.props;
     let sectionClasses = `${Lib.THEME_CLASSES_PREFIX}category-card ${Lib.THEME_CLASSES_PREFIX}guide-item`;
 
     if (this.props.last) {
