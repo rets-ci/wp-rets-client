@@ -3,28 +3,29 @@
   "name": "Red Door Company: Real Estate Listings, Homes for Sale & Rent",
   "background_color": "#fff",
   "description": "Search homes for sale and rent on Red Door Company. Our real estate agents are ready to assist you in Raleigh, Durham, &amp; Chapel Hill!",
+  "display": "standalone",
   "theme_color": "#d03528",
   "icons": [
     {
       "src": "logo-1x.png",
       "type": "image/png",
-      "sizes": "48x73"
+      "sizes": "128x128"
     },
     {
       "src": "logo-2x.png",
       "type": "image/png",
-      "sizes": "96x146"
+      "sizes": "144x144"
     },
     {
       "src": "logo-3x.png",
       "type": "image/png",
-      "sizes": "144x220"
+      "sizes": "152x152"
     },
     {
       "src": "logo-4x.png",
       "type": "image/png",
-      "sizes": "192x292"
+      "sizes": "192x192"
     }
   ],
-  "start_url": "/?utm_source=homescreen"
+  "start_url": "/"
 }
