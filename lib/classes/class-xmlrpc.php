@@ -884,9 +884,7 @@ namespace UsabilityDynamics\WPRETSC {
         // Insert all the terms and creates taxonomies.
         if( !isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ] ) {
           Utility::insert_property_terms( $_post_id, $_post_data_tax_input, $post_data );
-          if( isset( $options[ 'createWPPTerms' ] ) && $options[ 'createWPPTerms' ] ) {
-            Utility::create_wpp_taxonomies( array_keys( (array)$_post_data_tax_input ) );
-          }
+          do_action( 'wrc::manage_property::taxonomies', $_post_data_tax_input, $options );
         }
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
@@ -897,13 +895,7 @@ namespace UsabilityDynamics\WPRETSC {
           Utility::insert_slideshow_images( $_post_id );
         }
 
-        $postmeta = array();
-        foreach( (array) $post_data[ 'meta_input' ] as $_meta_key => $_meta_value ) {
-          if( !empty( $_meta_value ) && isset( $options[ 'createWPPAttributes' ] ) && $options[ 'createWPPAttributes' ] ) {
-            array_push( $postmeta, $_meta_key );
-          }
-        }
-        Utility::create_wpp_attributes( $postmeta );
+        do_action( 'wrc::manage_property::postmeta', $post_data, $options );
 
         if( $_post_id ) {
           ud_get_wp_rets_client()->write_log( 'Updating property post [' . $_post_id  . '].', 'debug' );
@@ -1025,20 +1017,15 @@ namespace UsabilityDynamics\WPRETSC {
           $wpdb->update( $wpdb->posts, array( 'post_content' => $post_data[ 'post_content' ] ), array( 'ID' => $post_data['ID' ] ) );
         }
 
-        $postmeta = array();
         foreach( (array) $post_data[ 'meta_input' ] as $_meta_key => $_meta_value ) {
           update_post_meta( $post_data['ID' ], $_meta_key, $_meta_value );
-          if( !empty( $_meta_value ) && isset( $options[ 'createWPPAttributes' ] ) && $options[ 'createWPPAttributes' ] ) {
-            array_push($postmeta, $_meta_key);
-          }
         }
-        Utility::create_wpp_attributes( $postmeta );
+
+        do_action( 'wrc::manage_property::postmeta', $post_data, $options );
 
         if( (isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ]) && isset($post_data[ 'tax_input' ]) ) {
           Utility::insert_property_terms( $post_data[ 'ID' ], $post_data[ 'tax_input' ], $post_data );
-          if( isset( $options[ 'createWPPTerms' ] ) && $options[ 'createWPPTerms' ] ) {
-            Utility::create_wpp_taxonomies( array_keys( (array)$post_data[ 'tax_input' ] ) );
-          }
+          do_action( 'wrc::manage_property::taxonomies', $post_data[ 'tax_input' ], $options );
           ud_get_wp_rets_client()->write_log( 'Updated terms.', 'debug' );
         }
 
@@ -1152,9 +1139,7 @@ namespace UsabilityDynamics\WPRETSC {
         // Insert all the terms and creates taxonomies.
         if( !isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ] ) {
           Utility::insert_property_terms( $_post_id, $_post_data_tax_input, $post_data );
-          if( isset( $options[ 'createWPPTerms' ] ) && $options[ 'createWPPTerms' ] ) {
-            Utility::create_wpp_taxonomies( array_keys( (array)$_post_data_tax_input ) );
-          }
+          do_action( 'wrc::manage_property::taxonomies', $_post_data_tax_input, $options );
         }
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
@@ -1165,13 +1150,7 @@ namespace UsabilityDynamics\WPRETSC {
           Utility::insert_slideshow_images( $_post_id );
         }
 
-        $postmeta = array();
-        foreach( (array) $post_data[ 'meta_input' ] as $_meta_key => $_meta_value ) {
-          if( !empty( $_meta_value ) && isset( $options[ 'createWPPAttributes' ] ) && $options[ 'createWPPAttributes' ] ) {
-            array_push( $postmeta, $_meta_key );
-          }
-        }
-        Utility::create_wpp_attributes( $postmeta );
+        do_action( 'wrc::manage_property::postmeta', $post_data, $options );
 
         if( $_post_id ) {
           ud_get_wp_rets_client()->write_log( 'Updating property post [' . $_post_id  . '].', 'debug' );
