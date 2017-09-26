@@ -66,33 +66,31 @@ class PropertyInfoTabs extends Component {
     let propertyDataStructureModified = Object.assign({}, propertyDataStructure);
 		propertyDataStructureModified['All'] = getAllTabData(Object.assign({}, propertyDataStructure), 3);
     return (
-      <div className="App">
-        <div id={`${Lib.THEME_CLASSES_PREFIX}property-details`}>
-					<div className="card text-center mb-4">
-						<div className="card-header">
-							<ul className="nav nav-tabs card-header-tabs">
-								{Object.keys(propertyDataStructureModified).map((p, i) =>
-									<li className="nav-item" key={p}>
-										<a
-											className={`nav-link ${selectedTab === p ? 'active' : ''}`}
-											href="#"
-											onClick={(event) => { event.preventDefault(); this.selectTab(p); }}
-										>{p}</a>
-									</li>
-								)}
-							</ul>
-						</div>
-						<div className="card-block">
-							<div>
-								<PropertySingleTabContent
-									tab={propertyDataStructureModified[selectedTab]}
-									data={data}
-								/>
-							</div>
+			<div id={`${Lib.THEME_CLASSES_PREFIX}property-details`}>
+				<div className="card text-center mb-4">
+					<div className="card-header">
+						<ul className="nav nav-tabs card-header-tabs">
+							{Object.keys(propertyDataStructureModified).map((p, i) =>
+								<li className="nav-item" key={p}>
+									<a
+										className={`nav-link ${selectedTab === p ? 'active' : ''}`}
+										href="#"
+										onClick={(event) => { event.preventDefault(); this.selectTab(p); }}
+									>{p}</a>
+								</li>
+							)}
+						</ul>
+					</div>
+					<div className="card-block">
+						<div>
+							<PropertySingleTabContent
+								tab={propertyDataStructureModified[selectedTab]}
+								data={data}
+							/>
 						</div>
 					</div>
-        </div>
-      </div>
+				</div>
+			</div>
     );
   }
 };
