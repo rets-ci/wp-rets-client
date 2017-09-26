@@ -330,6 +330,12 @@ class Api {
         }
 
         for (let ind in term.buckets) {
+
+          // Exclude first subdivision from list (not in subdivision value)
+          if(i.indexOf('subdivision') !== -1 && ind === "0"){
+            continue;
+          }
+
           let bucket = term.buckets[ind];
 
           if (get(bucket, 'key', null) !== null) {
