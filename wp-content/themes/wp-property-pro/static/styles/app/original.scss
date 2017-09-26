@@ -449,6 +449,10 @@ html, body {
     padding: 0;
 }
 
+.propertypro-listing-info-box-wrap {
+    flex-wrap: wrap;
+}
+
 .propertypro-listing-control-nav a {
     background-color: #e9eff3;
     width: 3.75rem;
@@ -1983,39 +1987,10 @@ p.propertypro-gentle-error {
     margin-bottom: 0.25rem;
 }
 
-.propertypro-header-property-single {
-    /* padding: 1rem; */
+ul.card-header-tabs {
+    flex-wrap: wrap;
 }
 
-/* #propertypro-property-details .card .card-block {
-    padding-bottom: 3.50rem;
-} */
-
-/* #propertypro-property-details .card .card-header {
-    background-color: #ffffff;
-    border-bottom: 0;
-    padding: 0;
-}
-
-#propertypro-property-details .card .card-header ul {
-    background-color: #f7f7f9;
-} */
-
-/* #propertypro-property-details .card .card-header ul.card-header-tabs {
-    margin-right: 0;
-    margin-left: 0;
-} */
-
-/* #propertypro-property-details .card .card-header .nav-link {
-    border: 0;
-    border-right: 1px solid #e1e5e6;
-    background-color: #f7f7f9;
-    padding: 1.0625rem 4.5rem;
-} */
-
-/* #propertypro-property-details .card .card-header .nav-link.active {
-    background-color: #ffffff;
-} */
 /*-----------------------------------------------------------------------------------*/
 /*  Property Single Data Div
 /*-----------------------------------------------------------------------------------*/

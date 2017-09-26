@@ -236,9 +236,9 @@ class Single extends Component {
                 <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]} {address_unit}</h4>
                 <h6
                   className="mb-3 text-muted">{city_state} {rets_postal_code}</h6>
-                <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
+                <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box ${Lib.THEME_CLASSES_PREFIX}listing-info-box-wrap`}>{renderHTML(info_box)}</ul>
                 <button
-                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button card-link`}
+                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button`}
                   onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-showing-' + saleType)}}
                   type="button"
                 >
@@ -246,7 +246,7 @@ class Single extends Component {
                 </button>
                 {correctScenario === 'rentRDC' &&
                   <button
-                    className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button card-link`}
+                    className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button ml-md-3`}
                     onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-application')}}
                     type="button"
                   >
