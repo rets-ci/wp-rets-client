@@ -7,6 +7,7 @@ import {
   requestLocationModalPosts
 } from '../../actions/index.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
+import GroupTransition from '../GroupTransition.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
@@ -17,6 +18,7 @@ import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
 import get from 'lodash/get';
 import Util from '../Util.jsx';
+
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -214,7 +216,7 @@ class LocationModal extends Component {
 
     let resultsElements = searchResults.map((s, k) => {
       return (
-        <div className="row" key={k}>
+        <div className="row" key={s.key}>
           <div className={`${Lib.THEME_CLASSES_PREFIX}search-result-group`}>
             <div className="container">
               <div className="row">
@@ -297,20 +299,20 @@ class LocationModal extends Component {
                 </div>
               </div>
             </div>
-            <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
-              <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
-                {!resultsElements.length ?
-                  (isFetching ?
-                    <LoadingAccordion /> :
-                    (errorMessage ?
-                      <ErrorMessage message={errorMessage} />
-                    :
-                      <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>)
-                    ):
-                  resultsElements
-                }
+            { this.props.open &&
+              <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
+                <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
+                  { searchResults.length
+                    ? <GroupTransition>{ resultsElements }</GroupTransition>
+                    : isFetching
+                      ? <LoadingAccordion />
+                      : errorMessage
+                        ? <ErrorMessage message={errorMessage} />
+                        : <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>
+                  }
+                </div>
               </div>
-            </div>
+            }
           </div>
         </div>
       </div>
