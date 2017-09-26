@@ -252,7 +252,7 @@ class Api {
 
             _buckets.push({
               id: get(option, '_source.post_title', ''),
-              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + ' ' + (get(option, '_source.post_meta.address_unit', '') ? option._source.post_meta.address_unit : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city_state[0].name', '') + ' ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
+              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city_state[0].name', '') + ' ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
               url: get(option, '_source.post_name', null) ? [get(bundle, 'property_single_url'), get(option, '_source.post_name', null)].join('/') : ''
             });
           }
