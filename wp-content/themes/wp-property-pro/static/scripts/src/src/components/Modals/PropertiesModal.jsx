@@ -22,6 +22,7 @@ import LocationModal from './LocationModal.jsx';
 
 import SQFT from '../properties/Filters/SQFT.jsx';
 import LotSize from '../properties/Filters/LotSize.jsx';
+import GroupTransition from '../GroupTransition.jsx';
 
 import qs from 'qs';
 import URI from 'urijs';
@@ -364,6 +365,138 @@ class PropertiesModal extends Component {
       title: d.title,
       selected: property_type && property_type.indexOf(d.slug) >= 0
     }));
+
+    // keep DOM elements of filter options, to be rendered in transition group
+    let modalBody = [];
+    if (this.showFilterBasedOnSaleType(search_type, 'location')) {
+      modalBody.push(
+        <div className="row" key="location">
+          <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
+            <h3>Location <span>(City, School, Neighborhood, Zip)</span></h3>
+            <div className="filter-type">
+              {termFilterElement}
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary`}
+                onClick={this.props.openLocationModal}>+ More Locations</a>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    if (this.showFilterBasedOnSaleType(search_type, 'bedrooms')) {
+      modalBody.push(
+        <div className="row" key="bedrooms">
+          <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
+            <h3>Bedrooms <span>(Minimum)</span></h3>
+            {bedroomElements.map(d =>
+              <a key={d.value} href="#"
+                className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}filter-section-button ${(d.selected ? "selected" : null)}`}
+                onClick={() => this.handleBedroomSelect(d.value)}>{d.name}</a>
+            )}
+          </div>
+        </div>
+      );
+    }
+    if (this.showFilterBasedOnSaleType(search_type, 'price')) {
+      modalBody.push(
+        <div className="row" key="price">
+          <div
+            className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
+            <h3>Price <span>(Range)</span></h3>
+            <div>
+              {search_type && price.start && price.to ?
+                <Price saleType={search_type} start={price.start}
+                      to={price.to}
+                      handleOnClick={this.handlePriceSelect.bind(this)}/>
+                : null}
+            </div>
+            <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
+          </div>
+        </div>
+      );
+    }
+    if (showAllFilters && this.showFilterBasedOnSaleType(search_type, 'bathrooms')) {
+      modalBody.push(
+        <div className="row" key="bathrooms">
+          <div className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
+            <h3>Bathrooms <span>(Minimum)</span></h3>
+            {bathroomElements.map(d =>
+              <a key={d.value} href="#"
+                className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : null)}`}
+                onClick={() => this.handleBathroomSelect(d.value)}>{d.name}</a>
+            )}
+          </div>
+        </div>
+      );
+    }
+    if (showAllFilters && this.showFilterBasedOnSaleType(search_type, 'sqft')) {
+      modalBody.push(
+        <div className="row" key="total-size">
+          <div
+            className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}>
+            <h3>Total Size <span>(SQFT)</span></h3>
+            <div>
+              {search_type && sqft.start && sqft.to ?
+                <SQFT saleType={search_type} start={sqft.start}
+                      to={sqft.to}
+                      handleOnClick={this.handleSQFTSelect}/>
+                : null}
+            </div>
+            <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
+          </div>
+        </div>
+      );
+    }
+    if (showAllFilters && this.showFilterBasedOnSaleType(search_type, 'lotSize')) {
+      modalBody.push(
+        <div className="row" key="lot-size">
+          <div
+            className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}>
+            <h3>Lot Size <span>(Acres)</span></h3>
+            <div>
+              {search_type && lotSize.start && lotSize.to ?
+                <LotSize saleType={search_type} start={lotSize.start}
+                        to={lotSize.to} handleOnClick={this.handleLotSizeSelect}/>
+                : null}
+            </div>
+            <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
+          </div>
+        </div>
+      );
+    }
+    if (showAllFilters && this.showFilterBasedOnSaleType(search_type, 'property_type')) {
+      modalBody.push(
+        <div className="row" key="type">
+          <div
+            className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
+            <h3>Type</h3>
+            <div className="filter-type">
+              {property_types_options.map(d =>
+                <a
+                  key={d.slug}
+                  href="#"
+                  className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : "")}`}
+                  onClick={() => this.handlePropertyTypeToggle(d.slug)}>{d.title}</a>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    modalBody.push(
+      <div className="row" key="view-more">
+        <div className={`col-7 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
+          <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
+            onClick={this.toggleViewAllFilters}>
+            { showAllFilters
+              ? '- View Less Filters'
+              : '+ View More Filters'
+            }
+          </a>
+        </div>
+      </div>
+    );
+
     return (
       <div>
         <LocationModal
@@ -371,7 +504,7 @@ class PropertiesModal extends Component {
           closeModal={this.handleLocationModalClose}
         />
         <div
-          className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${open ? Lib.THEME_CLASSES_PREFIX + "display" : Lib.THEME_CLASSES_PREFIX + "hide"}`}>
+          className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${open ? "active" : "remove"}`}>
           <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`} role="document">
             <div className="modal-content">
               <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header hidden-md-down`}>
@@ -451,123 +584,11 @@ class PropertiesModal extends Component {
                 </div>
                 <div className={Lib.THEME_CLASSES_PREFIX + "search-modal-box"}>
                   <div className="container">
-                    {this.showFilterBasedOnSaleType(search_type, 'location') ?
-                      <div className="row">
-                        <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
-                          <h3>Location <span>(City, School, Neighborhood, Zip)</span></h3>
-                          <div className="filter-type">
-                            {termFilterElement}
-                            <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary`}
-                              onClick={this.props.openLocationModal}>+ More Locations</a>
-                          </div>
-                        </div>
-                      </div>
-                    : null}
-                    {this.showFilterBasedOnSaleType(search_type, 'bedrooms') ?
-                      <div className="row">
-                        <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
-                          <h3>Bedrooms <span>(Minimum)</span></h3>
-                          {bedroomElements.map(d =>
-                            <a key={d.value} href="#"
-                              className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}filter-section-button ${(d.selected ? "selected" : null)}`}
-                              onClick={() => this.handleBedroomSelect(d.value)}>{d.name}</a>
-                          )}
-                        </div>
-                      </div>
-                    : null}
-                    {this.showFilterBasedOnSaleType(search_type, 'price') ?
-                      <div className="row">
-                        <div
-                          className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
-                          <h3>Price <span>(Range)</span></h3>
-                          <div>
-                            {search_type && price.start && price.to ?
-                              <Price saleType={search_type} start={price.start}
-                                    to={price.to}
-                                    handleOnClick={this.handlePriceSelect.bind(this)}/>
-                              : null}
-                          </div>
-                          <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
-                        </div>
-                      </div>
-                    : null}
-                    {this.showFilterBasedOnSaleType(search_type, 'bathrooms') ?
-                      <div className="row">
-                        <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}
-                            style={{display: showAllFilters ? 'block' : 'none'}}>
-                          <h3>Bathrooms <span>(Minimum)</span></h3>
-                          {bathroomElements.map(d =>
-                            <a key={d.value} href="#"
-                              className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : null)}`}
-                              onClick={() => this.handleBathroomSelect(d.value)}>{d.name}</a>
-                          )}
-                        </div>
-                      </div>
-                    : null}
-                    {this.showFilterBasedOnSaleType(search_type, 'sqft') ?
-                      <div className="row">
-                        <div
-                          className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
-                          style={{display: showAllFilters ? 'block' : 'none'}}>
-                          <h3>Total Size <span>(SQFT)</span></h3>
-                          <div>
-                            {search_type && sqft.start && sqft.to ?
-                              <SQFT saleType={search_type} start={sqft.start}
-                                    to={sqft.to}
-                                    handleOnClick={this.handleSQFTSelect}/>
-                              : null}
-                          </div>
-                          <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
-                        </div>
-                      </div>
-                    : null}
-                    {this.showFilterBasedOnSaleType(search_type, 'lotSize') ?
-                      <div className="row">
-                        <div
-                          className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
-                          style={{display: showAllFilters ? 'block' : 'none'}}>
-                          <h3>Lot Size <span>(Acres)</span></h3>
-                          <div>
-                            {search_type && lotSize.start && lotSize.to ?
-                              <LotSize saleType={search_type} start={lotSize.start}
-                                      to={lotSize.to} handleOnClick={this.handleLotSizeSelect}/>
-                              : null}
-                          </div>
-                          <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
-                        </div>
-                      </div>
-                    : null}
-                    {this.showFilterBasedOnSaleType(search_type, 'property_type') ?
-                      <div className="row">
-                        <div
-                          className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}
-                          style={{display: showAllFilters ? 'block' : 'none'}}>
-                          <h3>Type</h3>
-                          <div className="filter-type">
-                            {property_types_options.map(d =>
-                              <a
-                                key={d.slug}
-                                href="#"
-                                className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : "")}`}
-                                onClick={() => this.handlePropertyTypeToggle(d.slug)}>{d.title}</a>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    : null}
-                    <div className="row">
-                      {showAllFilters ?
-                        <div className="col-7">
-                          <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
-                            onClick={this.toggleViewAllFilters}>- View Less Filters</a>
-                        </div>
-                        :
-                        <div className="col-7">
-                          <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
-                            onClick={this.toggleViewAllFilters}>+ View More Filters</a>
-                        </div>
-                      }
-                    </div>
+                  { open && 
+                      <GroupTransition fromFilterModal>
+                      { modalBody }
+                      </GroupTransition>
+                  }
                   </div>
                 </div>
               </div>

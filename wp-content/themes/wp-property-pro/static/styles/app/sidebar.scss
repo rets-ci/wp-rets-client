@@ -1,0 +1,73 @@
+
+.sidebar .modal-header {
+    min-height: 3.4375rem;
+}
+
+.sidebar-left .modal-dialog,
+.sidebar-right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 25rem;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+         -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+}
+
+.sidebar-left .modal-content,
+.sidebar-right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.sidebar-left .modal-body,
+.sidebar-right .modal-body {
+    /* padding: 15px; */
+    padding: 0;
+}
+
+.sidebar-left .modal-dialog{
+    left: 0;
+}
+
+.sidebar-right .modal-dialog {
+    right: 0;
+}
+
+/* ----- MODAL STYLE ----- */
+.sidebar .modal-content {
+    border-radius: 0;
+    border: none;
+}
+
+.sidebar .modal-header {
+    border-bottom-color: #EEEEEE;
+    background-color: #FAFAFA;
+}
+
+/************************************
+  Side Panel Animation
+*************************************/
+.propertypro-modal.sidebar {
+  display: block !important;
+  transition: visibility .3s ease-in-out;
+
+  &:not(.show) {
+    visibility: hidden;
+  }
+
+  &.show {
+    visibility: visible;
+  }
+
+  &.sidebar-right:not(.show) .modal-dialog {
+    transition: transform .2s ease-in-out;
+    transform: translateX(100%);
+  }
+
+  &.sidebar-right.show .modal-dialog {
+    transition: transform .3s ease-in-out;
+    transform: translateX(0%);
+  }
+}
