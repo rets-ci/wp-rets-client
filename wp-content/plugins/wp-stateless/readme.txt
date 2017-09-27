@@ -5,7 +5,7 @@ Tags: google, google cloud, google cloud storage, cdn, uploads, media, stateless
 License: GPLv2 or later
 Requires at least: 4.0
 Tested up to: 4.8.1
-Stable tag: 2.0.3
+Stable tag: 2.1.0
 
 Upload and serve your WordPress media files from Google Cloud Storage.
 
@@ -93,6 +93,18 @@ To ensure new releases cause as little disruption as possible, we rely on a numb
 [Usability Dynamics](https://www.usabilitydynamics.com/) maintains this plugin by continuing development through it's own staff, reviewing pull requests, testing, and steering the overall release schedule. Usability Dynamics is located in Durham, North Carolina and provides WordPress engineering and hosting services to clients throughout the United States.
 
 == Changelog ==
+
+= 2.1.0 =
+* FIX - Fixed read only for Service Account JSON if constant or environment variable is defined. 
+* FIX - Override default cache control.
+* FIX - Fixed custom domain bucket support with setup assistant.
+* FIX - Improved support for wp_calculate_image_srcset.
+* FIX - Synchronizing non-image files will now delete the local copy.
+* NEW - Support for GOOGLE_APPLICATION_CREDENTIALS environment variable.
+* NEW - Added bucket region option to setup assistant.
+* NEW - Added custom file type support for File URL Replacement setting.
+* NEW - Added failover to image url when not found on disk for sync tool.
+* ENHANCEMENT - updated service account role to Storage Object Admin.
 
 = 2.0.3 =
 * FIX - Fixed Fatal Error which was occurring on WordPress Multisite after upgrading plugin from 1.x to 2.x.

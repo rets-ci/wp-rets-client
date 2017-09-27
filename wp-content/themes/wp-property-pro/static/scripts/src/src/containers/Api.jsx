@@ -299,7 +299,7 @@ class Api {
       body.aggs[aggIndex] = {
         "terms": {
           "field": get(aggregation, 'terms.field', ''),
-          "size": params.size || 0
+          "size": (get(aggregation, 'terms.field', '').indexOf('subdivision') ? (params.size + 1) : params.size) || 0
         }
       }
     }
