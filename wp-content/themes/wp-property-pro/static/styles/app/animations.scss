@@ -1,14 +1,14 @@
 /*-----------------------------------------------------------------------------------*/
 /*  react-transition-group
 /*-----------------------------------------------------------------------------------*/
-.toggle-enter {
+.toggle-enter, .toggle-enter.toggle-enter-active {
   opacity: 0.01;
-  transform-origin: 0 0;
   transform: scaleY(0);
 }
 
-.toggle-enter.toggle-enter-active {
+.toggle:not(.toggle-enter) {
   opacity: 1;
+  transform-origin: 0 0;
   transform: scaleY(1);
   -webkit-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
      -moz-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
@@ -16,16 +16,19 @@
           transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 }
 
-.toggle-leave {
+.toggle-exit {
   opacity: 1;
+  transform: scaleY(1);
+  transform-origin: 0 0;
 }
 
-.toggle-leave.toggle-leave-active {
+.toggle-exit.toggle-exit-active {
   opacity: 0.01;
-  -webkit-transition: opacity 200ms ease-in;
-     -moz-transition: opacity 200ms ease-in;
-       -o-transition: opacity 200ms ease-in;
-          transition: opacity 200ms ease-in;
+  transform: scaleY(0);
+    -webkit-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+       -moz-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+         -o-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+            transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -91,10 +94,13 @@
 
 @keyframes fadeIn {
   from {
-    opacity: 0;
+    opacity: 0.01;
+    transform-origin: 0 0;
+    transform: scaleY(0);
   }
   to {
     opacity: 1;
+    transform: scaleY(1);
   }
 }
 
@@ -135,12 +141,6 @@
         animation: bounceInDown .3s .5s ease-in-out forwards;
       }
     }
-
-/*    .propertypro-search-result-group {
-      opacity: 0;
-      transform-origin: 0 0;
-      animation: blowUpModal .2s .3s ease-in-out forwards;
-    }*/
   }
 
   &.propertypro-advanced-filter {
@@ -152,8 +152,14 @@
     }
 
     .propertypro-filter-section {
-      opacity: 0;
-      animation: fadeIn 1s .5s ease-in-out forwards;
+/*      opacity: 0;
+      transform: scaleY(0);
+      transform-origin: 0 0;
+      animation: fadeIn .5s 1s ease-in-out forwards;
+
+      &.all-filters {
+        animation: fadeIn .5s ease-in-out forwards;
+      }*/
     }
   }
 }

@@ -299,20 +299,22 @@ class LocationModal extends Component {
                 </div>
               </div>
             </div>
-            { this.props.open &&
-              <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
-                <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
-                  { searchResults.length
+            
+            <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
+              <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
+              {
+                !this.props.open
+                  ? null
+                  : searchResults.length
                     ? <GroupTransition>{ resultsElements }</GroupTransition>
                     : isFetching
                       ? <LoadingAccordion />
                       : errorMessage
                         ? <ErrorMessage message={errorMessage} />
                         : <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>
-                  }
-                </div>
+              }
               </div>
-            }
+            </div>
           </div>
         </div>
       </div>

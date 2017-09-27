@@ -2,73 +2,71 @@ import React, { Component } from 'react';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
+const DURATION = 500;
+
 class GroupTransition extends Component {
-  
+
   constructor(props) {
     super(props);
 
     this.state = {
-      elements: []
+      elements: [],
     };
-    this.tick = null;
-  }
-
-  clearElements = () => {
-    this.setState({
-      elements: []
-    });
-    clearInterval(this.tick);
-  }
-
-  resetElements = (elements) => {
-    const self = this;
-    let index = 0;
-
-    this.clearElements();
-    this.tick = setInterval(pushElement, 500);
-
-    function pushElement() {
-      if (index === elements.length) {
-        clearInterval(this.tick);
-      } else {
-        self.setState({
-          elements: [
-            ...self.state.elements,
-            elements[index++]
-          ]
-        });
-      }
-    }
+    this.prevCount = 0;
   }
 
   componentDidMount() {
-    this.resetElements(this.props.children);
+    this.setState({
+      elements: this.props.children
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.children !== nextProps.children) {
-      this.resetElements(nextProps.children);
+    this.setState({
+      elements: nextProps.children,
+    });
+
+    if (this.props.children.length < nextProps.children.length) {
+      this.prevCount = this.props.children.length;
+    }
+
+    if (this.props.children.length > nextProps.children.length) {
+      this.prevCount = 0;
     }
   }
 
-  componentWillUnmount() {
-    this.clearElements();
-  }
-
   render() {
-    const { elements } = this.state;
+    let { fromFilterModal } = this.props;
+    let { elements } = this.state;
 
     return (
       <TransitionGroup>
-      { elements && elements.map((dom, index) => (
-          <CSSTransition
-            timeout={500}
-            classNames="toggle"
-            key={index}
-          >
-            {dom}
-          </CSSTransition>
-        ))
+      { elements && elements.map((dom, index) => {
+          let delay = DURATION * (index + 1);
+
+          if (fromFilterModal) { // hack for properties filter modal
+            if (index < this.prevCount) {
+              delay = 0;
+            } else {
+              delay = delay - DURATION * this.prevCount;
+            }
+          }
+
+          return (
+            <CSSTransition
+              key={ dom.key || index }
+              timeout={{
+                enter: delay,
+                exit: 0
+              }}
+              classNames="toggle"
+            >
+            {
+              React.cloneElement(dom, { className: `${dom.props.className || ''} toggle` })
+            }
+            </CSSTransition>
+          );
+        })
       }
       </TransitionGroup>
     );
