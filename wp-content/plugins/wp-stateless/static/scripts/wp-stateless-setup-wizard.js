@@ -11,6 +11,7 @@ jQuery(document).ready(function ($) {
 	var comboBox = setupForm.find('.wpStateLess-combo-box');
 	var projectDropdown = comboBox.filter('.project');
 	var bucketDropdown = comboBox.filter('.bucket');
+	var regionDropdown = comboBox.filter('.region');
   	var billingDropdown = comboBox.filter('.billing-account');
   	var noBillingButton = billingDropdown.parent().find('.create-billing-account.no-billing-account');
 
@@ -149,25 +150,34 @@ jQuery(document).ready(function ($) {
 		var projectId = _this.find('.id').val();
 		// Project ID without random digit at the end.
 		var PDBName = 'stateless-' + projectId.replace(/-\d+$/, '');
-		PDBName = PDBName.substring(0, 29).replace(/-$/, '');
+		PDBName = PDBName.substring(0, 30).replace(/-$/, '');
+		billingDropdown.find('.circle-loader:not(.get-json-loading)').addClass('loading').removeClass('load-complete').show();
+		bucketDropdown.find('.circle-loader:not(.get-json-loading)').addClass('loading').removeClass('load-complete').show();
+		regionDropdown.find('.name').removeAttr('disabled');
+		regionDropdown.find('.circle-loader:not(.get-json-loading)')
+						.addClass('loading')
+						.removeClass('load-complete').show();
 
-        billingDropdown.addClass('loading').find('.circle-loader').removeClass('load-complete').show();
-        bucketDropdown.addClass('loading').find('.circle-loader').removeClass('load-complete').show();
-        bucketDropdown.find('.project-derived-name').html(PDBName).attr('data-name', PDBName);
+		bucketDropdown.find('.project-derived-name')
+			.html(PDBName)
+			.attr('data-name', PDBName)
+			.attr('data-id', PDBName)
+			.show();
+		bucketDropdown.find('.name').trigger('change'); // To hide project derived name if it's already exists.
         
         if(typeof wp.stateless.projects[projectId] == 'undefined'){
 			bucketDropdown.wpStatelessComboBox({items:{}});
 		  	var name = billingDropdown.find('.name').val('');
 		  	var id = billingDropdown.find('.id').val('');
-		  	var account = name.wpStatelessComboBox({get: 0});
+		  	var account = billingDropdown.wpStatelessComboBox({get: 0});
 
 		  	name.removeAttr('disabled');
 		  	if(account){
 				name.val(account.name +  " (" + account.id + ")");
 				id.val(account.id);
 		  	}
-		  	billingDropdown.find('.circle-loader').fadeOut(200).removeClass('loading');
-		  	bucketDropdown.find('.circle-loader').fadeOut(200).removeClass('loading');
+		  	billingDropdown.find('.circle-loader:not(.get-json-loading)').fadeOut(200).removeClass('loading');
+		  	bucketDropdown.find('.circle-loader:not(.get-json-loading)').fadeOut(200).removeClass('loading');
 		  	return;
         }
 
@@ -179,10 +189,16 @@ jQuery(document).ready(function ($) {
 				bucketDropdown.find('.wpStateLess-existing h5').html(wp.stateless.projects[projectId].name + " Buckets").show();
 		  	}
 			bucketDropdown.wpStatelessComboBox({items:buckets});
-		  	bucketDropdown.find('.circle-loader').fadeOut(200).removeClass('loading');
+		  	bucketDropdown.find('.circle-loader:not(.get-json-loading)').fadeOut(200).removeClass('loading');
+		  	// If project derived name found more than once then hide it.
+		  	if(bucketDropdown.wpStatelessComboBox({has: PDBName}))
+				bucketDropdown.find('.project-derived-name').html('').hide();
+			else
+				bucketDropdown.find('.project-derived-name').show();
+	        
 		  }).fail(function(){
 			bucketDropdown.wpStatelessComboBox({items:{}});
-		  	bucketDropdown.find('.circle-loader').fadeOut(200).removeClass('loading');
+		  	bucketDropdown.find('.circle-loader:not(.get-json-loading)').fadeOut(200).removeClass('loading');
 		  });
 
 		//bucketDropdown.find('.name').val("stateless-" + projectId).trigger('change');
@@ -203,20 +219,56 @@ jQuery(document).ready(function ($) {
 			}else{
 		  		console.log("Something went wrong.");
 			}
-        	billingDropdown.find('.circle-loader').addClass('load-complete');
+        	billingDropdown.find('.circle-loader:not(.get-json-loading)').addClass('load-complete');
 		  }).fail(function(responseData) {
 		  	var name = billingDropdown.find('.name').val('');
 		  	var id = billingDropdown.find('.id').val('');
-		  	var account = name.wpStatelessComboBox({get: 0});
+		  	var account = billingDropdown.wpStatelessComboBox({get: 0});
 
 		  	name.removeAttr('disabled');
 		  	if(account){
 				name.val(account.name +  " (" + account.id + ")");
 				id.val(account.id);
 		  	}
-		  	billingDropdown.find('.circle-loader').addClass('load-complete').fadeOut(200);
+		  	billingDropdown.find('.circle-loader:not(.get-json-loading)').addClass('load-complete').fadeOut(200);
 
 		  });
+	});
+
+	bucketDropdown.on('change', function(event){
+		console.log('ssss');
+		var projectId = projectDropdown.find('.id').val();
+		var bucketName = bucketDropdown.find('.name').val();
+		var bucketId = bucketName == 'localhost'?'':bucketName;
+		var regionId;
+		
+
+		regionDropdown.wpStatelessComboBox({select: 'us'}).find('.name').removeAttr('disabled');
+		regionDropdown.find('.circle-loader:not(.get-json-loading)')
+						.addClass('loading')
+						.removeClass('load-complete').show();
+
+		if( typeof wp.stateless.projects[projectId] != 'undefined' &&
+			typeof wp.stateless.projects[projectId]['buckets'] != 'undefined' &&
+			typeof wp.stateless.projects[projectId]['buckets'][bucketId] != 'undefined' &&
+			typeof wp.stateless.projects[projectId]['buckets'][bucketId]['location'] != 'undefined'
+		){
+			regionId = wp.stateless.projects[projectId]['buckets'][bucketId]['location'].toLowerCase()
+			regionDropdown.wpStatelessComboBox({select: regionId})
+				.find('.name')
+					.attr('disabled', 'disabled');
+
+			regionDropdown.find('.circle-loader:not(.get-json-loading)')
+						.addClass('load-complete');
+		}
+		else{
+			regionDropdown.find('.circle-loader:not(.get-json-loading)')
+						.removeClass('loading')
+						.removeClass('load-complete')
+						.fadeOut(200);
+
+		}
+
 	});
 
 	jQuery(document).on('tokenExpired', function(){
@@ -283,34 +335,47 @@ jQuery(document).ready(function ($) {
 		var projectName = projectDropdown.find('.name').val().replace(/\(.*/, '').replace(/^\s+|\s+$/g,'');
 		var bucketName = bucketDropdown.find('.name').val();
 		var bucketId = bucketName == 'localhost'?'':bucketName;
-		var serviceAccountId = 'stateless-' + bucketId.replace('stateless-', '');
+		var regionId = regionDropdown.find('.id').val();
+		var serviceAccountId = 'stateless-' + bucketId.replace('stateless-', '')
+			.replace(/[._]/g, '-')
+			.slice(0, 16)
+			.replace(/-$/, '') + '-' + Math.floor((Math.random() * 100) + 100);
 		var serviceAccountName = 'Stateless ' + bucketName.replace('Stateless', '');
 		var billingAccount = billingDropdown.find('.id').val();
 		var isValid = true;
-		
-		setupForm.find('#stateless-notification').html('').hide();
+		var errorWrapper = setupForm.find('#stateless-notification').removeClass('error');
+		errorWrapper.html('').hide();
+		comboBox.find('.circle-loader').addClass('get-json-loading').show();
 		setupForm.find('.wpStateLess-combo-box').wpStatelessComboBox('validate');
 
 		if(!projectId || !projectName || !bucketId || !billingAccount){ // No valid project id
 			isValid = false;
 			console.log("Form:: Input not valid.")
+			errorWrapper
+					 .html(stateless_l10n.invalid_input)
+					 .addClass('error')
+					 .removeClass('notice notice-info')
+					 .show();
 			return;
 		}
-		comboBox.addClass('loading');
 		btnGetJson.addClass('active disabled');
+		// return;
 		async.auto({
 			createProject: function(callback) {
 				if(!wp.stateless.projects[projectId]){
 					wp.stateless.createProject({"projectId": projectId, "name": projectName})
 					.done(function(response) {
-						callback(null, {ok: true, task: 'createProject', action: 'project_created', message: stateless_l10n.project_created, operation: response.name});
+						callback(null, {ok: true, task: 'createProject', action: 'project_created', message: stateless_l10n.project_creation_started, operation: response.name});
 					}).fail(function(response) {
 						response = response.responseJSON || {};
 						if(response && typeof response.error != 'undefined' && typeof response.error.status != 'undefined' && response.error.status == 'ALREADY_EXISTS'){
 							callback(null, {ok: true, task: 'createProject', action: 'project_exists', message: stateless_l10n.project_exists});
 						}
 						else{
-							callback({ok: false, task: 'createProject', action: 'failed', message: response.error});
+							if(typeof response.error != 'undefined' && typeof response.error.message != 'undefined')
+								callback({ok: false, task: 'createProject', action: 'failed', message: response.error.message});
+							else
+								callback({ok: false, task: 'createProject', action: 'failed', message: stateless_l10n.project_creation_failed});
 						}
 					});
 				}else{
@@ -337,50 +402,52 @@ jQuery(document).ready(function ($) {
 				}
 			})],
 			enableAPI: ['createProjectProgress', function(results, callback) {
-				//if( results['createProject'].action == 'project_created'){
-					wp.stateless.enableAPI(projectId)
-					.done(function(argument) {
-						callback(null, {ok: true, task: 'enableAPI', action: 'service_enabled', message: stateless_l10n.json_api_enabled});
-					}).fail(function(response) {
-						callback({ok: false, task: 'enableAPI', action: 'failed', message: stateless_l10n.json_api_enabled_failed});
-					});
-				//}
-				//else{
-				//	callback(null, {ok: true, task: 'enableAPI', action: 'old_project', message: "Service not enabled. Will try again."});
-				//}
+				wp.stateless.enableAPI(projectId)
+				.done(function(argument) {
+					callback(null, {ok: true, task: 'enableAPI', action: 'service_enabled', message: stateless_l10n.json_api_enabled});
+				}).fail(function(response) {
+					callback({ok: false, task: 'enableAPI', action: 'failed', message: stateless_l10n.json_api_enabled_failed});
+				});
 			}],
 			updateBilltingInfo: ['createProjectProgress', function(results, callback) {
 				if( typeof wp.stateless.projects[projectId] == 'undefined' || typeof wp.stateless.projects[projectId]['billingInfo'] == 'undefined'){
 					wp.stateless.updateProjectBillingInfo({"projectID": projectId, "accountName": billingAccount})
 					.done(function(argument) {
-						callback(null, {ok: true, task: 'updateBilltingInfo', message: stateless_l10n.billing_enabled});
+						callback(null, {ok: true, task: 'updateBilltingInfo', action: 'enabled', message: stateless_l10n.billing_enabled});
 					}).fail(function(response) {
-						callback({ok: false, task: 'updateBilltingInfo', message: stateless_l10n.something_went_wrong});
+						if(typeof response.error != 'undefined' && typeof response.error.message != 'undefined')
+							callback({ok: false, task: 'updateBilltingInfo', action: 'failed', message: response.error.message});
+						else
+							callback({ok: false, task: 'updateBilltingInfo', action: 'failed', message: stateless_l10n.billing_failed});
 					});
 				}
 				else{
-					callback(null, {ok: true, task: 'updateBilltingInfo', message: stateless_l10n.billing_info});
+					callback(null, {ok: true, task: 'updateBilltingInfo', action: 'already_enabled', message: stateless_l10n.billing_already_enabled});
 				}
 			}],
-			createBucket: ['updateBilltingInfo', async.retryable({times: 10, interval: 1500}, function(results, callback){
+			createBucket: ['updateBilltingInfo', async.retryable({times: 10, interval: 1500, errorFilter: function(err) {
+					return err.code != 409; // don't retry if Bucket already exist with this name.
+				}
+			}, function(results, callback){
 				if( typeof wp.stateless.projects[projectId] == 'undefined' || typeof wp.stateless.projects[projectId]['buckets'][bucketId] == 'undefined'){
 					// Bucket didn't exist.
-					wp.stateless.createBucket({"projectId": projectId, "name": bucketId})
+					wp.stateless.createBucket({"projectId": projectId, "name": bucketId, location: regionId})
 					.done(function(argument) {
-						callback(null, {ok: true, task: 'createBucket', message: stateless_l10n.bucket_created});
+						callback(null, {ok: true, task: 'createBucket', action: 'created', message: stateless_l10n.bucket_created});
 					}).fail(function(response) {
 						response = response.responseJSON;
-						if(response && typeof response.error != 'undefined' && typeof response.error.code != 'undefined' && response.error.code == 409){
-							callback(null, {ok: true, task: 'createBucket', message: response.error.message});
+						if(response && typeof response.error != 'undefined' && typeof response.error.message != 'undefined'){
+							// Bucket already exist with this name.
+							callback({ok: true, task: 'createBucket', action: 'existing', code: response.error.code, message: response.error.message});
 						}
 						else{
-							callback({ok: true, task: 'createBucket', message: stateless_l10n.something_went_wrong});
+							callback({ok: false, task: 'createBucket', action: 'failed', message: stateless_l10n.bucket_creation_failed});
 						}
 					});
 				}
 				else{
 					// Bucket exist
-					callback(null, {ok: true, task: 'bucket', message: stateless_l10n.bucket_exists});
+					callback(null, {ok: true, task: 'bucket', action: 'existing', message: stateless_l10n.bucket_exists});
 				}
 			})],
 			createServiceAccount: ['createProjectProgress', function(results, callback){
@@ -389,8 +456,8 @@ jQuery(document).ready(function ($) {
 					var serviceAccounts = wp.stateless.projects[projectId]['serviceAccounts'];
 					var accountFound = false;
 					jQuery.each(serviceAccounts, function(index, item) {
-						if(item.displayName == bucketName || item.email.replace(/@.*/, '') == serviceAccountId){
-							callback(null, {ok: true, task: 'createServiceAccount', email: item.email, message: stateless_l10n.service_account_exist});
+						if(item.email.replace(/@.*/, '') == serviceAccountId){ //item.displayName == serviceAccountName || 
+							callback(null, {ok: true, task: 'createServiceAccount', action: 'existing', email: item.email, message: stateless_l10n.service_account_exist});
 							accountFound = true;
 							return false;
 						}
@@ -404,29 +471,29 @@ jQuery(document).ready(function ($) {
 					'accountId': serviceAccountId,
 					'name': serviceAccountName,
 				}).done(function(createdSerciceAccount){
-					callback(null, {ok: true, task: 'createServiceAccount', email: createdSerciceAccount.email, message: stateless_l10n.service_account_created});
+					callback(null, {ok: true, task: 'createServiceAccount', action: 'created', email: createdSerciceAccount.email, message: stateless_l10n.service_account_created});
 				}).fail(function(response) {
-					callback({ok: false, task: 'createServiceAccount', message: stateless_l10n.something_went_wrong});
+					callback({ok: false, task: 'createServiceAccount', action: 'failed', message: stateless_l10n.service_account_creation_failed});
 				});
 			}],
-			insertBucketAccessControls: ['createBucket', 'createServiceAccount', async.retryable({times: 5, interval: 1500}, function(results, callback) {
+			insertBucketAccessControls: ['createBucket', 'enableAPI', 'createServiceAccount', async.retryable({times: 5, interval: 1500}, function(results, callback) {
 				wp.stateless.insertBucketAccessControls({
 					"bucket": bucketId,
 					"user": results['createServiceAccount'].email,
-				}).done(function(responseData){
-					callback(null, {ok: true, task: 'insertBucketAccessControls', email: responseData.email, message: stateless_l10n.service_account_created});
+				}).done(function(iam){
+					callback(null, {ok: true, task: 'insertBucketAccessControls', iam: iam, action: 'inserted', message: stateless_l10n.bucket_access_controls_success});
 				}).fail(function(response) {
-					callback({ok: false, task: 'insertBucketAccessControls', message: stateless_l10n.something_went_wrong});
+					callback({ok: false, task: 'insertBucketAccessControls', action: 'failed', message: stateless_l10n.bucket_access_controls_failed});
 				});
 			})],
 			createServiceAccountKey: ['insertBucketAccessControls', function(results, callback) {
 				wp.stateless.createServiceAccountKeys({
 					"project": projectId,
-					"account": results['insertBucketAccessControls'].email
+					"account": results['createServiceAccount'].email
 				}).done(function(ServiceAccountKey){
-					callback(null, {ok: true, task: 'createServiceAccountKey', privateKeyData: ServiceAccountKey.privateKeyData, message: stateless_l10n.service_account_key_created});
+					callback(null, {ok: true, task: 'createServiceAccountKey', privateKeyData: ServiceAccountKey.privateKeyData, action: 'created', message: stateless_l10n.service_account_key_created});
 				}).fail(function(response) {
-					callback({ok: false, task: 'createServiceAccountKey', message: stateless_l10n.something_went_wrong});
+					callback({ok: false, task: 'createServiceAccountKey', action: 'failed', message: stateless_l10n.service_account_key_creation_failed});
 				});
 			}],
 			saveServiceAccountKey: ['createServiceAccountKey', 'enableAPI', function(results, callback) {
@@ -445,29 +512,24 @@ jQuery(document).ready(function ($) {
 					}//)
 				}).done(function(response) {
 					if(typeof response.success != undefined && response.success == true){
-						callback(null, {ok: true, task: 'saveServiceAccountKey', message: stateless_l10n.service_account_key_saved});
+						callback(null, {ok: true, task: 'saveServiceAccountKey', action: 'saved', message: stateless_l10n.service_account_key_saved});
 					}
 					else{
-						callback({ok: false, task: 'saveServiceAccountKey', message: stateless_l10n.something_went_wrong});
+						callback({ok: false, task: 'saveServiceAccountKey', action: 'failed', message: stateless_l10n.service_account_key_save_failed});
 					}
 				}).fail(function(response) {
-					callback({ok: false, task: 'saveServiceAccountKey', message: stateless_l10n.something_went_wrong});
+					callback({ok: false, task: 'saveServiceAccountKey', action: 'failed', message: stateless_l10n.service_account_key_save_failed});
 				});
 			}]
 		}, function(err, results) {
 
 			if(err){// || results.task == 'saveServiceAccountKey'){
 				jQuery(this).find('.wpStateLess-loading').removeClass('active');
-				comboBox.removeClass('loading');
-				setupForm.find('#stateless-notification').html(err.message).show();
+				comboBox.find('.circle-loader').removeClass('get-json-loading');
+				errorWrapper.html(err.message).addClass('error').removeClass('notice notice-info').show();
 				btnGetJson.removeClass('active disabled');
 				return;
 			}
-
-			if(typeof results.message != 'undefined'){
-				console.log(results.message);
-			}
-				console.log(results);
 
 			if(results.task == 'createProjectProgress'){
 				projectDropdown.find('.circle-loader').addClass('load-complete');
@@ -480,6 +542,7 @@ jQuery(document).ready(function ($) {
 			}
 			else if(results.task == 'createBucket'){
 				bucketDropdown.find('.circle-loader').addClass('load-complete');
+				regionDropdown.find('.circle-loader').addClass('load-complete');
 			}
 			else if(results.task == 'saveServiceAccountKey'){
 				// We have access token.
@@ -490,8 +553,16 @@ jQuery(document).ready(function ($) {
 				setupSteps.removeClass('active')
 					.filter('.step-final')
 					.addClass('active');
-				comboBox.removeClass('loading');
+				comboBox.find('.circle-loader').removeClass('get-json-loading');
 
+			}
+
+			if(errorWrapper.hasClass('error'))
+				return;
+
+			if(typeof results.message != 'undefined'){
+				console.log(results.message);
+				errorWrapper.html(results.message).addClass('notice notice-info').removeClass('error').show();
 			}
 
 		});

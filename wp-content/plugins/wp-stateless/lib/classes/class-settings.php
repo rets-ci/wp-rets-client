@@ -23,10 +23,11 @@ namespace wpCloud\StatelessMedia {
       private $settings = array(
           'mode'                   => array('WP_STATELESS_MEDIA_MODE', 'cdn'), 
           'body_rewrite'           => array('WP_STATELESS_MEDIA_BODY_REWTITE', 'true'), 
+          'body_rewrite_types'     => array('WP_STATELESS_MEDIA_BODY_REWRITE_TYPES', 'jpg jpeg png gif pdf'), 
           'on_fly'                 => array('WP_STATELESS_MEDIA_ON_FLY', 'false'), 
           'bucket'                 => array('WP_STATELESS_MEDIA_BUCKET', ''), 
           'root_dir'               => array('WP_STATELESS_MEDIA_ROOT_DIR', ''), 
-          'key_json'               => array('WP_STATELESS_MEDIA_JSON_KEY', ''), 
+          'key_json'               => array('WP_STATELESS_MEDIA_JSON_KEY', ''),
           'cache_control'          => array('WP_STATELESS_MEDIA_CACHE_CONTROL', ''), 
           'delete_remote'          => array('WP_STATELESS_MEDIA_DELETE_REMOTE', 'true'), 
           'custom_domain'          => array('WP_STATELESS_MEDIA_CUSTOM_DOMAIN', ''), 
@@ -42,6 +43,7 @@ namespace wpCloud\StatelessMedia {
       private $strings = array(
           'network' => 'Currently configured via Network Settings.',
           'constant' => 'Currently configured via a constant.',
+          'environment' => 'Currently configured via an environment variable.',
         );
 
       /**
@@ -94,6 +96,7 @@ namespace wpCloud\StatelessMedia {
       public function refresh() {
         $constant_mode = false;
         $upload_data = wp_upload_dir();
+        $google_app_key_file = getenv('GOOGLE_APPLICATION_CREDENTIALS') ?: getenv('GOOGLE_APPLICATION_CREDENTIALS');
 
         foreach ($this->settings as $option => $array) {
           $value    = '';
@@ -107,6 +110,10 @@ namespace wpCloud\StatelessMedia {
 
           // Getting settings
           $value = get_option($_option, $default);
+          
+          if ($option == 'body_rewrite_types' && empty($value) && !is_multisite()) {
+            $value = $default;
+          }
 
           // If constant is set then override by constant
           if(defined($constant)){
@@ -149,11 +156,10 @@ namespace wpCloud\StatelessMedia {
         /**
          * JSON key file path
          */
-
         /* Use constant value for JSON key file path, if set. */
-        if( defined( 'WP_STATELESS_MEDIA_KEY_FILE_PATH' ) ) {
+        if (defined('WP_STATELESS_MEDIA_KEY_FILE_PATH') || $google_app_key_file !== false) {
           /* Maybe fix the path to p12 file. */
-          $key_file_path = WP_STATELESS_MEDIA_KEY_FILE_PATH;
+          $key_file_path = (defined('WP_STATELESS_MEDIA_KEY_FILE_PATH')) ? WP_STATELESS_MEDIA_KEY_FILE_PATH : $google_app_key_file;
 
           if( !empty( $key_file_path ) ) {
             $upload_dir = wp_upload_dir();
@@ -183,7 +189,10 @@ namespace wpCloud\StatelessMedia {
             }
             if(file_exists($key_file_path)){
               $this->set( 'sm.key_json', file_get_contents($key_file_path) );
-              $this->set( "sm.readonly.key_json", "constant" );
+              if(defined('WP_STATELESS_MEDIA_KEY_FILE_PATH'))
+                $this->set( "sm.readonly.key_json", "constant" );
+              else
+                $this->set("sm.readonly.key_json", "environment");
             }
           }
         }
