@@ -12,13 +12,13 @@ class GroupTransition extends Component {
     this.state = {
       elements: [],
     };
-    this.prevCount = 0;
   }
 
   componentDidMount() {
     this.setState({
       elements: this.props.children
     });
+    this.prevCount = -1;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,7 +31,7 @@ class GroupTransition extends Component {
     }
 
     if (this.props.children.length > nextProps.children.length) {
-      this.prevCount = 0;
+      this.prevCount = -1;
     }
   }
 
@@ -45,9 +45,11 @@ class GroupTransition extends Component {
           let delay = DURATION * (index + 1);
 
           if (fromFilterModal) { // hack for properties filter modal
-            if (index < this.prevCount) {
+            if (this.prevCount === -1) { // initial open
+              delay = delay + DURATION;
+            } else if (index < this.prevCount) {  // view more - previous items
               delay = 0;
-            } else {
+            } else { // view more - exiting items
               delay = delay - DURATION * this.prevCount;
             }
           }
