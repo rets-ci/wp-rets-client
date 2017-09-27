@@ -1,6 +1,14 @@
 import {Lib} from "../lib.jsx";
 
-const searchResults = (state = {isFetching: false}, action) => {
+let defaultState = {
+  displayedResults: [],
+  errorMessage: null,
+  searchResults: [],
+  totalProps: 0,
+  isFetching: false
+};
+
+const searchResults = (state = defaultState, action) => {
   switch (action.type) {
     case Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION:
       let displayedResults = [];
@@ -11,21 +19,20 @@ const searchResults = (state = {isFetching: false}, action) => {
       }
       return Object.assign({}, state, {
         displayedResults: displayedResults,
+        errorMessage: null,
         isFetching: false,
         query: action.query,
         searchResults: action.searchResults,
         totalProps: action.totalProps,
       });
+    case Lib.RECEIVE_SEARCH_RESULTS_POSTS_ERROR_ACTION:
+      return Object.assign({}, state, {
+        errorMessage: action.errorMessage,
+        isFetching: false
+      });
     case Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:
       return Object.assign({}, state, {
         isFetching: true
-      });
-    case Lib.REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS_ACTION:
-      return Object.assign({}, state, {
-        isFetching: false,
-        displayedResults: [],
-        searchResults: [],
-        totalProps: 0
       });
     default:
       return state

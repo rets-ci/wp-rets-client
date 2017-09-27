@@ -1,9 +1,7 @@
 import {
   setSearchProps,
-  raiseErrorMessage,
+  receiveLocationModalFetchingError,
   receiveLocationModalPosts,
-  resetErrorMessage,
-  requestLocationModalResetFetching,
   requestLocationModalPosts
 } from '../../actions/index.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
@@ -20,7 +18,7 @@ import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    errorMessage: state.errorMessage,
+    errorMessage: state.locationModal.errorMessage,
     isFetching: state.locationModal.isFetching,
     propertiesModalMode: get(state, 'locationModal.propertiesModalMode'),
     open: state.locationModal ? state.locationModal.open : false,
@@ -32,42 +30,28 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    searchHandler: (term, saleType, propertyTypes, errorMessage) => {
+    searchHandler: (term, saleType, propertyTypes) => {
 
       let searchParams = {
         term: term,
         saleType: saleType,
         propertyTypes: propertyTypes
       };
-      // reset the searchProps
       dispatch(requestLocationModalPosts());
       Api.autocompleteQuery(searchParams,
         function (err, rows) {
-          if (err) {
-            dispatch(requestLocationModalResetFetching());
-            return dispatch(raiseErrorMessage(err));
-          }
-          if (!err && errorMessage) {
-            dispatch(resetErrorMessage());
-          }
+          if (err) { return dispatch(receiveLocationModalFetchingError(err)); }
           dispatch(receiveLocationModalPosts(rows));
         }
       );
     },
-    topQuery: errorMessage => {
-      // reset the searchProps
+    topQuery: () => {
       dispatch(requestLocationModalPosts());
       Api.topQuery({
           size: Lib.TOP_AGGREGATIONS_COUNT
         },
         function (err, rows) {
-          if (err) {
-            dispatch(requestLocationModalResetFetching());
-            return dispatch(raiseErrorMessage(err));
-          }
-          if (!err && errorMessage) {
-            dispatch(resetErrorMessage());
-          }
+          if (err) { return dispatch(receiveLocationModalFetchingError(err)); }
           dispatch(receiveLocationModalPosts(rows));
         }
       );
@@ -79,6 +63,7 @@ class LocationModal extends Component {
 
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
@@ -109,7 +94,7 @@ class LocationModal extends Component {
       this.setState({
         searchValue: ''
       });
-      this.props.topQuery(nextProps.errorMessage);
+      this.props.topQuery();
     }
   }
 
@@ -173,9 +158,9 @@ class LocationModal extends Component {
     } = searchOptions;
     let val = this.state.searchValue;
     if (!val) {
-      this.props.topQuery(this.props.errorMessage);
+      this.props.topQuery();
     } else {
-      this.props.searchHandler(val, saleType, propertyTypes.map(p => p.slug), this.props.errorMessage);
+      this.props.searchHandler(val, saleType, propertyTypes.map(p => p.slug));
     }
   }
 

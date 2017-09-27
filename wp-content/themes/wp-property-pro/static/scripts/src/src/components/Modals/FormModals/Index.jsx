@@ -1,4 +1,3 @@
-import Api from '../../../containers/Api.jsx';
 import BootstrapModal from '../components/BootstrapModal.jsx';
 import FormFetcher from '../../Forms/FormFetcher.jsx';
 import {openFormModal} from '../../../actions/index.jsx';

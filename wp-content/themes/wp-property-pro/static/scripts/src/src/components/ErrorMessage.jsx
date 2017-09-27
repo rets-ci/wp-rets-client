@@ -17,8 +17,8 @@ class ErrorMessage extends Component {
     } = this.props;
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}error-message-container`}>
-        <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>{message}</p>
-        <a className={`${Lib.THEME_CLASSES_PREFIX}refresh-link`} href="#" onClick={this.refresh}>Reload page</a>
+        <i className="fa fa-exclamation-triangle fa-2x d-flex mr-3" aria-hidden="true"></i>
+        <p>{message}</p>
       </div>
     )
   }

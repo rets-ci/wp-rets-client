@@ -1,5 +1,4 @@
 import {setAgentCardTab} from '../../actions/index.jsx';
-import Api from '../../containers/Api.jsx';
 import AgentCardForms from './Components/AgentCardForms.jsx';
 import FormFetcher from '../Forms/FormFetcher.jsx';
 import get from 'lodash/get';

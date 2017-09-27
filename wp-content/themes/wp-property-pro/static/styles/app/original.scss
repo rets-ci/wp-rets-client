@@ -1374,7 +1374,16 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-error-message-container {
-    text-align: center;
+    color: #000000;
+}
+
+.propertypro-error-message-container i {
+    display: inline !important;
+}
+
+.propertypro-error-message-container p {
+    vertical-align: middle;
+    display: inline-block;
 }
 
 /* User Search Modal -> Advanced Search Filter */

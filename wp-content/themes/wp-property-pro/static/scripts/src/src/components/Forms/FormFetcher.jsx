@@ -1,5 +1,7 @@
 import Api from '../../containers/Api.jsx';
+import ErrorMessage from '../ErrorMessage.jsx';
 import React, {Component} from 'react';
+
 class FormFetcher extends Component {
   
   constructor(props) {
@@ -76,7 +78,10 @@ class FormFetcher extends Component {
               jsonSchemaForm: this.state.jsonSchemaForm
             }))}
           </div>
-        : null}
+        : (
+          errorMessage ?
+            <ErrorMessage message={errorMessage} />
+          : null)}
       </div>
     );
   }

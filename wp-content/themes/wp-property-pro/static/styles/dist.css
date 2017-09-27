@@ -1,3 +1,14 @@
+.propertypro-modal {
+  color: #414141; }
+
+.propertypro-modal .modal-dialog .modal-header .modal-title {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.5rem;
+  text-align: left; }
+
+.propertypro-modal .modal-dialog .modal-body {
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem; }
 /*! nouislider - 9.2.0 - 2017-01-11 10:35:35 */
 /* Functional styling;
  * These styles are required for noUiSlider to function.
@@ -2814,7 +2825,14 @@ p.propertypro-gentle-error {
   color: #414141; }
 
 .propertypro-error-message-container {
-  text-align: center; }
+  color: #000000; }
+
+.propertypro-error-message-container i {
+  display: inline !important; }
+
+.propertypro-error-message-container p {
+  vertical-align: middle;
+  display: inline-block; }
 
 /* User Search Modal -> Advanced Search Filter */
 .propertypro-advanced-filter {
