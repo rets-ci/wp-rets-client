@@ -1582,6 +1582,38 @@ button.swiper-pagination-bullet {
 @keyframes swiper-preloader-spin {
   100% {
     transform: rotate(360deg); } }
+/*-----------------------------------------------------------------------------------*/
+/*  react-transition-group
+/*-----------------------------------------------------------------------------------*/
+.toggle-enter, .toggle-enter.toggle-enter-active {
+  opacity: 0.01;
+  transform: scaleY(0); }
+
+.toggle:not(.toggle-enter) {
+  opacity: 1;
+  transform-origin: 0 0;
+  transform: scaleY(1);
+  -webkit-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -moz-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -o-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out; }
+
+.toggle-exit {
+  opacity: 1;
+  transform: scaleY(1);
+  transform-origin: 0 0; }
+
+.toggle-exit.toggle-exit-active {
+  opacity: 0.01;
+  transform: scaleY(0);
+  -webkit-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -moz-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -o-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  css animations
+/*-----------------------------------------------------------------------------------*/
 @keyframes unfoldIn {
   0% {
     transform: scaleY(0.005) scaleX(0); }
@@ -1620,14 +1652,16 @@ button.swiper-pagination-bullet {
   80% {
     transform: scale(0.89); }
   100% {
-    opacity: 1;
     transform: scale(1); } }
 
 @keyframes fadeIn {
   from {
-    opacity: 0; }
+    opacity: 0.01;
+    transform-origin: 0 0;
+    transform: scaleY(0); }
   to {
-    opacity: 1; } }
+    opacity: 1;
+    transform: scaleY(1); } }
 
 @keyframes blowUpModal {
   0% {
@@ -1641,43 +1675,87 @@ button.swiper-pagination-bullet {
   Search Modal Animation
 *************************************/
 .propertypro-search-modal {
-  /*  &.propertypro-hide {
-    .propertypro-modal-header .filter-container {
-      transform: translateY(-500px);
-    }
-    .propertypro-filter-section {
-      opacity: 0;
-    }
-  }*/ }
-  .propertypro-search-modal.propertypro-display {
-    transform: scaleY(0.01) scaleX(0);
-    animation: unfoldIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-  .propertypro-search-modal.propertypro-hide {
-    transform: scale(1);
-    animation: unfoldOut 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-  .propertypro-search-modal.propertypro-location-modal .propertypro-modal-header .filter-container {
+  display: block;
+  transition: transform .3s ease-in-out, opacity .5s ease-in-out, visibility .5s ease-in-out; }
+  .propertypro-search-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1); }
+  .propertypro-search-modal.remove {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0); }
+  .propertypro-search-modal.propertypro-location-modal.active .filter-container {
     transform: translateY(-500px);
-    animation: bounceInDown .3s .5s linear forwards; }
-  .propertypro-search-modal.propertypro-location-modal .propertypro-search-result-group {
-    opacity: 0;
-    transform-origin: 0 0;
-    animation: blowUpModal .2s .3s ease-in-out forwards; }
-  .propertypro-search-modal.propertypro-advanced-filter .propertypro-modal-header .filter-container {
-    opacity: 0;
-    animation: bounceIn .3s .5s linear forwards; }
+    animation: bounceInDown .3s .5s ease-in-out forwards; }
+  .propertypro-search-modal.propertypro-advanced-filter.active .filter-container {
+    transform: translateY(-500px);
+    animation: bounceInDown .3s .5s ease-in-out forwards; }
   .propertypro-search-modal.propertypro-advanced-filter .propertypro-filter-section {
-    opacity: 0;
-    animation: fadeIn 1s .5s ease-in-out forwards; }
+    /*      opacity: 0;
+      transform: scaleY(0);
+      transform-origin: 0 0;
+      animation: fadeIn .5s 1s ease-in-out forwards;
+
+      &.all-filters {
+        animation: fadeIn .5s ease-in-out forwards;
+      }*/ }
+
+.sidebar .modal-header {
+  min-height: 3.4375rem; }
+
+.sidebar-left .modal-dialog,
+.sidebar-right .modal-dialog {
+  position: fixed;
+  margin: auto;
+  width: 25rem;
+  height: 100%;
+  -webkit-transform: translate3d(0%, 0, 0);
+  -ms-transform: translate3d(0%, 0, 0);
+  -o-transform: translate3d(0%, 0, 0);
+  transform: translate3d(0%, 0, 0); }
+
+.sidebar-left .modal-content,
+.sidebar-right .modal-content {
+  height: 100%;
+  overflow-y: auto; }
+
+.sidebar-left .modal-body,
+.sidebar-right .modal-body {
+  /* padding: 15px; */
+  padding: 0; }
+
+.sidebar-left .modal-dialog {
+  left: 0; }
+
+.sidebar-right .modal-dialog {
+  right: 0; }
+
+/* ----- MODAL STYLE ----- */
+.sidebar .modal-content {
+  border-radius: 0;
+  border: none; }
+
+.sidebar .modal-header {
+  border-bottom-color: #EEEEEE;
+  background-color: #FAFAFA; }
 
 /************************************
   Side Panel Animation
 *************************************/
-.propertypro-modal.sidebar-right .modal-dialog {
-  transform: translateX(100%);
-  transition: -webkit-transform 0.3s ease-out; }
-
-.propertypro-modal.sidebar-right.show .modal-dialog {
-  transform: translateX(0%); }
+.propertypro-modal.sidebar {
+  display: block !important;
+  transition: visibility .3s ease-in-out; }
+  .propertypro-modal.sidebar:not(.show) {
+    visibility: hidden; }
+  .propertypro-modal.sidebar.show {
+    visibility: visible; }
+  .propertypro-modal.sidebar.sidebar-right:not(.show) .modal-dialog {
+    transition: transform .2s ease-in-out;
+    transform: translateX(100%); }
+  .propertypro-modal.sidebar.sidebar-right.show .modal-dialog {
+    transition: transform .3s ease-in-out;
+    transform: translateX(0%); }
 
 /* @TODO split this file into components */
 /**
@@ -3865,45 +3943,6 @@ ul.propertypro-details-list li span.propertypro-item-name {
   /* padding: .60em 2em; */
   padding: .5rem 1rem;
   width: 100%; }
-
-.sidebar .modal-header {
-  min-height: 3.4375rem; }
-
-.sidebar-left .modal-dialog,
-.sidebar-right .modal-dialog {
-  position: fixed;
-  margin: auto;
-  width: 25rem;
-  height: 100%;
-  -webkit-transform: translate3d(0%, 0, 0);
-  -ms-transform: translate3d(0%, 0, 0);
-  -o-transform: translate3d(0%, 0, 0);
-  transform: translate3d(0%, 0, 0); }
-
-.sidebar-left .modal-content,
-.sidebar-right .modal-content {
-  height: 100%;
-  overflow-y: auto; }
-
-.sidebar-left .modal-body,
-.sidebar-right .modal-body {
-  /* padding: 15px; */
-  padding: 0; }
-
-.sidebar-left .modal-dialog {
-  left: 0; }
-
-.sidebar-right .modal-dialog {
-  right: 0; }
-
-/* ----- MODAL STYLE ----- */
-.sidebar .modal-content {
-  border-radius: 0;
-  border: none; }
-
-.sidebar .modal-header {
-  border-bottom-color: #EEEEEE;
-  background-color: #FAFAFA; }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Form Success Message
