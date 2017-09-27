@@ -817,6 +817,7 @@ namespace UsabilityDynamics {
                   $formatted_post->sqft = isset($property_detail['wpp_price_per_sqft']) ? $property_detail['wpp_price_per_sqft'] : 0;
                   $formatted_post->price = isset($property_detail['wpp_list_price']) ? $property_detail['wpp_list_price'] : '';
                   $formatted_post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
+                  $formatted_post->address_unit = isset($property_detail['address_unit']) ? $property_detail['address_unit'] : '';
                   $formatted_post->living_area = isset($property_detail['wpp_total_living_are']) ? $property_detail['wpp_total_living_are'] : '';
                   $formatted_post->zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
                   $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
