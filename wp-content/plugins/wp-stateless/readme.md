@@ -71,6 +71,11 @@ Setting a setting via constants will prevent ability to make changes in control 
 
 * `wp_stateless_bucket_link` - Filter, which allows to modify default bucket link `https://storage.googleapis.com/` to custom one.
 
+### Available Environment Variables
+Setting a setting via environment variables will prevent ability to make changes in control panel.
+
+* GOOGLE_APPLICATION_CREDENTIALS - Absolute, or relative to web-root, path to JSON key file.
+
 ### Response Headers
 
 * `x-goog-meta-object-id`

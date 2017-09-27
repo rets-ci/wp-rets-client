@@ -84,7 +84,7 @@ namespace RabbitCI\Navbar {
       $wp_admin_bar->add_node( array(
         'id' => 'wp-rabbit-inner',
         'parent' => 'wp-rabbit',
-        'title' => sprintf( __( 'Container: %s' ), isset( $_backend ) && !$_backend ? $_backend : 'Unknown' ),
+        'title' => sprintf( __( 'Container: %s' ), isset( $_backend ) && $_backend ? $_backend : 'Unknown' ),
         'href' => '#'
       ));
       

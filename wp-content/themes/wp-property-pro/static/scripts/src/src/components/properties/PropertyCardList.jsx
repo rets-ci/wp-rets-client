@@ -74,7 +74,7 @@ class PropertyCardList extends Component {
               zip: get(p, '_source.post_meta.rets_postal_code[0]', '')
             };
             return (
-              <div className={`col-12 col-md-12 col-lg-6 col-xl-4`} key={p._id}>
+              <div className={`col-12 col-lg-6`} key={p._id}>
                 <PropertyCard data={item} highlighted={selectedProperty === p._id} propertiesDOM={this.propertiesDOM} />
               </div>
             );

@@ -3,9 +3,34 @@
 	$.fn.wpStatelessComboBox = function(options) {
 		options = options || {}
 
+		var _this = jQuery(this);
 		var normalizeInput = function(value){
 			value = value || this.val();
 
+		}
+
+		if(typeof options.select != 'undefined' && options.select && jQuery(this).data('comboboxLoaded') == true){
+			var _id = _this.find('.id');
+			var _input = _this.find('.name');
+			var existing = _this.find('.wpStateLess-existing, .wpStateLess-static');
+			var list = existing.find('ul');
+
+			list.children().each(function(index, item){
+				item = jQuery(item);
+				var data_id = item.attr('data-id');
+				var data_name = item.attr('data-name');
+				if(options.select == data_id || options.select == data_name || options.select == index){
+					text = data_name;
+					if(typeof data_id != 'undefined')
+						text += " ("  + data_id + ")";
+					item.addClass('active');
+					if(_id.length)
+						_id.val(data_id);
+					_input.val(text);
+				}
+			});
+			_input.trigger('change');
+			return _this;
 		}
 
 		if(options == 'validate'){
@@ -17,7 +42,7 @@
 		}
 
 		if(typeof options.get != 'undefined'){
-			var _items = jQuery(this).parent().find('.wpStateLess-existing').find('ul li');
+			var _items = jQuery(this).find('.wpStateLess-existing').find('ul li');
 			if(options.get == 'all'){
 				var items = [];
 				_items.each(function(index, item) {
@@ -40,12 +65,11 @@
 		}
 
 		if(typeof options.has != 'undefined'){
-			var result = false;
-			var _items = jQuery(this).parent().find('.wpStateLess-existing').find('ul li');
+			var result = 0;
+			var _items = jQuery(this).find('.wpStateLess-existing ul').children();
 			_items.each(function(index, item) {
 				if(jQuery(item).attr('data-id') == options.has){
-					result	 = true;
-					return false; // to break each
+					result++;
 				}
 			});
 			return result;
@@ -53,12 +77,13 @@
 
 		return this.each(function() {
 			var _this = jQuery(this);
+			var dropDown = jQuery('.wpStateLess-input-dropdown', _this);
 			var custom_name = _this.find('.wpStateLess-create-new .custom-name');
-			var predefined_name = _this.find('.wpStateLess-create-new .predefined-name');
+			var predefined_name = dropDown.find('.wpStateLess-create-new .predefined-name');
+			var project_derived_name = jQuery('.wpStateLess-create-new .project-derived-name', dropDown);
 			var _id = _this.find('.id');
 			var _input = _this.find('.name');
 			var existing = _this.find('.wpStateLess-existing');
-			var dropDown = jQuery('.wpStateLess-input-dropdown', _this);
 			var list = existing.find('ul');
 
 			jQuery('h5', existing).hide();
@@ -103,10 +128,15 @@
 				var response = {};
 
 				var resp = jQuery(this).wppStatelessValidate({}, response);
+				var data_predefined_name = predefined_name.attr('data-name');
+				var data_project_derived_name = project_derived_name.attr('data-name');
 
 				dropDown.removeClass('active');
 				dropDown.find('li').removeClass('active');
 				_this.removeClass('has-error').find('.error').html("");
+
+				if(data_predefined_name == data_project_derived_name)
+					project_derived_name.hide();
 
 				if(response.id == 'localhost' || response.pName == 'localhost'){
 					response.id = '';
@@ -124,9 +154,8 @@
 				}else{
 					var name = response.pName;
 					var data_predefined_name = predefined_name.attr('data-name');
-					var project_derived_name = dropDown.find('.project-derived-name').attr('data-name');
-					if(name == data_predefined_name || name == project_derived_name){
-						//custom_name.hide();
+					if(name == data_predefined_name || name == data_project_derived_name){
+						custom_name.hide();
 					}
 					else{
 						if(response.id)

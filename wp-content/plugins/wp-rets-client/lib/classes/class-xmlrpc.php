@@ -1113,6 +1113,9 @@ namespace UsabilityDynamics\WPRETSC {
           $_post = get_post( $post_data[ 'ID' ] );
           $post_data[ 'post_date' ] = $_post->post_date;
           $post_data[ 'post_status' ] = $_post->post_status;
+
+          // set empty post_name for refreshing it on updating post
+          $post_data[ 'post_name' ] = '';
         } else {
           ud_get_wp_rets_client()->write_log( 'Running wp_insert_post for [new post].', 'debug' );
         }

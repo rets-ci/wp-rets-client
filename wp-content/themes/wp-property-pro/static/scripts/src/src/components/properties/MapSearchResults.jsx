@@ -294,14 +294,8 @@ class MapSearchResults extends Component {
         />
 
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
-          <div className={`col-sm-6 col-lg-4 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
-            { captionElement }
-            { mapElement }
-            { isMobile && sliderElement }
-          </div>
-
           { (!isMobile || !this.state.mapDisplay) &&
-            <div className={`col-sm-6 col-lg-8 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
+            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
               <SearchFilterDescriptionText
                 bathrooms={searchFilters.bathrooms}
                 bedrooms={searchFilters.bedrooms}
@@ -335,6 +329,12 @@ class MapSearchResults extends Component {
               }
             </div>
           }
+
+          <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+            { captionElement }
+            { mapElement }
+            { isMobile && sliderElement }
+          </div>
 
           { isMobile && mobileNavigatorElement }
 

@@ -85,49 +85,49 @@ class Api {
       "aggs": {
         "wpp_location_city_state_name": {
           "terms": {
-            "title": "City",
+            "title": "Popular Cities",
             "field": "tax_input.wpp_location.wpp_location_city_state.name.raw",
           }
         },
         "wpp_location_city_state_slug": {
           "terms": {
-            "title": "City",
+            "title": "Popular Cities",
             "field": "tax_input.wpp_location.wpp_location_city_state.slug",
           }
         },
         "wpp_location_zip_name": {
           "terms": {
-            "title": "Zipcode",
+            "title": "Popular Zipcodes",
             "field": "tax_input.wpp_location.wpp_location_zip.name.raw",
           }
         },
         "wpp_location_zip_slug": {
           "terms": {
-            "title": "Zipcode",
+            "title": "Popular Zipcodes",
             "field": "tax_input.wpp_location.wpp_location_zip.slug",
           }
         },
         "wpp_location_county_name": {
           "terms": {
-            "title": "County",
+            "title": "Popular Counties",
             "field": "tax_input.wpp_location.wpp_location_county.name.raw"
           }
         },
         "wpp_location_county_slug": {
           "terms": {
-            "title": "County",
+            "title": "Popular Counties",
             "field": "tax_input.wpp_location.wpp_location_county.slug"
           }
         },
         "wpp_location_subdivision_name": {
           "terms": {
-            "title": "Subdivision",
+            "title": "Popular Subdivisions",
             "field": "tax_input.wpp_location.wpp_location_subdivision.name.raw"
           }
         },
         "wpp_location_subdivision_slug": {
           "terms": {
-            "title": "Subdivision",
+            "title": "Popular Subdivisions",
             "field": "tax_input.wpp_location.wpp_location_subdivision.slug"
           }
         }
@@ -252,7 +252,7 @@ class Api {
 
             _buckets.push({
               id: get(option, '_source.post_title', ''),
-              text: [get(option, '_source.post_meta.formatted_address_simple', ''), get(option, '_source.post_meta.rets_postal_code', '')].join(' '),
+              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city_state[0].name', '') + ' ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
               url: get(option, '_source.post_name', null) ? [get(bundle, 'property_single_url'), get(option, '_source.post_name', null)].join('/') : ''
             });
           }
@@ -299,7 +299,7 @@ class Api {
       body.aggs[aggIndex] = {
         "terms": {
           "field": get(aggregation, 'terms.field', ''),
-          "size": params.size || 0
+          "size": (get(aggregation, 'terms.field', '').indexOf('subdivision') !== -1 ? (params.size + 1) : params.size) || 0
         }
       }
     }
@@ -330,6 +330,12 @@ class Api {
         }
 
         for (let ind in term.buckets) {
+
+          // Exclude first subdivision from list (not in subdivision value)
+          if(i.indexOf('subdivision') !== -1 && ind === "0"){
+            continue;
+          }
+
           let bucket = term.buckets[ind];
 
           if (get(bucket, 'key', null) !== null) {

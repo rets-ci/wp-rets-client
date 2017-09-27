@@ -25,7 +25,7 @@ namespace wpCloud\StatelessMedia {
        * @property $version
        * @type {Object}
        */
-      public static $version = '2.0.3';
+      public static $version = '2.1';
 
       /**
        * Singleton Instance Reference.
@@ -228,7 +228,10 @@ namespace wpCloud\StatelessMedia {
        */
       public function wp_calculate_image_srcset($sources, $size_array, $image_src, $image_meta, $attachment_id){
         foreach ($sources as $width => &$image) {
-          if(isset($image_meta['sizes']) && is_array($image_meta['sizes'])){
+          if($width == $image_meta['width']){
+            $image['url'] = $image_meta['gs_link'];
+          }
+          elseif(isset($image_meta['sizes']) && is_array($image_meta['sizes'])){
             foreach ($image_meta['sizes'] as $key => $meta) {
               if($width == $meta['width'] && isset($meta['gs_link']) && $meta['gs_link']){
                 $image['url'] = $meta['gs_link'];
@@ -437,12 +440,28 @@ namespace wpCloud\StatelessMedia {
             $root_dir = trim( $this->get( 'sm.root_dir' ), '/ ' ); // Remove any forward slash and empty space.
             $root_dir = !empty( $root_dir ) ? $root_dir . '/' : false;
             $image_host = $this->get_gs_host();
-            $content = preg_replace( '/(href|src)=(\'|")(https?:\/\/'.str_replace('/', '\/', $baseurl).')\/(.+?)(\.jpg|\.png|\.gif|\.jpeg|\.pdf)(\'|")/i',
+            $file_ext = $this->replaceable_file_types();
+            $content = preg_replace( '/(href|src)=(\'|")(https?:\/\/'.str_replace('/', '\/', $baseurl).')\/(.+?)('.$file_ext.')(\'|")/i',
                 '$1=$2'.$image_host.'/'.($root_dir?$root_dir:'').'$4$5$6', $content);
           }
         }
 
         return $content;
+      }
+
+      /**
+       * Return file types supported by File URL Replacement.
+       *
+       */
+      public function replaceable_file_types(){
+        $types = $this->get('sm.body_rewrite_types');
+
+        // Removing extra space.
+        $types = trim($types);
+        $types = preg_replace("/\s{2,}/", ' ', $types);
+
+        $types_arr = explode(' ', $types);
+        return '\.' . implode('|\.', $types_arr);
       }
 
       /**
@@ -947,7 +966,7 @@ namespace wpCloud\StatelessMedia {
       }
 
       public function redirect_to_splash($plugin =''){
-        if( $plugin == plugin_basename( $this->boot_file ) ) {
+        if( !defined( 'WP_CLI' ) && $plugin == plugin_basename( $this->boot_file ) ) {
           $url = $this->get_settings_page_url('?page=stateless-setup&step=splash-screen');
           if(json_decode(get_site_option('sm_key_json'))){
             $url = $this->get_settings_page_url('?page=stateless-settings');
