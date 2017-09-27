@@ -195,7 +195,7 @@ wp.stateless = {
         defer.reject(responseData);
       }
     }).fail(function(responseData) {
-      defer.resolve(responseData);
+      defer.reject(responseData);
     });
     return defer.promise();
   },
@@ -254,7 +254,11 @@ wp.stateless = {
     var promis = jQuery.ajax({
       url: 'https://www.googleapis.com/storage/v1/b/?project=' + options.projectId,
       method: "POST",
-      data: JSON.stringify({name: options.name}),
+      data: JSON.stringify({
+        name: options.name,
+        storageClass: 'MULTI_REGIONAL',
+        location: options.location || 'us',
+      }),
     });
     return promis;
   },
@@ -348,7 +352,7 @@ wp.stateless = {
       jQuery.each(responseData.items, function(index, item){
         var bucket = {name: item.name};
         buckets.push(bucket);
-        wp.stateless.projects[projectId]['buckets'][item.id] = bucket;
+        wp.stateless.projects[projectId]['buckets'][item.id] = item;
       });
 
       defer.resolve(buckets);
@@ -387,7 +391,7 @@ wp.stateless = {
   /**
    *
    * wp.stateless.createServiceAccount()
-   *
+   * Doc: https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts/create
    * @param options
    * @returns {boolean}
    */
@@ -453,20 +457,61 @@ wp.stateless = {
    *
    * wp.stateless.createServiceAccount()
    * Doc: https://cloud.google.com/storage/docs/json_api/v1/bucketAccessControls/insert
+   * Doc: https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy
    * @param options
    * @returns {boolean}
    */
   insertBucketAccessControls: function insertBucketAccessControls(options) {
+    var promis = new jQuery.Deferred();
 
     if(!wp.stateless.getAccessToken() || !options)
       return false;
-    var promis = jQuery.ajax({
-      url: 'https://www.googleapis.com/storage/v1/b/' + options.bucket + '/acl',
-      method: "POST",
-      data: JSON.stringify({
-        entity: "user-" + options.user,
-        role: options.role || 'OWNER',
-      }),
+
+    var lagecyAccess = function(){
+      jQuery.ajax({
+        url: 'https://www.googleapis.com/storage/v1/b/' + options.bucket + '/acl',
+        method: "POST",
+        data: JSON.stringify({
+          entity: "user-" + options.user,
+          role: options.role || 'OWNER',
+        })
+      }).done(function(response){
+        promis.resolve(response);
+      }).fail(function(error) {
+        promis.reject(error);
+      });;
+    }
+
+    jQuery.get('https://www.googleapis.com/storage/v1/b/' + options.bucket + '/iam')
+    .done(function(iam){
+      var existing = false;
+      iam.bindings.forEach(function(item, index){
+        if(item.role == "roles/storage.admin"){
+          existing = item.members.indexOf("serviceAccount:" + options.user);
+          if(existing == -1){
+            item.members.push("serviceAccount:" + options.user);
+          }
+        }
+      });
+
+      if(existing === false){
+        iam.bindings.push({
+          role: options.role || 'roles/storage.admin',
+          members: [ "serviceAccount:" + options.user ]
+        });
+      }
+
+      jQuery.ajax({
+        url: 'https://www.googleapis.com/storage/v1/b/' + options.bucket + '/iam',
+        method: "PUT",
+        data: JSON.stringify(iam),
+      }).done(function(response){
+        promis.resolve(response);
+      }).fail(function(error) {
+        lagecyAccess();
+      });
+    }).fail(function(error) {
+      lagecyAccess();
     });
     return promis;
   },
