@@ -12,7 +12,7 @@ import {Lib} from './lib.jsx';
 import shims from './shims.js';
 
 import 'swiper-css';
-import '../../../styles/app/index.scss';
+import 'index.scss';
 
 // set up all relevant shims and polyfills for various browsers
 shims();

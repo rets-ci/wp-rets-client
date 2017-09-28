@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 
-import '../../../../../../styles/app/bootstrap-modal.scss';
+import 'bootstrap-modal.scss';
 
 class BootstrapModal extends Component {
   static propTypes = {

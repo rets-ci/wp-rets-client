@@ -139,10 +139,6 @@ class PageLayout extends Component {
     }
   }
 
-  componentWillUnMount() {
-    this.APIRequest.abort();
-  }
-
   routeUpdate = () => {
     this.props.routeChanged();
   }
