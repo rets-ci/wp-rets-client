@@ -8,6 +8,20 @@
  * # Removes all unassigned retcsi attachments
  * wp retsci cleanup
  *
+ * ######################################################################
+ *
+ * Note, if there are a LOT of attachments, it, probably, would be better
+ * to remove them directly using the following SQL Queries:
+ *
+ * # At first we MUST delete post meta:
+ * DELETE FROM wp_postmeta WHERE post_id IN ( SELECT ID FROM wp_posts WHERE post_type="attachment" AND post_parent = 0 AND guid LIKE "%cdn.rets.ci%" );
+ *
+ * # Then we should delete attachments posts:
+ * DELETE FROM wp_posts WHERE post_type="attachment" AND post_parent = 0 AND guid LIKE "%cdn.rets.ci%"
+ *
+ * ######################################################################
+ *
+ *
  *
  */
 
@@ -31,7 +45,7 @@ if( !class_exists( 'WPP_CLI_RETSCI_Command' ) ) {
      * Cleanup:
      * - removes all unassigned retsci attachments
      *
-     * Example: wp retsci cleanup
+     * Example: wp retsci cleanup --posts-per-page=100
      *
      * @synopsis [--posts-per-page]
      * @param array $args
