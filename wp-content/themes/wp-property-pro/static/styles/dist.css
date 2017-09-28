@@ -2016,7 +2016,7 @@ html, body {
   display: block;
   width: 100%;
   text-align: left;
-  padding-left: 10rem;
+  padding-left: 11rem;
   color: rgba(139, 140, 141, 0.4);
   outline: none;
   box-shadow: none;
@@ -2035,7 +2035,7 @@ html, body {
   cursor: pointer; }
 
 .propertypro-search-box .propertypro-drop-search {
-  width: 9.0625rem;
+  width: 10rem;
   height: 5rem;
   border-radius: .25rem 0 0 .25rem;
   position: absolute;
