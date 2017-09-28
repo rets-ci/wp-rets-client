@@ -4215,7 +4215,7 @@ ul.propertypro-details-list li span.propertypro-item-name {
 .propertypro-secondary-button, .propertypro-secondary-button:focus, .propertypro-secondary-button:hover, .propertypro-secondary-button:active {
   border-color: #d6dee3;
   background-color: #d6dee3;
-  color: #b6bec4; }
+  color: #414141; }
 
 .propertypro-loading-overlay:after {
   position: absolute;
