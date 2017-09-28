@@ -96,7 +96,6 @@ class PageLayout extends Component {
     let self = this;
     nprogress.start();
     this.props.requestWordPressContentFetchFunc();
-    console.log('PageLayout fetchData: ', url);
     Api.makeRequest({
       query: {
         pageType: 'json',
