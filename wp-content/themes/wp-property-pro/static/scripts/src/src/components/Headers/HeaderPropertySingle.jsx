@@ -2,9 +2,10 @@ import {
   openSaleTypesPanel,
   openLocationModal,
   openPropertiesModal,
-  setPropertiesModalResultCountLoading,
+  requestPropertiesModalResultCount,
+  receivePropertiesModalResultCount,
+  receivePropertiesModalResultCountFetchingError,
   togglePropertiesModalModeInLocationModal,
-  updatePropertiesModalResultCount
 } from '../../actions/index.jsx';
 import Api from '../../containers/Api.jsx';
 import PropTypes from 'prop-types';
@@ -22,7 +23,8 @@ import Util from '../Util.jsx';
 const mapStateToProps = (state, ownProps) => {
   return {
     propertiesModalOpen: get(state, 'propertiesModal.open'),
-    propertiesModalResultCountButtonLoading: get(state, 'propertiesModal.resultCountButtonLoading'),
+    propertiesModalResultCountErrorMessage: get(state, 'propertiesModal.errorMessage'),
+    propertiesModalResultCountIsFetching: get(state, 'propertiesModal.isFetching'),
     propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
     propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
@@ -36,11 +38,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     doPropertiesModalSearch: (filters) => {
-      dispatch(setPropertiesModalResultCountLoading(true));
+      dispatch(requestPropertiesModalResultCount());
       Api.makeStandardPropertySearch(filters, (err, query, response) => {
-        // we are ignoring handling the error here intentionally as the error is handled as soon as the modal is closed
-        dispatch(setPropertiesModalResultCountLoading(false));
-        dispatch(updatePropertiesModalResultCount(get(response, 'hits.total', null)));
+        if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
+        dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
     },
 
@@ -102,12 +103,13 @@ class HeaderPropertySingle extends Component {
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => this.props.openPropertiesModal(false)}
           doSearch={this.props.doPropertiesModalSearch}
+          errorMessage={this.props.propertiesModalResultCountErrorMessage}
           historyPush={this.props.historyPush}
           open={this.props.propertiesModalOpen}
           openLocationModal={this.props.openLocationModal}
           propertyTypeOptions={this.props.propertyTypeOptions}
           resultCount={this.props.propertiesModalResultCount}
-          resultCountButtonLoading={this.props.propertiesModalResultCountButtonLoading}
+          resultCountButtonLoading={this.props.propertiesModalResultCountIsFetching}
           searchFilters={propertySingleStaticFilters}
           turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
           turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}

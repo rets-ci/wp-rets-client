@@ -55,6 +55,7 @@ class PropertiesModal extends Component {
     closeModal: PropTypes.func.isRequired,
     closeLocationModal: PropTypes.func.isRequired,
     doSearch: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string,
     historyPush: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     openLocationModal: PropTypes.func.isRequired,
@@ -527,7 +528,7 @@ class PropertiesModal extends Component {
                     <div className="p-2 my-auto">
                       <a
                         href="#"
-                        className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button ${this.props.resultCountButtonLoading ? 'disabled' : ''}`}
+                        className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button ${this.props.resultCountButtonLoading || this.props.errorMessage ? 'disabled' : ''}`}
                         onClick={this.saveFilters}>
                           {this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"}
                       </a>

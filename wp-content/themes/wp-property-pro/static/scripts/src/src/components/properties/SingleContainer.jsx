@@ -1,12 +1,13 @@
 import {
   receivePropertySingleResult,
-  requestPropertySingleResetFetching,
-  requestPropertySingleResult,
-  raiseErrorMessage
-} from '../../actions/index.jsx'
+  receivePropertySingleFetchingError,
+  requestPropertySingleResult
+} from '../../actions/index.jsx';
+import ErrorMessageModal from '../ErrorMessageModal.jsx';
 import get from 'lodash/get';
 import Api from '../../containers/Api.jsx';
-import LoadingCircle from '../LoadingCircle.jsx';
+import LoadingAccordion from '../LoadingAccordion.jsx';
+import {Lib} from '../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -100,7 +101,7 @@ let singlePropertyData = (data) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    errorMessage: state.errorMessage,
+    errorMessage: state.singleProperty.errorMessage,
     isFetching: state.singleProperty.isFetching,
     property: state.singleProperty.property
   }
@@ -122,14 +123,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(requestPropertySingleResult());
       Api.search(url, query, (err, data) => {
         if (err) {
-          dispatch(requestPropertySingleResetFetching());
-          return dispatch(raiseErrorMessage(err));
+          dispatch(receivePropertySingleFetchingError(err));
+        } else if (!get(data, 'hits.hits[0]', null)) {
+          dispatch(receivePropertySingleFetchingError('property not found'));
+        } else {
+          dispatch(receivePropertySingleResult(get(data, 'hits.hits[0]._source')));
         }
-        if (!get(data, 'hits.hits[0]', null)) {
-          dispatch(requestPropertySingleResetFetching());
-          return dispatch(raiseErrorMessage('property not found'));
-        }
-        dispatch(receivePropertySingleResult(get(data, 'hits.hits[0]._source')));
       });
     }
   }
@@ -168,9 +167,9 @@ class SingleContainer extends Component {
   render() {
     let {
       agents,
+      errorMessage,
+      isFetching,
       post: {
-        errorMessage,
-        isFetching,
         post_id : id
       },
       property
@@ -180,7 +179,7 @@ class SingleContainer extends Component {
         (isFetching ?
           <LoadingAccordion containerHeight="600px" verticallyCentered={true} /> :
           (errorMessage ?
-            <ErrorMessage message={errorMessage} />
+            <ErrorMessageModal errorMessage={errorMessage} />
           :
           <p>Request property id {id} could not be found</p>)
           ):

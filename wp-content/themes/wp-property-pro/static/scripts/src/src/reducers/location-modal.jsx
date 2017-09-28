@@ -1,6 +1,7 @@
 import {Lib} from "../lib.jsx";
 
 let defaultState = {
+  errorMessage: null,
   isFetching: false,
   items: [],
   modifyType: null,
@@ -22,12 +23,14 @@ const locationModal = (state = defaultState, action) => {
         isFetching: true,
         items: []
       });
-    case Lib.REQUEST_LOCATION_MODAL_RESET_FETCHING_ACTION:
+    case Lib.RECEIVE_LOCATION_MODAL_FETCHING_ERROR_ACTION:
       return Object.assign({}, state, {
+        errorMessage: action.errorMessage,
         isFetching: false
       });
     case Lib.RECEIVE_LOCATION_MODAL_POSTS_ACTION:
       return Object.assign({}, state, {
+        errorMessage: null,
         isFetching: false,
         items: action.posts,
       });

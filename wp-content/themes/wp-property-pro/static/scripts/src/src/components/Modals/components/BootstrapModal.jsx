@@ -2,10 +2,14 @@ import React, {Component} from 'react';
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 
+import '../../../../../../styles/app/bootstrap-modal.scss';
+
 class BootstrapModal extends Component {
   static propTypes = {
+    alignHead: PropTypes.string,
     classes: PropTypes.array,
     closeModal: PropTypes.func.isRequired,
+    modalFooter: PropTypes.object,
     title: PropTypes.string,
     id: PropTypes.string,
     jsonSchemaForm: PropTypes.object
@@ -65,23 +69,39 @@ class BootstrapModal extends Component {
     let {
       showBody
     } = this.state;
+
     let {
+      alignHead,
       children,
       classes,
       closeModal,
       id,
+      modalFooter,
       open,
       ...other
     } = this.props;
     let body = showBody ? children : null;
-    let classesArr = ['modal', `${Lib.THEME_CLASSES_PREFIX}modal`].concat(classes)
+    let containerClasses = ['modal', `${Lib.THEME_CLASSES_PREFIX}modal`].concat(classes);
+    let headerClasses = ['modal-title'];
+    if (alignHead) {
+      if (alignHead === 'left') {
+        headerClasses.push('text-left')
+      } else if (alignHead === 'right') {
+        headerClasses.push('text-right')
+      } else {
+        headerClasses.push('mx-auto');
+      }
+    } else {
+      headerClasses.push('mx-auto');;
+    }
     let title = this.props.jsonSchemaForm ? this.props.jsonSchemaForm.title : this.props.title;
+    let footer = modalFooter ? (<div className="modal-footer">{modalFooter}</div>) : null;
     return (
-      <div data-keyboard="true" className={classesArr.join(' ')} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
+      <div data-keyboard="true" className={containerClasses.join(' ')} id={id} tabIndex="-1" role="dialog" aria-labelledby={id} aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title mx-auto" id="modalLabel">{title}</h5>
+              <h5 className={headerClasses.join(' ')} id="modalLabel">{title}</h5>
               <button type="button" className="close" aria-label="Close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -95,6 +115,7 @@ class BootstrapModal extends Component {
                 </div>
               }
             </div>
+            {footer}
           </div>
         </div>
       </div>

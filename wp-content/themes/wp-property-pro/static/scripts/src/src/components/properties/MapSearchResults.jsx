@@ -1,3 +1,4 @@
+import ErrorMessageModal from '../ErrorMessageModal.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -11,14 +12,14 @@ import Api from '../../containers/Api.jsx';
 import {
   openPropertiesModal,
   openLocationModal,
-  raiseErrorMessage,
+  receivePropertiesModalResultCount,
+  receivePropertiesModalResultCountFetchingError,
+  requestPropertiesModalResultCount,
   receiveSearchResultsPosts,
-  requestSearchResultsPostsResetFetching,
+  receiveSearchResultsPostsError,
   requestSearchResultsPosts,
-  setPropertiesModalResultCountLoading,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
-  updatePropertiesModalResultCount
 } from '../../actions/index.jsx';
 import Util from '../Util.jsx';
 import { Lib } from '../../lib.jsx';
@@ -41,14 +42,16 @@ const mapStateToProps = (state, ownProps) => {
     query: get(state, 'searchResults.query', []),
     isFetching: get(state, 'searchResults.isFetching', []),
     displayedResults: get(state, 'searchResults.displayedResults', []),
-    searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
     propertiesModalOpen: get(state, 'propertiesModal.open'),
-    propertiesModalResultCountButtonLoading: get(state, 'propertiesModal.resultCountButtonLoading'),
+    propertiesModalResultCountErrorMessage: get(state, 'propertiesModal.errorMessage'),
+    propertiesModalResultCountIsFetching: get(state, 'propertiesModal.isFetching'),
     propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
     propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
     results: get(state, 'searchResults.searchResults', []),
     resultsTotal: get(state, 'searchResults.totalProps', 0),
-    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
+    searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
+    searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
   }
 };
 
@@ -59,11 +62,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     doPropertiesModalSearch: (filters) => {
-      dispatch(setPropertiesModalResultCountLoading(true));
+      dispatch(requestPropertiesModalResultCount());
       Api.makeStandardPropertySearch(filters, (err, query, response) => {
-        // we are ignoring handling the error here intentionally as the error is handled as soon as the modal is closed
-        dispatch(setPropertiesModalResultCountLoading(false));
-        dispatch(updatePropertiesModalResultCount(get(response, 'hits.total', null)));
+        if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
+        dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
     },
 
@@ -72,11 +74,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(requestSearchResultsPosts());
       Api.search(url, query, (err, response) => {
         if (err) {
-          dispatch(requestSearchResultsPostsResetFetching());
-          return dispatch(raiseErrorMessage(err));
-        }
-        if (!err && errorMessage) {
-          dispatch(resetErrorMessage());
+          return dispatch(receiveSearchResultsPostsError(err));
         }
         dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), append));
       });
@@ -98,11 +96,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(requestSearchResultsPosts());
       Api.makeStandardPropertySearch(params, (err, query, response) => {
         if (err) {
-          dispatch(requestSearchResultsPostsResetFetching());
-          return dispatch(raiseErrorMessage(err));
-        }
-        if (!err && errorMessage) {
-          dispatch(resetErrorMessage());
+          return dispatch(receiveSearchResultsPostsError(err));
         }
         dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), false));
       });
@@ -127,9 +121,11 @@ class MapSearchResults extends Component {
       PropTypes.number,
       PropTypes.string,
     ]),
-    propertiesModalResultCountButtonLoading: PropTypes.bool.isRequired,
+    propertiesModalResultCountErrorMessage: PropTypes.string,
+    propertiesModalResultCountIsFetching: PropTypes.bool.isRequired,
     resetSearchResults: PropTypes.func.isRequired,
-    results: PropTypes.array.isRequired
+    results: PropTypes.array.isRequired,
+    searchResultsErrorMessage: PropTypes.string
   };
 
   constructor(props) {
@@ -221,7 +217,8 @@ class MapSearchResults extends Component {
       openPropertiesModal,
       propertiesModalOpen,
       propertiesModalResultCount,
-      propertiesModalResultCountButtonLoading,
+      propertiesModalResultCountErrorMessage,
+      propertiesModalResultCountIsFetching,
       propertyTypeOptions,
       results,
       resultsTotal
@@ -277,17 +274,20 @@ class MapSearchResults extends Component {
 
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
-
+        {this.props.searchResultsErrorMessage &&
+          <ErrorMessageModal errorMessage={this.props.searchResultsErrorMessage} />
+        }
         <PropertiesModal
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => openPropertiesModal(false)}
           doSearch={doPropertiesModalSearch}
+          errorMessage={propertiesModalResultCountErrorMessage}
           historyPush={history.push}
           open={propertiesModalOpen}
           openLocationModal={this.props.openLocationModal}
           propertyTypeOptions={propertyTypeOptions}
           resultCount={propertiesModalResultCount}
-          resultCountButtonLoading={propertiesModalResultCountButtonLoading}
+          resultCountButtonLoading={propertiesModalResultCountIsFetching}
           searchFilters={omit(searchFilters, ['geoCoordinates'])}
           turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
           turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}

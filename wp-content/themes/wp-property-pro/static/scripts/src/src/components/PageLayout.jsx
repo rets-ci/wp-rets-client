@@ -1,10 +1,13 @@
 import {
-  raiseErrorMessage,
-  resetErrorMessage,
   routeChanged,
+  receiveWordpressContentFetching,
+  receiveWordpressContentFetchingError,
+  requestWordpressContentFetch,
   setPropertyTypeOptions,
   toggleUserPanel
 } from '../actions/index.jsx';
+import ErrorMessageModal from './ErrorMessageModal.jsx';
+import BootstrapModal from './Modals/components/BootstrapModal.jsx';
 import Bundle from '././Bundle.jsx';
 import Api from '../containers/Api.jsx';
 import Footer from './Footer.jsx';
@@ -26,7 +29,6 @@ import {Lib} from '../lib.jsx';
 import get from 'lodash/get';
 
 import Page from './Page.jsx';
-
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
 import loadGuideArchive from 'bundle-loader?lazy&name=GuideArchive!./guide/Archive.jsx';
 import loadPropertySingle from 'bundle-loader?lazy&name=SingleProperties!./properties/SingleContainer.jsx';
@@ -41,8 +43,9 @@ nprogress.configure({
 
 const mapStateToProps = state => {
   return {
+    isFetching: state.wordpressContentFetching.isFetching,
     userPanelOpen: state.userPanel.open,
-    errorMessage: state.errorMessage 
+    errorMessage: state.wordpressContentFetching.errorMessage 
   }
 };
 
@@ -52,16 +55,20 @@ const mapDispatchToProps = dispatch => {
       dispatch(toggleUserPanel(false));
     },
 
-    raiseError: (msg) => {
-      dispatch(raiseErrorMessage(msg))
+    receiveWordpressContentFetchingErrorFunc: errorMessage => {
+      dispatch(receiveWordpressContentFetchingError(errorMessage));
     },
 
-    resetErrorMessage: () => {
-      dispatch(resetErrorMessage());
+    receiveWordpressContentFetchingFunc: () => {
+      dispatch(receiveWordpressContentFetching());
     },
 
     routeChanged: () => {
       dispatch(routeChanged());
+    },
+
+    requestWordPressContentFetchFunc: () => {
+      dispatch(requestWordpressContentFetch());
     },
 
     setPropertyTypeOptions: (options) => {
@@ -84,10 +91,11 @@ class PageLayout extends Component {
     };
   }
 
-  fetchData(url) {
+  fetchData = (url) => {
     // Get page content query
     let self = this;
     nprogress.start();
+    this.props.requestWordPressContentFetchFunc();
     this.APIRequest = Api.makeRequest({
       query: {
         pageType: 'json',
@@ -96,9 +104,10 @@ class PageLayout extends Component {
     }, (err, data) => {
       if (err) {
         nprogress.done();
-        return self.props.raiseError(err);
+        return this.props.receiveWordpressContentFetchingErrorFunc(err);
       }
       if (get(data, 'post', null)) {
+        this.props.receiveWordpressContentFetchingFunc();
         document.title = get(data, 'page_title', '');
         if (data.property_search_options) {
           self.props.setPropertyTypeOptions(data.property_search_options);
@@ -135,9 +144,6 @@ class PageLayout extends Component {
   }
 
   routeUpdate = () => {
-    if (this.props.errorMessage) {
-      this.props.resetErrorMessage();
-    }
     this.props.routeChanged();
   }
 
@@ -147,6 +153,7 @@ class PageLayout extends Component {
       closeUserPanel,
       errorMessage,
       history,
+      isFetching,
       location,
       userPanelOpen
     } = this.props;
@@ -158,101 +165,114 @@ class PageLayout extends Component {
       post: get(this.state, 'post', {}),
       rows: get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
     };
-
     this.props.history.listen((location, action) => {
       this.routeUpdate();
     });
+
+    let mainContent = (
+      <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100 d-flex flex-column"}>
+        <UserPanel
+          closeUserPanel={closeUserPanel}
+          historyPush={history.push}
+          location={location}
+          panelOpen={userPanelOpen}
+        />
+        <LoginModal />
+        <Header
+          history={history}
+          location={location}
+          saleType={get(this.state, 'post.sale_type')}
+          searchType={get(this.state, 'post.search_type')}
+          locationTerm={get(this.state, 'post.location')}
+        />
+        <Switch>
+          <Route exact path="/" render={(props) => {
+            if (nprogress && nprogress.isStarted()) {
+              nprogress.done();
+            }
+            return <Page
+              {...paramsToSet}
+            />
+            }
+          } />
+          {get(bundle, 'property_single_url', null) &&
+            <Route exact path={"/" + get(bundle, 'property_single_url') + "/:propertySlug"} render={props =>
+              <Bundle load={loadPropertySingle} nprogress={nprogress}>
+                {(Comp) => (Comp
+                  ? <Comp {...paramsToSet} />
+                  : null
+                )}
+              </Bundle>
+            } />
+          }
+          {get(wpp, 'instance.settings.configuration.base_slug', null) &&
+            <Route path={"/" + get(wpp, 'instance.settings.configuration.base_slug')} render={props => {
+              return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
+                {(Comp) => (Comp
+                  ? <Comp {...paramsToSet} />
+                  : null
+                )}
+              </Bundle>
+            }} />
+          }
+          {get(bundle, 'blog_base', null) &&
+            <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '')} render={props =>
+              <Bundle load={loadArchive} nprogress={nprogress}>
+                {(Comp) => (Comp
+                  ? <Comp {...paramsToSet} />
+                  : null
+                )}
+              </Bundle>
+            } />
+          }
+          {get(bundle, 'category_base', null) &&
+            <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '') + "/:categoryTitle"} render={props =>
+              <Bundle load={loadArchive} nprogress={nprogress}>
+                {(Comp) => (Comp
+                  ? <Comp {...paramsToSet} />
+                  : null
+                )}
+              </Bundle>
+            } />
+          }
+          {get(bundle, 'guide_category_base', null) &&
+            <Route path={"/" + get(bundle, 'guide_category_base').replace(/\//g, '') + "/:guideCategoryTitle"} render={props =>
+              <Bundle load={loadGuideArchive} nprogress={nprogress}>
+                {(Comp) => (Comp
+                  ? <Comp {...paramsToSet} />
+                  : null
+                )}
+              </Bundle>
+            } />
+          }
+          <Route render={(props) => {
+            if (nprogress && nprogress.isStarted()) {
+              nprogress.done();
+            }
+            return <Page
+              {...paramsToSet}
+            />
+            }
+          } />
+        </Switch>
+        <Footer/>
+      </div>
+    );
+
+    let main = (
+      !Object.keys(this.state.post).length ?
+        (isFetching ?
+          null :
+          (errorMessage ?
+            <ErrorMessageModal errorMessage={errorMessage} />
+          :
+          <ErrorMessageModal errorMessage={"Couldn't retrieve the content, please contact the administrator"} />)
+        ): mainContent
+    );
+
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container h-100"}>
-        {Object.keys(this.state.post).length ?
-          <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100 d-flex flex-column"}>
-            <UserPanel
-              closeUserPanel={closeUserPanel}
-              historyPush={history.push}
-              location={location}
-              panelOpen={userPanelOpen}
-            />
-            <LoginModal />
-            <Header
-              history={history}
-              location={location}
-              saleType={get(this.state, 'post.sale_type')}
-              searchType={get(this.state, 'post.search_type')}
-              locationTerm={get(this.state, 'post.location')}
-            />
-            <Switch>
-              <Route exact path="/" render={(props) => {
-                if (nprogress && nprogress.isStarted()) {
-                  nprogress.done();
-                }
-                return <Page
-                  {...paramsToSet}
-                />
-                }
-              } />
-              {get(bundle, 'property_single_url', null) &&
-                <Route exact path={"/" + get(bundle, 'property_single_url') + "/:propertySlug"} render={props =>
-                  <Bundle load={loadPropertySingle} nprogress={nprogress}>
-                    {(Comp) => (Comp
-                      ? <Comp {...paramsToSet} />
-                      : null
-                    )}
-                  </Bundle>
-                } />
-              }
-              {get(wpp, 'instance.settings.configuration.base_slug', null) &&
-                <Route path={"/" + get(wpp, 'instance.settings.configuration.base_slug')} render={props => {
-                  return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
-                    {(Comp) => (Comp
-                      ? <Comp {...paramsToSet} />
-                      : null
-                    )}
-                  </Bundle>
-                }} />
-              }
-              {get(bundle, 'blog_base', null) &&
-                <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '')} render={props =>
-                  <Bundle load={loadArchive} nprogress={nprogress}>
-                    {(Comp) => (Comp
-                      ? <Comp {...paramsToSet} />
-                      : null
-                    )}
-                  </Bundle>
-                } />
-              }
-              {get(bundle, 'category_base', null) &&
-                <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '') + "/:categoryTitle"} render={props =>
-                  <Bundle load={loadArchive} nprogress={nprogress}>
-                    {(Comp) => (Comp
-                      ? <Comp {...paramsToSet} />
-                      : null
-                    )}
-                  </Bundle>
-                } />
-              }
-              {get(bundle, 'guide_category_base', null) &&
-                <Route path={"/" + get(bundle, 'guide_category_base').replace(/\//g, '') + "/:guideCategoryTitle"} render={props =>
-                  <Bundle load={loadGuideArchive} nprogress={nprogress}>
-                    {(Comp) => (Comp
-                      ? <Comp {...paramsToSet} />
-                      : null
-                    )}
-                  </Bundle>
-                } />
-              }
-              <Route render={(props) => {
-                if (nprogress && nprogress.isStarted()) {
-                  nprogress.done();
-                }
-                return <Page
-                  {...paramsToSet}
-                />
-                }
-              } />
-            </Switch>
-            <Footer/>
-          </div>
-          : null}
+        {main}
       </div>
     );
   }

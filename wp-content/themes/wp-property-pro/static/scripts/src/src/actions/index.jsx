@@ -7,15 +7,6 @@ export const deletePropertiesModalTermLocalFilter = termFilter => {
   }
 };
 
-export const raiseErrorMessage = (error) => ({
-  type: Lib.ERROR_MESSAGE_ACTION,
-  error: error
-});
-
-export const resetErrorMessage = () => ({
-  type: Lib.RESET_ERROR_MESSAGE_ACTION
-});
-
 export const openFormModal = (id, open) => {
   return {
     type: Lib.TOGGLE_FORM_MODAL_ACTION,
@@ -52,15 +43,56 @@ export const setSearchProps = (searchProps) => {
   }
 };
 
-export const requestLocationModalResetFetching = () => {
-  return {
-    type: Lib.REQUEST_LOCATION_MODAL_RESET_FETCHING_ACTION
-  }
-};
-
 export const requestLocationModalPosts = () => {
   return {
     type: Lib.REQUEST_LOCATION_MODAL_POSTS_ACTION
+  }
+};
+
+export const requestWordpressContentFetch = () => {
+  return {
+    type: Lib.REQUEST_WORDPRESS_CONTENT_FETCH_ACTION
+  }
+}
+
+export const requestPropertiesModalResultCount = () => {
+  return {
+    type: Lib.REQUEST_PROPERTIES_MODAL_RESULT_COUNT_ACTION
+  }
+};
+
+export const receivePropertiesModalResultCount = resultCount => {
+  return {
+    type: Lib.RECEIVE_PROPERTIES_MODAL_RESULT_COUNT_ACTION,
+    resultCount: resultCount
+  }
+};
+
+export const receivePropertiesModalResultCountFetchingError = errorMessage => {
+  return {
+    type: Lib.RECEIVE_PROPERTIES_MODAL_RESULT_COUNT_FETCHING_ERROR_ACTION,
+    errorMessage: errorMessage
+  }
+};
+
+export const receiveWordpressContentFetching = (posts) => {
+  return {
+    type: Lib.RECEIVE_WORDPRESS_CONTENT_FETCH_ACTION,
+    posts: posts
+  }
+};
+
+export const receiveWordpressContentFetchingError = errorMessage => {
+  return {
+    type: Lib.RECEIVE_WORDPRESS_CONTENT_FETCH_ERROR_ACTION,
+    errorMessage: errorMessage
+  }
+};
+
+export const receiveLocationModalFetchingError = errorMessage => {
+  return {
+    type: Lib.RECEIVE_LOCATION_MODAL_FETCHING_ERROR_ACTION,
+    errorMessage: errorMessage
   }
 }
 
@@ -69,17 +101,11 @@ export const receiveLocationModalPosts = (posts) => {
     type: Lib.RECEIVE_LOCATION_MODAL_POSTS_ACTION,
     posts: posts
   }
-}
+};
 
 export const requestSearchResultsPosts = () => {
   return {
     type: Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION
-  }
-};
-
-export const requestSearchResultsPostsResetFetching = () => {
-  return {
-    type: Lib.REQUEST_SEARCH_RESULTS_POSTS_RESET_RESULTS_ACTION
   }
 };
 
@@ -93,17 +119,25 @@ export const receiveSearchResultsPosts = (query, searchResults, total, append) =
   }
 };
 
+export const receiveSearchResultsPostsError = (errorMessage) => {
+  return {
+    type: Lib.RECEIVE_SEARCH_RESULTS_POSTS_ERROR_ACTION,
+    errorMessage: errorMessage
+  }
+};
+
 export const requestPropertySingleResult = () => {
   return {
     type: Lib.REQUEST_PROPERTY_SINGLE_RESULT_ACTION
   }
 };
 
-export const requestPropertySingleResetFetching = () => {
+export const receivePropertySingleFetchingError = (errorMessage) => {
   return {
-    type: Lib.REQUEST_PROPERTY_SINGLE_RESET_FETCHING_ACTION
+    type: Lib.RECEIVE_PROPERTY_SINGLE_FETCHING_ERROR_ACTION,
+    errorMessage: errorMessage
   }
-};
+}
 
 export const receivePropertySingleResult = (property) => {
   return {
@@ -161,24 +195,10 @@ export const setBlogPosts = (posts, allowPagination) => {
   }
 };
 
-export const updatePropertiesModalResultCount = count => {
-  return {
-    type: Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT,
-    count: count
-  }
-};
-
 export const openSaleTypesPanel = open => {
   return {
     type: Lib.SALE_TYPES_PANEL_OPEN_ACTION,
     open: open
-  }
-};
-
-export const setPropertiesModalResultCountLoading = show => {
-  return {
-    type: Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION,
-    show: show
   }
 };
 
