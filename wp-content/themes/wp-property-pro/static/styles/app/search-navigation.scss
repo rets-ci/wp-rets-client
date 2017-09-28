@@ -1,0 +1,35 @@
+.propertypro-header-search-container form .propertypro-addfilter {
+    font-weight: 700;
+    color: #d33320;
+}
+
+.propertypro-header-search {
+  height: 5rem;
+}
+
+.propertypro-header-search.propertypro-with-sale-types-panel-open {
+  height: 211px;
+
+  .propertypro-header-search-navigation {
+    transform: translateY(131px);
+  }
+
+  .propertypro-header-search-navigation::after {
+    /*@include backdrop;*/
+  }
+}
+
+.propertypro-header-search-navigation {
+  position: relative;
+  transition: transform .2s ease-in-out;
+  transform: translateY(0px);
+
+  .propertypro-drop-nav .fa {
+    transition: transform .3s ease-in-out;
+    transform: rotate(0deg);
+
+    &.up {
+      transform: rotate(-180deg);
+    }
+  }
+}

@@ -76,7 +76,7 @@ class SaleTypeHeaderSelection extends Component {
 
     let containerClasses = `row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`;
     if (!open) {
-      containerClasses += ` ${Lib.THEME_CLASSES_PREFIX}sale-type-selection-hide`;
+      containerClasses += ` ${Lib.THEME_CLASSES_PREFIX}remove`;
     }
     return (
       <div className={containerClasses}>

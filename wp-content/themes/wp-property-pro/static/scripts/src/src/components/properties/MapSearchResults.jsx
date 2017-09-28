@@ -341,8 +341,14 @@ class MapSearchResults extends Component {
         </section>
       </div>
     );
+
+    let containerClass = `${Lib.THEME_CLASSES_PREFIX}search-map-container h-100`;
+    if (this.props.saleTypesPanelOpen) {
+      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
+    }
+
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container h-100"}>
+      <div className={containerClass}>
         {elementToShow}
       </div>
     );

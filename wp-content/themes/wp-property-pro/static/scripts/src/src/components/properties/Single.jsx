@@ -360,7 +360,7 @@ class Single extends Component {
                   <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Agent Phone Number:</span> {RETSAgent.phone}
                 </li>
                 <li>
-                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Office:</span> {this.props.listing_office}
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Office:</span> {Util.decodeHtml(this.props.listing_office)}
                 </li>
                 <li>
                   <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>Office Phone Number:</span> {officePhoneNumber}
