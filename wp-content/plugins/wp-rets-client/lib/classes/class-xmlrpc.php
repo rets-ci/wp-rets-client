@@ -998,7 +998,7 @@ namespace UsabilityDynamics\WPRETSC {
           'createWPPTerms' => false
         ));
 
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.updateProperty] request.', 'info' );
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.updateProperty] request.', 'debug' );
 
         //if( !empty( $post_data[ 'ID' ] ) ) {}
 
@@ -1841,12 +1841,12 @@ namespace UsabilityDynamics\WPRETSC {
       static protected function flush_cache( $post_id ) {
         global $wrc_rets_id;
 
-        ud_get_wp_rets_client()->write_log( "Flushing object cache for [" . $post_id . "] post_id", 'info' );
+        ud_get_wp_rets_client()->write_log( "Flushing object cache for [" . $post_id . "] post_id", 'debug' );
         clean_post_cache( $post_id );
         do_action( 'wrc::xmlrpc::on_flush_cache', $post_id );
 
         if( !empty( $wrc_rets_id ) ) {
-          ud_get_wp_rets_client()->write_log( "Flushing object cache [mls-id-" . $wrc_rets_id . "]", 'info' );
+          ud_get_wp_rets_client()->write_log( "Flushing object cache [mls-id-" . $wrc_rets_id . "]", 'debug' );
           wp_cache_delete( 'mls-id-' . $wrc_rets_id, 'wp-rets-client' );
         }
 

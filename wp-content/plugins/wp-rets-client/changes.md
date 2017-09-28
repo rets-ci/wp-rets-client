@@ -1,3 +1,8 @@
+#### 0.3.5
+* Added flushing of cache object to all API endpoints which are managing property data (add/update/delete).
+* Fixed `wpp.trashProperty`. There were different issues because of setting of trash status directly via SQL query.
+* Fixed triggering of ElasticPress sync events on `wpp.deleteProperty`, `wpp.updateProperty` API requests.
+
 #### 0.3.4
 * Added WP-Property Agent matching for rets.ci listings based on [rets_id] user meta field.
 * Added automatic creation of non-existing WPP attributes and WPP taxonomies on listing creation/updating if specific options enabled. 
