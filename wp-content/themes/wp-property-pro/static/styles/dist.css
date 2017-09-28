@@ -1768,6 +1768,82 @@ button.swiper-pagination-bullet {
     transition: transform .3s ease-in-out;
     transform: translateX(0%); }
 
+.propertypro-sale-type-selection {
+  background-color: #d03528;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0; }
+
+.propertypro-sale-type-selection .propertypro-selection-container {
+  text-align: center; }
+
+.propertypro-sale-type-selection .propertypro-selection-container a {
+  color: #fff;
+  display: block;
+  padding: 1.6rem 0; }
+
+.propertypro-sale-type-selection .propertypro-selection-container a img {
+  display: block;
+  margin: 0 auto 1rem auto; }
+
+.propertypro-sale-type-selection .propertypro-selection-container a:hover {
+  background: rgba(65, 65, 65, 0.3); }
+
+/*.propertypro-sale-type-selection div a .icon-container svg:hover .sale-icons {
+  fill: #000;
+}*/
+.propertypro-sale-type-selection div a span {
+  margin-top: 1rem; }
+
+/* Extra small devices (portrait phones, less than 360px) */
+@media screen and (max-width: 22.5em) {
+  .propertypro-sale-type-selection div p {
+    color: #ffffff;
+    margin-top: 1rem;
+    text-align: center; } }
+
+/** ANIMATION **/
+.propertypro-sale-type-selection {
+  transition: transform .3s ease-in-out, opacity .3s ease-in-out;
+  transform: translateY(0%); }
+  .propertypro-sale-type-selection.remove {
+    opacity: 0;
+    transform: translateY(-131px); }
+
+/** END OF ANIMATION **/
+.propertypro-header-search-container form .propertypro-addfilter {
+  font-weight: 700;
+  color: #d33320; }
+
+.propertypro-header-search {
+  height: 5rem; }
+
+.propertypro-header-search.propertypro-with-sale-types-panel-open {
+  height: 211px; }
+  .propertypro-header-search.propertypro-with-sale-types-panel-open .propertypro-header-search-navigation {
+    transform: translateY(131px); }
+  .propertypro-header-search.propertypro-with-sale-types-panel-open .propertypro-header-search-navigation::after {
+    /*@include backdrop;*/ }
+
+.propertypro-header-search-navigation {
+  position: relative;
+  transition: transform .2s ease-in-out;
+  transform: translateY(0px); }
+  .propertypro-header-search-navigation .propertypro-drop-nav .fa {
+    transition: transform .3s ease-in-out;
+    transform: rotate(0deg); }
+    .propertypro-header-search-navigation .propertypro-drop-nav .fa.up {
+      transform: rotate(-180deg); }
+
+.propertypro-search-map-container.propertypro-with-sale-types-panel-open::after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1001; }
+
 /* @TODO split this file into components */
 /**
  * Theme Name: PropertyPro
@@ -1849,12 +1925,6 @@ html, body {
 .propertypro-toolbar.propertypro-guide-toolbar {
   position: absolute;
   z-index: 2; }
-
-.propertypro-toolbar.propertypro-header-search {
-  /*height: 5rem;*/ }
-
-.propertypro-toolbar.propertypro-header-search-with-open-sale-types-panel {
-  height: 13rem; }
 
 .propertypro-login-box, .propertypro-login-box:visited {
   background: transparent;
@@ -3348,40 +3418,6 @@ p.propertypro-gentle-error {
   border-radius: .1875rem;
   background-color: #d33320; }
 
-.propertypro-sale-type-selection {
-  background-color: #d03528; }
-
-.propertypro-sale-type-selection-hide {
-  display: none; }
-
-.propertypro-sale-type-selection .propertypro-selection-container {
-  text-align: center; }
-
-.propertypro-sale-type-selection .propertypro-selection-container a {
-  color: #fff;
-  display: block;
-  padding: 1.6rem 0; }
-
-.propertypro-sale-type-selection .propertypro-selection-container a img {
-  display: block;
-  margin: 0 auto 1rem auto; }
-
-.propertypro-sale-type-selection .propertypro-selection-container a:hover {
-  background: rgba(65, 65, 65, 0.3); }
-
-/*.propertypro-sale-type-selection div a .icon-container svg:hover .sale-icons {
-  fill: #000;
-}*/
-.propertypro-sale-type-selection div a span {
-  margin-top: 1rem; }
-
-/*.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
-    position: static;
-}*/
-.propertypro-header-search-container form .propertypro-addfilter {
-  font-weight: 700;
-  color: #d33320; }
-
 /*-----------------------------------------------------------------------------------*/
 /*  Property Single
 /*-----------------------------------------------------------------------------------*/
@@ -4805,11 +4841,7 @@ ul.propertypro-details-list li span.propertypro-item-name {
   .propertypro-guide-masthead .propertypro-guide-header-container, .propertypro-article-masthead .propertypro-article-header-container {
     max-width: 20rem;
     margin-bottom: 0;
-    margin-top: 0; }
-  .propertypro-sale-type-selection div p {
-    color: #ffffff;
-    margin-top: 1rem;
-    text-align: center; } }
+    margin-top: 0; } }
 
 .propertypro-listing-carousel .propertypro-card {
   margin-right: 1.25rem; }
