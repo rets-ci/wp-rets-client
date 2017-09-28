@@ -51,8 +51,8 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/wp-content/themes/wp-property-pro/static/scripts/src/dist/',
-        chunkFilename: '[name].bundle.js',
-        filename: 'bundle.js'
+        chunkFilename: '[name].chunk.js',
+        filename: 'bundle.[chunkhash:6].js'
     },
     module: {
         rules: [
