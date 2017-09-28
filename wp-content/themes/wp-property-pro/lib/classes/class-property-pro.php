@@ -111,13 +111,22 @@ namespace UsabilityDynamics {
     
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ), null, true);
-      wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
+
+      /** Detect bundle file at dist dir, it need because bundle filename contain dynamic chunk hash */
+      if($_jsFiles = scandir(get_stylesheet_directory() . '/static/scripts/src/dist')){
+        foreach ($_jsFiles as $filename){
+          if(strstr($filename, 'bundle')){
+            wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/' . $filename, [], null, true);
+            break;
+          }
+        }
+      }
+
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
       }
 
       $params = $this->property_pro_get_base_info();
-
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
        * now host value in theme composer.json
