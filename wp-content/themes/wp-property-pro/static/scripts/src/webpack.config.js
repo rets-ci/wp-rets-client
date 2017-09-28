@@ -97,7 +97,8 @@ module.exports = {
       },
       extensions: ['.js','.jsx'],
       modules: [
-        'node_modules'
+        'node_modules',
+        path.join(__dirname, '../../styles/app')
       ]
     },
     // devtool: !PROD ? 'source-map' : false,
