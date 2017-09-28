@@ -224,6 +224,9 @@ namespace UsabilityDynamics {
 
 
         $sale_type = $label;
+
+        $_types = $_property_types;
+
         if (!in_array($label, ['Rent', 'Sale'])){
           $term = get_term_by('slug', $label, $taxonomy);
           $types = array_map(function ($id) use ($taxonomy) {
@@ -233,11 +236,17 @@ namespace UsabilityDynamics {
             ];
           }, get_term_children($term->term_id, $taxonomy));
           $sale_type = 'Sale';
+
+          $_types = $types;
+        }elseif($label === 'Sale'){
+          $_types = array_filter($_property_types, function($type){
+            return $type['slug'] !== 'residential-apartment';
+          });
         }
 
         $property_search_options[$label] = [
           'sale_type' => $sale_type,
-          'property_types' => isset($types) && !empty($types) ? array_values($types) : array_values($_property_types)
+          'property_types' => array_values($_types)
         ];
 
       }
