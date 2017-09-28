@@ -1807,7 +1807,7 @@ button.swiper-pagination-bullet {
 .propertypro-sale-type-selection {
   transition: transform .3s ease-in-out, opacity .3s ease-in-out;
   transform: translateY(0%); }
-  .propertypro-sale-type-selection.remove {
+  .propertypro-sale-type-selection.propertypro-remove {
     opacity: 0;
     transform: translateY(-131px); }
 

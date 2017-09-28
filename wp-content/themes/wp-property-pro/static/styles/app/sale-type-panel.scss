@@ -47,7 +47,7 @@
     transition: transform .3s ease-in-out, opacity .3s ease-in-out;
     transform: translateY(0%);
 
-    &.remove {
+    &.propertypro-remove {
         opacity: 0;
         transform: translateY(-131px);
     }
