@@ -53,11 +53,6 @@ class HeaderSearch extends Component {
       searchFilters
     } = this.props;
     
-    let containerClasses = `row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`;
-    if (!this.props.saleTypesPanelOpen) {
-      containerClasses += ` ${Lib.THEME_CLASSES_PREFIX}sale-type-selection-hide`;
-    }
-
     let searchType = searchFilters['search_type'];
 
     return (
@@ -88,7 +83,13 @@ class HeaderSearch extends Component {
             }
           </div>
           <div className={`hidden-sm-down col-md-2 d-flex justify-content-center align-items-center ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
-            <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{searchType} <i className="fa fa-caret-down"></i></a>
+            <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>
+              {searchType}
+              { this.props.saleTypesPanelOpen
+                  ? <i className="fa fa-caret-down up ml-2"></i>
+                  : <i className="fa fa-caret-down ml-2"></i>
+              }
+            </a>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-10 col-md-7 col-lg-8 d-flex align-items-center"}>
             <SearchFilters filters={searchFilters} propertyTypeOptions={propertyTypeOptions} />

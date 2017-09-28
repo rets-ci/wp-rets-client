@@ -97,14 +97,6 @@ html, body {
     z-index: 2;
 }
 
-.propertypro-toolbar.propertypro-header-search {
-    /*height: 5rem;*/
-}
-
-.propertypro-toolbar.propertypro-header-search-with-open-sale-types-panel {
-    height: 13rem;
-}
-
 .propertypro-login-box, .propertypro-login-box:visited {
     background: transparent;
     border-radius: .1875rem;
@@ -1901,50 +1893,6 @@ p.propertypro-gentle-error {
     color: #fff;
     border-radius: .1875rem;
     background-color: #d33320;
-}
-
-.propertypro-sale-type-selection {
-    background-color: #d03528;
-}
-
-.propertypro-sale-type-selection-hide {
-    display: none;
-}
-
-.propertypro-sale-type-selection .propertypro-selection-container {
-    text-align: center;
-}
-
-.propertypro-sale-type-selection .propertypro-selection-container a {
-    color: #fff;
-    display: block;
-    padding: 1.6rem 0;
-}
-
-.propertypro-sale-type-selection .propertypro-selection-container a img {
-    display: block;
-    margin: 0 auto 1rem auto;
-}
-
-.propertypro-sale-type-selection .propertypro-selection-container a:hover {
-    background: rgba(65, 65, 65, .3);
-}
-
-/*.propertypro-sale-type-selection div a .icon-container svg:hover .sale-icons {
-  fill: #000;
-}*/
-
-.propertypro-sale-type-selection div a span {
-    margin-top: 1rem;
-}
-
-/*.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
-    position: static;
-}*/
-
-.propertypro-header-search-container form .propertypro-addfilter {
-    font-weight: 700;
-    color: #d33320;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -3987,12 +3935,6 @@ ul.propertypro-details-list li span.propertypro-item-name {
         max-width: 20rem;
         margin-bottom: 0;
         margin-top: 0;
-    }
-
-    .propertypro-sale-type-selection div p {
-        color: #ffffff;
-        margin-top: 1rem;
-        text-align: center;
     }
 }
 
