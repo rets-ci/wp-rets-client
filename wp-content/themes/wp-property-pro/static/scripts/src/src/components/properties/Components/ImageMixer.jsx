@@ -104,11 +104,15 @@ class ImageMixer extends Component {
                 style={{ backgroundImage : `url(${subset[0]})` }}
                 onClick={this.imageMixerClicked.bind(this, index * 2 + 1)}
               />
-              <div
-                className="swiper-lazy img-sm"
-                style={{ backgroundImage : `url(${subset[1]})` }}
-                onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
-              />
+              {
+                subset[1]
+                ?  <div
+                      className="swiper-lazy img-sm"
+                      style={{backgroundImage: `url(${subset[1]})`}}
+                      onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
+                  />
+                : null
+              }
             </div>
           ))
         }
