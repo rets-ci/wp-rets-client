@@ -17,7 +17,6 @@ import 'index.scss';
 // set up all relevant shims and polyfills for various browsers
 shims();
 
-console.log('Test refreshing bundle');
 
 let devEnv = process && process.env && process.env.NODE_ENV === 'development';
 let store;
