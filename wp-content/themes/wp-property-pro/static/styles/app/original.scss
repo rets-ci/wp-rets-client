@@ -203,7 +203,7 @@ html, body {
     display: block;
     width: 100%;
     text-align: left;
-    padding-left: 10rem;
+    padding-left: 11rem;
     color: rgba(139, 140, 141, 0.4);
     outline: none;
     box-shadow: none;
@@ -227,7 +227,7 @@ html, body {
 }
 
 .propertypro-search-box .propertypro-drop-search {
-    width: 9.0625rem;
+    width: 10rem;
     height: 5rem;
     border-radius: .25rem 0 0 .25rem;
     position: absolute;
@@ -2874,7 +2874,7 @@ ul.propertypro-details-list li span.propertypro-item-name {
 .propertypro-secondary-button, .propertypro-secondary-button:focus, .propertypro-secondary-button:hover, .propertypro-secondary-button:active {
     border-color: #d6dee3;
     background-color: #d6dee3;
-    color: #b6bec4;
+    color: #414141;
 }
 
 .propertypro-loading-overlay:after {
