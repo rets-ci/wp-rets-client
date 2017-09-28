@@ -45,7 +45,7 @@ const HeaderContent = ({history, location, locationTerm, openLoginModal, openUse
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search px-3";
 
     if (saleTypesPanelOpen) {
-      sectionClassnames += " with-sale-types-panel-open";
+      sectionClassnames += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
     }
   } else if (pathRoot.indexOf(get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
     headerElement = <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>;
