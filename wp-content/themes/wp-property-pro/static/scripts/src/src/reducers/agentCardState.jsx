@@ -13,7 +13,6 @@ const agentCardState = (state=defaultState, action) => {
           tab: action.tab
         }
       case Lib.LOCATION_CHANGE:
-        console.log('Location change');
         return {
           ...state,
           tab: defaultState.tab

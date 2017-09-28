@@ -29,7 +29,7 @@ class Mobile extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll, true);
   }
 
 
