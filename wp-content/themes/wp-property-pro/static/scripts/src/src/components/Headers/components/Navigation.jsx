@@ -8,7 +8,7 @@ const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
       {
         get(bundle, 'static_images_url', null)
           ?
-          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}menu-icon hidden-md-up my-auto mr-3`} onClick={openUserPanel}>
+          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}menu-icon hidden-md-up my-auto mr-3`} onClick={(eve) => { eve.preventDefault();  openUserPanel(); }}>
             <span>☰</span>
           </a>
           : null
