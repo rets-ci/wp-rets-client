@@ -115,11 +115,13 @@ namespace UsabilityDynamics {
       $assets = json_decode(file_get_contents(get_stylesheet_directory() . '/static/scripts/src/assets.json'), true);
 
       if(isset($assets['main']['js'])){
-        wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/' . $assets['main']['js'], [], null, true);
+        $fileName = end(explode('/', $assets['main']['js']));
+        wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/' . $fileName, [], null, true);
       }
 
       if(isset($assets['main']['css'])){
-        wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/' . $assets['main']['css']);
+        $fileName = end(explode('/', $assets['main']['css']));
+        wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/' . $fileName);
       }
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
