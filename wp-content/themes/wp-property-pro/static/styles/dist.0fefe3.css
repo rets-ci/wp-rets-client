@@ -1,0 +1,4847 @@
+.propertypro-modal {
+  color: #414141; }
+
+.propertypro-modal .modal-dialog .modal-header .modal-title {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.5rem;
+  text-align: left; }
+
+.propertypro-modal .modal-dialog .modal-body {
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem; }
+/*! nouislider - 9.2.0 - 2017-01-11 10:35:35 */
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+.noUi-target,
+.noUi-target * {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -ms-touch-action: none;
+  touch-action: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.noUi-target {
+  position: relative;
+  direction: ltr; }
+
+.noUi-base {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  /* Fix 401 */ }
+
+.noUi-connect {
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+.noUi-origin {
+  position: absolute;
+  height: 0;
+  width: 0; }
+
+.noUi-handle {
+  position: relative;
+  z-index: 1; }
+
+.noUi-state-tap .noUi-connect,
+.noUi-state-tap .noUi-origin {
+  -webkit-transition: top 0.3s, right 0.3s, bottom 0.3s, left 0.3s;
+  transition: top 0.3s, right 0.3s, bottom 0.3s, left 0.3s; }
+
+.noUi-state-drag * {
+  cursor: inherit !important; }
+
+/* Painting and performance;
+ * Browsers can paint handles in their own layer.
+ */
+.noUi-base,
+.noUi-handle {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+/* Slider size and handle placement;
+ */
+.noUi-horizontal {
+  height: 18px; }
+
+.noUi-horizontal .noUi-handle {
+  width: 34px;
+  height: 28px;
+  left: -17px;
+  top: -6px; }
+
+.noUi-vertical {
+  width: 18px; }
+
+.noUi-vertical .noUi-handle {
+  width: 28px;
+  height: 34px;
+  left: -6px;
+  top: -17px; }
+
+/* Styling;
+ */
+.noUi-target {
+  background: #FAFAFA;
+  border-radius: 4px;
+  border: 1px solid #D3D3D3;
+  box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB; }
+
+.noUi-connect {
+  background: #3FB8AF;
+  box-shadow: inset 0 0 3px rgba(51, 51, 51, 0.45);
+  -webkit-transition: background 450ms;
+  transition: background 450ms; }
+
+/* Handles and cursors;
+ */
+.noUi-draggable {
+  cursor: ew-resize; }
+
+.noUi-vertical .noUi-draggable {
+  cursor: ns-resize; }
+
+.noUi-handle {
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+  background: #FFF;
+  cursor: default;
+  box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB; }
+
+.noUi-active {
+  box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #DDD, 0 3px 6px -3px #BBB; }
+
+/* Handle stripes;
+ */
+.noUi-handle:before,
+.noUi-handle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 14px;
+  width: 1px;
+  background: #E8E7E6;
+  left: 14px;
+  top: 6px; }
+
+.noUi-handle:after {
+  left: 17px; }
+
+.noUi-vertical .noUi-handle:before,
+.noUi-vertical .noUi-handle:after {
+  width: 14px;
+  height: 1px;
+  left: 6px;
+  top: 14px; }
+
+.noUi-vertical .noUi-handle:after {
+  top: 17px; }
+
+/* Disabled state;
+ */
+[disabled] .noUi-connect {
+  background: #B8B8B8; }
+
+[disabled].noUi-target,
+[disabled].noUi-handle,
+[disabled] .noUi-handle {
+  cursor: not-allowed; }
+
+/* Base;
+ *
+ */
+.noUi-pips,
+.noUi-pips * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.noUi-pips {
+  position: absolute;
+  color: #999; }
+
+/* Values;
+ *
+ */
+.noUi-value {
+  position: absolute;
+  text-align: center; }
+
+.noUi-value-sub {
+  color: #ccc;
+  font-size: 10px; }
+
+/* Markings;
+ *
+ */
+.noUi-marker {
+  position: absolute;
+  background: #CCC; }
+
+.noUi-marker-sub {
+  background: #AAA; }
+
+.noUi-marker-large {
+  background: #AAA; }
+
+/* Horizontal layout;
+ *
+ */
+.noUi-pips-horizontal {
+  padding: 10px 0;
+  height: 80px;
+  top: 100%;
+  left: 0;
+  width: 100%; }
+
+.noUi-value-horizontal {
+  -webkit-transform: translate3d(-50%, 50%, 0);
+  transform: translate3d(-50%, 50%, 0); }
+
+.noUi-marker-horizontal.noUi-marker {
+  margin-left: -1px;
+  width: 2px;
+  height: 5px; }
+
+.noUi-marker-horizontal.noUi-marker-sub {
+  height: 10px; }
+
+.noUi-marker-horizontal.noUi-marker-large {
+  height: 15px; }
+
+/* Vertical layout;
+ *
+ */
+.noUi-pips-vertical {
+  padding: 0 10px;
+  height: 100%;
+  top: 0;
+  left: 100%; }
+
+.noUi-value-vertical {
+  -webkit-transform: translate3d(0, 50%, 0);
+  transform: translate3d(0, 50%, 0);
+  padding-left: 25px; }
+
+.noUi-marker-vertical.noUi-marker {
+  width: 5px;
+  height: 2px;
+  margin-top: -1px; }
+
+.noUi-marker-vertical.noUi-marker-sub {
+  width: 10px; }
+
+.noUi-marker-vertical.noUi-marker-large {
+  width: 15px; }
+
+.noUi-tooltip {
+  display: block;
+  position: absolute;
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+  background: #fff;
+  color: #000;
+  padding: 5px;
+  text-align: center; }
+
+.noUi-horizontal .noUi-tooltip {
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  left: 50%;
+  bottom: 120%; }
+
+.noUi-vertical .noUi-tooltip {
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  top: 50%;
+  right: 120%; }
+/* Slider */
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent; }
+
+.slick-list {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0; }
+
+.slick-list:focus {
+  outline: none; }
+
+.slick-list.dragging {
+  cursor: pointer;
+  cursor: hand; }
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+.slick-track {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
+.slick-track:before,
+.slick-track:after {
+  display: table;
+  content: ''; }
+
+.slick-track:after {
+  clear: both; }
+
+.slick-loading .slick-track {
+  visibility: hidden; }
+
+.slick-slide {
+  display: none;
+  float: left;
+  height: 100%;
+  min-height: 1px; }
+
+[dir='rtl'] .slick-slide {
+  float: right; }
+
+.slick-slide img {
+  display: block; }
+
+.slick-slide.slick-loading img {
+  display: none; }
+
+.slick-slide.dragging img {
+  pointer-events: none; }
+
+.slick-initialized .slick-slide {
+  display: block; }
+
+.slick-loading .slick-slide {
+  visibility: hidden; }
+
+.slick-vertical .slick-slide {
+  display: block;
+  height: auto;
+  border: 1px solid transparent; }
+
+.slick-arrow.slick-hidden {
+  display: none; }
+/*!
+ * Datepicker for Bootstrap v1.7.1 (https://github.com/uxsolutions/bootstrap-datepicker)
+ *
+ * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ */
+.datepicker {
+  border-radius: 4px;
+  direction: ltr; }
+
+.datepicker-inline {
+  width: 220px; }
+
+.datepicker-rtl {
+  direction: rtl; }
+
+.datepicker-rtl.dropdown-menu {
+  left: auto; }
+
+.datepicker-rtl table tr td span {
+  float: right; }
+
+.datepicker-dropdown {
+  top: 0;
+  left: 0;
+  padding: 4px; }
+
+.datepicker-dropdown:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid rgba(0, 0, 0, 0.15);
+  border-top: 0;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  position: absolute; }
+
+.datepicker-dropdown:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #fff;
+  border-top: 0;
+  position: absolute; }
+
+.datepicker-dropdown.datepicker-orient-left:before {
+  left: 6px; }
+
+.datepicker-dropdown.datepicker-orient-left:after {
+  left: 7px; }
+
+.datepicker-dropdown.datepicker-orient-right:before {
+  right: 6px; }
+
+.datepicker-dropdown.datepicker-orient-right:after {
+  right: 7px; }
+
+.datepicker-dropdown.datepicker-orient-bottom:before {
+  top: -7px; }
+
+.datepicker-dropdown.datepicker-orient-bottom:after {
+  top: -6px; }
+
+.datepicker-dropdown.datepicker-orient-top:before {
+  bottom: -7px;
+  border-bottom: 0;
+  border-top: 7px solid rgba(0, 0, 0, 0.15); }
+
+.datepicker-dropdown.datepicker-orient-top:after {
+  bottom: -6px;
+  border-bottom: 0;
+  border-top: 6px solid #fff; }
+
+.datepicker table {
+  margin: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.datepicker table tr td,
+.datepicker table tr th {
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: none; }
+
+.table-striped .datepicker table tr td,
+.table-striped .datepicker table tr th {
+  background-color: transparent; }
+
+.datepicker table tr td.old,
+.datepicker table tr td.new {
+  color: #777777; }
+
+.datepicker table tr td.day:hover,
+.datepicker table tr td.focused {
+  background: #eeeeee;
+  cursor: pointer; }
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  background: none;
+  color: #777777;
+  cursor: default; }
+
+.datepicker table tr td.highlighted {
+  color: #000;
+  background-color: #d9edf7;
+  border-color: #85c5e5;
+  border-radius: 0; }
+
+.datepicker table tr td.highlighted:focus,
+.datepicker table tr td.highlighted.focus {
+  color: #000;
+  background-color: #afd9ee;
+  border-color: #298fc2; }
+
+.datepicker table tr td.highlighted:hover {
+  color: #000;
+  background-color: #afd9ee;
+  border-color: #52addb; }
+
+.datepicker table tr td.highlighted:active,
+.datepicker table tr td.highlighted.active {
+  color: #000;
+  background-color: #afd9ee;
+  border-color: #52addb; }
+
+.datepicker table tr td.highlighted:active:hover,
+.datepicker table tr td.highlighted.active:hover,
+.datepicker table tr td.highlighted:active:focus,
+.datepicker table tr td.highlighted.active:focus,
+.datepicker table tr td.highlighted:active.focus,
+.datepicker table tr td.highlighted.active.focus {
+  color: #000;
+  background-color: #91cbe8;
+  border-color: #298fc2; }
+
+.datepicker table tr td.highlighted.disabled:hover,
+.datepicker table tr td.highlighted[disabled]:hover,
+fieldset[disabled] .datepicker table tr td.highlighted:hover,
+.datepicker table tr td.highlighted.disabled:focus,
+.datepicker table tr td.highlighted[disabled]:focus,
+fieldset[disabled] .datepicker table tr td.highlighted:focus,
+.datepicker table tr td.highlighted.disabled.focus,
+.datepicker table tr td.highlighted[disabled].focus,
+fieldset[disabled] .datepicker table tr td.highlighted.focus {
+  background-color: #d9edf7;
+  border-color: #85c5e5; }
+
+.datepicker table tr td.highlighted.focused {
+  background: #afd9ee; }
+
+.datepicker table tr td.highlighted.disabled,
+.datepicker table tr td.highlighted.disabled:active {
+  background: #d9edf7;
+  color: #777777; }
+
+.datepicker table tr td.today {
+  color: #000;
+  background-color: #ffdb99;
+  border-color: #ffb733; }
+
+.datepicker table tr td.today:focus,
+.datepicker table tr td.today.focus {
+  color: #000;
+  background-color: #ffc966;
+  border-color: #b37400; }
+
+.datepicker table tr td.today:hover {
+  color: #000;
+  background-color: #ffc966;
+  border-color: #f59e00; }
+
+.datepicker table tr td.today:active,
+.datepicker table tr td.today.active {
+  color: #000;
+  background-color: #ffc966;
+  border-color: #f59e00; }
+
+.datepicker table tr td.today:active:hover,
+.datepicker table tr td.today.active:hover,
+.datepicker table tr td.today:active:focus,
+.datepicker table tr td.today.active:focus,
+.datepicker table tr td.today:active.focus,
+.datepicker table tr td.today.active.focus {
+  color: #000;
+  background-color: #ffbc42;
+  border-color: #b37400; }
+
+.datepicker table tr td.today.disabled:hover,
+.datepicker table tr td.today[disabled]:hover,
+fieldset[disabled] .datepicker table tr td.today:hover,
+.datepicker table tr td.today.disabled:focus,
+.datepicker table tr td.today[disabled]:focus,
+fieldset[disabled] .datepicker table tr td.today:focus,
+.datepicker table tr td.today.disabled.focus,
+.datepicker table tr td.today[disabled].focus,
+fieldset[disabled] .datepicker table tr td.today.focus {
+  background-color: #ffdb99;
+  border-color: #ffb733; }
+
+.datepicker table tr td.today.focused {
+  background: #ffc966; }
+
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today.disabled:active {
+  background: #ffdb99;
+  color: #777777; }
+
+.datepicker table tr td.range {
+  color: #000;
+  background-color: #eeeeee;
+  border-color: #bbbbbb;
+  border-radius: 0; }
+
+.datepicker table tr td.range:focus,
+.datepicker table tr td.range.focus {
+  color: #000;
+  background-color: #d5d5d5;
+  border-color: #7c7c7c; }
+
+.datepicker table tr td.range:hover {
+  color: #000;
+  background-color: #d5d5d5;
+  border-color: #9d9d9d; }
+
+.datepicker table tr td.range:active,
+.datepicker table tr td.range.active {
+  color: #000;
+  background-color: #d5d5d5;
+  border-color: #9d9d9d; }
+
+.datepicker table tr td.range:active:hover,
+.datepicker table tr td.range.active:hover,
+.datepicker table tr td.range:active:focus,
+.datepicker table tr td.range.active:focus,
+.datepicker table tr td.range:active.focus,
+.datepicker table tr td.range.active.focus {
+  color: #000;
+  background-color: #c3c3c3;
+  border-color: #7c7c7c; }
+
+.datepicker table tr td.range.disabled:hover,
+.datepicker table tr td.range[disabled]:hover,
+fieldset[disabled] .datepicker table tr td.range:hover,
+.datepicker table tr td.range.disabled:focus,
+.datepicker table tr td.range[disabled]:focus,
+fieldset[disabled] .datepicker table tr td.range:focus,
+.datepicker table tr td.range.disabled.focus,
+.datepicker table tr td.range[disabled].focus,
+fieldset[disabled] .datepicker table tr td.range.focus {
+  background-color: #eeeeee;
+  border-color: #bbbbbb; }
+
+.datepicker table tr td.range.focused {
+  background: #d5d5d5; }
+
+.datepicker table tr td.range.disabled,
+.datepicker table tr td.range.disabled:active {
+  background: #eeeeee;
+  color: #777777; }
+
+.datepicker table tr td.range.highlighted {
+  color: #000;
+  background-color: #e4eef3;
+  border-color: #9dc1d3; }
+
+.datepicker table tr td.range.highlighted:focus,
+.datepicker table tr td.range.highlighted.focus {
+  color: #000;
+  background-color: #c1d7e3;
+  border-color: #4b88a6; }
+
+.datepicker table tr td.range.highlighted:hover {
+  color: #000;
+  background-color: #c1d7e3;
+  border-color: #73a6c0; }
+
+.datepicker table tr td.range.highlighted:active,
+.datepicker table tr td.range.highlighted.active {
+  color: #000;
+  background-color: #c1d7e3;
+  border-color: #73a6c0; }
+
+.datepicker table tr td.range.highlighted:active:hover,
+.datepicker table tr td.range.highlighted.active:hover,
+.datepicker table tr td.range.highlighted:active:focus,
+.datepicker table tr td.range.highlighted.active:focus,
+.datepicker table tr td.range.highlighted:active.focus,
+.datepicker table tr td.range.highlighted.active.focus {
+  color: #000;
+  background-color: #a8c8d8;
+  border-color: #4b88a6; }
+
+.datepicker table tr td.range.highlighted.disabled:hover,
+.datepicker table tr td.range.highlighted[disabled]:hover,
+fieldset[disabled] .datepicker table tr td.range.highlighted:hover,
+.datepicker table tr td.range.highlighted.disabled:focus,
+.datepicker table tr td.range.highlighted[disabled]:focus,
+fieldset[disabled] .datepicker table tr td.range.highlighted:focus,
+.datepicker table tr td.range.highlighted.disabled.focus,
+.datepicker table tr td.range.highlighted[disabled].focus,
+fieldset[disabled] .datepicker table tr td.range.highlighted.focus {
+  background-color: #e4eef3;
+  border-color: #9dc1d3; }
+
+.datepicker table tr td.range.highlighted.focused {
+  background: #c1d7e3; }
+
+.datepicker table tr td.range.highlighted.disabled,
+.datepicker table tr td.range.highlighted.disabled:active {
+  background: #e4eef3;
+  color: #777777; }
+
+.datepicker table tr td.range.today {
+  color: #000;
+  background-color: #f7ca77;
+  border-color: #f1a417; }
+
+.datepicker table tr td.range.today:focus,
+.datepicker table tr td.range.today.focus {
+  color: #000;
+  background-color: #f4b747;
+  border-color: #815608; }
+
+.datepicker table tr td.range.today:hover {
+  color: #000;
+  background-color: #f4b747;
+  border-color: #bf800c; }
+
+.datepicker table tr td.range.today:active,
+.datepicker table tr td.range.today.active {
+  color: #000;
+  background-color: #f4b747;
+  border-color: #bf800c; }
+
+.datepicker table tr td.range.today:active:hover,
+.datepicker table tr td.range.today.active:hover,
+.datepicker table tr td.range.today:active:focus,
+.datepicker table tr td.range.today.active:focus,
+.datepicker table tr td.range.today:active.focus,
+.datepicker table tr td.range.today.active.focus {
+  color: #000;
+  background-color: #f2aa25;
+  border-color: #815608; }
+
+.datepicker table tr td.range.today.disabled:hover,
+.datepicker table tr td.range.today[disabled]:hover,
+fieldset[disabled] .datepicker table tr td.range.today:hover,
+.datepicker table tr td.range.today.disabled:focus,
+.datepicker table tr td.range.today[disabled]:focus,
+fieldset[disabled] .datepicker table tr td.range.today:focus,
+.datepicker table tr td.range.today.disabled.focus,
+.datepicker table tr td.range.today[disabled].focus,
+fieldset[disabled] .datepicker table tr td.range.today.focus {
+  background-color: #f7ca77;
+  border-color: #f1a417; }
+
+.datepicker table tr td.range.today.disabled,
+.datepicker table tr td.range.today.disabled:active {
+  background: #f7ca77;
+  color: #777777; }
+
+.datepicker table tr td.selected,
+.datepicker table tr td.selected.highlighted {
+  color: #fff;
+  background-color: #777777;
+  border-color: #555555;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); }
+
+.datepicker table tr td.selected:focus,
+.datepicker table tr td.selected.highlighted:focus,
+.datepicker table tr td.selected.focus,
+.datepicker table tr td.selected.highlighted.focus {
+  color: #fff;
+  background-color: #5e5e5e;
+  border-color: #161616; }
+
+.datepicker table tr td.selected:hover,
+.datepicker table tr td.selected.highlighted:hover {
+  color: #fff;
+  background-color: #5e5e5e;
+  border-color: #373737; }
+
+.datepicker table tr td.selected:active,
+.datepicker table tr td.selected.highlighted:active,
+.datepicker table tr td.selected.active,
+.datepicker table tr td.selected.highlighted.active {
+  color: #fff;
+  background-color: #5e5e5e;
+  border-color: #373737; }
+
+.datepicker table tr td.selected:active:hover,
+.datepicker table tr td.selected.highlighted:active:hover,
+.datepicker table tr td.selected.active:hover,
+.datepicker table tr td.selected.highlighted.active:hover,
+.datepicker table tr td.selected:active:focus,
+.datepicker table tr td.selected.highlighted:active:focus,
+.datepicker table tr td.selected.active:focus,
+.datepicker table tr td.selected.highlighted.active:focus,
+.datepicker table tr td.selected:active.focus,
+.datepicker table tr td.selected.highlighted:active.focus,
+.datepicker table tr td.selected.active.focus,
+.datepicker table tr td.selected.highlighted.active.focus {
+  color: #fff;
+  background-color: #4c4c4c;
+  border-color: #161616; }
+
+.datepicker table tr td.selected.disabled:hover,
+.datepicker table tr td.selected.highlighted.disabled:hover,
+.datepicker table tr td.selected[disabled]:hover,
+.datepicker table tr td.selected.highlighted[disabled]:hover,
+fieldset[disabled] .datepicker table tr td.selected:hover,
+fieldset[disabled] .datepicker table tr td.selected.highlighted:hover,
+.datepicker table tr td.selected.disabled:focus,
+.datepicker table tr td.selected.highlighted.disabled:focus,
+.datepicker table tr td.selected[disabled]:focus,
+.datepicker table tr td.selected.highlighted[disabled]:focus,
+fieldset[disabled] .datepicker table tr td.selected:focus,
+fieldset[disabled] .datepicker table tr td.selected.highlighted:focus,
+.datepicker table tr td.selected.disabled.focus,
+.datepicker table tr td.selected.highlighted.disabled.focus,
+.datepicker table tr td.selected[disabled].focus,
+.datepicker table tr td.selected.highlighted[disabled].focus,
+fieldset[disabled] .datepicker table tr td.selected.focus,
+fieldset[disabled] .datepicker table tr td.selected.highlighted.focus {
+  background-color: #777777;
+  border-color: #555555; }
+
+.datepicker table tr td.active,
+.datepicker table tr td.active.highlighted {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); }
+
+.datepicker table tr td.active:focus,
+.datepicker table tr td.active.highlighted:focus,
+.datepicker table tr td.active.focus,
+.datepicker table tr td.active.highlighted.focus {
+  color: #fff;
+  background-color: #286090;
+  border-color: #122b40; }
+
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active.highlighted:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74; }
+
+.datepicker table tr td.active:active,
+.datepicker table tr td.active.highlighted:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.highlighted.active {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74; }
+
+.datepicker table tr td.active:active:hover,
+.datepicker table tr td.active.highlighted:active:hover,
+.datepicker table tr td.active.active:hover,
+.datepicker table tr td.active.highlighted.active:hover,
+.datepicker table tr td.active:active:focus,
+.datepicker table tr td.active.highlighted:active:focus,
+.datepicker table tr td.active.active:focus,
+.datepicker table tr td.active.highlighted.active:focus,
+.datepicker table tr td.active:active.focus,
+.datepicker table tr td.active.highlighted:active.focus,
+.datepicker table tr td.active.active.focus,
+.datepicker table tr td.active.highlighted.active.focus {
+  color: #fff;
+  background-color: #204d74;
+  border-color: #122b40; }
+
+.datepicker table tr td.active.disabled:hover,
+.datepicker table tr td.active.highlighted.disabled:hover,
+.datepicker table tr td.active[disabled]:hover,
+.datepicker table tr td.active.highlighted[disabled]:hover,
+fieldset[disabled] .datepicker table tr td.active:hover,
+fieldset[disabled] .datepicker table tr td.active.highlighted:hover,
+.datepicker table tr td.active.disabled:focus,
+.datepicker table tr td.active.highlighted.disabled:focus,
+.datepicker table tr td.active[disabled]:focus,
+.datepicker table tr td.active.highlighted[disabled]:focus,
+fieldset[disabled] .datepicker table tr td.active:focus,
+fieldset[disabled] .datepicker table tr td.active.highlighted:focus,
+.datepicker table tr td.active.disabled.focus,
+.datepicker table tr td.active.highlighted.disabled.focus,
+.datepicker table tr td.active[disabled].focus,
+.datepicker table tr td.active.highlighted[disabled].focus,
+fieldset[disabled] .datepicker table tr td.active.focus,
+fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
+  background-color: #337ab7;
+  border-color: #2e6da4; }
+
+.datepicker table tr td span {
+  display: block;
+  width: 23%;
+  height: 54px;
+  line-height: 54px;
+  float: left;
+  margin: 1%;
+  cursor: pointer;
+  border-radius: 4px; }
+
+.datepicker table tr td span:hover,
+.datepicker table tr td span.focused {
+  background: #eeeeee; }
+
+.datepicker table tr td span.disabled,
+.datepicker table tr td span.disabled:hover {
+  background: none;
+  color: #777777;
+  cursor: default; }
+
+.datepicker table tr td span.active,
+.datepicker table tr td span.active:hover,
+.datepicker table tr td span.active.disabled,
+.datepicker table tr td span.active.disabled:hover {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); }
+
+.datepicker table tr td span.active:focus,
+.datepicker table tr td span.active:hover:focus,
+.datepicker table tr td span.active.disabled:focus,
+.datepicker table tr td span.active.disabled:hover:focus,
+.datepicker table tr td span.active.focus,
+.datepicker table tr td span.active:hover.focus,
+.datepicker table tr td span.active.disabled.focus,
+.datepicker table tr td span.active.disabled:hover.focus {
+  color: #fff;
+  background-color: #286090;
+  border-color: #122b40; }
+
+.datepicker table tr td span.active:hover,
+.datepicker table tr td span.active:hover:hover,
+.datepicker table tr td span.active.disabled:hover,
+.datepicker table tr td span.active.disabled:hover:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74; }
+
+.datepicker table tr td span.active:active,
+.datepicker table tr td span.active:hover:active,
+.datepicker table tr td span.active.disabled:active,
+.datepicker table tr td span.active.disabled:hover:active,
+.datepicker table tr td span.active.active,
+.datepicker table tr td span.active:hover.active,
+.datepicker table tr td span.active.disabled.active,
+.datepicker table tr td span.active.disabled:hover.active {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74; }
+
+.datepicker table tr td span.active:active:hover,
+.datepicker table tr td span.active:hover:active:hover,
+.datepicker table tr td span.active.disabled:active:hover,
+.datepicker table tr td span.active.disabled:hover:active:hover,
+.datepicker table tr td span.active.active:hover,
+.datepicker table tr td span.active:hover.active:hover,
+.datepicker table tr td span.active.disabled.active:hover,
+.datepicker table tr td span.active.disabled:hover.active:hover,
+.datepicker table tr td span.active:active:focus,
+.datepicker table tr td span.active:hover:active:focus,
+.datepicker table tr td span.active.disabled:active:focus,
+.datepicker table tr td span.active.disabled:hover:active:focus,
+.datepicker table tr td span.active.active:focus,
+.datepicker table tr td span.active:hover.active:focus,
+.datepicker table tr td span.active.disabled.active:focus,
+.datepicker table tr td span.active.disabled:hover.active:focus,
+.datepicker table tr td span.active:active.focus,
+.datepicker table tr td span.active:hover:active.focus,
+.datepicker table tr td span.active.disabled:active.focus,
+.datepicker table tr td span.active.disabled:hover:active.focus,
+.datepicker table tr td span.active.active.focus,
+.datepicker table tr td span.active:hover.active.focus,
+.datepicker table tr td span.active.disabled.active.focus,
+.datepicker table tr td span.active.disabled:hover.active.focus {
+  color: #fff;
+  background-color: #204d74;
+  border-color: #122b40; }
+
+.datepicker table tr td span.active.disabled:hover,
+.datepicker table tr td span.active:hover.disabled:hover,
+.datepicker table tr td span.active.disabled.disabled:hover,
+.datepicker table tr td span.active.disabled:hover.disabled:hover,
+.datepicker table tr td span.active[disabled]:hover,
+.datepicker table tr td span.active:hover[disabled]:hover,
+.datepicker table tr td span.active.disabled[disabled]:hover,
+.datepicker table tr td span.active.disabled:hover[disabled]:hover,
+fieldset[disabled] .datepicker table tr td span.active:hover,
+fieldset[disabled] .datepicker table tr td span.active:hover:hover,
+fieldset[disabled] .datepicker table tr td span.active.disabled:hover,
+fieldset[disabled] .datepicker table tr td span.active.disabled:hover:hover,
+.datepicker table tr td span.active.disabled:focus,
+.datepicker table tr td span.active:hover.disabled:focus,
+.datepicker table tr td span.active.disabled.disabled:focus,
+.datepicker table tr td span.active.disabled:hover.disabled:focus,
+.datepicker table tr td span.active[disabled]:focus,
+.datepicker table tr td span.active:hover[disabled]:focus,
+.datepicker table tr td span.active.disabled[disabled]:focus,
+.datepicker table tr td span.active.disabled:hover[disabled]:focus,
+fieldset[disabled] .datepicker table tr td span.active:focus,
+fieldset[disabled] .datepicker table tr td span.active:hover:focus,
+fieldset[disabled] .datepicker table tr td span.active.disabled:focus,
+fieldset[disabled] .datepicker table tr td span.active.disabled:hover:focus,
+.datepicker table tr td span.active.disabled.focus,
+.datepicker table tr td span.active:hover.disabled.focus,
+.datepicker table tr td span.active.disabled.disabled.focus,
+.datepicker table tr td span.active.disabled:hover.disabled.focus,
+.datepicker table tr td span.active[disabled].focus,
+.datepicker table tr td span.active:hover[disabled].focus,
+.datepicker table tr td span.active.disabled[disabled].focus,
+.datepicker table tr td span.active.disabled:hover[disabled].focus,
+fieldset[disabled] .datepicker table tr td span.active.focus,
+fieldset[disabled] .datepicker table tr td span.active:hover.focus,
+fieldset[disabled] .datepicker table tr td span.active.disabled.focus,
+fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
+  background-color: #337ab7;
+  border-color: #2e6da4; }
+
+.datepicker table tr td span.old,
+.datepicker table tr td span.new {
+  color: #777777; }
+
+.datepicker .datepicker-switch {
+  width: 145px; }
+
+.datepicker .datepicker-switch,
+.datepicker .prev,
+.datepicker .next,
+.datepicker tfoot tr th {
+  cursor: pointer; }
+
+.datepicker .datepicker-switch:hover,
+.datepicker .prev:hover,
+.datepicker .next:hover,
+.datepicker tfoot tr th:hover {
+  background: #eeeeee; }
+
+.datepicker .prev.disabled,
+.datepicker .next.disabled {
+  visibility: hidden; }
+
+.datepicker .cw {
+  font-size: 10px;
+  width: 12px;
+  padding: 0 2px 0 5px;
+  vertical-align: middle; }
+
+.input-group.date .input-group-addon {
+  cursor: pointer; }
+
+.input-daterange {
+  width: 100%; }
+
+.input-daterange input {
+  text-align: center; }
+
+.input-daterange input:first-child {
+  border-radius: 3px 0 0 3px; }
+
+.input-daterange input:last-child {
+  border-radius: 0 3px 3px 0; }
+
+.input-daterange .input-group-addon {
+  width: auto;
+  min-width: 16px;
+  padding: 4px 5px;
+  line-height: 1.42857143;
+  text-shadow: 0 1px 0 #fff;
+  border-width: 1px 0;
+  margin-left: -5px;
+  margin-right: -5px; }
+
+/*# sourceMappingURL=bootstrap-datepicker3.css.map */
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none; }
+
+#nprogress .bar {
+  background: #29d;
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; }
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  opacity: 1.0;
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px); }
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px; }
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: solid 2px transparent;
+  border-top-color: #29d;
+  border-left-color: #29d;
+  border-radius: 50%;
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+  animation: nprogress-spinner 400ms linear infinite; }
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative; }
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute; }
+
+@-webkit-keyframes nprogress-spinner {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes nprogress-spinner {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+/**
+ * Swiper 3.4.2
+ * Most modern mobile touch slider and framework with hardware accelerated transitions
+ * 
+ * http://www.idangero.us/swiper/
+ * 
+ * Copyright 2017, Vladimir Kharlampidi
+ * The iDangero.us
+ * http://www.idangero.us/
+ * 
+ * Licensed under MIT
+ * 
+ * Released on: March 10, 2017
+ */
+.swiper-container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  z-index: 1; }
+
+.swiper-container-no-flexbox .swiper-slide {
+  float: left; }
+
+.swiper-container-vertical > .swiper-wrapper {
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column; }
+
+.swiper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  -ms-transition-property: -ms-transform;
+  transition-property: transform;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box; }
+
+.swiper-container-android .swiper-slide, .swiper-wrapper {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate(0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+.swiper-container-multirow > .swiper-wrapper {
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap; }
+
+.swiper-container-free-mode > .swiper-wrapper {
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -ms-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  margin: 0 auto; }
+
+.swiper-slide {
+  -webkit-flex-shrink: 0;
+  -ms-flex: 0 0 auto;
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  position: relative; }
+
+.swiper-container-autoheight, .swiper-container-autoheight .swiper-slide {
+  height: auto; }
+
+.swiper-container-autoheight .swiper-wrapper {
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  -webkit-transition-property: -webkit-transform,height;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  -ms-transition-property: -ms-transform;
+  transition-property: transform,height; }
+
+.swiper-container .swiper-notification {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: -1000; }
+
+.swiper-wp8-horizontal {
+  -ms-touch-action: pan-y;
+  touch-action: pan-y; }
+
+.swiper-wp8-vertical {
+  -ms-touch-action: pan-x;
+  touch-action: pan-x; }
+
+.swiper-button-next, .swiper-button-prev {
+  position: absolute;
+  top: 50%;
+  width: 27px;
+  height: 44px;
+  margin-top: -22px;
+  z-index: 10;
+  cursor: pointer;
+  -moz-background-size: 27px 44px;
+  -webkit-background-size: 27px 44px;
+  background-size: 27px 44px;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled {
+  opacity: .35;
+  cursor: auto;
+  pointer-events: none; }
+
+.swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E");
+  left: 10px;
+  right: auto; }
+
+.swiper-button-prev.swiper-button-black, .swiper-container-rtl .swiper-button-next.swiper-button-black {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E"); }
+
+.swiper-button-prev.swiper-button-white, .swiper-container-rtl .swiper-button-next.swiper-button-white {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E"); }
+
+.swiper-button-next, .swiper-container-rtl .swiper-button-prev {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E");
+  right: 10px;
+  left: auto; }
+
+.swiper-button-next.swiper-button-black, .swiper-container-rtl .swiper-button-prev.swiper-button-black {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E"); }
+
+.swiper-button-next.swiper-button-white, .swiper-container-rtl .swiper-button-prev.swiper-button-white {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E"); }
+
+.swiper-pagination {
+  position: absolute;
+  text-align: center;
+  -webkit-transition: .3s;
+  -moz-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+  -webkit-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  z-index: 10; }
+
+.swiper-pagination.swiper-pagination-hidden {
+  opacity: 0; }
+
+.swiper-container-horizontal > .swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+  bottom: 10px;
+  left: 0;
+  width: 100%; }
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 100%;
+  background: #000;
+  opacity: .2; }
+
+button.swiper-pagination-bullet {
+  border: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -webkit-appearance: none;
+  appearance: none; }
+
+.swiper-pagination-clickable .swiper-pagination-bullet {
+  cursor: pointer; }
+
+.swiper-pagination-white .swiper-pagination-bullet {
+  background: #fff; }
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #007aff; }
+
+.swiper-pagination-white .swiper-pagination-bullet-active {
+  background: #fff; }
+
+.swiper-pagination-black .swiper-pagination-bullet-active {
+  background: #000; }
+
+.swiper-container-vertical > .swiper-pagination-bullets {
+  right: 10px;
+  top: 50%;
+  -webkit-transform: translate3d(0, -50%, 0);
+  -moz-transform: translate3d(0, -50%, 0);
+  -o-transform: translate(0, -50%);
+  -ms-transform: translate3d(0, -50%, 0);
+  transform: translate3d(0, -50%, 0); }
+
+.swiper-container-vertical > .swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 5px 0;
+  display: block; }
+
+.swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 5px; }
+
+.swiper-pagination-progress {
+  background: rgba(0, 0, 0, 0.25);
+  position: absolute; }
+
+.swiper-pagination-progress .swiper-pagination-progressbar {
+  background: #007aff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  -webkit-transform-origin: left top;
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -o-transform-origin: left top;
+  transform-origin: left top; }
+
+.swiper-container-rtl .swiper-pagination-progress .swiper-pagination-progressbar {
+  -webkit-transform-origin: right top;
+  -moz-transform-origin: right top;
+  -ms-transform-origin: right top;
+  -o-transform-origin: right top;
+  transform-origin: right top; }
+
+.swiper-container-horizontal > .swiper-pagination-progress {
+  width: 100%;
+  height: 4px;
+  left: 0;
+  top: 0; }
+
+.swiper-container-vertical > .swiper-pagination-progress {
+  width: 4px;
+  height: 100%;
+  left: 0;
+  top: 0; }
+
+.swiper-pagination-progress.swiper-pagination-white {
+  background: rgba(255, 255, 255, 0.5); }
+
+.swiper-pagination-progress.swiper-pagination-white .swiper-pagination-progressbar {
+  background: #fff; }
+
+.swiper-pagination-progress.swiper-pagination-black .swiper-pagination-progressbar {
+  background: #000; }
+
+.swiper-container-3d {
+  -webkit-perspective: 1200px;
+  -moz-perspective: 1200px;
+  -o-perspective: 1200px;
+  perspective: 1200px; }
+
+.swiper-container-3d .swiper-cube-shadow, .swiper-container-3d .swiper-slide, .swiper-container-3d .swiper-slide-shadow-bottom, .swiper-container-3d .swiper-slide-shadow-left, .swiper-container-3d .swiper-slide-shadow-right, .swiper-container-3d .swiper-slide-shadow-top, .swiper-container-3d .swiper-wrapper {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d; }
+
+.swiper-container-3d .swiper-slide-shadow-bottom, .swiper-container-3d .swiper-slide-shadow-left, .swiper-container-3d .swiper-slide-shadow-right, .swiper-container-3d .swiper-slide-shadow-top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10; }
+
+.swiper-container-3d .swiper-slide-shadow-left {
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(transparent));
+  background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -moz-linear-gradient(right, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.5), transparent);
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), transparent); }
+
+.swiper-container-3d .swiper-slide-shadow-right {
+  background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.5)), to(transparent));
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), transparent); }
+
+.swiper-container-3d .swiper-slide-shadow-top {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(transparent));
+  background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5), transparent);
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent); }
+
+.swiper-container-3d .swiper-slide-shadow-bottom {
+  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(transparent));
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), transparent);
+  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), transparent);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent); }
+
+.swiper-container-coverflow .swiper-wrapper, .swiper-container-flip .swiper-wrapper {
+  -ms-perspective: 1200px; }
+
+.swiper-container-cube, .swiper-container-flip {
+  overflow: visible; }
+
+.swiper-container-cube .swiper-slide, .swiper-container-flip .swiper-slide {
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  z-index: 1; }
+
+.swiper-container-cube .swiper-slide .swiper-slide, .swiper-container-flip .swiper-slide .swiper-slide {
+  pointer-events: none; }
+
+.swiper-container-cube .swiper-slide-active, .swiper-container-cube .swiper-slide-active .swiper-slide-active, .swiper-container-flip .swiper-slide-active, .swiper-container-flip .swiper-slide-active .swiper-slide-active {
+  pointer-events: auto; }
+
+.swiper-container-cube .swiper-slide-shadow-bottom, .swiper-container-cube .swiper-slide-shadow-left, .swiper-container-cube .swiper-slide-shadow-right, .swiper-container-cube .swiper-slide-shadow-top, .swiper-container-flip .swiper-slide-shadow-bottom, .swiper-container-flip .swiper-slide-shadow-left, .swiper-container-flip .swiper-slide-shadow-right, .swiper-container-flip .swiper-slide-shadow-top {
+  z-index: 0;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden; }
+
+.swiper-container-cube .swiper-slide {
+  visibility: hidden;
+  -webkit-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+  width: 100%;
+  height: 100%; }
+
+.swiper-container-cube.swiper-container-rtl .swiper-slide {
+  -webkit-transform-origin: 100% 0;
+  -moz-transform-origin: 100% 0;
+  -ms-transform-origin: 100% 0;
+  transform-origin: 100% 0; }
+
+.swiper-container-cube .swiper-slide-active, .swiper-container-cube .swiper-slide-next, .swiper-container-cube .swiper-slide-next + .swiper-slide, .swiper-container-cube .swiper-slide-prev {
+  pointer-events: auto;
+  visibility: visible; }
+
+.swiper-container-cube .swiper-cube-shadow {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: .6;
+  -webkit-filter: blur(50px);
+  filter: blur(50px);
+  z-index: 0; }
+
+.swiper-container-fade.swiper-container-free-mode .swiper-slide {
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -ms-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out; }
+
+.swiper-container-fade .swiper-slide {
+  pointer-events: none;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity; }
+
+.swiper-container-fade .swiper-slide .swiper-slide {
+  pointer-events: none; }
+
+.swiper-container-fade .swiper-slide-active, .swiper-container-fade .swiper-slide-active .swiper-slide-active {
+  pointer-events: auto; }
+
+.swiper-zoom-container {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center; }
+
+.swiper-zoom-container > canvas, .swiper-zoom-container > img, .swiper-zoom-container > svg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; }
+
+.swiper-scrollbar {
+  border-radius: 10px;
+  position: relative;
+  -ms-touch-action: none;
+  background: rgba(0, 0, 0, 0.1); }
+
+.swiper-container-horizontal > .swiper-scrollbar {
+  position: absolute;
+  left: 1%;
+  bottom: 3px;
+  z-index: 50;
+  height: 5px;
+  width: 98%; }
+
+.swiper-container-vertical > .swiper-scrollbar {
+  position: absolute;
+  right: 3px;
+  top: 1%;
+  z-index: 50;
+  width: 5px;
+  height: 98%; }
+
+.swiper-scrollbar-drag {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  left: 0;
+  top: 0; }
+
+.swiper-scrollbar-cursor-drag {
+  cursor: move; }
+
+.swiper-lazy-preloader {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -21px;
+  margin-top: -21px;
+  z-index: 10;
+  -webkit-transform-origin: 50%;
+  -moz-transform-origin: 50%;
+  transform-origin: 50%;
+  -webkit-animation: swiper-preloader-spin 1s steps(12, end) infinite;
+  -moz-animation: swiper-preloader-spin 1s steps(12, end) infinite;
+  animation: swiper-preloader-spin 1s steps(12, end) infinite; }
+
+.swiper-lazy-preloader:after {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%236c6c6c'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-position: 50%;
+  -webkit-background-size: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat; }
+
+.swiper-lazy-preloader-white:after {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%23fff'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
+
+@-webkit-keyframes swiper-preloader-spin {
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes swiper-preloader-spin {
+  100% {
+    transform: rotate(360deg); } }
+/*-----------------------------------------------------------------------------------*/
+/*  react-transition-group
+/*-----------------------------------------------------------------------------------*/
+.toggle-enter, .toggle-enter.toggle-enter-active {
+  opacity: 0.01;
+  transform: scaleY(0); }
+
+.toggle:not(.toggle-enter) {
+  opacity: 1;
+  transform-origin: 0 0;
+  transform: scaleY(1);
+  -webkit-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -moz-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -o-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out; }
+
+.toggle-exit {
+  opacity: 1;
+  transform: scaleY(1);
+  transform-origin: 0 0; }
+
+.toggle-exit.toggle-exit-active {
+  opacity: 0.01;
+  transform: scaleY(0);
+  -webkit-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -moz-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  -o-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  css animations
+/*-----------------------------------------------------------------------------------*/
+@keyframes unfoldIn {
+  0% {
+    transform: scaleY(0.005) scaleX(0); }
+  50% {
+    transform: scaleY(0.005) scaleX(1); }
+  100% {
+    transform: scaleY(1) scaleX(1); } }
+
+@keyframes unfoldOut {
+  0% {
+    transform: scaleY(1) scaleX(1); }
+  50% {
+    transform: scaleY(0.005) scaleX(1); }
+  100% {
+    transform: scaleY(0.005) scaleX(0); } }
+
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-500px); }
+  60% {
+    opacity: 1;
+    transform: translateY(30px); }
+  80% {
+    transform: translateY(-10px); }
+  100% {
+    transform: translateY(0); } }
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3); }
+  50% {
+    opacity: 1;
+    transform: scale(1.1); }
+  80% {
+    transform: scale(0.89); }
+  100% {
+    transform: scale(1); } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.01;
+    transform-origin: 0 0;
+    transform: scaleY(0); }
+  to {
+    opacity: 1;
+    transform: scaleY(1); } }
+
+@keyframes blowUpModal {
+  0% {
+    opacity: 0;
+    transform: scaleY(0); }
+  100% {
+    opacity: 1;
+    transform: scaleY(1); } }
+
+/************************************
+  Search Modal Animation
+*************************************/
+.propertypro-search-modal {
+  display: block;
+  transition: transform .3s ease-in-out, opacity .5s ease-in-out, visibility .5s ease-in-out; }
+  .propertypro-search-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1); }
+  .propertypro-search-modal.remove {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0); }
+  .propertypro-search-modal.propertypro-location-modal.active .filter-container {
+    transform: translateY(-500px);
+    animation: bounceInDown .3s .5s ease-in-out forwards; }
+  .propertypro-search-modal.propertypro-advanced-filter.active .filter-container {
+    transform: translateY(-500px);
+    animation: bounceInDown .3s .5s ease-in-out forwards; }
+  .propertypro-search-modal.propertypro-advanced-filter .propertypro-filter-section {
+    /*      opacity: 0;
+      transform: scaleY(0);
+      transform-origin: 0 0;
+      animation: fadeIn .5s 1s ease-in-out forwards;
+
+      &.all-filters {
+        animation: fadeIn .5s ease-in-out forwards;
+      }*/ }
+
+.sidebar .modal-header {
+  min-height: 3.4375rem; }
+
+.sidebar-left .modal-dialog,
+.sidebar-right .modal-dialog {
+  position: fixed;
+  margin: auto;
+  width: 25rem;
+  height: 100%;
+  -webkit-transform: translate3d(0%, 0, 0);
+  -ms-transform: translate3d(0%, 0, 0);
+  -o-transform: translate3d(0%, 0, 0);
+  transform: translate3d(0%, 0, 0); }
+
+.sidebar-left .modal-content,
+.sidebar-right .modal-content {
+  height: 100%;
+  overflow-y: auto; }
+
+.sidebar-left .modal-body,
+.sidebar-right .modal-body {
+  /* padding: 15px; */
+  padding: 0; }
+
+.sidebar-left .modal-dialog {
+  left: 0; }
+
+.sidebar-right .modal-dialog {
+  right: 0; }
+
+/* ----- MODAL STYLE ----- */
+.sidebar .modal-content {
+  border-radius: 0;
+  border: none; }
+
+.sidebar .modal-header {
+  border-bottom-color: #EEEEEE;
+  background-color: #FAFAFA; }
+
+/************************************
+  Side Panel Animation
+*************************************/
+.propertypro-modal.sidebar {
+  display: block !important;
+  transition: visibility .3s ease-in-out; }
+  .propertypro-modal.sidebar:not(.show) {
+    visibility: hidden; }
+  .propertypro-modal.sidebar.show {
+    visibility: visible; }
+  .propertypro-modal.sidebar.sidebar-right:not(.show) .modal-dialog {
+    transition: transform .2s ease-in-out;
+    transform: translateX(100%); }
+  .propertypro-modal.sidebar.sidebar-right.show .modal-dialog {
+    transition: transform .3s ease-in-out;
+    transform: translateX(0%); }
+
+.propertypro-sale-type-selection {
+  background-color: #d03528;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0; }
+
+.propertypro-sale-type-selection .propertypro-selection-container {
+  text-align: center; }
+
+.propertypro-sale-type-selection .propertypro-selection-container a {
+  color: #fff;
+  display: block;
+  padding: 1.6rem 0; }
+
+.propertypro-sale-type-selection .propertypro-selection-container a img {
+  display: block;
+  margin: 0 auto 1rem auto; }
+
+.propertypro-sale-type-selection .propertypro-selection-container a:hover {
+  background: rgba(65, 65, 65, 0.3); }
+
+/*.propertypro-sale-type-selection div a .icon-container svg:hover .sale-icons {
+  fill: #000;
+}*/
+.propertypro-sale-type-selection div a span {
+  margin-top: 1rem; }
+
+/* Extra small devices (portrait phones, less than 360px) */
+@media screen and (max-width: 22.5em) {
+  .propertypro-sale-type-selection div p {
+    color: #ffffff;
+    margin-top: 1rem;
+    text-align: center; } }
+
+/** ANIMATION **/
+.propertypro-sale-type-selection {
+  transition: transform .3s ease-in-out, opacity .3s ease-in-out;
+  transform: translateY(0%); }
+  .propertypro-sale-type-selection.propertypro-remove {
+    opacity: 0;
+    transform: translateY(-131px); }
+
+/** END OF ANIMATION **/
+.propertypro-header-search-container form .propertypro-addfilter {
+  font-weight: 700;
+  color: #d33320; }
+
+.propertypro-header-search {
+  height: 5rem; }
+
+.propertypro-header-search.propertypro-with-sale-types-panel-open {
+  height: 211px; }
+  .propertypro-header-search.propertypro-with-sale-types-panel-open .propertypro-header-search-navigation {
+    transform: translateY(131px); }
+  .propertypro-header-search.propertypro-with-sale-types-panel-open .propertypro-header-search-navigation::after {
+    /*@include backdrop;*/ }
+
+.propertypro-header-search-navigation {
+  position: relative;
+  transition: transform .2s ease-in-out;
+  transform: translateY(0px); }
+  .propertypro-header-search-navigation .propertypro-drop-nav .fa {
+    transition: transform .3s ease-in-out;
+    transform: rotate(0deg); }
+    .propertypro-header-search-navigation .propertypro-drop-nav .fa.up {
+      transform: rotate(-180deg); }
+
+.propertypro-search-map-container.propertypro-with-sale-types-panel-open::after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1001; }
+
+/* @TODO split this file into components */
+/**
+ * Theme Name: PropertyPro
+ * Description: Property Pro Theme
+ * Author: Usability Dynamics, Inc.
+ * Author URI: http://usabilitydynamics.com
+ * Version: 0.1
+ * Text Domain: propertyPro
+ * Domain Path: /languages/
+ * License: GNU General Public License
+ * License URI: license.txt
+ * Tags: real estate
+ *
+ */
+/*-----------------------------------------------------------------------------------*/
+/*  Global
+/*-----------------------------------------------------------------------------------*/
+body {
+  font-weight: 400;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%; }
+
+a {
+  color: #414141;
+  outline: none;
+  text-decoration: none !important;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  transition: all .3s ease; }
+
+input:focus, textarea:focus {
+  outline: none; }
+
+p {
+  margin-bottom: 1.20em; }
+
+section, article, footer {
+  width: 100%; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Typography
+/*-----------------------------------------------------------------------------------*/
+body, p, input, button, select, textarea {
+  letter-spacing: .0625rem; }
+
+h1 {
+  line-height: 1.35; }
+
+p {
+  line-height: 1.4; }
+
+p.no-js-header {
+  padding: 0.625rem;
+  color: #000000; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Layouts
+/*-----------------------------------------------------------------------------------*/
+html, body {
+  height: 100%;
+  margin: 0; }
+
+#propertypro-root {
+  height: 100%; }
+
+/** Layout **/
+.propertypro-page-content, .propertypro-footer-container {
+  flex: 1 0 auto; }
+
+/** colors **/
+.propertypro-primary-color {
+  color: #d03528; }
+
+/** Toolbar **/
+.propertypro-toolbar.propertypro-header-default,
+.propertypro-toolbar.propertypro-guide-toolbar {
+  position: absolute;
+  z-index: 2; }
+
+.propertypro-login-box, .propertypro-login-box:visited {
+  background: transparent;
+  border-radius: .1875rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.4);
+  outline: none;
+  color: #fff;
+  box-shadow: none; }
+
+.propertypro-navigation-cotrols {
+  margin: auto 0;
+  flex-direction: inherit; }
+
+.propertypro-navigation-navbar {
+  width: 100%; }
+
+.propertypro-navigation-items {
+  display: flex;
+  width: 100%; }
+
+.propertypro-navigation-menu-button {
+  color: #fff;
+  display: block !important;
+  outline: none !important;
+  cursor: pointer;
+  font-size: 1.150rem;
+  top: .3rem;
+  position: relative;
+  padding: .25rem .75rem;
+  border: .0625rem solid transparent;
+  background: 0 0;
+  line-height: 1; }
+
+.propertypro-navigation-menu-button span {
+  font-size: 1.75rem;
+  float: left;
+  margin: -.25rem .6rem 0 0; }
+
+/** Masthead */
+.propertypro-masthead {
+  background-size: cover !important;
+  position: relative;
+  margin-bottom: 0; }
+
+.propertypro-masthead:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45); }
+
+.propertypro-masthead .propertypro-masthead-container {
+  position: relative;
+  z-index: 1;
+  max-width: 60rem;
+  margin-top: 11rem;
+  margin-bottom: 7rem; }
+
+.propertypro-masthead .propertypro-masthead-title {
+  margin-bottom: 2rem; }
+
+.propertypro-masthead .propertypro-masthead-blog-title {
+  margin-bottom: 3rem; }
+
+.propertypro-masthead .propertypro-masthead-subtitle-top, .propertypro-masthead-subtitle {
+  font-size: 1.75rem; }
+
+.propertypro-masthead .propertypro-masthead-subtitle {
+  margin-bottom: 3.5rem; }
+
+.propertypro-masthead .propertypro-masthead-subtitle-top {
+  margin-bottom: 2.5rem; }
+
+/** Masthead search */
+.propertypro-search-box {
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
+  border-radius: .3125rem;
+  max-width: 45rem;
+  position: relative; }
+
+.propertypro-search-box .propertypro-btn-search {
+  height: 5rem;
+  font-size: 1.5rem;
+  background-color: #ffffff;
+  font-weight: 500;
+  line-height: 3.125rem;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding-left: 11rem;
+  color: rgba(139, 140, 141, 0.4);
+  outline: none;
+  box-shadow: none;
+  cursor: pointer; }
+
+.propertypro-search-box .propertypro-btn-search.propertypro-short-padding {
+  padding-left: .9375rem; }
+
+.propertypro-search-box i {
+  margin-right: .5rem; }
+
+.propertypro-search-options-type-container {
+  font-size: 1.15rem; }
+
+.propertypro-search-options-type-container:hover {
+  cursor: pointer; }
+
+.propertypro-search-box .propertypro-drop-search {
+  width: 10rem;
+  height: 5rem;
+  border-radius: .25rem 0 0 .25rem;
+  position: absolute;
+  top: 0;
+  line-height: 5rem;
+  cursor: pointer; }
+
+.propertypro-search-box .propertypro-drop-search i {
+  font-size: 1.125rem;
+  margin-left: .5rem;
+  position: relative;
+  float: right;
+  display: block;
+  top: 1.875rem;
+  right: .625rem; }
+
+.propertypro-search-box .propertypro-drop-search ul {
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
+  border-radius: .3125rem;
+  width: 12.5rem;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  top: .0625rem;
+  position: relative;
+  left: 0;
+  display: none; }
+
+.propertypro-search-box .propertypro-drop-search li a {
+  display: block;
+  text-align: left;
+  padding: 0 1.25rem;
+  font-size: 1.15rem;
+  line-height: 3.125rem;
+  border-bottom: .0625rem solid #dde4e9;
+  font-weight: 700; }
+
+.propertypro-search-box .propertypro-drop-search li:last-child a {
+  border-bottom: 0; }
+
+/** Masthead search mobile */
+.propertypro-find-home-type {
+  margin: 2rem auto 2.5rem; }
+
+.propertypro-find-home-type ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.propertypro-find-home-type li {
+  display: inline-block;
+  padding: 0 .3125rem; }
+
+.propertypro-find-home-type li a {
+  color: #fff;
+  padding: .5rem 0;
+  opacity: 0.5;
+  font-size: 1.10rem;
+  font-weight: 700;
+  line-height: .625rem;
+  border-bottom: .25rem solid transparent; }
+
+.propertypro-find-home-type li.propertypro-active a {
+  opacity: 1;
+  border-bottom-color: #fff; }
+
+/** Subnavigation */
+.propertypro-subnavigation {
+  background-color: #e9eff3; }
+
+.propertypro-subnavigation ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.propertypro-subnavigation ul li {
+  width: 17.5rem;
+  border-right: .0625rem solid #dde4e9;
+  display: inline-table; }
+
+.propertypro-subnavigation ul li:last-child {
+  border-right: 0; }
+
+.propertypro-subnavigation ul li a {
+  height: 16.25rem;
+  text-align: center;
+  color: #414141;
+  display: table-cell;
+  vertical-align: middle; }
+
+.propertypro-subnavigation ul li a:hover svg path {
+  fill: red; }
+
+.propertypro-subnavigation ul li a span {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1.25rem 0 0; }
+
+.propertypro-subnavigation.propertypro-subnavigation-text-layout nav {
+  width: 100%; }
+
+.propertypro-subnavigation.propertypro-subnavigation-text-layout ul .propertypro-subnavigation-btn {
+  float: right;
+  text-align: center; }
+
+.propertypro-subnavigation.propertypro-subnavigation-text-layout ul li {
+  width: auto;
+  border: 0; }
+
+.propertypro-subnavigation.propertypro-subnavigation-text-layout ul li a {
+  display: inline-block;
+  float: none;
+  height: auto;
+  padding: 1.75rem .5rem 1.625rem;
+  color: #c1c3c4;
+  font-size: 1.125rem;
+  font-weight: 500;
+  border-bottom: .25rem solid transparent;
+  margin-right: 1rem; }
+
+.propertypro-subnavigation.propertypro-subnavigation-text-layout ul li:last-child a {
+  margin-right: 0; }
+
+.propertypro-subnavigation.propertypro-subnavigation-text-layout .btn {
+  font-size: 1.125rem;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.5rem;
+  padding: .625rem 1.375rem;
+  margin-top: 1.25rem; }
+
+/** Listing carousel */
+.propertypro-listings {
+  margin: 3.75rem 0 5rem;
+  overflow: hidden; }
+
+.propertypro-listings .propertypro-listing-carousel-container {
+  width: 100%; }
+
+.propertypro-listings .propertypro-listing-carousel-info {
+  max-width: 60rem; }
+
+.propertypro-listings .propertypro-listing-carousel-info h3 {
+  font-size: 2.5rem;
+  line-height: 3.75rem;
+  margin-bottom: 1.5rem;
+  color: #000000; }
+
+.propertypro-listings .propertypro-listing-carousel-info p {
+  padding: 0 10%;
+  margin-bottom: 6.5rem;
+  color: #8b8c8d;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 2.3125rem;
+  text-align: center; }
+
+.propertypro-listings p a {
+  color: #e64c3c;
+  text-decoration: underline; }
+
+.propertypro-listings .propertypro-listing-carousel .propertypro-card {
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.propertypro-listing-carousel {
+  margin-bottom: 5rem; }
+
+.propertypro-listing-info-box {
+  display: flex;
+  list-style-type: none;
+  position: relative;
+  padding: 0; }
+
+.propertypro-listing-info-box-wrap {
+  flex-wrap: wrap; }
+
+.propertypro-listing-control-nav a {
+  background-color: #e9eff3;
+  width: 3.75rem;
+  height: 3.75rem;
+  text-align: center;
+  line-height: 4.375rem;
+  display: inline-block; }
+
+.propertypro-listing-control-nav a i {
+  font-size: 1.875rem; }
+
+/** Property card */
+.propertypro-card {
+  border-radius: .75rem;
+  overflow: hidden;
+  border-color: #d2dae0;
+  opacity: 0.99;
+  margin-bottom: 1px; }
+
+.propertypro-card .propertypro-card-block {
+  position: relative;
+  padding: 1rem 1.5rem 1.25rem; }
+
+.propertypro-card .propertypro-listing-top {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1rem 1.5rem;
+  z-index: 2;
+  color: #fff; }
+
+.propertypro-card .propertypro-listing-top .propertypro-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25rem; }
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group {
+  display: none;
+  float: right; }
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group a {
+  width: 3.125rem;
+  height: 3.125rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  border-radius: 3.125rem;
+  background-color: #ffffff;
+  float: left;
+  text-align: center;
+  line-height: 3.25rem;
+  margin: .75rem 0 0 .625rem; }
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group i {
+  font-size: 1.125rem;
+  color: rgba(65, 65, 65, 0.5);
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  transition: all .3s ease; }
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group .propertypro-active i, .propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:hover i {
+  color: #fff; }
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group .propertypro-hide i {
+  font-size: 1.25rem; }
+
+.propertypro-card .propertypro-card-img-top:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  background-image: linear-gradient(180deg, transparent 40%, #000000 100%); }
+
+.propertypro-card .propertypro-card-block > * {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }
+
+.propertypro-card .propertypro-card-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+  color: #414141; }
+
+.propertypro-card .propertypro-card-text {
+  color: #8b8c8d;
+  font-size: .875rem;
+  line-height: 1.5rem; }
+
+.propertypro-card .propertypro-listing-info-box {
+  margin: 0; }
+
+ul.propertypro-listing-info-box li {
+  line-height: 1.5rem;
+  border-right: .0625rem solid #cad3d9;
+  padding: 0 1rem;
+  font-weight: 600;
+  color: #414141;
+  white-space: nowrap; }
+
+ul.propertypro-listing-info-box li:first-child {
+  padding-left: 0; }
+
+ul.propertypro-listing-info-box li:last-child {
+  border-right: 0; }
+
+.propertypro-card .propertypro-card-img .bg-card-img {
+  width: 100%;
+  padding-bottom: 52.8%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat; }
+
+.propertypro-card-img {
+  position: relative; }
+
+.propertypro-direction-nav {
+  padding: 0 1.5rem; }
+
+.propertypro-direction-nav-container {
+  position: absolute;
+  width: 100%;
+  top: calc(50% - 1.25rem);
+  z-index: 3; }
+
+.propertypro-direction-nav span {
+  width: 2.5rem;
+  height: 2.5rem;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background: rgba(0, 0, 0, 0.6);
+  line-height: 2.5rem;
+  opacity: 0;
+  display: block; }
+
+.propertypro-direction-nav span:before {
+  font-family: "FontAwesome";
+  font-size: 1.5625rem;
+  display: inline-block;
+  color: #ffffff; }
+
+.propertypro-direction-nav .propertypro-nav-prev:before {
+  cursor: pointer;
+  content: '\F104'; }
+
+.propertypro-direction-nav .propertypro-nav-next:before {
+  cursor: pointer;
+  content: '\F105'; }
+
+.propertypro-card:hover .propertypro-direction-nav .propertypro-nav-prev,
+.propertypro-card:hover .propertypro-direction-nav .propertypro-nav-next {
+  opacity: 1; }
+
+.propertypro-image-mixer .propertypro-direction-nav .propertypro-nav-prev,
+.propertypro-image-mixer .propertypro-direction-nav .propertypro-nav-next {
+  opacity: 1; }
+
+/** User Panel */
+.propertypro-user-panel {
+  position: fixed;
+  height: 100%;
+  width: 26.25rem;
+  box-shadow: 0 1.25rem 1.5rem rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  display: none; }
+
+.propertypro-user-panel.propertypro-on {
+  display: block; }
+
+.propertypro-user-panel .propertypro-user-info-box {
+  background-color: rgba(237, 242, 245, 0.5);
+  border-bottom: .125rem solid #ebeff2; }
+
+.propertypro-user-panel .propertypro-user-info-box a {
+  display: block;
+  padding: 1.25rem 1.875rem; }
+
+.propertypro-user-panel .propertypro-user-info-box .propertypro-default-user {
+  float: left;
+  margin-right: 1.25rem; }
+
+.propertypro-user-panel .propertypro-user-info-box h5 {
+  font-size: 1.3125rem;
+  font-weight: 500;
+  line-height: .625rem;
+  padding: .3125rem 0 0;
+  display: block; }
+
+.propertypro-user-panel .propertypro-user-info-box p {
+  color: #8b8c8d;
+  margin: 0;
+  font-size: .95rem; }
+
+.propertypro-user-info-box > div {
+  position: relative; }
+
+.propertypro-user-info-box .propertypro-user-info-box-status-image {
+  position: absolute;
+  right: 1.5625rem;
+  top: 1.75rem; }
+
+.propertypro-user-info-box .propertypro-status {
+  display: none; }
+
+.propertypro-user-info-box .propertypro-status.propertypro-notlogged {
+  display: block; }
+
+.propertypro-user-info-box .propertypro-status.propertypro-loggedin {
+  display: block; }
+
+.propertypro-user-info-box .propertypro-status.propertypro-loggedin h5 {
+  color: #414141; }
+
+.propertypro-user-navigation {
+  overflow-y: scroll; }
+
+.propertypro-user-navigation .propertypro-user-navigation-list {
+  overflow: auto;
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.propertypro-user-navigation .propertypro-user-navigation-list li {
+  padding-top: 1rem; }
+
+.propertypro-user-navigation .propertypro-user-navigation-list li.propertypro-divider-bottom {
+  border-bottom: .0625rem solid #d2dae0;
+  padding-bottom: 1rem; }
+
+.propertypro-user-navigation .propertypro-user-navigation-list a {
+  display: inline-block;
+  width: 100%;
+  padding-left: 3.0625rem; }
+
+.propertypro-user-navigation .propertypro-user-navigation-list a span {
+  width: 2rem;
+  height: 2rem; }
+
+.propertypro-user-navigation .propertypro-user-navigation-item-link {
+  font-size: 1.050rem;
+  font-weight: 600;
+  line-height: 4.0625rem;
+  position: relative; }
+
+.propertypro-user-navigation .propertypro-user-navigation-item-link span {
+  display: inline-block;
+  margin-right: 2rem; }
+
+.propertypro-user-navigation .propertypro-user-navigation-list li:last-child {
+  border: 0; }
+
+.propertypro-user-panel .propertypro-more {
+  border-top: .0625rem solid #d2dae0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 9; }
+
+.propertypro-user-panel .propertypro-more a {
+  display: block;
+  padding: 1.25rem 2.8125rem;
+  font-size: 1.3rem; }
+
+.propertypro-user-panel .propertypro-more .propertypro-more-link span {
+  display: inline-block;
+  margin-right: .9375rem; }
+
+.propertypro-user-panel .propertypro-more a i {
+  float: right;
+  margin: .3125rem 0 0; }
+
+.propertypro-user-panel .propertypro-close-panel {
+  position: absolute;
+  top: .3125rem;
+  left: -1.875rem;
+  color: #fff;
+  font-size: 1.20rem;
+  width: 1.25rem;
+  height: 1.25rem; }
+
+.propertypro-user-panel .propertypro-tag {
+  display: inline-block;
+  margin-right: 0;
+  line-height: 1.25rem;
+  padding: .25rem .5625rem;
+  color: #fff;
+  border-radius: .1875rem;
+  background-color: #f28200;
+  position: absolute;
+  top: 1.4375rem;
+  right: .625rem; }
+
+/** Testimonial */
+.propertypro-testimonial {
+  margin-bottom: 8rem; }
+
+.propertypro-testimonial h4 {
+  font-size: 2.5rem;
+  line-height: 4.375rem;
+  margin-bottom: 5rem;
+  color: #000000; }
+
+.propertypro-slider-content .propertypro-slides > li {
+  display: none;
+  -webkit-backface-visibility: hidden;
+  min-height: 14.6875rem; }
+
+.propertypro-testimonial .propertypro-slides:after {
+  content: "020";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0; }
+
+html[xmlns] .propertypro-testimonial .propertypro-slides {
+  display: block; }
+
+* html .propertypro-testimonial .propertypro-slides {
+  height: 1%; }
+
+.no-js .propertypro-testimonial .propertypro-slides > li:first-child {
+  display: block; }
+
+.propertypro-testimonial .propertypro-slides li .propertypro-rating {
+  margin-bottom: 2rem;
+  width: 12.5rem; }
+
+.propertypro-testimonial .propertypro-slides li .propertypro-rating i {
+  font-size: 1.9375rem;
+  width: 2.5rem; }
+
+.propertypro-slider-content {
+  margin: 0 auto 3.125rem;
+  max-width: 64rem; }
+
+.propertypro-slider-content .propertypro-slides > li.propertypro-active-slide {
+  display: block; }
+
+.propertypro-testimonial .propertypro-slides li blockquote {
+  padding: 0 3%;
+  margin-bottom: 0; }
+
+.propertypro-slider-content .propertypro-slides li .propertypro-testimonial-text {
+  font-style: italic;
+  font-size: 2rem; }
+
+.propertypro-author-info {
+  width: 50rem;
+  margin: 0 auto; }
+
+.propertypro-author-info .propertypro-user-item {
+  display: inline-block;
+  width: 33.3333%;
+  text-align: left;
+  padding-left: 3rem;
+  margin: 0 !important; }
+
+.propertypro-author-info .propertypro-user-item .propertypro-user-box {
+  opacity: .4; }
+
+.propertypro-author-info .propertypro-user-item .propertypro-user-box img {
+  float: left;
+  margin-right: .6rem;
+  max-height: 3.6875rem; }
+
+.propertypro-author-info .propertypro-user-item .propertypro-user-box p {
+  color: #414141;
+  padding-top: .75rem;
+  line-height: 1;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700; }
+
+.propertypro-author-info .propertypro-user-item .propertypro-user-box span {
+  font-size: .9rem;
+  color: #8b8c8d; }
+
+.propertypro-author-info .propertypro-user-item.propertypro-active .propertypro-user-box {
+  opacity: 1; }
+
+/** Tour */
+.propertypro-tour-section {
+  margin-top: 7rem; }
+
+.propertypro-widget-tour .propertypro-headtitle {
+  margin-bottom: 7rem; }
+
+.propertypro-widget-tour .propertypro-headtitle h2 {
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 3.75rem;
+  margin: 0 0 .30em;
+  color: #414141; }
+
+.propertypro-widget-tour .propertypro-headtitle p {
+  color: #8b8c8d;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 2rem; }
+
+.propertypro-widget-tour .propertypro-headtitle p.propertypro-padded-on-desktop {
+  padding: 0 1rem; }
+
+.propertypro-widget-inner {
+  position: absolute;
+  width: 100%;
+  left: 0; }
+
+.propertypro-widget-box {
+  margin-bottom: 7rem; }
+
+.propertypro-widget-tour .propertypro-tour-widget-content-button {
+  border-radius: .1875rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+  padding: .75rem 1.375rem; }
+
+.propertypro-widget-box:last-child {
+  margin-bottom: 0; }
+
+.propertypro-widget-box .propertypro-tour-widget-content {
+  background-color: rgba(255, 255, 255, 0.95);
+  margin-top: 4rem;
+  padding: 2.75rem 3.125rem; }
+
+.propertypro-tour-widget-content h3 {
+  font-size: 2rem;
+  line-height: 3.125rem;
+  margin-bottom: 1rem;
+  color: #414141; }
+
+.propertypro-tour-widget-content p {
+  color: #8b8c8d;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.9rem; }
+
+.propertypro-tour-widget-content blockquote {
+  margin: 1.875rem 0 0; }
+
+.propertypro-tour-widget-content blockquote p {
+  font-size: .875rem;
+  font-style: italic;
+  line-height: 1.75rem; }
+
+.propertypro-tour-widget-content blockquote cite span {
+  float: left;
+  margin-right: .6rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  overflow: hidden; }
+
+.propertypro-tour-widget-content blockquote cite span img {
+  max-height: 2.5rem; }
+
+.propertypro-tour-widget-content blockquote cite h5, .propertypro-tour-widget-content blockquote cite p {
+  margin: 0;
+  line-height: 1rem; }
+
+.propertypro-tour-widget-content blockquote cite h5 {
+  margin-bottom: .3rem;
+  color: #414141;
+  font-size: 1.125rem;
+  font-weight: 700; }
+
+.propertypro-tour-widget-content blockquote cite h5,
+.propertypro-tour-widget-content blockquote cite p {
+  font-style: normal; }
+
+.propertypro-widget-box.widget2 .propertypro-tour-widget-content p {
+  padding-right: 0; }
+
+.propertypro-widget-box.widget-bg {
+  background-color: #e5e0dd; }
+
+.propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block-full {
+  min-width: 100%; }
+
+.propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block-full > .propertypro-background {
+  background-size: cover !important; }
+
+.propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background {
+  min-height: 50rem; }
+
+.propertypro-tour-widget-content hr {
+  margin: 3rem 4rem 3rem 0;
+  border-top: .0625rem solid #e1e1e1; }
+
+.propertypro-widget-box.widget-bg {
+  background-color: #e5e0dd; }
+
+/** Callout */
+.propertypro-callout {
+  height: 13.75rem;
+  line-height: 13.75rem;
+  text-align: center;
+  color: #fff; }
+
+.propertypro-callout-container {
+  width: 53rem; }
+
+.propertypro-callout-items {
+  display: flex;
+  width: 100%; }
+
+.propertypro-callout p {
+  display: inline-block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.5rem; }
+
+.propertypro-callout .propertypro-btn-contact {
+  background-color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+  padding: .75rem 1.875rem; }
+
+/** Page Footer */
+.propertypro-top-footer,
+.propertypro-bottom-footer {
+  width: 100%; }
+
+.propertypro-top-footer {
+  background-color: #e9eff3;
+  padding: 4rem 0; }
+
+.propertypro-top-footer-container {
+  max-width: 80rem; }
+
+.propertypro-top-footer .propertypro-footer-top-menu-title {
+  color: #8b8c8d;
+  font-size: .80rem;
+  line-height: 1.5rem;
+  margin-bottom: .75rem;
+  text-transform: uppercase; }
+
+.propertypro-top-footer .propertypro-footer-top-menu-links {
+  list-style-type: none; }
+
+.propertypro-top-footer .propertypro-footer-top-menu-link a {
+  color: #414141;
+  font-weight: 600;
+  line-height: 2.125rem; }
+
+.propertypro-bottom-footer-container {
+  max-width: 80rem; }
+
+.propertypro-bottom-footer .propertypro-footer-bottom-menu-links {
+  list-style-type: none; }
+
+.propertypro-bottom-footer .propertypro-footer-bottom-menu-link {
+  display: inline; }
+
+.propertypro-bottom-footer .propertypro-footer-bottom-menu-link a {
+  font-weight: 600;
+  margin-right: 1.5rem;
+  font-size: 1.10rem; }
+
+.propertypro-footer-container .propertypro-social span {
+  display: inline-block;
+  margin-right: .6rem;
+  color: #8b8c8d;
+  text-transform: uppercase; }
+
+.propertypro-footer-container .propertypro-social a {
+  width: 2rem;
+  height: 2rem;
+  display: inline-block;
+  margin-right: .33rem;
+  line-height: 2rem; }
+
+.propertypro-footer-container .propertypro-social a:last-child {
+  margin-right: 0; }
+
+.propertypro-footer-container .propertypro-social a i {
+  color: #fff;
+  font-size: 1.125rem; }
+
+.propertypro-footer-container .propertypro-social .facebook {
+  background-color: #3a5a98; }
+
+.propertypro-footer-container .propertypro-social .facebook {
+  line-height: 2.125rem; }
+
+.propertypro-footer-container .propertypro-social .twitter {
+  background-color: #1a97ce; }
+
+.propertypro-footer-container .propertypro-social .linkedin {
+  background-color: #388ba9; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Logos
+/*-----------------------------------------------------------------------------------*/
+.propertypro-horizontal-logo {
+  max-width: 6.125rem; }
+
+.propertypro-vertical-logo {
+  max-width: 9.375rem; }
+
+.propertypro-square-logo {
+  max-width: 3rem; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Search Modals
+/*-----------------------------------------------------------------------------------*/
+/* Location Search Modal */
+.propertypro-search-modal {
+  background-color: #e9eff3; }
+
+.propertypro-search-modal .propertypro-modal-dialog,
+.propertypro-search-modal .propertypro-modal-dialog {
+  max-width: 100%;
+  height: 100%; }
+
+.propertypro-search-modal .propertypro-modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
+
+.propertypro-search-modal .propertypro-modal-header {
+  flex: 0 0 auto;
+  height: 6rem; }
+
+.propertypro-search-modal .propertypro-modal-body {
+  flex: 1;
+  background-color: #e9eff3;
+  overflow: auto; }
+
+.propertypro-search-modal .propertypro-close-panel {
+  font-size: 2rem; }
+
+.propertypro-search-modal .propertypro-modal-header {
+  padding: 1rem 0; }
+
+.propertypro-search-modal .propertypro-modal-header i {
+  font-size: 1.5rem;
+  color: #d8d8d8; }
+
+.propertypro-search-modal .propertypro-modal-header input {
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding-left: 1.5rem;
+  border: 0; }
+
+.propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4, .propertypro-search-modal form .form-control {
+  font-size: 1.5rem; }
+
+.propertypro-search-modal form .propertypro-button-search-submit {
+  border-radius: .2rem;
+  border-color: #d6dee3;
+  background-color: #d6dee3;
+  color: #b6bec4;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  cursor: pointer;
+  box-shadow: none;
+  min-width: 9.375rem; }
+
+.propertypro-search-modal form input.propertypro-with-padding {
+  padding: .5rem 1rem; }
+
+.propertypro-search-result-group {
+  margin-top: 2rem;
+  width: 100%; }
+
+.propertypro-search-title {
+  color: #8b8c8d;
+  padding-left: .5rem; }
+
+.propertypro-search-modal-box ol {
+  list-style-type: none;
+  margin: 0 0 1.875rem;
+  padding: 0; }
+
+.propertypro-location-modal {
+  z-index: 1100; }
+
+.propertypro-search-modal-box ol li.propertypro-search-result-item {
+  display: block;
+  margin-top: 1.5rem;
+  background-color: inherit; }
+
+.propertypro-search-modal-box ol li.propertypro-search-result-item:hover, .propertypro-search-modal-box ol li:focus {
+  background-color: rgba(255, 255, 255, 0.5); }
+
+.propertypro-search-modal-box ol li.propertypro-search-result-item a {
+  font-size: 2.5rem;
+  line-height: 3.25rem;
+  padding-left: .5rem;
+  color: #414141; }
+
+.propertypro-filter-section {
+  margin-bottom: 4rem; }
+
+.propertypro-filter-section h3 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  margin-bottom: 1em;
+  color: #414141; }
+
+.propertypro-filter-section h3 span, .propertypro-search-filter-nav .propertypro-sale-selection-text {
+  color: rgba(139, 140, 141, 0.6);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1rem; }
+
+.propertypro-filter-section .propertypro-filter-section-button {
+  border: .0625rem solid #d2dae0;
+  font-size: 1.10rem;
+  font-weight: 500;
+  background-color: rgba(237, 242, 245, 0.5);
+  color: #414141;
+  border-radius: .3125rem;
+  line-height: 1.75rem;
+  margin-right: .30em;
+  margin-bottom: .5rem; }
+
+.propertypro-filter-section .btn-primary.selected {
+  background-color: #fff; }
+
+.propertypro-filter-section.propertypro-filter-section-price,
+.propertypro-filter-section.propertypro-filter-section-total-size {
+  width: 100%; }
+
+.propertypro-filter-slider {
+  margin-bottom: 3.7rem; }
+
+.propertypro-filter-slider h3 {
+  margin-bottom: 3rem; }
+
+p.propertypro-gentle-error {
+  padding: .5rem 1.5rem;
+  font-size: 1.2rem;
+  color: #414141; }
+
+.propertypro-error-message-container {
+  color: #000000; }
+
+.propertypro-error-message-container i {
+  display: inline !important; }
+
+.propertypro-error-message-container p {
+  vertical-align: middle;
+  display: inline-block; }
+
+/* User Search Modal -> Advanced Search Filter */
+.propertypro-advanced-filter {
+  display: block; }
+
+.propertypro-advanced-filter .propertypro-search-modal-box > div {
+  padding-bottom: 9.375rem; }
+
+.propertypro-advanced-filter form {
+  width: 100%; }
+
+.propertypro-advanced-filter form i {
+  font-size: 1.5rem; }
+
+.propertypro-search-modal .propertypro-modal-header form .propertypro-tag i {
+  color: #000; }
+
+.propertypro-advanced-filter form .propertypro-advanced-filter-form-button-group {
+  float: right;
+  width: 16.5625rem;
+  height: 3.125rem; }
+
+.propertypro-advanced-filter .propertypro-search-modal-submit-button {
+  background-color: #d03528 !important;
+  border-color: #d03528 !important;
+  /*margin-right: 2.8125rem;*/ }
+
+.propertypro-advanced-filter form a.propertypro-btn-disabled {
+  border-color: #d6dee3 !important;
+  background-color: #d6dee3 !important;
+  color: #b6bec4; }
+
+.propertypro-advanced-filter .propertypro-search-modal-box {
+  height: 91vh;
+  overflow: auto;
+  padding: 2.1875rem 0 5rem;
+  background-color: #e9eff3; }
+
+.propertypro-tagsinput {
+  display: none; }
+
+.propertypro-advanced-filter .propertypro-bs-tags-box {
+  margin-left: 1.5rem; }
+
+.propertypro-advanced-filter form .button-group .btn-primary {
+  float: right; }
+
+.propertypro-advanced-filter form .btn {
+  font-size: .95rem; }
+
+.propertypro-bs-tags-box .propertypro-tag, .propertypro-filter-section .propertypro-tag {
+  border-radius: .1875rem;
+  border: .0625rem solid #d2dae0;
+  background-color: rgba(237, 242, 245, 0.5);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 2.125rem;
+  color: #414141;
+  padding: .2em .8em;
+  margin: 0 .2em .30em 0;
+  cursor: pointer; }
+
+.propertypro-filter-section .propertypro-tag {
+  /*line-height: 2.5rem;
+    border-radius: .3125rem;
+    margin-right: .30em;
+    margin-bottom: .5rem;*/ }
+
+.propertypro-filter-section .propertypro-tag.selected {
+  background-color: #ffffff; }
+
+.propertypro-bs-tags-box .propertypro-tag i, .propertypro-filter-section-button i {
+  position: relative;
+  font-size: 0.625rem;
+  left: auto;
+  top: -.125rem;
+  margin: 0 .3125rem 0 0;
+  color: #000;
+  cursor: pointer; }
+
+.propertypro-bs-tags-box input {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0 .375rem;
+  margin: 0;
+  width: 50%;
+  max-width: 25rem;
+  line-height: 2.5rem;
+  color: rgba(139, 140, 141, 0.4);
+  font-size: 1.40rem;
+  font-weight: 500; }
+
+.propertypro-advanced-filter .propertypro-button-reset {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 3.125rem; }
+
+/* Range Slider Module */
+.propertypro-range-slider {
+  clear: both;
+  position: relative;
+  display: block;
+  height: 3.75rem; }
+
+.propertypro-range-slider .slider-line {
+  height: .5rem;
+  box-shadow: 0 0.0625rem 0 rgba(0, 0, 0, 0.07);
+  border-radius: 1.25rem;
+  background-color: #ffffff;
+  opacity: 0.5;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  outline: none !important;
+  margin-top: 1.5625rem; }
+
+.propertypro-range-slider .propertypro-slider-bar {
+  display: block;
+  position: absolute;
+  height: .5rem;
+  top: 0;
+  left: 23.19732%;
+  width: 60.0353%; }
+
+.range-grid {
+  padding: 1.25rem 0 0; }
+
+.propertypro-hidden-input {
+  position: absolute !important;
+  display: block !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  outline: none !important;
+  z-index: -9999 !important;
+  background: none !important;
+  border-style: solid !important;
+  border-color: transparent !important; }
+
+.additional-filter {
+  display: block; }
+
+.propertypro-view-link {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.5rem; }
+
+.search-filter-nav {
+  box-shadow: 0 1.25rem 1.5rem rgba(224, 230, 234, 0.6);
+  background-color: #ffffff;
+  position: relative; }
+
+.search-filter-nav > div {
+  padding-left: 0;
+  padding-right: 0; }
+
+.search-filter-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.propertypro-search-filter-nav svg.icon-group {
+  fill: #8b8c8d;
+  width: 25%;
+  height: 25%; }
+
+.propertypro-search-filter-nav svg.icon-group:hover {
+  fill: #d03528;
+  cursor: pointer; }
+
+.propertypro-search-filter-nav svg.icon-group.selected {
+  fill: #d03528; }
+
+.search-filter-nav ul li a span {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 1.25rem 0 0; }
+
+.propertypro-filter-footernav {
+  box-shadow: 0 0 1.5rem rgba(224, 230, 234, 0.6);
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: .75rem 0;
+  z-index: 99; }
+
+.propertypro-filter-footernav .btn-reset {
+  float: left;
+  color: #a0a0a0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 2rem;
+  background: transparent;
+  cursor: pointer;
+  padding-left: 0; }
+
+.propertypro-filter-footernav .nav-item-right {
+  float: right;
+  color: #cad3d9;
+  font-size: 1.25rem;
+  padding-top: .5rem;
+  color: #a0a0a0; }
+
+.propertypro-filter-footernav .propertypro-filter-footernav-item-right a {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 2rem; }
+
+.propertypro-filter-footernav .propertypro-filter-footernav-item-right a.btn-cancel {
+  margin-right: .3125rem; }
+
+.propertypro-filter-footernav .propertypro-filter-footernav-item-right a.btn-apply {
+  margin-left: .3125rem; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Properties page
+/*-----------------------------------------------------------------------------------*/
+.propertypro-top-panel {
+  height: 5rem;
+  box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  left: 0; }
+
+.propertypro-top-panel .propertypro-drop-nav {
+  background-color: rgba(237, 242, 245, 0.498039);
+  text-align: center;
+  border-width: 0 .0625rem;
+  border-style: solid;
+  border-color: #d2dae0;
+  border-image: initial; }
+
+.propertypro-top-panel .propertypro-logo {
+  width: 2.125rem;
+  float: none;
+  text-align: center; }
+
+.propertypro-top-panel .propertypro-logo a {
+  display: block;
+  line-height: 5rem;
+  height: 5rem; }
+
+.propertypro-toolbar .propertypro-search-box-wrap {
+  /*margin-left: 1.1rem;*/ }
+
+.propertypro-toolbar .propertypro-search-box-wrap form {
+  position: relative;
+  width: 100%;
+  white-space: nowrap; }
+
+.propertypro-toolbar .propertypro-search-box-wrap .gradient-overlay {
+  position: absolute;
+  width: 3rem;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.001), white 50%);
+  right: 0;
+  z-index: 2; }
+
+.propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
+  position: relative;
+  z-index: 1;
+  overflow-x: auto; }
+
+.propertypro-bs-tags-input > span:last-child {
+  margin-right: 2.5rem; }
+
+.propertypro-toolbar .propertypro-logo {
+  text-align: center; }
+
+.propertypro-toolbar .propertypro-drop-nav {
+  display: flex;
+  height: 100%;
+  background-color: rgba(237, 242, 245, 0.5);
+  border: .0625rem solid #d2dae0;
+  border-top-width: 0;
+  border-bottom-width: 0; }
+
+.propertypro-toolbar .propertypro-drop-nav a {
+  line-height: 5rem;
+  color: #414141;
+  font-size: 1.40rem;
+  font-weight: 600;
+  vertical-align: middle;
+  white-space: nowrap; }
+
+.propertypro-top-nav-bar {
+  /*position: absolute;
+    right: 0;
+    width: 11.875rem;*/
+  /*line-height: 4.875rem;
+    padding-left: .0625rem;*/ }
+
+.propertypro-top-nav-bar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.propertypro-top-nav-bar li a {
+  position: relative; }
+
+.propertypro-top-nav-bar li .propertypro-indicator {
+  position: absolute;
+  right: -.5rem;
+  top: -.625rem;
+  font-size: .5625rem;
+  line-height: .625rem; }
+
+.propertypro-top-nav-bar li a > i {
+  color: #414141; }
+
+.propertypro-navbar-navigation-icon {
+  font-size: 1.375rem; }
+
+#propertypro-Map {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0; }
+
+.propertypro-search-map-container {
+  position: relative;
+  flex: 1 1 0;
+  overflow: hidden; }
+
+.propertypro-search-map {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; }
+
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar {
+  background-color: #ffffff;
+  box-shadow: 0 0.1rem 0.5rem #000;
+  padding: 0.5rem 1rem;
+  width: 100%; }
+
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span {
+  cursor: pointer;
+  line-height: 2rem;
+  color: #a0a0a0; }
+
+.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span.separator {
+  font-size: 18px;
+  padding: 0 1rem; }
+
+.propertypro-search-result-loading {
+  position: absolute !important;
+  left: 50%;
+  top: 30%; }
+
+.propertypro-listing-map {
+  position: relative; }
+
+.propertypro-listing-map .propertypro-caption {
+  background-color: #9a9a9a;
+  opacity: 0.8;
+  padding: 0.5rem 1rem;
+  font-size: .95rem;
+  font-weight: 700;
+  width: 100%;
+  position: absolute;
+  z-index: 9;
+  display: flex;
+  align-items: center; }
+
+.propertypro-listing-map .propertypro-caption .propertypro-caption-content {
+  flex: auto; }
+
+.propertypro-listing-map .propertypro-caption .propertypro-caption-dismiss {
+  padding-left: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem; }
+
+.propertypro-listing-sidebar {
+  position: relative;
+  overflow-y: scroll; }
+
+.propertypro-listing-sidebar .propertypro-headtitle {
+  background-color: rgba(232, 238, 242, 0.5);
+  border-bottom: .0625rem solid #d2dae0;
+  padding: 1.5rem; }
+
+.propertypro-listing-sidebar .propertypro-headtitle h1 {
+  font-size: 2rem;
+  line-height: 2rem;
+  margin: 0 0 .50em;
+  color: #414141; }
+
+.propertypro-listing-sidebar .propertypro-headtitle p {
+  color: #8b8c8d;
+  font-size: 1.050rem;
+  line-height: 1.5rem;
+  margin: 0; }
+
+.propertypro-listing-wrap {
+  position: relative;
+  padding: 1rem; }
+
+.propertypro-search-result-container {
+  overflow: hidden; }
+
+.propertypro-search-result-container p {
+  color: #000000;
+  margin: 1rem; }
+
+.propertypro-search-result-inner-container {
+  float: right; }
+
+.propertypro-listing-wrap .propertypro-card {
+  margin-bottom: 1.875rem; }
+
+.propertypro-card-selected {
+  border-bottom: 3px solid #f28200; }
+
+/* Search Map -> Search Property Type */
+.propertypro-listing-sidebar .propertypro-headtitle .btn {
+  margin-left: .9375rem;
+  font-size: .90rem;
+  color: #fff;
+  border-radius: .1875rem;
+  background-color: #d33320; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Property Single
+/*-----------------------------------------------------------------------------------*/
+.propertypro-top-information-card-container {
+  background-color: #e8eef2; }
+
+.propertypro-single-container {
+  color: #000000; }
+
+.propertypro-single-container ul.propertypro-listing-info-box {
+  margin-bottom: 3rem; }
+
+.propertypro-single-container .propertypro-top-information-card {
+  border: none; }
+
+.propertypro-info-title {
+  color: #414141;
+  font-weight: 700; }
+
+.propertypro-info-section-header {
+  color: #414141;
+  font-weight: 700;
+  line-height: 1.5rem; }
+
+.propertypro-info-description {
+  line-height: 1.85rem; }
+
+.propertypro-small-info-box {
+  margin-bottom: 2rem; }
+
+.propertypro-small-info-box .propertypro-top {
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem; }
+
+.propertypro-small-info-box .propertypro-bottom {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem; }
+
+ul.card-header-tabs {
+  flex-wrap: wrap; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Property Single Data Div
+/*-----------------------------------------------------------------------------------*/
+.propertypro-property-single-div {
+  text-align: left; }
+
+.propertypro-property-single-div h3 {
+  color: #414141;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  padding-top: 2.25rem; }
+
+ul.propertypro-details-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 0.4375rem; }
+
+ul.propertypro-details-list li {
+  border-bottom: 1px solid #e1e5e6;
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem; }
+
+ul.propertypro-details-list li:first-child {
+  padding-top: 0; }
+
+ul.propertypro-details-list li:last-child {
+  border-bottom: none; }
+
+ul.propertypro-details-list li span.propertypro-item-name {
+  color: #8b8c8d; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Image Mixer
+/*-----------------------------------------------------------------------------------*/
+.propertypro-large-img-container {
+  float: left; }
+
+.propertypro-image-mixer {
+  background: #eceeef;
+  min-height: 37.5rem; }
+
+.propertypro-image-mixer .swiper-container {
+  position: relative;
+  width: 100%;
+  height: 100%; }
+
+.propertypro-image-mixer .swiper-slide {
+  width: auto; }
+
+.propertypro-image-mixer .img-sm, .propertypro-image-mixer .img-lg, .propertypro-image-mixer .img-mobile {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat; }
+
+.propertypro-image-mixer .img-sm {
+  width: 18.625rem;
+  height: 18.625rem; }
+
+.propertypro-image-mixer .img-sm:first-child {
+  margin-bottom: 0.25rem; }
+
+.propertypro-image-mixer .img-lg {
+  width: 37.5rem;
+  height: 37.5rem; }
+
+.propertypro-image-mixer .img-mobile {
+  width: 100%;
+  padding-bottom: 100%; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Blog
+/*-----------------------------------------------------------------------------------*/
+.propertypro-blog-posts, .propertypro-related-posts {
+  padding: 6rem 0 7.5rem; }
+
+.propertypro-blog-posts-row .propertypro-post-item:first-child {
+  margin-right: 3rem; }
+
+.propertypro-blog-posts-row .propertypro-post-item:last-child {
+  margin-left: 3rem; }
+
+.propertypro-related-posts .propertypro-post-item {
+  margin-bottom: 5.625rem;
+  display: block; }
+
+.propertypro-blog-posts-row {
+  margin-bottom: 5rem; }
+
+.propertypro-blog-posts .propertypro-post-header, .propertypro-related-posts .propertypro-post-header {
+  margin: 1.5rem 1.5rem 1.5rem 0; }
+
+.propertypro-blog-posts .propertypro-post-title, .propertypro-related-posts .propertypro-post-title {
+  font-size: 1.6rem;
+  line-height: 2.5rem;
+  font-weight: 700; }
+
+.propertypro-blog-posts p, .propertypro-related-posts p {
+  color: #8b8c8d;
+  font-size: 1.125rem;
+  line-height: 1.875rem; }
+
+.propertypro-load-more {
+  margin-top: 2.5rem; }
+
+.propertypro-load-more .propertypro-load-more-link {
+  border-radius: .2rem;
+  line-height: 2.5rem;
+  width: 25rem;
+  height: 3.75rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: none; }
+
+.propertypro-share-post {
+  width: 12.875rem;
+  margin: auto; }
+
+.propertypro-share-post .propertypro-share-post-link {
+  width: 3.625rem;
+  height: 3.625rem;
+  display: inline-block;
+  margin-right: .9375rem;
+  text-align: center;
+  float: left;
+  line-height: 3.875rem; }
+
+.propertypro-share-post a:last-child {
+  margin-right: 0; }
+
+.propertypro-share-post a i {
+  color: #fff;
+  font-size: 1.5rem; }
+
+.propertypro-share-post .propertypro-facebook {
+  line-height: 4rem;
+  background-color: #3a5a98; }
+
+.propertypro-share-post .propertypro-twitter {
+  background-color: #1a97ce; }
+
+.propertypro-share-post .propertypro-linkedin {
+  background-color: #388ba9; }
+
+.propertypro-more-posts {
+  padding-bottom: 5rem;
+  width: 100%; }
+
+.propertypro-more-posts h4 {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 3rem;
+  color: #414141; }
+
+.propertypro-post-content {
+  margin-top: 4rem; }
+
+.propertypro-post-content .propertypro-post-content-container {
+  max-width: 60rem;
+  border-bottom: .125rem solid #d2dae0;
+  padding-bottom: 10rem; }
+
+.propertypro-post-content h2 {
+  line-height: 3rem;
+  margin-bottom: .50em;
+  color: #000000;
+  font-weight: 700; }
+
+.propertypro-post-content p {
+  line-height: 2rem;
+  color: #8b8c8d;
+  font-size: 1.10rem;
+  margin-bottom: 2em; }
+
+.propertypro-post-content a {
+  color: #8b8c8d; }
+
+.propertypro-post-content img {
+  margin: 3rem 0;
+  max-width: 100%; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Guide
+/*-----------------------------------------------------------------------------------*/
+.propertypro-guide-container {
+  padding-left: 0;
+  padding-right: 0; }
+
+.propertypro-guide-container .propertypro-guide-head {
+  height: 100vh; }
+
+.propertypro-guide-head {
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  color: #fff;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: 9; }
+
+.propertypro-guide-head:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent; }
+
+.propertypro-toolbar .propertypro-btn-back-to-home {
+  border-radius: .1875rem;
+  border-width: .125rem;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: none;
+  line-height: 1.5rem;
+  font-size: .875rem;
+  padding-left: .9375rem;
+  padding-right: .9375rem;
+  margin-top: .625rem; }
+
+.propertypro-toolbar .propertypro-btn-back-to-home .propertypro-btn-back-to-home-content {
+  margin-left: 0.3125rem; }
+
+.propertypro-toolbar .propertypro-menu-icon {
+  cursor: pointer;
+  color: #fff;
+  font-size: 2.2rem; }
+
+.propertypro-guide-masthead, .propertypro-article-masthead {
+  display: table;
+  width: 100%;
+  height: 100vh;
+  background-size: cover !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.propertypro-guide-masthead:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45); }
+
+.propertypro-article-masthead:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45); }
+
+.propertypro-guide-masthead header, .propertypro-article-masthead .propertypro-article-header {
+  display: table-cell;
+  vertical-align: middle;
+  z-index: 1;
+  position: relative; }
+
+.propertypro-guide-masthead .propertypro-guide-header-container, .propertypro-article-masthead .propertypro-article-header-container {
+  max-width: 40rem; }
+
+.propertypro-guide-masthead h1, .propertypro-article-masthead h1 {
+  margin-bottom: 1.5rem; }
+
+.propertypro-guide-masthead h1 {
+  font-size: 3rem; }
+
+.propertypro-article-masthead h1 {
+  font-size: 2rem; }
+
+.propertypro-guide-masthead p, .propertypro-article-masthead p {
+  font-size: 1.5rem;
+  line-height: 2.25rem; }
+
+.propertypro-guide-content, .propertypro-article-content {
+  background-color: #e6ecf0; }
+
+.propertypro-guide-content {
+  padding: .9375rem 0; }
+
+.propertypro-guide-list-item {
+  background-color: inherit;
+  margin: .1875rem .625rem !important; }
+
+.propertypro-article-content {
+  padding: 1.5rem 2rem; }
+
+.propertypro-guide-content .propertypro-guide-item {
+  box-shadow: 0 1.375rem 2.75rem rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.98); }
+
+.propertypro-category-header {
+  margin-bottom: 1.75rem; }
+
+.propertypro-category-card .propertypro-category-card-content, .propertypro-article-card .propertypro-article-card-content {
+  padding: 3rem 2rem 3rem 3rem; }
+
+.propertypro-category-card .propertypro-category-card-content .propertypro-category-navigation-item {
+  display: list-item; }
+
+.propertypro-category-card .propertypro-category-card-content h2, .propertypro-article-card .propertypro-article-card-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.5rem; }
+
+.propertypro-category-card .propertypro-category-card-content ul, .propertypro-article-card .propertypro-article-card-content ul {
+  list-style-type: disc;
+  margin: 0 0 0 1.125rem;
+  padding: 0; }
+
+.propertypro-category-card .propertypro-category-card-content ul li, .propertypro-article-card .propertypro-article-card-content ul li {
+  line-height: 1.625rem;
+  margin-bottom: .50em;
+  color: #8b8c8d; }
+
+.propertypro-category-card .propertypro-category-card-content ul li a, .propertypro-article-card .propertypro-article-card-content ul li a, .propertypro-article-card .propertypro-article-card-content .propertypro-article-excerpt {
+  color: #8b8c8d; }
+
+.propertypro-category-card .propertypro-category-card-content ul li:active a, .propertypro-category-card .propertypro-category-card-content ul li:focus a,
+.propertypro-category-card .propertypro-category-card-content ul li:hover a, .propertypro-refresh-link:hover, .propertypro-refresh-link:active, .propertypro-refresh-link:focus {
+  color: #d03528;
+  cursor: pointer; }
+
+.propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img {
+  width: 100%;
+  height: 100%;
+  background-size: cover !important; }
+
+.propertypro-article-content h2 {
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  margin: 0 0 1em; }
+
+.propertypro-article-content p {
+  color: #8b8c8d;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 2rem;
+  margin: 0 0 3.125rem; }
+
+.propertypro-article-content h2 {
+  color: #000000;
+  font-weight: normal; }
+
+.propertypro-article-masthead nav ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.propertypro-article-masthead nav li {
+  flex: 1; }
+
+.propertypro-article-masthead nav li a {
+  display: block;
+  font-size: 1rem;
+  line-height: 3.75rem;
+  color: #fff; }
+
+.propertypro-article-masthead nav li a .fa {
+  font-size: 0.6875rem; }
+
+.propertypro-article-masthead li.propertypro-nav-item-prev a, .propertypro-article-masthead li.propertypro-nav-item-back a {
+  background-color: #434343; }
+
+.propertypro-article-masthead li.propertypro-nav-item-next a {
+  background-color: #2b2b2b; }
+
+.propertypro-article-masthead li.propertypro-nav-item-back a .fa, .propertypro-article-masthead li.propertypro-nav-item-prev a .fa {
+  margin-right: .3125rem; }
+
+.propertypro-article-masthead li.propertypro-nav-item-next a .fa {
+  margin-left: .3125rem; }
+
+.propertypro-guide-header {
+  height: 100vh; }
+
+.propertypro-guide-navigation-cotrols {
+  margin: auto 0;
+  flex-direction: inherit; }
+
+.propertypro-guide-navigation {
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  bottom: 0;
+  left: 0; }
+
+.propertypro-guide-navigation-cotrols {
+  width: 100%; }
+
+.propertypro-waypoint-container {
+  height: 1rem; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Forms and modals
+/*-----------------------------------------------------------------------------------*/
+.propertypro-modal .modal-title {
+  color: #414141;
+  font-size: 2rem;
+  font-weight: 400; }
+
+.propertypro-form {
+  color: #414141;
+  font-size: 1rem; }
+
+.propertypro-form .modal-header {
+  border-bottom: 0; }
+
+.propertypro-form form .form-group {
+  margin-bottom: 0.7rem; }
+
+.propertypro-form form .form-check-input {
+  margin-right: .50rem; }
+
+.propertypro-form form input, .propertypro-form form textarea {
+  border: 1px solid #d2dae0;
+  border-radius: 0.375rem;
+  padding: 1.25rem; }
+
+.propertypro-form form button {
+  border-radius: .1875rem;
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.5625rem;
+  padding: .60em 2em;
+  width: 100%; }
+
+.propertypro-form form button, .propertypro-form form button:focus, .propertypro-form form button:hover, .propertypro-form form button:active {
+  background: #d33320 !important;
+  border-color: #d33320 !important;
+  cursor: pointer; }
+
+.propertypro-form form input::-webkit-input-placeholder, .propertypro-form form textarea::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #A3A1A1; }
+
+.propertypro-form form input::-moz-placeholder, .propertypro-form form textarea::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #A3A1A1; }
+
+.propertypro-form form input:-ms-input-placeholder, .propertypro-form form textarea:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #A3A1A1; }
+
+.propertypro-form form input:-moz-placeholder, .propertypro-form form textarea:-moz-placeholder {
+  /* Firefox 18- */
+  color: #A3A1A1; }
+
+.propertypro-form form select {
+  /* override browsers default styles for the select box */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #414141;
+  background: url(/wp-content/themes/wp-property-pro/static/images/src/propertypro-caret.png) no-repeat right;
+  background-position: right 10px top 25px;
+  border: 1px solid #d2dae0;
+  border-radius: 0.375rem;
+  height: auto !important;
+  padding: 1.25rem;
+  opacity: 1; }
+
+.propertypro-form form select .gray {
+  background: red linear-gradient(0deg, red 0%, red 100%); }
+
+.propertypro-form form .help-block {
+  color: #8b8c8d;
+  padding-left: 0.05rem;
+  font-size: 0.75rem; }
+
+#loginModal .modal-dialog {
+  min-height: -webkit-calc(100vh - 60px);
+  min-height: -moz-calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -moz-box-orient: vertical;
+  -moz-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  overflow: auto; }
+
+@media (max-width: 768px) {
+  loginModal .modal-dialog {
+    min-height: -webkit-calc(100vh - 20px);
+    min-height: -moz-calc(100vh - 20px);
+    min-height: calc(100vh - 20px); } }
+
+.propertypro-login-modal-container h4 {
+  color: #6d6e71;
+  font-size: 1.2em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 20% 0; }
+
+.propertypro-login-modal-container .card {
+  border: 0;
+  text-align: center; }
+
+.propertypro-login-modal-container .card img.card-img-top {
+  margin: 0 auto; }
+
+.propertypro-login-modal-container .card .card-block a {
+  background-color: #d03528 !important;
+  border-radius: .1875rem;
+  border-color: #d03528 !important;
+  color: #fff;
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.5625rem;
+  /* padding: .60em 2em; */
+  padding: .5rem 1rem;
+  width: 100%; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Form Success Message
+/*-----------------------------------------------------------------------------------*/
+.propertypro-form-success-message-container {
+  text-align: center; }
+
+.propertypro-form-success-message-container img {
+  margin-bottom: 2.625rem; }
+
+.propertypro-form-confirmation-paragraph {
+  color: #8b8c8d; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Agent cards
+/*-----------------------------------------------------------------------------------*/
+.propertypro-agent-card {
+  border: 0.0625px solid #e1e5e6;
+  border-radius: 0.3125rem; }
+
+.propertypro-agent-card .propertypro-agent-card-head {
+  background-color: #f3f6f8;
+  padding: 2.375rem 2rem 2rem 2rem;
+  border-top-right-radius: 0.3125rem;
+  border-top-left-radius: 0.3125rem; }
+
+.propertypro-agent-card .propertypro-agent-card-body {
+  padding: 2.375rem 2rem 2rem 2rem; }
+
+.propertypro-agent-card .propertypro-secondary-text {
+  font-size: 0.875rem; }
+
+.propertypro-agent-card .propertypro-agent-card-tabs {
+  border-top: 0.0625rem solid #e1e5e6; }
+
+.propertypro-agent-card .propertypro-agent-card-tabs .propertypro-tab {
+  color: #8b8c8d;
+  background-color: #f3f6f8;
+  text-align: center; }
+
+.propertypro-agent-card .propertypro-agent-card-tabs .propertypro-tab-selected {
+  border-bottom: 0.1875rem solid #d33320;
+  font-weight: 700;
+  color: #414141; }
+
+.propertypro-agent-card .propertypro-agent-card-tabs .propertypro-tab:first-child {
+  border-right: 0.0625rem solid #e1e5e6; }
+
+.propertypro-agent-card .propertypro-agent-card-tabs .propertypro-tab a {
+  display: block;
+  padding: 1.375rem;
+  margin: 0; }
+
+.propertypro-agent-card .propertypro-agent-card-tabs .propertypro-tab a:hover {
+  color: #414141; }
+
+.propertypro-phone-number {
+  background-color: #ffffff;
+  border: 0.0625rem solid #d2dae0;
+  border-radius: 0.3125rem;
+  display: inline-block;
+  padding: 0.625rem 0.9375rem;
+  min-width: 11.875rem; }
+
+.propertypro-phone-number:hover {
+  cursor: pointer; }
+
+.propertypro-agent-photo {
+  clip-path: circle(50px at center); }
+
+.propertypro-agent-card-description {
+  color: #8b8c8d;
+  font-size: 1rem; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Additional Rules
+/*-----------------------------------------------------------------------------------*/
+/** Spinner */
+.propertypro-spinner-circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  position: relative;
+  margin: 1.25rem auto; }
+
+.propertypro-double-bounce1, .propertypro-double-bounce2 {
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out; }
+
+.propertypro-double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s; }
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% {
+    -webkit-transform: scale(0); }
+  50% {
+    -webkit-transform: scale(1); } }
+
+@keyframes sk-bounce {
+  0%, 100% {
+    transform: scale(0);
+    -webkit-transform: scale(0); }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1); } }
+
+.propertypro-spinner-container {
+  display: flex;
+  width: 100%;
+  height: 100vh; }
+
+.propertypro-spinner-accordion {
+  margin: auto;
+  width: 3.125rem;
+  height: 2.5rem;
+  font-size: 0.625rem; }
+
+.propertypro-spinner-accordion > div {
+  height: 100%;
+  width: .3rem;
+  display: inline-block;
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out; }
+
+.propertypro-spinner-accordion .propertypro-rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s; }
+
+.propertypro-spinner-accordion .propertypro-rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s; }
+
+.propertypro-spinner-accordion .propertypro-rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s; }
+
+.propertypro-spinner-accordion .propertypro-rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s; }
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.4); }
+  20% {
+    -webkit-transform: scaleY(1); } }
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4); }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1); } }
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.4); }
+  20% {
+    -webkit-transform: scaleY(1); } }
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4); }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1); } }
+
+/* nprogress */
+#nprogress .propertypro-bar .peg {
+  box-shadow: 0 0 10px #fff, 0 0 5px #fff !important; }
+
+/* noUISlider related CSS and override rules */
+.noUi-connect {
+  background: #d03528 !important; }
+
+.noUi-tooltip {
+  white-space: nowrap; }
+
+.propertypro-noUislider-container {
+  padding: 0 20px; }
+
+/** Utils **/
+.propertypro-left {
+  left: 0; }
+
+.propertypro-right {
+  right: 0; }
+
+.propertypro-display {
+  display: block !important; }
+
+.propertypro-hide {
+  display: none !important; }
+
+.propertypro-button {
+  border-radius: .1875rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.5625rem;
+  padding: .60em 2em;
+  width: auto; }
+
+.propertypro-primary-button {
+  background-color: #d03528 !important;
+  border-color: #d03528 !important;
+  color: #fff; }
+
+.propertypro-secondary-button, .propertypro-secondary-button:focus, .propertypro-secondary-button:hover, .propertypro-secondary-button:active {
+  border-color: #d6dee3;
+  background-color: #d6dee3;
+  color: #414141; }
+
+.propertypro-loading-overlay:after {
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  content: " ";
+  z-index: 9;
+  opacity: .9; }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Responsive (Media queries)
+/*-----------------------------------------------------------------------------------*/
+@media (max-width: 62em) and (min-width: 47.938em) {
+  .propertypro-testimonial .propertypro-author-info {
+    width: 100%; }
+  .propertypro-top-footer .propertypro-footer-logo {
+    text-align: left !important;
+    margin-bottom: 2rem;
+    padding-left: 2rem; }
+  .propertypro-top-footer .propertypro-footer-top-menu-title {
+    font-size: 1.125rem; }
+  .propertypro-top-footer .propertypro-footer-top-menu-link a {
+    font-size: 1.25rem;
+    line-height: 3.125rem; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-link {
+    display: inline-block;
+    width: 20%; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-links,
+  .propertypro-bottom-footer .propertypro-social {
+    text-align: center !important; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-links {
+    margin-top: 2rem; }
+  .propertypro-bottom-footer .propertypro-social {
+    margin: 2rem 0; } }
+
+/* Medium devices (tablets, more than 992px) */
+@media screen and (min-width: 62em) {
+  .propertypro-bottom-footer {
+    padding: 4rem 0; }
+  .tax-propertypro-guide-category {
+    overflow-x: hidden; }
+  .propertypro-guide-container {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
+    position: relative;
+    backface-visibility: hidden;
+    will-change: overflow; }
+  .propertypro-guide-post {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
+    position: relative; }
+  .propertypro-guide-content, .propertypro-article-content {
+    overflow: auto;
+    height: 100vh; }
+  .propertypro-guide-nav {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50%; }
+  .propertypro-widget-tour .propertypro-headtitle p {
+    padding: 0 20rem; } }
+
+@media screen and (min-width: 74.938em) {
+  .propertypro-guide-container {
+    display: block; }
+  .propertypro-guide-content {
+    width: 100%; } }
+
+/* Medium devices (tablets, less than 1199px) */
+@media screen and (max-width: 74.938em) {
+  .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4,
+  .propertypro-search-modal form .form-control,
+  .propertypro-search-modal form i {
+    font-size: 1.2rem; }
+  .propertypro-subnavigation.propertypro-subnavigation-icon-layout .propertypro-subnavigation-container,
+  .propertypro-subnavigation.propertypro-subnavigation-icon-layout .propertypro-subnavigation-container nav {
+    width: 100%; }
+  .propertypro-subnavigation ul li {
+    width: 25%; }
+  .propertypro-guide-container {
+    overflow-y: scroll; }
+  .propertypro-guide-content {
+    overflow: visible; }
+  .propertypro-guide-content, .propertypro-article-content {
+    height: 100%;
+    width: 100%; }
+  .propertypro-guide-navigation {
+    position: fixed; } }
+
+/* Extra small devices (portrait phones, less than 767px) */
+@media screen and (max-width: 47.938em) {
+  .propertypro-navigation-navbar {
+    padding: .5rem 0; }
+  .propertypro-navigation-items {
+    margin: 0 !important; }
+  .propertypro-masthead .propertypro-masthead-container {
+    width: 100%; }
+  .propertypro-masthead .propertypro-masthead-container {
+    margin-top: 5rem;
+    margin-bottom: 0; }
+  .propertypro-masthead .propertypro-masthead-container h1 {
+    word-wrap: break-word; }
+  .propertypro-subnavigation.propertypro-subnavigation-text-layout ul .propertypro-subnavigation-btn {
+    float: none;
+    width: 100%; }
+  .propertypro-subnavigation.propertypro-subnavigation-text-layout {
+    text-align: center; }
+  .propertypro-subnavigation.propertypro-subnavigation-text-layout ul li {
+    float: none;
+    display: inline-block;
+    width: 100%;
+    height: 4rem;
+    line-height: 4rem;
+    border: 0;
+    margin: 0;
+    border-bottom: .0625rem solid #e1e1e1; }
+  .propertypro-subnavigation.propertypro-subnavigation-text-layout ul li a {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem; }
+  .propertypro-subnavigation-mobile-selected-option {
+    background-color: #edf2f5;
+    height: 4rem;
+    line-height: 4rem;
+    font-size: 1rem; }
+  .propertypro-subnavigation-mobile-selected-option i, .propertypro-subnavigation-mobile ul li i {
+    float: right;
+    top: 1.3rem;
+    right: 1.5rem;
+    position: relative;
+    color: #9a9b9c;
+    font-size: 1.5rem;
+    line-height: 1.5rem; }
+  .propertypro-subnavigation-mobile ul li a {
+    padding: 0 !important; }
+  .propertypro-subnavigation-mobile ul li a:not(.propertypro-active):not(:hover):not(:active):not(:focus) {
+    color: #8b8c8d !important; }
+  .propertypro-subnavigation-mobile .propertypro-subnavigation-btn {
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+    width: 100%;
+    left: 0;
+    height: 5rem;
+    margin: 0 !important;
+    line-height: 5rem !important;
+    padding: 0 !important; }
+  .propertypro-masthead-blog-title {
+    font-size: 2.5rem; }
+  .propertypro-testimonial h4 {
+    padding: 0 3rem;
+    font-size: 2.5rem;
+    line-height: 3.75rem; }
+  .propertypro-author-info {
+    max-width: 20rem; }
+  .propertypro-author-info .propertypro-user-item {
+    padding-left: 0; }
+  .propertypro-author-info .propertypro-user-item a {
+    width: 3.6875rem;
+    height: 3.6875rem;
+    display: block; }
+  .propertypro-author-info .propertypro-user-item .propertypro-userBox img {
+    float: none; }
+  .propertypro-subnavigation ul li:nth-child(2n+0) {
+    border-right: 0; }
+  .propertypro-subnavigation ul li:nth-of-type(3), .services ul li:nth-of-type(4) {
+    border-bottom: 0; }
+  .propertypro-subnavigation ul li a {
+    height: 15.625rem; }
+  .propertypro-login-box {
+    border-radius: .1875rem;
+    font-weight: 700;
+    font-size: 1.20rem; }
+  .propertypro-navigation-logo-container {
+    max-width: 3.125rem; }
+  .propertypro-masthead .propertypro-search-box li a {
+    font-size: 1rem;
+    border-bottom-width: 2px; }
+  .propertypro-masthead.propertypro-subnavigation-text-layout p {
+    font-size: 1.5rem; }
+  .propertypro-search-box .propertypro-btn-search {
+    padding-left: 1.25rem; }
+  .propertypro-search-box .propertypro-drop-search {
+    display: none; }
+  .propertypro-subnavigation.propertypro-subnavigation-text-layout {
+    overflow: hidden; }
+  .propertypro-blog-posts .post-title, .propertypro-related-posts .post-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    margin: 1.5625rem 0; }
+  .propertypro-more-posts {
+    padding: 4rem 0; }
+  .propertypro-more-posts h3 {
+    font-size: 1.625rem; }
+  .propertypro-post-content h2 {
+    font-size: 1.75rem;
+    line-height: 2.5rem; }
+  .propertypro-post-content p {
+    line-height: 1.75rem;
+    font-size: 1.050rem; }
+  .propertypro-guide-container .propertypro-guide-head {
+    height: 80vh; }
+  .propertypro-article-masthead {
+    position: static;
+    height: 100vh; }
+  .propertypro-article-content h2 {
+    font-size: 2rem;
+    line-height: 2.5rem; }
+  .propertypro-article-content p {
+    font-size: 1.2rem; }
+  .propertypro-category-card .propertypro-category-card-content, .propertypro-article-card .propertypro-article-card-content {
+    padding: 1.5rem 1rem 1.5rem 1.5rem; }
+  .propertypro-category-card-content .propertypro-category-header {
+    margin-bottom: 1rem; }
+  .propertypro-category-card .propertypro-category-card-content h2, .propertypro-article-card .propertypro-article-card-content h2 {
+    font-size: 1rem;
+    line-height: 1.5rem; }
+  .propertypro-category-card .propertypro-category-card-content ul li, .propertypro-article-card .propertypro-article-card-content ul li {
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem; }
+  .propertypro-guide-masthead .propertypro-guide-header-container,
+  .propertypro-article-masthead .propertypro-article-header-container {
+    max-width: 35rem;
+    margin-bottom: 7rem;
+    margin-top: 10rem; }
+  .propertypro-article-masthead p {
+    font-size: 1rem; }
+  .propertypro-button-search-submit {
+    display: none; }
+  .propertypro-bottom-footer {
+    margin-bottom: 5rem; }
+  .propertypro-listing-map {
+    display: flex;
+    flex-direction: column; }
+  .propertypro-listing-map #propertypro-Map {
+    flex: 1;
+    position: relative; }
+  .propertypro-listing-map .propertypro-listing-wrap {
+    flex: 1;
+    margin-bottom: 3rem;
+    /* need to sacrifice chrome, we only need mobile view on iOS */ }
+  .propertypro-card .propertypro-direction-nav span {
+    opacity: 1; } }
+
+@media (min-width: 40em) and (max-width: 47.938em) {
+  .propertypro-find-home-type li {
+    padding: 0 1.5rem; }
+  .propertypro-article-masthead .propertypro-article-header {
+    display: block; }
+  .propertypro-subnavigation-container {
+    width: 100%; }
+  .propertypro-blog-posts .propertypro-post-title,
+  .propertypro-related-posts .propertypro-post-title {
+    line-height: 2rem; } }
+
+@media (min-width: 40em) and (max-width: 62em) {
+  .propertypro-top-footer .propertypro-footer-top-menu-title {
+    font-size: 1.125rem; }
+  .propertypro-top-footer .propertypro-footer-top-menu-link a {
+    font-size: 1.25rem;
+    line-height: 3.125rem; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-link {
+    display: inline-block;
+    width: 20%; } }
+
+@media screen and (max-width: 62em) {
+  .propertypro-search-modal form .propertypro-button-search-submit,
+  .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4,
+  .propertypro-search-modal form .form-control,
+  .propertypro-search-modal form i {
+    font-size: 1rem; }
+  .propertypro-top-footer .propertypro-footer-logo {
+    text-align: left !important;
+    margin-bottom: 2rem;
+    padding-left: 2rem; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-links,
+  .propertypro-bottom-footer .propertypro-social {
+    text-align: center !important; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-links {
+    margin-top: 2rem; }
+  .propertypro-bottom-footer .propertypro-social {
+    margin: 2rem 0; }
+  .propertypro-subnavigation ul li {
+    float: left;
+    width: calc(50% - 0px);
+    border-right: .0625rem solid #dde4e9;
+    border-bottom: .0625rem solid #dde4e9;
+    display: inline-table; }
+  .propertypro-subnavigation.propertypro-subnavigation-icon-layout .propertypro-subnavigation-container {
+    width: 100%; }
+  .propertypro-subnavigation .propertypro-subnavigation-container ul li {
+    border-bottom: none; }
+  .propertypro-blog-posts .propertypro-post-title, .propertypro-related-posts .propertypro-post-title {
+    font-size: 1.4rem; }
+  .propertypro-blog-posts p, .propertypro-related-posts p {
+    font-size: 1rem; }
+  .propertypro-blog-posts-row .propertypro-post-item:first-child {
+    margin-right: 1rem; }
+  .propertypro-blog-posts-row .propertypro-post-item:last-child {
+    margin-left: 1rem; } }
+
+/* Extra small devices (portrait phones, less than 640px) */
+@media screen and (max-width: 40em) {
+  .propertypro-square-logo {
+    max-width: 2rem; }
+  .propertypro-toolbar .propertypro-menu-icon {
+    font-size: 1.75rem; }
+  .propertypro-guide-toolbar .propertypro-btn-back-to-home {
+    margin-top: 0; }
+  .propertypro-guide-toolbar > .navbar {
+    padding: 1rem; }
+  .propertypro-masthead .propertypro-masthead-title, .propertypro-masthead .propertypro-bottom-title {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    margin-bottom: 3rem; }
+  .propertypro-masthead .propertypro-bottom-title {
+    margin-bottom: 6rem; }
+  .propertypro-masthead .propertypro-masthead-subtitle-top, .propertypro-masthead-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 1rem; }
+  .propertypro-masthead.propertypro-subnavigation-text-layout h1 {
+    font-size: 1.8rem;
+    padding-top: 3.4375rem; }
+  .propertypro-find-home-type {
+    margin: 2rem auto; }
+  .propertypro-find-home-type .propertypro-masthead-title {
+    padding: 0 1rem; }
+  .propertypro-find-home-type li a {
+    font-size: 1rem; }
+  .propertypro-testimonial {
+    margin-bottom: 3rem; }
+  .propertypro-testimonials-container .propertypro-slider-content {
+    margin-bottom: 2rem; }
+  .propertypro-toolbar .propertypro-search-box-wrap {
+    margin: 0.5rem 0; }
+  .propertypro-bs-tags-box .propertypro-tag {
+    margin: 0 0.4rem 0 0;
+    font-size: 0.75rem;
+    padding: 0 0.8em; }
+  .propertypro-bs-tags-box .propertypro-tag i, .propertypro-filter-section-button i {
+    top: 0; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-link a {
+    font-size: 1rem; }
+  .propertypro-footer-logo img.propertypro-vertical-logo {
+    max-width: 4.5rem; }
+  .propertypro-card .propertypro-card-img img {
+    height: 12rem; }
+  .propertypro-card .propertypro-listing-top .propertypro-price {
+    font-size: 1rem; }
+  .propertypro-user-panel {
+    right: auto;
+    left: 0; }
+  .propertypro-user-panel .propertypro-close-panel {
+    left: auto;
+    right: -1.875rem; }
+  .propertypro-listings h3 {
+    font-size: 2rem !important;
+    line-height: 2.5rem !important; }
+  .propertypro-testimonial h4 {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+    margin-bottom: 3rem; }
+  .propertypro-listings .propertypro-listing-carousel-info p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding: 0; }
+  .propertypro-listing-control-nav {
+    margin: 1.875rem 0 0; }
+  .propertypro-listing-sidebar .propertypro-headtitle {
+    display: none; }
+  .propertypro-slider-content .propertypro-slides li .propertypro-testimonial-text {
+    font-size: 1rem; }
+  .propertypro-search-modal-box ol li a {
+    font-size: 1rem;
+    line-height: 2.5rem; }
+  .propertypro-filter-section {
+    margin-bottom: 5rem; }
+  .propertypro-tour-section {
+    margin-top: 3rem; }
+  .propertypro-tour-widget-content h3 {
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+    margin-bottom: 1rem; }
+  .propertypro-tour-widget-content p {
+    font-size: 0.9375rem;
+    line-height: 1.5625rem; }
+  .propertypro-widget-inner {
+    position: relative;
+    margin-top: -9.375rem; }
+  .propertypro-widget-tour .propertypro-headtitle {
+    margin-bottom: 3rem; }
+  .propertypro-widget-tour .propertypro-headtitle h2 {
+    font-size: 1.5rem;
+    line-height: 2.5rem; }
+  .propertypro-widget-tour .propertypro-headtitle p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin: 0; }
+  .propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background {
+    min-height: 20rem; }
+  .propertypro-blog-posts .post-item, .propertypro-related-posts .post-item {
+    margin-bottom: 3.75rem; }
+  .propertypro-top-footer .propertypro-footer-top-menu-title,
+  .propertypro-top-footer .propertypro-footer-top-menu-links {
+    text-align: left; }
+  .propertypro-callout {
+    height: auto;
+    padding: 2.1875rem 0; }
+  .propertypro-callout .propertypro-callout-container {
+    line-height: 1.5rem; }
+  .propertypro-callout-items {
+    display: block; }
+  .propertypro-callout-items .navbar-nav {
+    margin-bop: 1rem; }
+  .propertypro-callout p {
+    display: block;
+    font-size: 1.375rem;
+    line-height: 1.5rem;
+    margin-right: 0; }
+  .propertypro-callout .btn {
+    top: 0; }
+  .propertypro-post-image,
+  .propertypro-blog-posts .propertypro-post-header,
+  .propertypro-related-posts .propertypro-post-header,
+  .propertypro-blog-posts .propertypro-post-card-text,
+  .propertypro-related-posts .propertypro-post-card-text {
+    margin: .5rem; }
+  .propertypro-post-content .propertypro-post-content-container {
+    margin: .5rem !important; }
+  .propertypro-blog-posts-row {
+    margin-bottom: 0; }
+  .propertypro-blog-posts-row .propertypro-post-item {
+    margin-bottom: 1rem; }
+  .propertypro-blog-posts-row .propertypro-post-item:first-child {
+    margin-right: 0; }
+  .propertypro-blog-posts-row .propertypro-post-item:last-child {
+    margin-left: 0; }
+  .propertypro-search-modal .propertypro-modal-header {
+    height: 3.5rem;
+    padding: 0; }
+  .propertypro-search-modal .propertypro-modal-header .container {
+    width: 100%;
+    padding: 0 1rem; }
+  .propertypro-search-modal .propertypro-modal-header i {
+    font-size: 1.25rem; }
+  .propertypro-search-modal .propertypro-modal-header input {
+    padding: 0.5rem 0;
+    font-size: 1rem; }
+  .propertypro-search-modal .propertypro-modal-header .btn {
+    padding: 0.4rem 1rem;
+    font-size: 1rem; }
+  .propertypro-search-modal .propertypro-search-result-group {
+    margin-top: 1rem; }
+  .propertypro-search-modal-box ol {
+    margin-bottom: 1rem; }
+  .propertypro-search-modal-box ol li.propertypro-search-result-item {
+    margin-top: 0.5rem; }
+  .propertypro-search-modal-box ol li.propertypro-search-result-item a {
+    font-size: 1rem;
+    line-height: 2.25rem; }
+  .propertypro-image-mixer {
+    min-height: 20rem; } }
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media screen and (max-width: 35.938em) {
+  .propertypro-search-modal .propertypro-close-panel {
+    top: 1.6rem;
+    font-size: 1.25rem; }
+  .propertypro-bottom-footer li a {
+    font-size: 1rem; }
+  .propertypro-bottom-footer .propertypro-social {
+    margin-top: 1rem; }
+  .propertypro-subnavigation ul li a span,
+  .propertypro-search-filter-nav .propertypro-filter-nav-item-label {
+    font-size: 1rem; }
+  .propertypro-search-box .propertypro-btn-search {
+    height: 3rem;
+    font-size: 1rem;
+    line-height: 1rem; }
+  .propertypro-search-modal .propertypro-search-modal-submit-button {
+    background-color: #d03528 !important;
+    border-color: #d03528 !important;
+    border-radius: .1875rem;
+    color: #fff;
+    margin-right: 2.8125rem;
+    width: 6.875rem;
+    /*width: auto;*/
+    line-height: 1.5625rem;
+    padding: .60em 2em; }
+  .propertypro-search-filter-nav .propertypro-filter-nav-item-label {
+    margin: .625rem 0 0; }
+  .propertypro-search-filter-nav .propertypro-filter-nav-item {
+    height: 6.875rem; }
+  .propertypro-filter-section .btn-primary {
+    font-size: 1rem;
+    line-height: 1.125rem; }
+  .propertypro-filter-section .propertypro-tag {
+    line-height: 1.75rem; }
+  .propertypro-filter-section h3 {
+    font-size: 1.25rem;
+    line-height: 1.25rem; }
+  .propertypro-filter-section h3 span {
+    font-size: 0.875rem; }
+  .propertypro-filter-footernav {
+    padding: .5rem 0; }
+  .propertypro-filter-footernav .btn-reset, .propertypro-filter-footernav .nav-item-right a {
+    font-size: 0.9375rem; }
+  .propertypro-load-more .propertypro-load-more-link {
+    width: 100%;
+    height: 3.75rem; }
+  .propertypro-more-posts {
+    padding: 2.1875rem 0; }
+  .propertypro-share-post {
+    width: 9.375rem; }
+  .propertypro-share-post .propertypro-share-post-link {
+    width: 2.625rem;
+    height: 2.625rem;
+    margin-right: .625rem;
+    line-height: 2.875rem; }
+  .propertypro-share-post a:last-child {
+    margin-right: 0; }
+  .propertypro-share-post a i {
+    font-size: 1.125rem; }
+  .propertypro-share-post .propertypro-facebook {
+    line-height: 2.875rem; }
+  .propertypro-guide-masthead h1 {
+    font-size: 2.2rem; }
+  .propertypro-guide-masthead p {
+    font-size: 1.1rem; }
+  .propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img {
+    min-height: 20rem; }
+  .propertypro-listing-wrap {
+    padding: 0; }
+  .propertypro-listing-wrap .row {
+    margin: 0; }
+  .propertypro-listing-wrap .row > div {
+    padding: 0; }
+  .propertypro-listing-wrap .propertypro-card {
+    margin-bottom: 0; }
+  .propertypro-listing-wrap .propertypro-card:not(.propertypro-card-selected) {
+    border: 0; }
+  .propertypro-listing-wrap .propertypro-card, .propertypro-listing-wrap .propertypro-card .propertypro-card-img img {
+    border-radius: 0; } }
+
+/* Smal devices according to Bootstrap grid guidelines */
+@media (min-width: 576px) and (max-width: 768px) {
+  .propertypro-navbar-navigation-icon {
+    font-size: 2rem; } }
+
+/* Extra small devices (portrait phones, less than 525px) */
+@media screen and (max-width: 32.813em) {
+  .propertypro-guide-nav li a {
+    display: block;
+    padding-top: 1.0625rem;
+    line-height: 1;
+    height: 3.75rem;
+    color: #fff; }
+  .propertypro-guide-nav li:nth-of-type(2) a {
+    padding-top: 1.375rem; } }
+
+/* Extra small devices (portrait phones, less than 440px) */
+@media screen and (max-width: 28.125em) {
+  .propertypro-top-footer {
+    padding: 2.8125rem 0 0.9375rem; }
+  .propertypro-top-footer .footer-menu .row > div {
+    max-width: 100%;
+    flex: none;
+    margin-bottom: 1.5625rem; }
+  .propertypro-top-footer .row .row > div:nth-of-type(3),
+  .propertypro-top-footer .row .row > div:nth-of-type(4) {
+    margin-bottom: 1.5625rem; }
+  .propertypro-top-footer h5 {
+    margin-bottom: .20em; }
+  .propertypro-subnavigation ul li a {
+    height: 12.5rem; }
+  .user-panel {
+    width: 85%; }
+  .propertypro-footer-container {
+    text-align: center; }
+  .propertypro-listing-carousel > ul > li {
+    width: 25%;
+    margin-right: 2%; }
+  .propertypro-card .propertypro-card-title {
+    font-size: 1rem; }
+  .propertypro-card .propertypro-card-text {
+    font-size: .85rem; }
+  ul.propertypro-listing-info-box li {
+    padding: 0 .625rem;
+    font-size: .90rem; }
+  .propertypro-search-filter-nav .propertypro-filter-nav-item {
+    height: 5.9375rem; }
+  .search-filter-nav ul li a span {
+    display: none; }
+  .propertypro-guide-masthead h1 {
+    font-size: 1.8rem; }
+  .propertypro-blog-posts .propertypro-load-more {
+    display: flex;
+    width: 100%; }
+  .propertypro-blog-posts, .propertypro-related-posts {
+    padding: 0; } }
+
+/* Extra small devices (portrait phones, less than 360px) */
+@media screen and (max-width: 22.5em) {
+  .propertypro-bottom-footer li {
+    margin: 0 .25rem; }
+  .propertypro-subnavigation ul li a {
+    height: 11.25rem; }
+  .propertypro-bottom-footer .propertypro-footer-bottom-menu-link a {
+    margin-right: .2rem; }
+  .propertypro-find-home-type li {
+    padding: 0 .3rem; }
+  .propertypro-slider-content .propertypro-slides li .propertypro-testimonial-text {
+    font-size: 1rem; }
+  .propertypro-guide-masthead .propertypro-guide-header-container, .propertypro-article-masthead .propertypro-article-header-container {
+    max-width: 20rem;
+    margin-bottom: 0;
+    margin-top: 0; } }
+
+.propertypro-listing-carousel .propertypro-card {
+  margin-right: 1.25rem; }
