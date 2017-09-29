@@ -3,6 +3,7 @@
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
 const path = require('path');
 const webpack = require('webpack');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -18,6 +19,7 @@ try {
 }
 
 let plugins = [
+  new WebpackCleanupPlugin(),
   new ExtractTextPlugin('../../../styles/dist.css'),
   new webpack.DefinePlugin({
     'process.env': {
