@@ -26,7 +26,7 @@ let plugins = [
     path: path.join(__dirname),
     prettyPrint: true
   }),
-  new ExtractTextPlugin('../../../styles/dist.css'),
+  new ExtractTextPlugin('../../../styles/dist.[contenthash:hex:6].css'),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)

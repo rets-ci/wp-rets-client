@@ -63,7 +63,7 @@
     "webpack-cleanup-plugin": "^0.5.1"
   },
   "scripts": {
-    "clean": "rm -rf dist/*",
+    "clean": "rm -rf dist/* ../../styles/dist.*",
     "build": "npm run clean && NODE_ENV=production webpack --progress",
     "watch": "npm run clean && NODE_ENV=development webpack --watch --progress"
   },
