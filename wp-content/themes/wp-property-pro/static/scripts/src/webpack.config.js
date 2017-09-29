@@ -20,6 +20,7 @@ try {
 }
 
 let plugins = [
+  new WebpackCleanupPlugin(),
   new AssetsPlugin({
     filename: 'assets.json',
     path: path.join(__dirname),
