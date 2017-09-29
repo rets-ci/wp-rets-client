@@ -26,7 +26,7 @@ let plugins = [
     path: path.join(__dirname),
     prettyPrint: true
   }),
-  new ExtractTextPlugin('../../../styles/dist.[contenthash:hex:6].css'),
+  new ExtractTextPlugin('../../../styles/dist.css'),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
@@ -59,8 +59,8 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/wp-content/themes/wp-property-pro/static/scripts/src/dist/',
-        chunkFilename: '[name].chunk.[chunkhash:6].js',
-        filename: 'bundle.[chunkhash:6].js'
+        chunkFilename: '[name].chunk.js',
+        filename: 'bundle.js'
     },
     module: {
         rules: [

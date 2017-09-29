@@ -2,6 +2,9 @@
   "name": "usabilitydynamics/www.reddoorcompany.com",
   "type": "wordpress-site",
   "description": "A wpCloud/Site.",
+  "scripts": {
+    "post-merge": "bash wp-content/static/scripts/post-merge.sh"
+  },
   "repositories": [
     {
       "type": "composer",

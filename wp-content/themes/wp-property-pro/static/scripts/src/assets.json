@@ -1,18 +1,18 @@
 {
   "SingleProperties": {
-    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/SingleProperties.chunk.072171.js"
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/SingleProperties.chunk.js"
   },
   "MapSearchResults": {
-    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/MapSearchResults.chunk.8e23e9.js"
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/MapSearchResults.chunk.js"
   },
   "GuideArchive": {
-    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/GuideArchive.chunk.6405d1.js"
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/GuideArchive.chunk.js"
   },
   "BlogArchive": {
-    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/BlogArchive.chunk.b33b33.js"
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/BlogArchive.chunk.js"
   },
   "main": {
-    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/bundle.bc1f87.js",
-    "css": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/../../../styles/dist.0fefe3.css"
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/bundle.js",
+    "css": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/../../../styles/dist.css"
   }
 }
