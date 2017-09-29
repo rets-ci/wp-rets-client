@@ -104,25 +104,12 @@ namespace UsabilityDynamics {
       wp_enqueue_script('property-pro-tether', $this->_scriptsDir . '/src/tether.min.js', [], null, true);
       wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js', [], null, true);
       wp_enqueue_style('property-pro-bootstrap-css', $this->_stylesDir . '/src/bootstrap.min.css');
+      wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/dist.css');
       wp_enqueue_style('style', get_stylesheet_uri());
 
-
-    
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ), null, true);
-
-      /** Get assets paths and include it if it exixt */
-      $assets = json_decode(file_get_contents(get_stylesheet_directory() . '/static/scripts/src/assets.json'), true);
-
-      if(isset($assets['main']['js'])){
-        $fileName = end(explode('/', $assets['main']['js']));
-        wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/' . $fileName, [], null, true);
-      }
-
-      if(isset($assets['main']['css'])){
-        $fileName = end(explode('/', $assets['main']['css']));
-        wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/' . $fileName);
-      }
+      wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
