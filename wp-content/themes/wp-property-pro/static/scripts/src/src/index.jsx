@@ -40,7 +40,7 @@ if (devEnv) {
     propertyProApp
   );
 }
-console.log('testing cache');
+
 render(
   <Provider store={store}>
     <Router>
