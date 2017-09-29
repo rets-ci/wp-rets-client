@@ -1,5 +1,6 @@
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+const AssetsPlugin = require('assets-webpack-plugin');
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
 const path = require('path');
 const webpack = require('webpack');
@@ -20,6 +21,11 @@ try {
 
 let plugins = [
   new WebpackCleanupPlugin(),
+  new AssetsPlugin({
+    filename: 'assets.json',
+    path: path.join(__dirname),
+    prettyPrint: true
+  }),
   new ExtractTextPlugin('../../../styles/dist.css'),
   new webpack.DefinePlugin({
     'process.env': {
