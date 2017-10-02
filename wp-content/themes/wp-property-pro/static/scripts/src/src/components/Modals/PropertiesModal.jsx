@@ -163,10 +163,10 @@ class PropertiesModal extends Component {
 
   handleSearchTypeSelect = (searchType, propertyTypeOptions) => {
     let modifiedSearchType = searchType === 'Buy' ? 'Sale' : searchType;
-    let options = propertyTypeOptions[modifiedSearchType];
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(modifiedSearchType, propertyTypeOptions);
     let filter = {
-      property_type: get(options, '[0].property_types'),
-      sale_type: get(options, '[0].sale_type'),
+      property_type: get(searchOptions, 'propertyTypes', []).map(d => d.slug),
+      sale_type: get(searchOptions, 'saleType', ''),
       search_type: searchType
     };
     let filters = Object.assign({}, this.state.filters, filter);

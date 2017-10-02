@@ -50,7 +50,7 @@ class Mobile extends Component {
   selectOption(eve, url) {
     eve.preventDefault();
 
-    historyPush(url);
+    this.props.historyPush(url);
   }
 
   handleChange(open) {
