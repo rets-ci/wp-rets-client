@@ -334,6 +334,7 @@ namespace UsabilityDynamics {
         'post_url' => get_permalink($post->ID),
         'custom_content' => false
       ] : [
+          /** It is done for prevent error massage on front-end on pages like /search which support dynamic pages */
           'post_content' => null
       ];
 
