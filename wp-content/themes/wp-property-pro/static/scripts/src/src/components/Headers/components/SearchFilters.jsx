@@ -169,7 +169,7 @@ class searchFilters extends Component {
         <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
       );
     } else if (staticFilters['bathrooms']) {
-      bathroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+      bathroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Bathroom
       </span>);
     }
@@ -179,7 +179,7 @@ class searchFilters extends Component {
         <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
       );
     } else if (staticFilters['bedrooms']) {
-      bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+      bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Bedroom
       </span>);
     }
@@ -189,7 +189,7 @@ class searchFilters extends Component {
         <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
       );
     } else if (staticFilters['price']) {
-      priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+      priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Price
       </span>);
     }
@@ -199,7 +199,7 @@ class searchFilters extends Component {
         <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
       )
     } else if (staticFilters['lotSize']) {
-      lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+      lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Lot Size
       </span>);
     }
@@ -209,7 +209,7 @@ class searchFilters extends Component {
         <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
       );
     } else if (staticFilters['sqft']) {
-      sqftElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+      sqftElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> SQFT
       </span>);
     }
@@ -235,18 +235,16 @@ class searchFilters extends Component {
       <form method="get" className="clearfix" onClick={() => this.props.openPropertiesModal(true)}>
         <div className="gradient-overlay"></div>
         <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
-          <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
-            {termFilterElement}
-            {bathroomsElement}
-            {bedroomsElement}
-            {priceElement}
-            {lotSizeElement}
-            {sqftElement}
-            <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-              <span>+</span>
-              More Filters
-            </span>
-          </div>
+          {termFilterElement}
+          {bathroomsElement}
+          {bedroomsElement}
+          {priceElement}
+          {lotSizeElement}
+          {sqftElement}
+          <span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+            <span>+</span>
+            More Filters
+          </span>
         </div>
         <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
         {/* <i className="fa fa-search"></i> */}
