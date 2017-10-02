@@ -1,5 +1,5 @@
 import React from 'react';
-import {Lib} from '../../../lib.jsx';
+import {Lib} from 'app_root/lib.jsx';
 import get from 'lodash/get';
 
 const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
