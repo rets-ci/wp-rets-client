@@ -39,9 +39,19 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
+      /** Parsing current url */
+      $url = parse_url($_SERVER['REQUEST_URI']);
+      $path = explode('/', $url['path']);
+
+      /** Define template for search page */
+      $template = 'index';
+      if(isset($path[1]) && $path[1] === 'search'){
+        $template = 'search';
+      }
+
       if (!isset($_GET['pageType'])) {
-        add_action('template_include', function () {
-          return get_stylesheet_directory() . '/index.php';
+        add_action('template_include', function () use($template) {
+          return get_stylesheet_directory() . '/' . $template . '.php';
         }, 100);
       }
 
@@ -323,7 +333,9 @@ namespace UsabilityDynamics {
         'post_type' => $post->post_type,
         'post_url' => get_permalink($post->ID),
         'custom_content' => false
-      ] : [];
+      ] : [
+          'post_content' => null
+      ];
 
       /** Is single page */
       if (is_single()) {
