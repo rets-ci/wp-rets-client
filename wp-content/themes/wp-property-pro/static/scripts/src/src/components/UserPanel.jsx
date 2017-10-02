@@ -1,5 +1,6 @@
 import BootstrapModal from './Modals/components/BootstrapModal.jsx'
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {Lib} from '../lib.jsx';
 
 const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
@@ -13,12 +14,8 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
       <div className={Lib.THEME_CLASSES_PREFIX + "user-navigation"}>
         <ol className={`${Lib.THEME_CLASSES_PREFIX}user-navigation-list clearfix`}>
           <li>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Buy&wpp_search[sale_type]=Sale&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse");
-                }}
+            <Link
+              to={"/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Buy&wpp_search[sale_type]=Sale&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home For Sale"
             >
@@ -26,15 +23,11 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 <img src={bundle.static_images_url + "search-homes.svg"} alt="homes for sale"/>
               </span>
               Homes for Sale
-            </a>
+            </Link>
           </li>
           <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/buy")
-              }}
+            <Link
+              to={"/buy"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home Buying"
             >
@@ -42,15 +35,11 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 <img src={bundle.static_images_url + "home-buying-icon-small.svg"} alt="home buying"/>
               </span>
               Home Buying
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Rent&wpp_search[sale_type]=Rent&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse")
-              }}
+            <Link
+              to={"/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Rent&wpp_search[sale_type]=Rent&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Homes for Rent"
             >
@@ -58,15 +47,11 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 <img src={bundle.static_images_url + "search-homes.svg"} alt="homes for rent"/>
               </span>
               Homes for Rent
-            </a>
+            </Link>
           </li>
           <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/rent");
-              }}
+            <Link
+              to={"/rent"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home Renting"
             >
@@ -74,45 +59,33 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 <img src={bundle.static_images_url + "home-renting-icon-small.svg"} alt="home renting"/>
               </span>
               Home Renting
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/sell")
-              }}
+            <Link
+              to={"/sell"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home Selling"
             >
               <span>
                 <img src={bundle.static_images_url + "home-selling-icon-small.svg"} alt="home selling"/></span>
                 Home Selling
-            </a>
+            </Link>
           </li>
           <li className={`${Lib.THEME_CLASSES_PREFIX}divider-bottom`}>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/management");
-              }}
+            <Link
+              to={"/management"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Property Management"
             >
               <span>
                 <img src={bundle.static_images_url + "propertymanagement-icon-black.svg"} alt="property management"/></span>
                 Property Management
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/about");
-                }}
+            <Link
+              to={"/about"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="About Us"
             >
@@ -120,15 +93,11 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
               </span>
                 About Us
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/about/careers/");
-              }}
+            <Link
+              to={"/about/careers/"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Careers"
             >
@@ -136,15 +105,11 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
               </span>
               Careers
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/blog");
-                }}
+            <Link
+              to={"/blog"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Blog"
             >
@@ -152,15 +117,11 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
               </span>
               Blog
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                historyPush("/contact");
-              }}
+            <Link
+              to={"/contact"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Contact"
             >
@@ -168,7 +129,7 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
                 {/* <img src={bundle.static_images_url + "property-management-icon.svg"} alt="property management"/> */}
               </span>
               Contact
-            </a>
+            </Link>
           </li>
         </ol>
       </div>
