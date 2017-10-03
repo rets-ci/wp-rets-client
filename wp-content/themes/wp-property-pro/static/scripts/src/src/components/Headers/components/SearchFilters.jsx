@@ -14,7 +14,7 @@ import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 
 
-let mobileViewCheck = () => window.innerWidth < Lib.MOBILE_WIDTH;
+const isMobileView = () => window.innerWidth < Lib.MOBILE_WIDTH;
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
@@ -39,27 +39,6 @@ class searchFilters extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      isMobileView: mobileViewCheck()
-    };
-    this._isMounted = false;
-  }
-
-  componentDidMount() {
-    this._isMounted = true;
-    this.updateDisplayFlag();
-    window.addEventListener('resize', this.updateDisplayFlag);
-  }
-
-  componentWillReceiveProps() {
-    if (this._isMounted) {
-      this.updateDisplayFlag();
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDisplayFlag, true);
   }
 
   handleBathroomsFilterRemove(bathroomsFilter) {
@@ -116,12 +95,6 @@ class searchFilters extends Component {
     parsedQs[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = updatedTermFilter;
     let updatedQueryParam = qs.stringify(parsedQs);
     this.updateURLWithQueryParam('?' + updatedQueryParam);
-  }
-
-  updateDisplayFlag = () => {
-    this.setState({
-      isMobileView: mobileViewCheck()
-    })
   }
 
   updateURLWithQueryParam(queryParam) {
@@ -223,7 +196,7 @@ class searchFilters extends Component {
     let termFilters = termFilter.map(t => {
       return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
     });
-    if (this.state.isMobileView) {
+    if (isMobileView()) {
       termFilters = termFilters.slice(0, 1);
     }
     if (termFilters && termFilters.length) {
