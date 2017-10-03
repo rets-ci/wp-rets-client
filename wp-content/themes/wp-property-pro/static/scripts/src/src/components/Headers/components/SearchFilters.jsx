@@ -209,23 +209,26 @@ class searchFilters extends Component {
       }
     }
     return (
-      <form method="get" className="clearfix" onClick={() => this.props.openPropertiesModal(true)}>
-        <div className="gradient-overlay"></div>
-        <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
-          {termFilterElement}
-          {bathroomsElement}
-          {bedroomsElement}
-          {priceElement}
-          {lotSizeElement}
-          {sqftElement}
-          <span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-            <span>+</span>
-            More Filters
-          </span>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-filters d-flex align-items-center`} onClick={() => this.props.openPropertiesModal(true)}>
+        <div>
+          <div className="gradient-overlay"></div>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}bs-tags-box`}>
+            {termFilterElement}
+            {bathroomsElement}
+            {bedroomsElement}
+            {priceElement}
+            {lotSizeElement}
+            {sqftElement}
+            <span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+              <span>+</span>
+              More Filters
+            </span>
+          </div>
         </div>
-        <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
-        {/* <i className="fa fa-search"></i> */}
-      </form>
+        <a href="#" onClick={e => e.preventDefault()} className={`${Lib.THEME_CLASSES_PREFIX}navbar-navigation-icon px-2`}>
+          <span className="fa fa-search"></span>
+        </a>
+      </div>
     );
   }
 };

@@ -1,9 +1,3 @@
-.propertypro-header-search-container form .propertypro-addfilter {
-    font-weight: 700;
-    color: #d33320;
-    background-color: transparent;
-}
-
 .propertypro-header-search-container {
   height: 5.0625rem;
 }
@@ -40,7 +34,86 @@
 
 .propertypro-bs-tags-box {
   .propertypro-tag {
-    display: inline-block;
     margin-right: 0.625rem;
+    display: inline-block;
+  }
+
+  .propertypro-tag.propertypro-addfilter {
+    font-weight: 700;
+    color: #d33320;
+    background-color: transparent;
+  }
+
+  .propertypro-tag:last-child {
+    margin-right: 2.5rem;
+  }
+}
+
+.propertypro-header-search-navigation {
+  & > .propertypro-logo {
+    padding: 0 2.5rem;
+  }
+
+  & > .propertypro-drop-nav {
+    cursor: pointer;
+    padding: 0 2.25rem;
+  }
+
+  & > .propertypro-search-box-wrap {
+    flex: 1 1 auto;
+    overflow: hidden;
+    padding: 0 1.25rem;
+    height: 5rem;
+  }
+}
+
+.propertypro-toolbar .propertypro-search-filters {
+  cursor: pointer;
+  height: 100%;
+
+  & > div {
+    position: relative;
+    flex: 1 1 auto;
+    overflow-x: hidden;
+  }
+
+  .gradient-overlay {
+    position: absolute;
+    width: 3rem;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.001), white 50%);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  .propertypro-bs-tags-box {
+    position: relative;
+    overflow-x: auto;
+    z-index: 1;
+    white-space: nowrap;
+  }
+}
+
+.propertypro-toolbar .propertypro-top-nav-bar {
+  height: 5rem;
+  border-left: 1px solid $propertypro-border-color;
+}
+
+
+@media screen and (max-width: 48em) {
+  .propertypro-header-search-navigation > .propertypro-logo {
+    padding: 0 1rem;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 640px) */
+@media screen and (max-width: 42em) {
+  .propertypro-header-search-navigation .propertypro-search-box-wrap {
+    /*height: 3rem;*/
+  }
+
+  .propertypro-header-search-navigation > .propertypro-logo {
+    padding: 0 0.5rem;
   }
 }

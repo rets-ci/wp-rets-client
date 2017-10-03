@@ -41,7 +41,7 @@ const HeaderContent = ({history, location, locationTerm, openLoginModal, openUse
   } else if (pathRoot === get(wpp, 'instance.settings.configuration.base_slug', '')) {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
     headerElement = <HeaderSearch historyPush={history.push} openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
-    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search px-3";
+    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search";
   } else if (pathRoot.indexOf(get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
     headerElement = <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>;
   } else {
