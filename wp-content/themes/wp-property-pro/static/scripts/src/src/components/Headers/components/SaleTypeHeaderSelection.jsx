@@ -74,35 +74,38 @@ class SaleTypeHeaderSelection extends Component {
       propertyTypeOptions
     } = this.props;
 
-    let containerClasses = `row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`;
+    let containerClasses = `${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`;
     if (!open) {
       containerClasses += ` ${Lib.THEME_CLASSES_PREFIX}remove`;
     }
+
     return (
       <div className={containerClasses}>
-        <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Buy', propertyTypeOptions, historyPush)}}>
-            <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
-            <span>Buy</span>
-          </a>
-        </div>
-        <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Rent', propertyTypeOptions, historyPush) }}>
-            <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
-            <span>Rent</span>
-          </a>
-        </div>
-        <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Commercial', propertyTypeOptions, historyPush); }}>
-            <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
-            <span>Commercial</span>
-          </a>
-        </div>
-        <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-          <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Land', propertyTypeOptions, historyPush); }}>
-            <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
-            <span>Land</span>
-          </a>
+        <div className="container d-flex justify-content-center">
+          <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Buy', propertyTypeOptions, historyPush)}}>
+              <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
+              <span>Buy</span>
+            </a>
+          </div>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Rent', propertyTypeOptions, historyPush) }}>
+              <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
+              <span>Rent</span>
+            </a>
+          </div>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Commercial', propertyTypeOptions, historyPush); }}>
+              <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
+              <span>Commercial</span>
+            </a>
+          </div>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, locationTerm, 'Land', propertyTypeOptions, historyPush); }}>
+              <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
+              <span>Land</span>
+            </a>
+          </div>
         </div>
       </div>
     );
