@@ -43,15 +43,19 @@ class searchFilters extends Component {
     this.state = {
       isMobileView: mobileViewCheck()
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.updateDisplayFlag();
     window.addEventListener('resize', this.updateDisplayFlag);
   }
 
   componentWillReceiveProps() {
-    this.updateDisplayFlag();
+    if (this._isMounted) {
+      this.updateDisplayFlag();
+    }
   }
 
   componentWillUnmount() {

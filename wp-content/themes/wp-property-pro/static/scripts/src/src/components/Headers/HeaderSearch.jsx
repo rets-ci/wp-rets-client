@@ -33,7 +33,7 @@ class HeaderSearch extends Component {
     this.props.doOpenSaleTypesPanel(false);
   }
 
-  handleSaleTypeClick(event) {
+  handleSaleTypeClick = event => {
     event.preventDefault();
 
     this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
@@ -50,13 +50,18 @@ class HeaderSearch extends Component {
     let {
       historyPush,
       propertyTypeOptions,
-      searchFilters
+      searchFilters,
+      saleTypesPanelOpen
     } = this.props;
     
     let searchType = searchFilters['search_type'];
+    let containerClass = `${Lib.THEME_CLASSES_PREFIX}header-search-container`;
+    if (saleTypesPanelOpen) {
+      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
+    }
 
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
+      <div className={containerClass}>
         <SaleTypeHeaderSelection
           currentURL={window.location.href}
           closePanel={this.closeSaleTypePanel}
@@ -83,7 +88,7 @@ class HeaderSearch extends Component {
             }
           </div>
           <div className={`hidden-sm-down col-md-2 d-flex justify-content-center align-items-center ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
-            <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>
+            <a href="#" onClick={this.handleSaleTypeClick}>
               {searchType}
               { this.props.saleTypesPanelOpen
                   ? <i className="fa fa-caret-down up ml-2"></i>

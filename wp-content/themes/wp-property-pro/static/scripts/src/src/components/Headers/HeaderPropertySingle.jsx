@@ -97,8 +97,13 @@ class HeaderPropertySingle extends Component {
       search_type: searchType,
       term: [{'wpp_location': this.props.locationTerm}]
     };
+
+    let containerClass = `${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single container-fluid`;
+    if (this.props.saleTypesPanelOpen) {
+      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
+    }
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single container-fluid`} >
+      <div className={containerClass}>
         <PropertiesModal
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => this.props.openPropertiesModal(false)}
@@ -140,7 +145,13 @@ class HeaderPropertySingle extends Component {
             }
           </div>
           <div className={`hidden-sm-down col-md-2 d-flex justify-content-center align-items-center ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
-            <a href="#" onClick={this.handleSaleTypeClick}>{searchType} <i className="fa fa-caret-down"></i></a>
+            <a href="#" onClick={this.handleSaleTypeClick}>
+              {searchType}
+              { this.props.saleTypesPanelOpen
+                  ? <i className="fa fa-caret-down up ml-2"></i>
+                  : <i className="fa fa-caret-down ml-2"></i>
+              }
+            </a>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-10 col-md-7 col-lg-8 d-flex align-items-center"}>
             <SearchFilters filters={propertySingleStaticFilters} propertyTypeOptions={this.props.propertyTypeOptions} />
