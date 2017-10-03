@@ -15,7 +15,7 @@ class FilterTag extends Component {
 
   render() {
     return (
-      <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
+      <span className={`${Lib.THEME_CLASSES_PREFIX}tag`}>
         <span>
           <i className="fa fa-times" onClick={this.handleClick}></i>
         </span>

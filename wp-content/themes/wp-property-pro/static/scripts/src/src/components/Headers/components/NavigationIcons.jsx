@@ -16,7 +16,7 @@ const NavigationIcons = ({openUserPanel}) => (
         </span>
       </a>
     </li>*/}
-    <li className="hidden-sm-down">
+    <li className="hidden-sm-down px-2">
       <UserPanelIcon openUserPanel={openUserPanel} />
     </li>
   </ul>

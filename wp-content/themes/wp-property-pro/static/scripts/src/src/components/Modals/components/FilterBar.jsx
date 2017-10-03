@@ -90,17 +90,15 @@ class FilterBar extends Component {
 
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}bs-tags-box mr-auto`}>
-        <div className={Lib.THEME_CLASSES_PREFIX + "bs-tags-input"}>
-          {termFilterElement}
-          {bathroomsElement}
-          {bedroomsElement}
-          {priceElement}
-          {sqftElement}
-          {lotSizeElement}
-          {!termFilterElement &&
-            <input type="text" size="1" placeholder="Select bedroom type, amenities"/>
-          }
-        </div>
+        {termFilterElement}
+        {bathroomsElement}
+        {bedroomsElement}
+        {priceElement}
+        {sqftElement}
+        {lotSizeElement}
+        {!termFilterElement &&
+          <input type="text" size="1" placeholder="Select bedroom type, amenities"/>
+        }
       </div>
     );
   }

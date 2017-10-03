@@ -33,7 +33,7 @@ class HeaderSearch extends Component {
     this.props.doOpenSaleTypesPanel(false);
   }
 
-  handleSaleTypeClick(event) {
+  handleSaleTypeClick = event => {
     event.preventDefault();
 
     this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
@@ -50,13 +50,18 @@ class HeaderSearch extends Component {
     let {
       historyPush,
       propertyTypeOptions,
-      searchFilters
+      searchFilters,
+      saleTypesPanelOpen
     } = this.props;
     
     let searchType = searchFilters['search_type'];
+    let containerClass = `${Lib.THEME_CLASSES_PREFIX}header-search-container`;
+    if (saleTypesPanelOpen) {
+      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
+    }
 
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
+      <div className={containerClass}>
         <SaleTypeHeaderSelection
           currentURL={window.location.href}
           closePanel={this.closeSaleTypePanel}
@@ -64,11 +69,11 @@ class HeaderSearch extends Component {
           propertyTypeOptions={this.props.propertyTypeOptions}
           open={this.props.saleTypesPanelOpen}
         />
-        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-menu-left col-1 p-0 hidden-md-up d-flex align-items-center`}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation d-flex align-items-center`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-menu-left hidden-md-up px-2`}>
             <UserPanelIcon openUserPanel={this.props.openUserPanel} />
           </div>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-1 col-md-2 col-lg-1 my-auto p-0`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo`}>
             {
               get(bundle, 'logos.square_logo', null)
                 ?
@@ -82,8 +87,8 @@ class HeaderSearch extends Component {
                 : null
             }
           </div>
-          <div className={`hidden-sm-down col-md-2 d-flex justify-content-center align-items-center ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
-            <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav hidden-sm-down`} onClick={this.handleSaleTypeClick}>
+            <a href="#">
               {searchType}
               { this.props.saleTypesPanelOpen
                   ? <i className="fa fa-caret-down up ml-2"></i>
@@ -91,10 +96,10 @@ class HeaderSearch extends Component {
               }
             </a>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-10 col-md-7 col-lg-8 d-flex align-items-center"}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}search-box-wrap`}>
             <SearchFilters filters={searchFilters} propertyTypeOptions={propertyTypeOptions} />
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-0 col-md-1 d-flex align-items-center justify-content-end"}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}top-nav-bar d-flex align-items-center hidden-sm-down`}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>
