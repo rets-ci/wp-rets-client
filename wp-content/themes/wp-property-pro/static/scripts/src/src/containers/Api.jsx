@@ -87,6 +87,9 @@ class Api {
           "terms": {
             "title": "Popular Cities",
             "field": "tax_input.wpp_location.wpp_location_city_state.name.raw",
+          },
+          "meta": {
+            "term_type": "wpp_location_city_state"
           }
         },
         "wpp_location_city_state_slug": {
@@ -99,6 +102,9 @@ class Api {
           "terms": {
             "title": "Popular Zipcodes",
             "field": "tax_input.wpp_location.wpp_location_zip.name.raw",
+          },
+          "meta": {
+            "term_type": "wpp_location_zip"
           }
         },
         "wpp_location_zip_slug": {
@@ -111,6 +117,9 @@ class Api {
           "terms": {
             "title": "Popular Counties",
             "field": "tax_input.wpp_location.wpp_location_county.name.raw"
+          },
+          "meta": {
+            "term_type": "wpp_location_county"
           }
         },
         "wpp_location_county_slug": {
@@ -123,6 +132,9 @@ class Api {
           "terms": {
             "title": "Popular Subdivisions",
             "field": "tax_input.wpp_location.wpp_location_subdivision.name.raw"
+          },
+          "meta": {
+            "term_type": "wpp_location_subdivision"
           }
         },
         "wpp_location_subdivision_slug": {
@@ -209,12 +221,12 @@ class Api {
 
             for (let ind in term.options) {
               let option = term.options[ind];
-
               if (get(option, '_source.term_type', null) === aggregationKey || get(option, '_source.term_type', null) === get(aggregationsFields[aggregationKey], 'old_key', null)) {
                 _buckets.push({
                   id: get(option, '_id', ''),
                   text: get(option, '_source.name', ''),
                   term: get(option, '_source.slug', ''),
+                  termType: get(option, '_source.term_type', ''),
                   count: get(option, 'score', ''),
                   taxonomy: get(option, '_source.taxonomy', '')
                 });
@@ -301,11 +313,15 @@ class Api {
           "field": get(aggregation, 'terms.field', ''),
           "size": (get(aggregation, 'terms.field', '').indexOf('subdivision') !== -1 ? (params.size + 1) : params.size) || 0
         }
+      };
+
+      if (aggregation.meta) {
+        body.aggs[aggIndex]['meta'] = aggregation.meta;
       }
     }
 
     Api.makeRequest({
-      'url': Api.getPropertySearchRequestURL(params.size || 0),
+      'url': Api.getPropertySearchRequestURL(0),
       'query': {
         data: JSON.stringify(body)
       }
@@ -324,6 +340,7 @@ class Api {
         let data = null;
         let _buckets = [];
         let term = responseAggs[i];
+        let meta = responseAggs[i].meta;
 
         if (get(term, 'buckets', null) === null) {
           continue;
@@ -343,6 +360,7 @@ class Api {
               id: get(bucket, 'key', ''),
               text: get(bucket, 'key', ''),
               term: get(responseAggs[replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
+              termType: get(meta, 'term_type', ''),
               count: get(bucket, 'doc_count', ''),
               taxonomy: 'wpp_location'
             });
