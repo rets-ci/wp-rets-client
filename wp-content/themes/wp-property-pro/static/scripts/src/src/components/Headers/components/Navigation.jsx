@@ -1,5 +1,5 @@
 import React from 'react';
-import {Lib} from '../../../lib.jsx';
+import {Lib} from 'app_root/lib.jsx';
 import get from 'lodash/get';
 
 const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
@@ -9,7 +9,7 @@ const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
         get(bundle, 'static_images_url', null)
           ?
           <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}menu-icon hidden-md-up my-auto mr-3`} onClick={(eve) => { eve.preventDefault();  openUserPanel(); }}>
-            <span>☰</span>
+            <span className="fa fa-bars"></span>
           </a>
           : null
       }
@@ -33,11 +33,13 @@ const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
         }
       </a>
       <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
-        <li className="nav-item">
+        <li className="nav-item mr-4">
           <a href="#" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}login-box`} onClick={openLoginModal}>Login</a>
         </li>
         <li className="nav-item hidden-sm-down">
-          <button type="button" className={Lib.THEME_CLASSES_PREFIX+"navigation-menu-button"} onClick={openUserPanel}><span>☰</span> Menu</button>
+          <button type="button" className={Lib.THEME_CLASSES_PREFIX+"navigation-menu-button d-flex align-items-center"} onClick={openUserPanel}>
+            <span className="fa fa-bars mr-3"></span>Menu
+          </button>
         </li>
       </ul>
     </div>
