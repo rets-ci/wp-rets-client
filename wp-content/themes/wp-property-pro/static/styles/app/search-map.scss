@@ -1,0 +1,14 @@
+.propertypro-search-map-container {
+
+  &.propertypro-with-sale-types-panel-open::after {
+    @include propertypro-backdrop;
+  }
+}
+
+.propertypro-listing-sidebar {
+  /*border-right: 1px solid $propertypro-border-color;*/
+}
+
+.propertypro-listing-map {
+  @include propertypro-box-shadow(-2px, 1px);
+}

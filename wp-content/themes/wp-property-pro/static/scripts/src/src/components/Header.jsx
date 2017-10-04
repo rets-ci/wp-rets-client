@@ -15,7 +15,6 @@ import get from 'lodash/get';
 const mapStateToProps = (state, ownProps) => {
   return {
     location: ownProps.location,
-    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -31,7 +30,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const HeaderContent = ({history, location, locationTerm, openLoginModal, openUserPanel, saleType, saleTypesPanelOpen, searchType}) => {
+const HeaderContent = ({history, location, locationTerm, openLoginModal, openUserPanel, saleType, searchType}) => {
   let pathname = get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
@@ -42,11 +41,7 @@ const HeaderContent = ({history, location, locationTerm, openLoginModal, openUse
   } else if (pathRoot === get(wpp, 'instance.settings.configuration.base_slug', '')) {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
     headerElement = <HeaderSearch historyPush={history.push} openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
-    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search px-3";
-
-    if (saleTypesPanelOpen) {
-      sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
-    }
+    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search";
   } else if (pathRoot.indexOf(get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
     headerElement = <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>;
   } else {

@@ -7,7 +7,7 @@ const UserPanelIcon = ({openUserPanel}) => (
     onClick={(event) => {event.preventDefault(); openUserPanel()}}
     className={`${Lib.THEME_CLASSES_PREFIX}side-navigation`}
     >
-      <span className={`${Lib.THEME_CLASSES_PREFIX}navbar-navigation-icon`}>☰</span>
+      <span className={`${Lib.THEME_CLASSES_PREFIX}navbar-navigation-icon fa fa-bars`}></span>
   </a>
 );
 

@@ -39,9 +39,19 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
+      /** Parsing current url */
+      $url = parse_url($_SERVER['REQUEST_URI']);
+      $path = explode('/', $url['path']);
+
+      /** Define template for search page */
+      $template = 'index';
+      if(isset($path[1]) && $path[1] === 'search'){
+        $template = 'search';
+      }
+
       if (!isset($_GET['pageType'])) {
-        add_action('template_include', function () {
-          return get_stylesheet_directory() . '/index.php';
+        add_action('template_include', function () use($template) {
+          return get_stylesheet_directory() . '/' . $template . '.php';
         }, 100);
       }
 
@@ -107,17 +117,15 @@ namespace UsabilityDynamics {
       wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/dist.css');
       wp_enqueue_style('style', get_stylesheet_uri());
 
-
-    
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ), null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
+
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
       }
 
       $params = $this->property_pro_get_base_info();
-
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
        * now host value in theme composer.json
@@ -224,6 +232,9 @@ namespace UsabilityDynamics {
 
 
         $sale_type = $label;
+
+        $_types = $_property_types;
+
         if (!in_array($label, ['Rent', 'Sale'])){
           $term = get_term_by('slug', $label, $taxonomy);
           $types = array_map(function ($id) use ($taxonomy) {
@@ -233,11 +244,17 @@ namespace UsabilityDynamics {
             ];
           }, get_term_children($term->term_id, $taxonomy));
           $sale_type = 'Sale';
+
+          $_types = $types;
+        }elseif($label === 'Sale'){
+          $_types = array_filter($_property_types, function($type){
+            return $type['slug'] !== 'residential-apartment';
+          });
         }
 
         $property_search_options[$label] = [
           'sale_type' => $sale_type,
-          'property_types' => isset($types) && !empty($types) ? array_values($types) : array_values($_property_types)
+          'property_types' => array_values($_types)
         ];
 
       }
@@ -316,7 +333,10 @@ namespace UsabilityDynamics {
         'post_type' => $post->post_type,
         'post_url' => get_permalink($post->ID),
         'custom_content' => false
-      ] : [];
+      ] : [
+          /** It is done for prevent error massage on front-end on pages like /search which support dynamic pages */
+          'post_content' => null
+      ];
 
       /** Is single page */
       if (is_single()) {

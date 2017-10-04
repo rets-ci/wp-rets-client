@@ -1,0 +1,16 @@
+$propertypro-border-color: #d2dae0;
+
+@mixin propertypro-backdrop {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1001;
+}
+
+@mixin propertypro-box-shadow($offset-x, $offset-y, $blur: 2px) {
+  -webkit-box-shadow: $offset-x $offset-y $blur rgba(0, 0, 0, 0.08);
+  -moz-box-shadow:    $offset-x $offset-y $blur rgba(0, 0, 0, 0.08);
+  box-shadow:         $offset-x $offset-y $blur rgba(0, 0, 0, 0.08);
+}

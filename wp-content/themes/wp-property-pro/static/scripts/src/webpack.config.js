@@ -1,8 +1,10 @@
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+const AssetsPlugin = require('assets-webpack-plugin');
 const PROD = JSON.parse(process.env.NODE_ENV === 'production' || '0');
 const path = require('path');
 const webpack = require('webpack');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -18,6 +20,12 @@ try {
 }
 
 let plugins = [
+  new WebpackCleanupPlugin(),
+  new AssetsPlugin({
+    filename: 'assets.json',
+    path: path.join(__dirname),
+    prettyPrint: true
+  }),
   new ExtractTextPlugin('../../../styles/dist.css'),
   new webpack.DefinePlugin({
     'process.env': {
@@ -51,7 +59,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/wp-content/themes/wp-property-pro/static/scripts/src/dist/',
-        chunkFilename: '[name].bundle.js',
+        chunkFilename: '[name].chunk.js',
         filename: 'bundle.js'
     },
     module: {
@@ -89,6 +97,8 @@ module.exports = {
     plugins: plugins,
     resolve: {
       alias: {
+        // root directory for all imports across the app
+        'app_root': path.resolve(__dirname, 'src/'),
         // this is so we can work with svg-react-loader after webpack upgrade
         'react$': path.join(__dirname, `/node_modules/react/${reactMainLocation}`),
         'slick-css': path.join(__dirname, '/node_modules/slick-carousel/slick/slick.css'),

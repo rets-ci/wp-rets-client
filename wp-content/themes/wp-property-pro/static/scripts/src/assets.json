@@ -1,5 +1,18 @@
 {
+  "SingleProperties": {
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/SingleProperties.chunk.js"
+  },
+  "MapSearchResults": {
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/MapSearchResults.chunk.js"
+  },
+  "GuideArchive": {
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/GuideArchive.chunk.js"
+  },
+  "BlogArchive": {
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/BlogArchive.chunk.js"
+  },
   "main": {
-    "js": "bundle.js"
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/bundle.js",
+    "css": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/../../../styles/dist.css"
   }
 }

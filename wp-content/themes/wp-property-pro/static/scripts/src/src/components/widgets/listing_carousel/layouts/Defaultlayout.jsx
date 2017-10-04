@@ -102,22 +102,27 @@ export default class DefaultLayout extends Component {
               </Slider>
             </div>
         }
-        <div className={`${Lib.THEME_CLASSES_PREFIX}listing-control-nav text-center`}>
-          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}nav-prev mr-3 rounded-circle`}
-              onClick={e => {
-                e.preventDefault();
-                this.previous();
-              }}>
-             <i className="fa fa-angle-left"></i>
-          </a>
-          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
-              onClick={e => {
-                e.preventDefault();
-                this.next();
-              }}>
-             <i className="fa fa-angle-right"></i>
-          </a>
-        </div>
+        {
+          posts.length ?
+            <div className={`${Lib.THEME_CLASSES_PREFIX}listing-control-nav text-center`}>
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}nav-prev mr-3 rounded-circle`}
+                 onClick={e => {
+                     e.preventDefault();
+                     this.previous();
+                 }}>
+                <i className="fa fa-angle-left"></i>
+              </a>
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
+                 onClick={e => {
+                     e.preventDefault();
+                     this.next();
+                 }}>
+                <i className="fa fa-angle-right"></i>
+              </a>
+            </div>
+          : null
+        }
+
       </div>  
     );
   }
