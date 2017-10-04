@@ -83,64 +83,24 @@ class Api {
   static getTopAggregations() {
     return {
       "aggs": {
-        "wpp_location_city_state_name": {
+        "wpp_location_city_name": {
           "terms": {
-            "title": "Popular Cities",
+            "title": "Filter by Popular City",
             "field": "tax_input.wpp_location.wpp_location_city_state.name.raw",
           },
+            "total_terms": {
+                "cardinality": {
+                    "field": "tax_input.wpp_location.wpp_location_city_state.name.raw"
+                }
+            },
           "meta": {
             "term_type": "wpp_location_city_state"
           }
         },
-        "wpp_location_city_state_slug": {
+        "wpp_location_city_slug": {
           "terms": {
-            "title": "Popular Cities",
+            "title": "Filter by Popular City",
             "field": "tax_input.wpp_location.wpp_location_city_state.slug",
-          }
-        },
-        "wpp_location_zip_name": {
-          "terms": {
-            "title": "Popular Zipcodes",
-            "field": "tax_input.wpp_location.wpp_location_zip.name.raw",
-          },
-          "meta": {
-            "term_type": "wpp_location_zip"
-          }
-        },
-        "wpp_location_zip_slug": {
-          "terms": {
-            "title": "Popular Zipcodes",
-            "field": "tax_input.wpp_location.wpp_location_zip.slug",
-          }
-        },
-        "wpp_location_county_name": {
-          "terms": {
-            "title": "Popular Counties",
-            "field": "tax_input.wpp_location.wpp_location_county.name.raw"
-          },
-          "meta": {
-            "term_type": "wpp_location_county"
-          }
-        },
-        "wpp_location_county_slug": {
-          "terms": {
-            "title": "Popular Counties",
-            "field": "tax_input.wpp_location.wpp_location_county.slug"
-          }
-        },
-        "wpp_location_subdivision_name": {
-          "terms": {
-            "title": "Popular Subdivisions",
-            "field": "tax_input.wpp_location.wpp_location_subdivision.name.raw"
-          },
-          "meta": {
-            "term_type": "wpp_location_subdivision"
-          }
-        },
-        "wpp_location_subdivision_slug": {
-          "terms": {
-            "title": "Popular Subdivisions",
-            "field": "tax_input.wpp_location.wpp_location_subdivision.slug"
           }
         }
       }
@@ -289,15 +249,6 @@ class Api {
     let rows = [
       {
         'order_key': 'city'
-      },
-      {
-        'order_key': 'zip'
-      },
-      {
-        'order_key': 'county'
-      },
-      {
-        'order_key': 'subdivision'
       }
     ];
 
@@ -311,12 +262,16 @@ class Api {
       body.aggs[aggIndex] = {
         "terms": {
           "field": get(aggregation, 'terms.field', ''),
-          "size": (get(aggregation, 'terms.field', '').indexOf('subdivision') !== -1 ? (params.size + 1) : params.size) || 0
+          "size": 10
         }
       };
 
       if (aggregation.meta) {
         body.aggs[aggIndex]['meta'] = aggregation.meta;
+      }
+
+      if (aggregation.total_terms) {
+          body.aggs[aggIndex + '_count'] = aggregation.total_terms;
       }
     }
 
@@ -347,11 +302,6 @@ class Api {
         }
 
         for (let ind in term.buckets) {
-
-          // Exclude first subdivision from list (not in subdivision value)
-          if(i.indexOf('subdivision') !== -1 && ind === "0"){
-            continue;
-          }
 
           let bucket = term.buckets[ind];
 
