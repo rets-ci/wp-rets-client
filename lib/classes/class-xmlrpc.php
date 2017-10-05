@@ -1072,7 +1072,8 @@ namespace UsabilityDynamics\WPRETSC {
           'skipMediaUpdate' => false,
           'skipSlideshowImages' => true,
           'createWPPAttributes' => false,
-          'createWPPTerms' => false
+          'createWPPTerms' => false,
+          'resetPostName' => false
         ));
 
         // Defer term counting until method called again.
@@ -1100,6 +1101,12 @@ namespace UsabilityDynamics\WPRETSC {
           $_post = get_post( $post_data[ 'ID' ] );
           $post_data[ 'post_date' ] = $_post->post_date;
           $post_data[ 'post_status' ] = $_post->post_status;
+
+          // Set empty post name for refreshing it on updating post
+          if($options['resetPostName']){
+            $post_data[ 'post_name' ] = '';
+          }
+
         } else {
           ud_get_wp_rets_client()->write_log( 'Running wp_insert_post for [new post].', 'debug' );
         }
