@@ -262,7 +262,7 @@ class Api {
       body.aggs[aggIndex] = {
         "terms": {
           "field": get(aggregation, 'terms.field', ''),
-          "size": 10
+          "size": Lib.TOP_AGGREGATIONS_COUNT
         }
       };
 
