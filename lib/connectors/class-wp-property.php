@@ -137,21 +137,22 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
           return;
         }
 
-        $wpp_settings = get_option( 'wpp_settings' );
+        $taxonomies = ud_get_wpp_terms()->get( 'config.taxonomies', array() );
 
         $added = false;
 
         foreach( (array)$keys as $key ) {
-          // Break if Property Attribute already exists
-          if( !empty( $wpp_settings[ 'taxonomies' ][ $key ] ) ) {
+          // Break if Taxonomy already exists
+          if( !empty( $taxonomies[ $key ] ) ) {
             continue;
           }
-          $wpp_settings[ 'taxonomies' ][ $key ] = ud_get_wpp_terms()->prepare_taxonomy( array(), ucwords( str_replace( '_', ' ', $key ) ) );
+          $taxonomies[ $key ] = ud_get_wpp_terms()->prepare_taxonomy( array(), ucwords( str_replace( '_', ' ', $key ) ) );
           $added = true;
         }
 
         if($added) {
-          update_option( 'wpp_settings', $wpp_settings );
+          ud_get_wpp_terms()->set( 'config.taxonomies', $taxonomies );
+          ud_get_wpp_terms()->settings->commit();
         }
       }
 
