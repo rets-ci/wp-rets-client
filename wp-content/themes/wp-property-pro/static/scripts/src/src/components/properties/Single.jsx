@@ -225,6 +225,7 @@ class Single extends Component {
           info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
         }
     }
+
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []}/>

@@ -1,6 +1,5 @@
-.propertypro-search-map-container {
-
-  &.propertypro-with-sale-types-panel-open::after {
+.propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open {
+  .propertypro-search-map-container::after {
     @include propertypro-backdrop;
   }
 }

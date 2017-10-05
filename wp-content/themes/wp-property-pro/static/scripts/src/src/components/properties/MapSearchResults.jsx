@@ -52,7 +52,6 @@ const mapStateToProps = (state, ownProps) => {
     resultsTotal: get(state, 'searchResults.totalProps', 0),
     propertyOnPanel: state.singleProperty.propertyOnPanel,
     panelOnMapShown: state.singleProperty.panelOnMapShown,
-    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
   }
@@ -356,13 +355,8 @@ class MapSearchResults extends Component {
       </div>
     );
 
-    let containerClass = `${Lib.THEME_CLASSES_PREFIX}search-map-container h-100`;
-    if (this.props.saleTypesPanelOpen) {
-      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
-    }
-
     return (
-      <div className={containerClass}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-container h-100`}>
         {elementToShow}
       </div>
     );
