@@ -55,7 +55,10 @@ if (PROD) {
 }
 
 module.exports = {
-    entry: './src/index.jsx',
+    entry: [
+      'babel-polyfill',
+      './src/index.jsx',
+    ],
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/wp-content/themes/wp-property-pro/static/scripts/src/dist/',
