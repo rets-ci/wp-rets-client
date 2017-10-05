@@ -38,7 +38,7 @@ const propertySingle = (state = defaultState, action) => {
         return {
           ...state,
           panelOnMapShown: false,
-          // propertyOnPanel: null,
+          propertyOnPanel: null,
         };
       case LOCATION_CHANGE:
       case Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:

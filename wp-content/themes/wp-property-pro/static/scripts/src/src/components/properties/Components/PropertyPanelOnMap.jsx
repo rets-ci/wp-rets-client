@@ -37,12 +37,13 @@ class PropertyPanelOnMap extends Component {
 
     return (
       <div className={containerClass}>
-      { property &&
-        <Single
-          agents={agents}
-          {...propertyMeta}
-          all={property}
-        />
+      { property
+        ? <Single
+            agents={agents}
+            {...propertyMeta}
+            all={property}
+          />
+        : <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}></div>
       }
       { isVisible &&
         <span className={`${Lib.THEME_CLASSES_PREFIX}panel-on-map-close d-flex justify-content-center align-items-center`}

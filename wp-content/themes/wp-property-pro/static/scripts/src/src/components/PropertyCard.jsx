@@ -10,6 +10,8 @@ import isEmpty from 'lodash/isEmpty';
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
 
+const isMobile = window.innerWidth < 576;
+
 
 class PropertyCard extends Component {
   static propTypes = {
@@ -159,7 +161,7 @@ class PropertyCard extends Component {
       </div>
     );
 
-    if (this.props.openPanelWhenClicked) {
+    if (this.props.openPanelWhenClicked && !isMobile) {
       return (
         <div
           className={classes.join(' ')}
