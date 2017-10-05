@@ -45,6 +45,10 @@ section, article, footer {
     width: 100%;
 }
 
+button:focus {
+    box-shadow: none !important;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*  Typography
 /*-----------------------------------------------------------------------------------*/
@@ -81,6 +85,10 @@ html, body {
 
 .propertypro-page-content, .propertypro-footer-container {
     flex: 1 0 auto;
+}
+
+.propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open {
+    overflow: hidden;
 }
 
 /** colors **/
@@ -1839,6 +1847,11 @@ p.propertypro-gentle-error {
 
 .propertypro-listing-wrap .propertypro-card {
     margin-bottom: 1.875rem;
+}
+
+.propertypro-listing-wrap .propertypro-card:hover {
+    cursor: pointer;
+    /*border-bottom: 3px solid #f28200;*/
 }
 
 .propertypro-card-selected {

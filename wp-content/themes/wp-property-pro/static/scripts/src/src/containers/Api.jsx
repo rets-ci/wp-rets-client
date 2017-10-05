@@ -519,7 +519,7 @@ class Api {
     }
     sort = JSON.stringify(sort);
     // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
-    return JSON.parse('{"query":' + query + ',"_source": ' + source + ',"sort": ' + sort + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
+    return JSON.parse('{"query":' + query + ',"sort": ' + sort + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
   }
 
   static search(url, query, callback) {

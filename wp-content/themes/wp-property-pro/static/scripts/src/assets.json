@@ -1,9 +1,9 @@
 {
-  "SingleProperties": {
-    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/SingleProperties.chunk.js"
-  },
   "MapSearchResults": {
     "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/MapSearchResults.chunk.js"
+  },
+  "SingleProperties": {
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/SingleProperties.chunk.js"
   },
   "GuideArchive": {
     "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/GuideArchive.chunk.js"

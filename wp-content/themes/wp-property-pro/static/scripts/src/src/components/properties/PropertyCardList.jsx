@@ -1,9 +1,19 @@
-import difference from 'lodash/difference';
-import get from 'lodash/get';
-import PropertyCard from '../PropertyCard.jsx';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import difference from 'lodash/difference';
+import get from 'lodash/get';
+import find from 'lodash/find';
+
+import PropertyCard from 'app_root/components/PropertyCard.jsx';
+import Api from 'app_root/containers/Api.jsx';
+import {
+  receivePropertySingleResult,
+  receivePropertySingleFetchingError,
+  requestPropertySingleResult,
+  selectPropertyOnMap,
+} from 'app_root/actions/index.jsx';
 
 class PropertyCardList extends Component {
   static propTypes = {
@@ -29,6 +39,11 @@ class PropertyCardList extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    return difference(nextProps.properties, this.props.properties).length ||
+      nextProps.selectedProperty !== this.props.selectedProperty;
+  }
+
   scrollToProperty(propertyId) {
     if (!this.propertiesDOM[propertyId]) {
      console.log('chosen property was not found in the results');
@@ -38,9 +53,12 @@ class PropertyCardList extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return difference(nextProps.properties, this.props.properties).length ||
-      nextProps.selectedProperty !== this.props.selectedProperty;
+  handlePropertyClick = (propertyId) => {
+    this.props.onUpdateSelectedProperty(propertyId);
+
+    const property = find(this.props.properties, { '_id': propertyId });
+
+    this.props.selectPropertyOnMap(property._source);
   }
 
   render() {
@@ -75,7 +93,13 @@ class PropertyCardList extends Component {
             };
             return (
               <div className={`col-12 col-lg-6`} key={p._id}>
-                <PropertyCard data={item} highlighted={selectedProperty === p._id} propertiesDOM={this.propertiesDOM} />
+                <PropertyCard
+                  data={item}
+                  highlighted={selectedProperty === p._id}
+                  propertiesDOM={this.propertiesDOM}
+                  openPanelWhenClicked={true}
+                  onClickCard={this.handlePropertyClick}
+                />
               </div>
             );
           })
@@ -85,4 +109,21 @@ class PropertyCardList extends Component {
   }
 }
 
-export default PropertyCardList;
+const mapStateToProps = (state) => {
+  return {
+
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    selectPropertyOnMap: (property) => {
+      dispatch(selectPropertyOnMap(property));
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PropertyCardList);

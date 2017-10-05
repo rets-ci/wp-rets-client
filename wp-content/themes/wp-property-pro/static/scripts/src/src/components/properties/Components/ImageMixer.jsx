@@ -92,10 +92,8 @@ class ImageMixer extends Component {
         <div className="swiper-slide" key={0} onClick={this.imageMixerClicked.bind(this, 0)}>
           <div
             className="swiper-lazy img-lg"
-            data-background={ images[0] }
-          >
-            <div className="swiper-lazy-preloader"></div>
-          </div>
+            style={{ backgroundImage : `url(${images[0]})` }}
+          ></div>
         </div>
         { smImagesSet.map((subset, index) => (
             <div className="swiper-slide" key={index + 1}>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-const DURATION = 500;
+const DURATION = 300;
 
 class GroupTransition extends Component {
 
@@ -46,7 +46,7 @@ class GroupTransition extends Component {
 
           if (fromFilterModal) { // hack for properties filter modal
             if (this.prevCount === -1) { // initial open
-              delay = delay + DURATION;
+              delay = delay + 500;
             } else if (index < this.prevCount) {  // view more - previous items
               delay = 0;
             } else { // view more - exiting items
