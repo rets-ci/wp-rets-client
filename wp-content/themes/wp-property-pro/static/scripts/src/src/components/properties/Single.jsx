@@ -139,7 +139,7 @@ class Single extends Component {
       all,
       baths,
       beds,
-      city_state,
+      city,
       elementary_school,
       images,
       mlsId,
@@ -234,7 +234,7 @@ class Single extends Component {
               <div className="col-md-12">
                 <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]} {address_unit}</h4>
                 <h6
-                  className="mb-3 text-muted">{city_state} {rets_postal_code}</h6>
+                  className="mb-3 text-muted">{city} {rets_postal_code}</h6>
                 <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box ${Lib.THEME_CLASSES_PREFIX}listing-info-box-wrap`}>{renderHTML(info_box)}</ul>
                 <button
                   className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button`}
