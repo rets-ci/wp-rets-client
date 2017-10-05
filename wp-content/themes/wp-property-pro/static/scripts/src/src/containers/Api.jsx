@@ -124,8 +124,7 @@ class Api {
           "field": "title_suggest",
           "size": Lib.POST_SUGGEST_COUNT,
           "contexts": {
-            "listing_status": ['for-' + params.saleType.toLowerCase()],
-            "listing_type": params.propertyTypes
+            "listing_status": ['for-' + params.saleType.toLowerCase()]
           }
         }
       }
