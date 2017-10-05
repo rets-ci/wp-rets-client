@@ -30,6 +30,7 @@ import Map from './Map.jsx';
 import SearchResultListing from './SearchResultListing.jsx';
 import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import CarouselOnMap from './CarouselOnMap.jsx';
+import PropertyPanelOnMap from 'app_root/components/properties/Components/PropertyPanelOnMap.jsx';
 
 const isMobile = window.innerWidth < 576;
 
@@ -49,6 +50,8 @@ const mapStateToProps = (state, ownProps) => {
     propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
     results: get(state, 'searchResults.searchResults', []),
     resultsTotal: get(state, 'searchResults.totalProps', 0),
+    propertyOnPanel: state.singleProperty.propertyOnPanel,
+    panelOnMapShown: state.singleProperty.panelOnMapShown,
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
@@ -223,6 +226,7 @@ class MapSearchResults extends Component {
       results,
       resultsTotal
     } = this.props;
+
     let filters = qs.parse(window.location.search.replace('?', ''));
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     const captionElement = (this.state.noticeDisplay && displayedResults.length > 0)
@@ -271,6 +275,14 @@ class MapSearchResults extends Component {
       />
     );
 
+    const propertyPanelElement = (
+      <PropertyPanelOnMap
+        agents={this.props.agents}
+        isVisible={this.props.panelOnMapShown}
+        property={this.props.propertyOnPanel}
+        historyPush={history.push}
+      />
+    );
 
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
@@ -311,6 +323,7 @@ class MapSearchResults extends Component {
                     isFetching={isFetching}
                     properties={displayedResults}
                     seeMoreHandler={this.seeMoreHandler}
+                    onUpdateSelectedProperty={this.updateSelectedProperty}
                     selectedProperty={filters.selected_property}
                     total={this.props.resultsTotal}
                   />
@@ -332,6 +345,7 @@ class MapSearchResults extends Component {
 
           <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
             { captionElement }
+            { !isMobile && propertyPanelElement }
             { mapElement }
             { isMobile && sliderElement }
           </div>

@@ -12,7 +12,7 @@ const agentCardState = (state=defaultState, action) => {
           ...state,
           tab: action.tab
         }
-      case Lib.LOCATION_CHANGE:
+      case LOCATION_CHANGE:
         return {
           ...state,
           tab: defaultState.tab

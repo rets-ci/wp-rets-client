@@ -297,6 +297,8 @@ class Util extends React.Component {
     delete query[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
   }
 
+  // Convert property object coming from elasticsearch `hits.hits[0]._source`
+  // To be ready for property single component
   static transformPropertyMeta = (data) => {
     let {
       ID: id,

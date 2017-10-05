@@ -12,3 +12,77 @@
 .propertypro-listing-map {
   @include propertypro-box-shadow(-2px, 1px);
 }
+
+.propertypro-listing-map .propertypro-panel-on-map {
+  position: absolute;
+  width: 80%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: transparent;
+  z-index: 10;
+
+  &.propertypro-hide {
+    display: block !important;
+    animation: slideToLeft .3s ease-in-out forwards;  
+  }
+
+  &.propertypro-display {
+    animation: slideToRight .3s ease-in-out forwards;
+  }
+}
+
+.propertypro-listing-map .propertypro-single-container {
+  width: calc(100% - 25px);
+  height: 100%;
+  overflow-y: auto;
+  background-color: white;
+  @include propertypro-box-shadow(2px, 2px, 4px);
+}
+
+.propertypro-listing-map {
+  .propertypro-panel-on-map-close, .propertypro-panel-on-map-open {
+    position: absolute;
+    top: 15px;
+    right: 0;
+    z-index: 11;
+    background-color: #edf2f5;
+    border: 2px solid #d2dae0;
+    color: #414141;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .propertypro-panel-on-map-open {
+    top: 70px;
+  }
+}
+
+@keyframes slideToRight {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideToLeft {
+  0% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+}

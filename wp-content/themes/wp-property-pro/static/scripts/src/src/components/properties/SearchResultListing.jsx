@@ -51,7 +51,11 @@ class SearchResultListing extends Component {
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container h-100`}>
         <div className={classNames.join(' ')}>
-          <PropertyCardList properties={properties} selectedProperty={selectedProperty} />
+          <PropertyCardList
+            properties={properties}
+            selectedProperty={selectedProperty}
+            onUpdateSelectedProperty={this.props.onUpdateSelectedProperty}
+          />
         </div>
         {this.props.allowPagination ?
           <div className={Lib.THEME_CLASSES_PREFIX + "search-result-container"}>

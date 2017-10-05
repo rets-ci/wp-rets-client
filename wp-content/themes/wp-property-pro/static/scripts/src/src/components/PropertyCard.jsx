@@ -20,19 +20,18 @@ class PropertyCard extends Component {
     propertiesDOM: PropTypes.object
   }
 
-  handlePropertyClick(eve, url) {
-    eve.preventDefault();
-
-    this.props.history.push(url);
-    this.swiper = null;
+  handlePropertyClick = () => {
+    this.props.onClickCard(this.props.data.id);
   }
 
-  handleNavigation(direction) {
-    if (direction === 'next') {
-      this.swiper.slideNext();
-    } else if (direction === 'prev') {
-      this.swiper.slidePrev();
-    }
+  handlePrevClick = (e) => {
+    e.stopPropagation();
+    this.swiper.slidePrev();
+  }
+
+  handleNextClick = (e) => {
+    e.stopPropagation();
+    this.swiper.slideNext();
   }
 
   render() {
@@ -107,70 +106,83 @@ class PropertyCard extends Component {
     each(gallery_images.slice(1), (e) => {
       swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
     });
-    return (
-      <div
-        className={classes.join(' ')}
-        ref={(r) => this.props.propertiesDOM ? this.props.propertiesDOM[id] = r : null}
-      >
-        <Link
-          to={link}
-        >
-          <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
-            <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
-              <div className={Lib.THEME_CLASSES_PREFIX + "listing-top"}>
-                <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{Util.formatPriceValue(price)}</span>
-                <span className={Lib.THEME_CLASSES_PREFIX + "action-btn-group"}>
-                  {/*<a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`}
-                    title="Save as favorite">
-                    <i className="fa fa-heart" aria-hidden="true"></i>
-                  </a>
-                  <a href="#" className={Lib.THEME_CLASSES_PREFIX + "hide"} title="Hide">
-                    <i className="fa fa-eye-slash" aria-hidden="true"></i>
-                  </a>*/}
-                </span>
-              </div>
-              <Swiper {...swiperParams}>
-                {swiperImages.map((url, index) =>
-                  <div className="swiper-slide" key={index}>
-                    <div className="swiper-lazy bg-card-img" data-background={ url }>
-                      <div className="swiper-lazy-preloader"></div>
-                    </div>
-                  </div>
-                )}
-              </Swiper>
-            </div>
-            <div className={Lib.THEME_CLASSES_PREFIX + "direction-nav-container"}>
-              <ul className={`nav ${Lib.THEME_CLASSES_PREFIX}direction-nav text-center`}>
-                <li className="nav-item mr-auto">
-                  <span
-                    className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`}
-                    onClick={e => {
-                      e.preventDefault();
-                      this.handleNavigation.bind(this)('prev');
-                    }}
-                  ></span>
-                </li>
-                <li className="nav-item">
-                  <span
-                    className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
-                    onClick={e => {
-                      e.preventDefault();
-                      this.handleNavigation.bind(this)('next');
-                    }}
-                  ></span>
-                </li>
-              </ul>
-            </div>
-          </div>
 
-          <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`}>
-            <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address} {address_unit}</h4>
-            <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{city}, {state} {zip}</p>
-            <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
+    const cardImageBlock = (
+      <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
+        <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "listing-top"}>
+            <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{Util.formatPriceValue(price)}</span>
+            <span className={Lib.THEME_CLASSES_PREFIX + "action-btn-group"}>
+              {/*<a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`}
+                title="Save as favorite">
+                <i className="fa fa-heart" aria-hidden="true"></i>
+              </a>
+              <a href="#" className={Lib.THEME_CLASSES_PREFIX + "hide"} title="Hide">
+                <i className="fa fa-eye-slash" aria-hidden="true"></i>
+              </a>*/}
+            </span>
           </div>
-        </Link>
+          <Swiper {...swiperParams}>
+            {swiperImages.map((url, index) =>
+              <div className="swiper-slide" key={index}>
+                <div className="swiper-lazy bg-card-img" data-background={ url }>
+                  <div className="swiper-lazy-preloader"></div>
+                </div>
+              </div>
+            )}
+          </Swiper>
+        </div>
+        <div className={Lib.THEME_CLASSES_PREFIX + "direction-nav-container"}>
+          <ul className={`nav ${Lib.THEME_CLASSES_PREFIX}direction-nav text-center`}>
+            <li className="nav-item mr-auto">
+              <span
+                className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`}
+                onClick={this.handlePrevClick}
+              ></span>
+            </li>
+            <li className="nav-item">
+              <span
+                className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
+                onClick={this.handleNextClick}
+              ></span>
+            </li>
+          </ul>
+        </div>
       </div>
     );
+
+    const cardInfoBlock = (
+      <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`}>
+        <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address} {address_unit}</h4>
+        <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{city}, {state} {zip}</p>
+        <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
+      </div>
+    );
+
+    if (this.props.openPanelWhenClicked) {
+      return (
+        <div
+          className={classes.join(' ')}
+          ref={(r) => this.props.propertiesDOM ? this.props.propertiesDOM[id] = r : null}
+          onClick={this.handlePropertyClick}
+        >
+          { cardImageBlock }
+          { cardInfoBlock }
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className={classes.join(' ')}
+          ref={(r) => this.props.propertiesDOM ? this.props.propertiesDOM[id] = r : null}
+        >
+          <Link to={link}>
+            { cardImageBlock }
+            { cardInfoBlock }
+            </Link>
+        </div>
+      );
+    }
   }
 }
 

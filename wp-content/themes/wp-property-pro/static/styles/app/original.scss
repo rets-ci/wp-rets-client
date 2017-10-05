@@ -1842,7 +1842,8 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-listing-wrap .propertypro-card:hover {
-    border-bottom: 3px solid #f28200;
+    cursor: pointer;
+    /*border-bottom: 3px solid #f28200;*/
 }
 
 .propertypro-card-selected {
