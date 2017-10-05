@@ -86,21 +86,21 @@ class Api {
         "wpp_location_city_name": {
           "terms": {
             "title": "Filter by Popular City",
-            "field": "tax_input.wpp_location.wpp_location_city_state.name.raw",
+            "field": "tax_input.wpp_location.wpp_location_city.name.raw",
           },
             "total_terms": {
                 "cardinality": {
-                    "field": "tax_input.wpp_location.wpp_location_city_state.name.raw"
+                    "field": "tax_input.wpp_location.wpp_location_city.name.raw"
                 }
             },
           "meta": {
-            "term_type": "wpp_location_city_state"
+            "term_type": "wpp_location_city"
           }
         },
         "wpp_location_city_slug": {
           "terms": {
             "title": "Filter by Popular City",
-            "field": "tax_input.wpp_location.wpp_location_city_state.slug",
+            "field": "tax_input.wpp_location.wpp_location_city.slug",
           }
         }
       }
