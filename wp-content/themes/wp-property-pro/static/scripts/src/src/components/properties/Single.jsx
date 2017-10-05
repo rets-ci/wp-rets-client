@@ -157,6 +157,7 @@ class Single extends Component {
       rets_middle_school,
       rets_postal_code,
       rets_year_built,
+      state,
       sqft,
       wpp_location_subdivision,
       wpp_location_city,
@@ -235,7 +236,7 @@ class Single extends Component {
               <div className="col-md-12">
                 <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]} {address_unit}</h4>
                 <h6
-                  className="mb-3 text-muted">{city} {rets_postal_code}</h6>
+                  className="mb-3 text-muted">{city}, {state} {rets_postal_code}</h6>
                 <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box ${Lib.THEME_CLASSES_PREFIX}listing-info-box-wrap`}>{renderHTML(info_box)}</ul>
                 <button
                   className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button`}

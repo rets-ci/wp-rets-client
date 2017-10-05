@@ -333,6 +333,7 @@ class Util extends React.Component {
     let rets_postal_code = get(post_meta, 'rets_postal_code', null);
     let rets_state = get(tax_input, 'rets_state', null);
     let rets_year_built = get(post_meta, 'rets_year_built', null);
+    let state = get(tax_input, 'wpp_location.wpp_location_state[0].name', null);
     let sqft = get(post_meta, 'sqft', null);
     let mlsId = get(post_meta, 'rets_mls_number[0]');
     let listing_office = get(tax_input, 'wpp_office.listing_office[0].name', null);
@@ -372,6 +373,7 @@ class Util extends React.Component {
       rets_middle_school: get(rets_middle_school, 'rets_middle_school[0].name', null),
       rets_postal_code,
       rets_year_built,
+      state,
       sqft,
       wpp_location_subdivision: get(wpp_location_subdivision, '[0].name', null),
       wpp_location_city: get(wpp_location_city, '[0].name'),
