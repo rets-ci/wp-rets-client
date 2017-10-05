@@ -21,12 +21,12 @@ class Api {
         "old_key": "mls-id",
         "taxonomy": "wpp_listing"
       },
-      "wpp_location_city_state": {
+      "wpp_location_city": {
         "slug": "city",
         "title": "City",
         "field": "tax_input.location_city",
         "search_field": "_search.location_city",
-        "old_key": "location-city-state",
+        "old_key": "location-city",
         "taxonomy": "wpp_location"
       },
       "wpp_location_zip": {
@@ -224,7 +224,7 @@ class Api {
 
             _buckets.push({
               id: get(option, '_source.post_title', ''),
-              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city_state[0].name', '') + ' ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
+              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city[0].name', '') + ' ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
               url: get(option, '_source.post_name', null) ? [get(bundle, 'property_single_url'), get(option, '_source.post_name', null)].join('/') : ''
             });
           }
