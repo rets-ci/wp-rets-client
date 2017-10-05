@@ -144,6 +144,9 @@ namespace UsabilityDynamics\WPRETSC {
         $_methods[ 'wpp.scheduleStats' ] = array( $this, 'get_schedule_stats' );
         $_methods[ 'wpp.scheduleListings' ] = array( $this, 'get_schedule_listings' );
 
+        $_methods[ 'wp.getPosts' ] = array( $this, 'get_posts' );
+        //$_methods[ 'wp.getPost' ] = array( $this, 'get_post' );
+
         return $_methods;
       }
 
