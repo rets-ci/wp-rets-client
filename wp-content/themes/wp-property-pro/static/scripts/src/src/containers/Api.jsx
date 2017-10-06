@@ -21,12 +21,12 @@ class Api {
         "old_key": "mls-id",
         "taxonomy": "wpp_listing"
       },
-      "wpp_location_city_state": {
+      "wpp_location_city": {
         "slug": "city",
         "title": "City",
         "field": "tax_input.location_city",
         "search_field": "_search.location_city",
-        "old_key": "location-city-state",
+        "old_key": "location-city",
         "taxonomy": "wpp_location"
       },
       "wpp_location_zip": {
@@ -83,64 +83,24 @@ class Api {
   static getTopAggregations() {
     return {
       "aggs": {
-        "wpp_location_city_state_name": {
+        "wpp_location_city_name": {
           "terms": {
-            "title": "Popular Cities",
-            "field": "tax_input.wpp_location.wpp_location_city_state.name.raw",
+            "title": "Filter by Popular City",
+            "field": "tax_input.wpp_location.wpp_location_city.name.raw",
           },
+            "total_terms": {
+                "cardinality": {
+                    "field": "tax_input.wpp_location.wpp_location_city.name.raw"
+                }
+            },
           "meta": {
-            "term_type": "wpp_location_city_state"
+            "term_type": "wpp_location_city"
           }
         },
-        "wpp_location_city_state_slug": {
+        "wpp_location_city_slug": {
           "terms": {
-            "title": "Popular Cities",
-            "field": "tax_input.wpp_location.wpp_location_city_state.slug",
-          }
-        },
-        "wpp_location_zip_name": {
-          "terms": {
-            "title": "Popular Zipcodes",
-            "field": "tax_input.wpp_location.wpp_location_zip.name.raw",
-          },
-          "meta": {
-            "term_type": "wpp_location_zip"
-          }
-        },
-        "wpp_location_zip_slug": {
-          "terms": {
-            "title": "Popular Zipcodes",
-            "field": "tax_input.wpp_location.wpp_location_zip.slug",
-          }
-        },
-        "wpp_location_county_name": {
-          "terms": {
-            "title": "Popular Counties",
-            "field": "tax_input.wpp_location.wpp_location_county.name.raw"
-          },
-          "meta": {
-            "term_type": "wpp_location_county"
-          }
-        },
-        "wpp_location_county_slug": {
-          "terms": {
-            "title": "Popular Counties",
-            "field": "tax_input.wpp_location.wpp_location_county.slug"
-          }
-        },
-        "wpp_location_subdivision_name": {
-          "terms": {
-            "title": "Popular Subdivisions",
-            "field": "tax_input.wpp_location.wpp_location_subdivision.name.raw"
-          },
-          "meta": {
-            "term_type": "wpp_location_subdivision"
-          }
-        },
-        "wpp_location_subdivision_slug": {
-          "terms": {
-            "title": "Popular Subdivisions",
-            "field": "tax_input.wpp_location.wpp_location_subdivision.slug"
+            "title": "Filter by Popular City",
+            "field": "tax_input.wpp_location.wpp_location_city.slug",
           }
         }
       }
@@ -164,8 +124,7 @@ class Api {
           "field": "title_suggest",
           "size": Lib.POST_SUGGEST_COUNT,
           "contexts": {
-            "listing_status": ['for-' + params.saleType.toLowerCase()],
-            "listing_type": params.propertyTypes
+            "listing_status": ['for-' + params.saleType.toLowerCase()]
           }
         }
       }
@@ -264,7 +223,7 @@ class Api {
 
             _buckets.push({
               id: get(option, '_source.post_title', ''),
-              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city_state[0].name', '') + ' ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
+              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city[0].name', '') + ' ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
               url: get(option, '_source.post_name', null) ? [get(bundle, 'property_single_url'), get(option, '_source.post_name', null)].join('/') : ''
             });
           }
@@ -289,15 +248,6 @@ class Api {
     let rows = [
       {
         'order_key': 'city'
-      },
-      {
-        'order_key': 'zip'
-      },
-      {
-        'order_key': 'county'
-      },
-      {
-        'order_key': 'subdivision'
       }
     ];
 
@@ -311,12 +261,16 @@ class Api {
       body.aggs[aggIndex] = {
         "terms": {
           "field": get(aggregation, 'terms.field', ''),
-          "size": (get(aggregation, 'terms.field', '').indexOf('subdivision') !== -1 ? (params.size + 1) : params.size) || 0
+          "size": Lib.TOP_AGGREGATIONS_COUNT
         }
       };
 
       if (aggregation.meta) {
         body.aggs[aggIndex]['meta'] = aggregation.meta;
+      }
+
+      if (aggregation.total_terms) {
+          body.aggs[aggIndex + '_count'] = aggregation.total_terms;
       }
     }
 
@@ -347,11 +301,6 @@ class Api {
         }
 
         for (let ind in term.buckets) {
-
-          // Exclude first subdivision from list (not in subdivision value)
-          if(i.indexOf('subdivision') !== -1 && ind === "0"){
-            continue;
-          }
 
           let bucket = term.buckets[ind];
 
@@ -569,7 +518,7 @@ class Api {
     }
     sort = JSON.stringify(sort);
     // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
-    return JSON.parse('{"query":' + query + ',"_source": ' + source + ',"sort": ' + sort + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
+    return JSON.parse('{"query":' + query + ',"sort": ' + sort + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
   }
 
   static search(url, query, callback) {

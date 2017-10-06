@@ -9,13 +9,9 @@ import {createStore} from 'redux';
 import PageLayout from './components/PageLayout.jsx';
 import propertyProApp from './reducers/index.jsx';
 import {Lib} from './lib.jsx';
-import shims from './shims.js';
 
 import 'swiper-css';
 import 'index.scss';
-
-// set up all relevant shims and polyfills for various browsers
-shims();
 
 
 let devEnv = process && process.env && process.env.NODE_ENV === 'development';

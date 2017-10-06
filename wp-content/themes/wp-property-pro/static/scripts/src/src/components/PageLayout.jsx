@@ -45,6 +45,7 @@ const mapStateToProps = state => {
   return {
     isFetching: state.wordpressContentFetching.isFetching,
     userPanelOpen: state.userPanel.open,
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     errorMessage: state.wordpressContentFetching.errorMessage 
   }
 };
@@ -164,9 +165,14 @@ class PageLayout extends Component {
     this.props.history.listen((location, action) => {
       this.routeUpdate();
     });
+    
+    let containerClass = `${Lib.THEME_CLASSES_PREFIX}page-layout-container-inner h-100 d-flex flex-column`;
+    if (this.props.saleTypesPanelOpen) {
+      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
+    }
 
     let mainContent = (
-      <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner h-100 d-flex flex-column"}>
+      <div className={containerClass}>
         <UserPanel
           closeUserPanel={closeUserPanel}
           historyPush={history.push}

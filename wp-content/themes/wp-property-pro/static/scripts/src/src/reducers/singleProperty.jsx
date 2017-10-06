@@ -1,9 +1,13 @@
-import {Lib} from "../lib.jsx";
+import { LOCATION_CHANGE } from 'react-router-redux';
+import { Lib } from '../lib.jsx';
+
 
 let defaultState = {
   errorMessage: null,
   isFetching: false,
-  property: null
+  property: null,
+  panelOnMapShown: false,
+  propertyOnPanel: null,
 };
 
 const propertySingle = (state = defaultState, action) => {
@@ -24,6 +28,25 @@ const propertySingle = (state = defaultState, action) => {
           isFetching: false,
           property: action.property,
         });
+      case Lib.SELECT_PROPERTY_ON_MAP_ACTION:
+        return {
+          ...state,
+          panelOnMapShown: true,
+          propertyOnPanel: action.property,
+        };
+      case Lib.DESELECT_PROPERTY_ON_MAP_ACTION:
+        return {
+          ...state,
+          panelOnMapShown: false,
+          propertyOnPanel: null,
+        };
+      case LOCATION_CHANGE:
+      case Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:
+        return {
+          ...state,
+          panelOnMapShown: false,
+          propertyOnPanel: null,
+        };
       default:
         return state
     }
