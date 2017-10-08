@@ -454,7 +454,7 @@ class Api {
 
     if (!params.geoCoordinates) {
       let terms = params.term.map(term => {
-        return {term: {["terms." + Object.keys(term)[0] + ".name.raw"]: Object.values(term)[0]}}
+        return {term: {["terms." + term.tax + ".name.raw"]: term.text}}
       });
 
       query.bool.must.push({

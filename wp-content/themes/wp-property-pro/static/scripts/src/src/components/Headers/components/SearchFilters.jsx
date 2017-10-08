@@ -193,18 +193,16 @@ class searchFilters extends Component {
 
     let termFilter = filters['term'];
     let termFilterElement;
-    let termFilters = termFilter.map(t => {
-      return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
-    });
+    let termFilters = termFilter;
     if (isMobileView()) {
       termFilters = termFilters.slice(0, 1);
     }
     if (termFilters && termFilters.length) {
       if (termFilters.length === 1) {
-        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={this.props.openLocationModal} display={termFilters[0].value} value={termFilters[0].value} />;
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={this.props.openLocationModal} display={termFilters[0].text} value={termFilters[0].text} />;
       } else {
         termFilterElement = termFilters.map((t, i) =>
-          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.value} value={t.value} />
+          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.text} value={t.text} />
         );
       }
     }

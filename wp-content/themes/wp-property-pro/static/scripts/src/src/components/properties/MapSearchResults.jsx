@@ -36,9 +36,8 @@ const isMobile = window.innerWidth < 576;
 
 
 const mapStateToProps = (state, ownProps) => {
-  let allQueryParams = qs.parse(ownProps.location.search.replace('?', ''));
+
   return {
-    allQueryParams: allQueryParams,
     errorMessage: state.errorMessage,
     query: get(state, 'searchResults.query', []),
     isFetching: get(state, 'searchResults.isFetching', []),
@@ -52,7 +51,8 @@ const mapStateToProps = (state, ownProps) => {
     resultsTotal: get(state, 'searchResults.totalProps', 0),
     propertyOnPanel: state.singleProperty.propertyOnPanel,
     panelOnMapShown: state.singleProperty.panelOnMapShown,
-    searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
+    searchQueryParams: ownProps.searchQueryParams,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
   }
 };
@@ -127,7 +127,8 @@ class MapSearchResults extends Component {
     propertiesModalResultCountIsFetching: PropTypes.bool.isRequired,
     resetSearchResults: PropTypes.func.isRequired,
     results: PropTypes.array.isRequired,
-    searchResultsErrorMessage: PropTypes.string
+    searchResultsErrorMessage: PropTypes.string,
+    searchQueryParams: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -140,15 +141,14 @@ class MapSearchResults extends Component {
   }
 
   componentDidMount() {
-    this.applyQueryFilters();
+    this.applyQueryFilters(this.props.searchQueryParams);
   }
 
   componentWillReceiveProps(nextProps) {
-    let filters = qs.parse(window.location.search.replace('?', ''));
+    let filters = nextProps.searchQueryParams;
     if (!isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
-      this.applyQueryFilters();
+      this.applyQueryFilters(nextProps.searchQueryParams);
     }
-
     if (nextProps.displayedResults.length > 0 && !filters.selected_property && isMobile) {
       this.updateSelectedProperty(nextProps.displayedResults[0]._id);
     }
@@ -173,8 +173,7 @@ class MapSearchResults extends Component {
     this.props.doSearchWithQuery(this.props.errorMessage, modifiedQuery, true);
   }
 
-  applyQueryFilters() {
-    let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
+  applyQueryFilters(searchFilters) {
     this.props.standardSearch(this.props.errorMEssage, searchFilters);
   }
 
@@ -186,9 +185,14 @@ class MapSearchResults extends Component {
 
   updateSelectedProperty = (propertyId) => {
     let filter = {'selected_property': propertyId};
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'set', false);
-    // TODO: use location passed in
-    this.props.history.push(window.location.pathname + decodeURIComponent(queryParam))
+    let searchQueryParams = Util.URLSearchParse('search', window.location.href);
+    let query = Object.assign(
+      searchQueryParams,
+      filter
+    );
+    let queryCollection = Util.searchObjectToCollection(query);
+    let searchQuery = Util.createSearchURL('search', queryCollection);
+    this.props.history.push(searchQuery);
   }
 
   updateURIGeoCoordinates(geoCoordinates) {
@@ -223,11 +227,10 @@ class MapSearchResults extends Component {
       propertiesModalResultCountIsFetching,
       propertyTypeOptions,
       results,
-      resultsTotal
+      resultsTotal,
+      searchQueryParams
     } = this.props;
-
-    let filters = qs.parse(window.location.search.replace('?', ''));
-    let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+    let searchFilters = searchQueryParams;
     const captionElement = (this.state.noticeDisplay && displayedResults.length > 0)
       ? (
           <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
@@ -262,14 +265,14 @@ class MapSearchResults extends Component {
         location={this.props.location}
         properties={displayedResults}
         searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}
-        selectedProperty={filters.selected_property}
+        selectedProperty={searchFilters.selected_property}
       />
     );
 
     const sliderElement = (
       <CarouselOnMap
         properties={displayedResults}
-        selectedProperty={filters.selected_property}
+        selectedProperty={searchFilters.selected_property}
         onChangeSlide={this.updateSelectedProperty}
       />
     );
@@ -323,7 +326,7 @@ class MapSearchResults extends Component {
                     properties={displayedResults}
                     seeMoreHandler={this.seeMoreHandler}
                     onUpdateSelectedProperty={this.updateSelectedProperty}
-                    selectedProperty={filters.selected_property}
+                    selectedProperty={searchFilters.selected_property}
                     total={this.props.resultsTotal}
                   />
                 :

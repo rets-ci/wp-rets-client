@@ -1,4 +1,5 @@
 import {
+  openLoginModal,
   routeChanged,
   receiveWordpressContentFetching,
   receiveWordpressContentFetchingError,
@@ -21,7 +22,6 @@ import {
   Switch
 } from 'react-router-dom';
 import {connect} from 'react-redux';
-import Header from './Header.jsx';
 import LoadingAccordion from './LoadingAccordion.jsx';
 import nprogress from 'nprogress/nprogress.js';
 import UserPanel from './UserPanel.jsx';
@@ -32,7 +32,7 @@ import Page from './Page.jsx';
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
 import loadGuideArchive from 'bundle-loader?lazy&name=GuideArchive!./guide/Archive.jsx';
 import loadPropertySingle from 'bundle-loader?lazy&name=SingleProperties!./properties/SingleContainer.jsx';
-import loadMapSearchResults from 'bundle-loader?lazy&name=MapSearchResults!./properties/MapSearchResults.jsx';
+import loadMapSearchResultsTermFetcher from 'bundle-loader?lazy&name=MapSearchResults!./properties/MapSearchResultsTermFetcher.jsx';
 
 require('nprogress-css');
 
@@ -54,6 +54,22 @@ const mapDispatchToProps = dispatch => {
   return {
     closeUserPanel: () => {
       dispatch(toggleUserPanel(false));
+    },
+
+    closeLocationModal: () => {
+      dispatch(openLocationModal(false));
+    },
+
+    openFormModal: (id, open) => {
+      dispatch(openFormModal(id, open));
+    },
+
+    openLoginModal: () => {
+      dispatch(openLoginModal(true));
+    },
+
+    openUserPanel: () => {
+      dispatch(toggleUserPanel(true));
     },
 
     receiveWordpressContentFetchingErrorFunc: errorMessage => {
@@ -152,6 +168,8 @@ class PageLayout extends Component {
       history,
       isFetching,
       location,
+      openLoginModal,
+      openUserPanel,
       userPanelOpen
     } = this.props;
     let paramsToSet = {
@@ -159,6 +177,8 @@ class PageLayout extends Component {
       history: history,
       location: location,
       search_options: get(this.state, 'search_options', null),
+      openLoginModal: openLoginModal,
+      openUserPanel: openUserPanel,
       post: get(this.state, 'post', {}),
       rows: get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
     };
@@ -180,13 +200,6 @@ class PageLayout extends Component {
           panelOpen={userPanelOpen}
         />
         <LoginModal />
-        <Header
-          history={history}
-          location={location}
-          saleType={get(this.state, 'post.sale_type')}
-          searchType={get(this.state, 'post.search_type')}
-          locationTerm={get(this.state, 'post.location')}
-        />
         <Switch>
           <Route exact path="/" render={(props) => {
             if (nprogress && nprogress.isStarted()) {
@@ -206,16 +219,6 @@ class PageLayout extends Component {
                 )}
               </Bundle>
             } />
-          }
-          {get(wpp, 'instance.settings.configuration.base_slug', null) &&
-            <Route path={"/" + get(wpp, 'instance.settings.configuration.base_slug')} render={props => {
-              return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
-                {(Comp) => (Comp
-                  ? <Comp {...paramsToSet} />
-                  : null
-                )}
-              </Bundle>
-            }} />
           }
           {get(bundle, 'blog_base', null) &&
             <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '')} render={props =>
@@ -247,6 +250,14 @@ class PageLayout extends Component {
               </Bundle>
             } />
           }
+          <Route path={'/search'} render={props => {
+            return <Bundle load={loadMapSearchResultsTermFetcher} nprogress={nprogress}>
+              {(Comp) => (Comp
+                ? <Comp {...paramsToSet} />
+                : null
+              )}
+            </Bundle>
+          }} />
           <Route render={(props) => {
             if (nprogress && nprogress.isStarted()) {
               nprogress.done();
