@@ -40,6 +40,11 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
           }
         } );
 
+        // WP-Rabbit plugin connector
+        if( defined( 'WP_RABBIT_ENABLED' ) ) {
+          $this->connectors[] = new WPRABBIT();
+        }
+
       }
 
     }
