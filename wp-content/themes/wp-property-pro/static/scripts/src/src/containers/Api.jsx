@@ -233,7 +233,7 @@ class Api {
       if (_buckets.length > 0) {
         data = Object.assign({}, data, {
           key: 'properties',
-          text: 'Properties',
+          text: 'Addresses',
           children: _buckets
         });
         rows.push(data);
