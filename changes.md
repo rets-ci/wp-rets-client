@@ -1,3 +1,6 @@
+#### 0.3.7
+* Added compatibility with Houzez theme.
+
 #### 0.3.6
 * Added removing of all property attachments on property delete.
 * Fixed the bug related to managing of WPP taxonomies.

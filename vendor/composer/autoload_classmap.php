@@ -15,6 +15,7 @@ return array(
     'UsabilityDynamics\\Utility\\Guid_Fix' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
     'UsabilityDynamics\\WPRETSC\\Ajax' => $baseDir . '/lib/classes/class-ajax.php',
     'UsabilityDynamics\\WPRETSC\\Bootstrap' => $baseDir . '/lib/classes/class-bootstrap.php',
+    'UsabilityDynamics\\WPRETSC\\Connectors\\Houzez' => $baseDir . '/lib/connectors/class-theme-houzez.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\Loader' => $baseDir . '/lib/connectors/class-loader.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\WPML' => $baseDir . '/lib/connectors/class-wpml.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\WPProperty' => $baseDir . '/lib/connectors/class-wp-property.php',

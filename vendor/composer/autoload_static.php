@@ -20,6 +20,7 @@ class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
         'UsabilityDynamics\\Utility\\Guid_Fix' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
         'UsabilityDynamics\\WPRETSC\\Ajax' => __DIR__ . '/../..' . '/lib/classes/class-ajax.php',
         'UsabilityDynamics\\WPRETSC\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
+        'UsabilityDynamics\\WPRETSC\\Connectors\\Houzez' => __DIR__ . '/../..' . '/lib/connectors/class-theme-houzez.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\Loader' => __DIR__ . '/../..' . '/lib/connectors/class-loader.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\WPML' => __DIR__ . '/../..' . '/lib/connectors/class-wpml.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\WPProperty' => __DIR__ . '/../..' . '/lib/connectors/class-wp-property.php',
