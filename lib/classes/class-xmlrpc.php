@@ -742,8 +742,7 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
-        // Remove save post purging fq.jony@UD
-        do_action('wrc::manage_property::remove_save_post_purging_handler');
+        do_action('wrc::manage_property::before_update');
 
         $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
           'skipTermCounting' => false,
@@ -920,8 +919,7 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
-        // Remove save post purging fq.jony@UD
-        do_action('wrc::manage_property::remove_save_post_purging_handler');
+        do_action('wrc::manage_property::before_update');
 
         $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
           'skipTermCounting' => false,
@@ -1006,8 +1004,7 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
-        // Remove save post purging fq.jony@UD
-        do_action('wrc::manage_property::remove_save_post_purging_handler');
+        do_action('wrc::manage_property::before_update');
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.editProperty] request.', 'info' );
 
