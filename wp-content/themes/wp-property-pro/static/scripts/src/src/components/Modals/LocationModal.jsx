@@ -26,6 +26,7 @@ const mapStateToProps = (state, ownProps) => {
     open: state.locationModal ? state.locationModal.open : false,
     propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
     searchResults: get(state, 'locationModal.items', []),
+    cityPagination: get(state, 'locationModal.cityPagination'),
     searchType: get(state, 'searchType.searchType', '')
   }
 };
@@ -43,18 +44,24 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       Api.autocompleteQuery(searchParams,
         function (err, rows) {
           if (err) { return dispatch(receiveLocationModalFetchingError(err)); }
-          dispatch(receiveLocationModalPosts(rows));
+          dispatch(receiveLocationModalPosts({
+            type: 'AUTOCOMPLETE',
+            posts: rows,
+          }));
         }
       );
     },
-    topQuery: () => {
+    topQuery: (page) => {
       dispatch(requestLocationModalPosts());
       Api.topQuery({
-          size: Lib.TOP_AGGREGATIONS_COUNT
+          page: page || 2
         },
         function (err, rows) {
           if (err) { return dispatch(receiveLocationModalFetchingError(err)); }
-          dispatch(receiveLocationModalPosts(rows));
+          dispatch(receiveLocationModalPosts({
+            type: 'TOP_QUERY',
+            posts: rows,
+          }));
         }
       );
     }
@@ -92,7 +99,7 @@ class LocationModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.open && this.props.open !== nextProps.open) {
+    if (!this.props.open && nextProps.open) {
       this.setState({
         searchValue: ''
       });
@@ -163,6 +170,15 @@ class LocationModal extends Component {
       this.props.topQuery();
     } else {
       this.props.searchHandler(val, saleType, propertyTypes.map(p => p.slug));
+    }
+  }
+
+  loadMoreCities = () => {
+    const { cityPagination: pagination } = this.props;
+    const nextOffset = pagination.page * Lib.TOP_AGGREGATIONS_COUNT;
+
+    if (pagination.total !== -1 && nextOffset <= pagination.total ) {
+      this.props.topQuery(pagination.page);
     }
   }
 

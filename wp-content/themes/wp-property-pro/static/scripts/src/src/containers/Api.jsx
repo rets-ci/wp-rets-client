@@ -122,7 +122,8 @@ class Api {
         "text": params.term,
         "completion": {
           "field": "title_suggest",
-          "size": Lib.POST_SUGGEST_COUNT,
+          "size": 300,
+          // "size": Lib.POST_SUGGEST_COUNT,
           "contexts": {
             "listing_status": ['for-' + params.saleType.toLowerCase()]
           }
@@ -261,7 +262,8 @@ class Api {
       body.aggs[aggIndex] = {
         "terms": {
           "field": get(aggregation, 'terms.field', ''),
-          "size": Lib.TOP_AGGREGATIONS_COUNT
+          // "size": Lib.TOP_AGGREGATIONS_COUNT
+          size: 300
         }
       };
 
@@ -321,6 +323,7 @@ class Api {
           data = Object.assign({}, data, {
             key: i,
             text: get(aggregations[i], 'terms.title'),
+            total: get(responseAggs[`${i}_count`], 'value', 0),
             children: _buckets
           });
 
