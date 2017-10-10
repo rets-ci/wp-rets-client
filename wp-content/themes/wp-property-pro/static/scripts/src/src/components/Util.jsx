@@ -53,12 +53,17 @@ class Util extends React.Component {
     }
     let searchPath = path.match(/^\//) ? path : '/' + path;
     let params = [];
-    // sort params alphabetically
+    // sort params alphabetically by key first
     params = p.sort((a, b) => {
-      if(a.key < b.key) return -1;
-      if(a.key > b.key) return 1;
+      if (a.key < b.key) return -1;
+      if (a.key > b.key) return 1;
+      if (a.key === b.key) {
+        if (a.values[0] < b.values[0]) return -1;
+        if (a.values[0] > b.values[0]) return 1;
+      }
       return 0;
     });
+    
   
     // deal with max and min values
     params.forEach(d => {
