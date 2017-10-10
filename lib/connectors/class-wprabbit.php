@@ -19,7 +19,7 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
       public function __construct() {
 
         add_action( 'wrc::manage_property::before_update', function() {
-          remove_filter( 'save_post', 'save_post_purging_handler' );
+          remove_filter( 'save_post', 'rabbit_save_post_purging_handler' );
         } );
 
       }
