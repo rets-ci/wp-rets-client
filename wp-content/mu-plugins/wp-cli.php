@@ -66,6 +66,21 @@ if( !class_exists( 'UD_CLI_EP_Command' ) ) {
         switch_to_blog( $assoc_args['blog-id'] );
       }
 
+      /*
+      add_filter( 'wpp:elastic:title_suggest', function( $title_suggest, $post_args, $post_id ) {
+
+        $title_suggest[ 'input' ] = array_merge( array(
+          '114 Go Fuck, Durham, NC 27713',
+          //'114 Hollow Oak',
+        ), $title_suggest[ 'input' ]);
+
+        //$title_suggest[ 'input' ] = array();
+
+        //array_push( $title_suggest[ 'input' ], 'gonahuy' );
+        return $title_suggest;
+      } );
+      //*/
+
       $result = ep_sync_post( $post_id );
 
       WP_CLI::log( "Result: " . json_encode( $result ) );
