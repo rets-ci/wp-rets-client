@@ -13,6 +13,7 @@ import {
   receivePropertySingleFetchingError,
   requestPropertySingleResult,
   selectPropertyOnMap,
+  deselectPropertyOnMap,
 } from 'app_root/actions/index.jsx';
 
 class PropertyCardList extends Component {
@@ -55,10 +56,24 @@ class PropertyCardList extends Component {
 
   handlePropertyClick = (propertyId) => {
     this.props.onUpdateSelectedProperty(propertyId);
+<<<<<<< HEAD
 
     const property = find(this.props.properties, { '_id': propertyId });
 
     this.props.selectPropertyOnMap(property._source);
+=======
+    const property = this.getPropertyRecordByMlsID(propertyId);
+    
+    if (!property) {
+      console.log('property was not found')
+    } else {
+      this.props.deselectPropertyOnMap();
+
+      setTimeout(() => {
+        this.props.selectPropertyOnMap(property._source);
+      });
+    }
+>>>>>>> 07db5c3... better opening property panel on map
   }
 
   render() {
@@ -117,6 +132,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    deselectPropertyOnMap: () => {
+      dispatch(deselectPropertyOnMap());
+    },
     selectPropertyOnMap: (property) => {
       dispatch(selectPropertyOnMap(property));
     }
