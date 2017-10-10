@@ -41,6 +41,8 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
         } );
 
         // WP-Rabbit plugin connector
+        // check if wp-rabbit plugin enabled by constant
+        // which set in wp-rabbit plugin init
         if( defined( 'WP_RABBIT_ENABLED' ) ) {
           $this->connectors[] = new WPRABBIT();
         }
