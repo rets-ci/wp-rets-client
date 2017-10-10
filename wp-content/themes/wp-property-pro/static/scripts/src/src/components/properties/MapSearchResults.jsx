@@ -18,12 +18,14 @@ import {
   receiveSearchResultsPosts,
   receiveSearchResultsPostsError,
   requestSearchResultsPosts,
+  receiveTermDetails,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
 } from '../../actions/index.jsx';
 import Util from '../Util.jsx';
 import { Lib } from '../../lib.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
+import HeaderSearch from '../Headers/HeaderSearch.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
 import Map from './Map.jsx';
@@ -36,7 +38,16 @@ const isMobile = window.innerWidth < 576;
 
 
 const mapStateToProps = (state, ownProps) => {
-
+  let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
+  let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
+  let termDetails = Util.reddoorTermDetailsFromSearchParam(searchQueryParamsCollection);
+  searchQueryObject = Util.reddoorSearchFormatObject(searchQueryObject);
+  searchQueryObject['term'] = termDetails;
+  for (var key in searchQueryObject) {
+    if (termDetails.map(d => d.term).indexOf(key) >= 0) {
+      delete searchQueryObject[key];
+    }
+  }
   return {
     errorMessage: state.errorMessage,
     query: get(state, 'searchResults.query', []),
@@ -52,8 +63,9 @@ const mapStateToProps = (state, ownProps) => {
     propertyOnPanel: state.singleProperty.propertyOnPanel,
     panelOnMapShown: state.singleProperty.panelOnMapShown,
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
-    searchQueryParams: ownProps.searchQueryParams,
+    searchQueryParams: searchQueryObject,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
+    termDetails: get(state, 'termDetails.terms')
   }
 };
 
@@ -71,7 +83,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
 
-    doSearchWithQuery: (errorMessage, query, append) => {
+    doSearchWithQuery: (query, currentTermDetails, append) => {
       let url = Api.getPropertySearchRequestURL();
       dispatch(requestSearchResultsPosts());
       Api.search(url, query, (err, response) => {
@@ -94,13 +106,39 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(receiveSearchResultsPosts({}, [], 0));
     },
 
-    standardSearch: (errorMessage, params) => {
+    standardSearch: p => {
       dispatch(requestSearchResultsPosts());
+      let params = Object.assign({}, p);
+      // params.aggregations = Util.getTermLookupAggregationQuery(params['term']);
+      if (p[Lib.BOTTOM_RIGHT_URL_PREFIX] && p[Lib.TOP_LEFT_URL_PREFIX]) {
+        params.geoCoordinates = {
+          bottomRight: [p[Lib.BOTTOM_RIGHT_URL_PREFIX][0], p[Lib.BOTTOM_RIGHT_URL_PREFIX][1]],
+          topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]]
+        };
+      }
+      
       Api.makeStandardPropertySearch(params, (err, query, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
         }
         dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), false));
+      });
+      Api.termDetailsLookupQuery(params['term'], (err, response) => {
+        if (err) {
+          //TODO: handle the error
+          console.log('error thrown')
+        }
+        let terms = [];
+        if (response.aggregations) {
+          terms = params['term'].map(d => {
+            let termText = get(response, 'aggregations[' + d.slug + '.inside.buckets[0].key');
+            return {
+              ...d,
+              text: termText
+            }
+          });
+        }
+        dispatch(receiveTermDetails(terms))
       });
     },
 
@@ -128,7 +166,8 @@ class MapSearchResults extends Component {
     resetSearchResults: PropTypes.func.isRequired,
     results: PropTypes.array.isRequired,
     searchResultsErrorMessage: PropTypes.string,
-    searchQueryParams: PropTypes.object.isRequired
+    searchQueryParams: PropTypes.object.isRequired,
+    termDetails: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -146,7 +185,7 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     let filters = nextProps.searchQueryParams;
-    if (!isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
+    if (!isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']))) {
       this.applyQueryFilters(nextProps.searchQueryParams);
     }
     if (nextProps.displayedResults.length > 0 && !filters.selected_property && isMobile) {
@@ -170,11 +209,11 @@ class MapSearchResults extends Component {
   seeMoreHandler = () => {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
-    this.props.doSearchWithQuery(this.props.errorMessage, modifiedQuery, true);
+    this.props.doSearchWithQuery(modifiedQuery, this.props.termDetails, true);
   }
 
   applyQueryFilters(searchFilters) {
-    this.props.standardSearch(this.props.errorMEssage, searchFilters);
+    this.props.standardSearch(searchFilters);
   }
 
   clickMobileSwitcherHandler(mapDisplay) {
@@ -184,31 +223,22 @@ class MapSearchResults extends Component {
   }
 
   updateSelectedProperty = (propertyId) => {
-    let filter = {'selected_property': propertyId};
-    let searchQueryParams = Util.URLSearchParse('search', window.location.href);
-    let query = Object.assign(
-      searchQueryParams,
-      filter
-    );
-    let queryCollection = Util.searchObjectToCollection(query);
-    let searchQuery = Util.createSearchURL('search', queryCollection);
-    this.props.history.push(searchQuery);
+    let filters = Object.assign({}, this.props.searchQueryParams);
+    filters['selected_property'] = propertyId;
+    let searchCollection = Util.searchObjectToCollection(filters);
+    let searchURL = Util.createSearchURL('/search', searchCollection);
+    this.props.history.push(searchURL);
   }
 
-  updateURIGeoCoordinates(geoCoordinates) {
-    //TODO: this should be refactored to use the URL related functions in Util.jsx
-    // update URL
-    let url = new URI(window.location.href);
-    let queryParam = window.location.search.replace('?', '');
-    let currentFilters = qs.parse(queryParam);
-    // remove any current geoCorrdinates before adding additional ones
-    delete currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'];
-    // remove selected property as well
-    delete currentFilters['selected_property'];
-    currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'] = geoCoordinates;
-    let newSearchQuery = '?' + qs.stringify(currentFilters);
-    let constructedQuery = decodeURIComponent(url.pathname() + newSearchQuery);
-    this.props.history.push(constructedQuery);
+  updateURIGeoCoordinates = (geoCoordinates) => {
+    let filters = Object.assign({}, this.props.searchQueryParams);
+    delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
+    filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: geoCoordinates['bottomRight']['lat'], lon: geoCoordinates['bottomRight']['lon']};
+    delete filters[Lib.TOP_LEFT_URL_PREFIX];
+    filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: geoCoordinates['topLeft']['lat'], lon: geoCoordinates['topLeft']['lon']};
+    let searchCollection = Util.searchObjectToCollection(filters);
+    let searchURL = Util.createSearchURL('/search', searchCollection);
+    this.props.history.push(searchURL);
   }
 
   render() {
@@ -228,9 +258,15 @@ class MapSearchResults extends Component {
       propertyTypeOptions,
       results,
       resultsTotal,
-      searchQueryParams
+      searchQueryParams,
+      termDetails
     } = this.props;
-    let searchFilters = searchQueryParams;
+    // create a clone because we might change it in the if statement
+    let searchFilters = Object.assign({}, searchQueryParams);
+    if (termDetails.length) {
+      // termDetails has the display information as well
+      searchFilters.term = termDetails;
+    }
     const captionElement = (this.state.noticeDisplay && displayedResults.length > 0)
       ? (
           <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
@@ -260,12 +296,13 @@ class MapSearchResults extends Component {
 
     const mapElement = (
       <Map
-        currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} 
+        currentGeoBounds={(searchFilters.geotl && searchFilters.geobr) ? Util.elasticsearchGeoFormatToGoogle({bottomRight: searchFilters[Lib.BOTTOM_RIGHT_URL_PREFIX], topLeft: searchFilters[Lib.TOP_LEFT_URL_PREFIX]}) : null} 
         historyPush={history.push}
         location={this.props.location}
         properties={displayedResults}
-        searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}
+        searchByCoordinates={this.updateURIGeoCoordinates}
         selectedProperty={searchFilters.selected_property}
+        updateSelectedProperty={this.updateSelectedProperty}
       />
     );
 
@@ -359,8 +396,18 @@ class MapSearchResults extends Component {
     );
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-container h-100`}>
-        {elementToShow}
+      <div className="h-100">
+        <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
+          <HeaderSearch
+            historyPush={history.push}
+            openUserPanel={this.props.openUserPanel}
+            searchFilters={searchFilters}
+            termDetails={this.props.termDetails}
+          />
+        </section>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-container h-100`}>
+          {elementToShow}
+        </div>
       </div>
     );
   }

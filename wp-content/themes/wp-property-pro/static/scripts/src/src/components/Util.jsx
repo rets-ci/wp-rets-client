@@ -55,7 +55,9 @@ class Util extends React.Component {
     let params = [];
     // sort params alphabetically
     params = p.sort((a, b) => {
-      return a.key.charCodeAt(0) - b.key.charCodeAt(0);
+      if(a.key < b.key) return -1;
+      if(a.key > b.key) return 1;
+      return 0;
     });
   
     // deal with max and min values
@@ -124,7 +126,52 @@ class Util extends React.Component {
       }
     }
     return searchFilter;
-  }
+  };
+  
+  static getTermLookupAggregationQuery(termDetails) {
+    let aggs = {};
+    termDetails.forEach(t => {
+      let {
+        slug,
+        term,
+        tax
+      } = t;
+      if (tax === 'wpp_location') {
+        aggs[slug] = {
+          "filter": {
+            "term": {
+              [`tax_input.wpp_location.wpp_location_${term}.slug`]: slug
+            }
+          },
+          "aggs": {
+            "inside": {
+              "terms": {
+                "field": `tax_input.wpp_location.wpp_location_${term}.name.raw`,
+                "size": 1
+              }
+            }
+          }
+        };
+      } else if (tax === 'wpp_schools') {
+        aggs[slug] = {
+          "filter": {
+            "term": {
+              [`terms.wpp_schools.slug`]: slug
+            }
+          },
+          "aggs": {
+            "inside": {
+              "terms": {
+                "field": "terms.wpp_schools.name.raw",
+                "size": 1
+              }
+            }
+          }
+        };
+      }
+    });
+    return aggs;
+  };
 
   static getThumbnailUrlBySize(thumbnailUrl = '', size = Lib.PROPERTY_LISTING_IMAGE_SIZE) {
     let urlArray = split(thumbnailUrl, Lib.URL_DELIMITER);
@@ -253,15 +300,14 @@ class Util extends React.Component {
       bottomRight,
       topLeft
     } = params;
-
     return {
       ne: {
-        lat: topLeft.lat,
-        lon: bottomRight.lon
+        lat: topLeft[0],
+        lon: bottomRight[1]
       },
       sw: {
-        lat: bottomRight.lat,
-        lon: topLeft.lon
+        lat: bottomRight[0],
+        lon: topLeft[1]
       }
     }
   }
@@ -323,7 +369,7 @@ class Util extends React.Component {
     }
 
     return terms.map(t => {
-      return {key: t.prefix, value: t.slug}
+      return {key: t.term, values: [t.slug]}
     });
 
   }
@@ -405,16 +451,31 @@ class Util extends React.Component {
     let collection = [];
     for (var key in obj) {
       if (obj[key] instanceof Array) {
-        obj[key].forEach(d => {
-          collection.push({
-            key: key,
-            values: [d]
+        // term is a special case
+        if (key === 'term') {
+          obj[key].forEach(d => {
+            collection.push({
+              key: d.term,
+              values: [d.slug]
+            });
           });
-        })
+        } else {
+          obj[key].forEach(d => {
+            collection.push({
+              key: key,
+              values: [d]
+            });
+          });
+        }
       } else if (obj[key].start && obj[key].to) {
         collection.push({
           key: key,
           values: [obj[key].start, obj[key].to]
+        });
+      } else if (obj[key].lat && obj[key].lon) {
+        collection.push({
+          key: key,
+          values: [obj[key].lat, obj[key].lon]
         });
       } else {
         collection.push({

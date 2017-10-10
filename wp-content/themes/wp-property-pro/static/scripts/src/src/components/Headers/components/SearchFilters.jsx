@@ -41,64 +41,54 @@ class searchFilters extends Component {
     super(props);
   }
 
-  handleBathroomsFilterRemove(bathroomsFilter) {
-    let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]']: bathroomsFilter
-    };
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.updateURLWithQueryParam(queryParam);
+  handleBathroomsFilterRemove = () => {
+    let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
+    searchQueryParamsCollection = searchQueryParamsCollection.filter(d => d.key !== 'bathrooms');
+    this.updateURLWithQueryParam(searchQueryParamsCollection);
   }
 
-  handleBedroomsFilterRemove(bedroomFilter) {
-    let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]']: bedroomFilter
-    };
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.updateURLWithQueryParam(queryParam);
+  handleBedroomsFilterRemove = () => {
+    let filters = Object.assign({}, this.props.filters);
+    delete filters['bedrooms'];
+    let searchCollection = Util.searchObjectToCollection(filters);
+    this.updateURLWithQueryParam(searchCollection);
   }
 
-  handleLotSizefilterRemove(lotSizeFilter) {
-    let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]"]: lotSizeFilter.start,
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]"]: lotSizeFilter.to,
-    };
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.updateURLWithQueryParam(queryParam);
+  handleLotSizefilterRemove = () => {
+    let filters = Object.assign({}, this.props.filters);
+    delete filters['lotSize'];
+    let searchCollection = Util.searchObjectToCollection(filters);
+    this.updateURLWithQueryParam(searchCollection);
   }
 
-  handlePriceFilterRemove(priceFilter) {
-    let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: priceFilter.start,
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: priceFilter.to,
-    };
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.updateURLWithQueryParam(queryParam);
+  handlePriceFilterRemove = () => {
+    let filters = Object.assign({}, this.props.filters);
+    delete filters['price'];
+    let searchCollection = Util.searchObjectToCollection(filters);
+    this.updateURLWithQueryParam(searchCollection);
   }
 
-  handleSQFTFilterRemove(sqftFilter) {
-    let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: sqftFilter.start,
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: sqftFilter.to,
-    };
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.updateURLWithQueryParam(queryParam);
+  handleSQFTFilterRemove = () => {
+    let filters = Object.assign({}, this.props.filters);
+    delete filters['sqft'];
+    let searchCollection = Util.searchObjectToCollection(filters);
+    this.updateURLWithQueryParam(searchCollection);
   }
 
-  handleTermFilterRemove(termFilter) {
-    let filterToRemove = {[termFilter.tax]: termFilter.value};
-    let currentQueryParam = window.location.search.replace('?', '');
-    var parsedQs = qs.parse(currentQueryParam);
-    var currentTermFilter = parsedQs[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'];
+  handleTermFilterRemove = termFilter => {
+    let filters = Object.assign({}, this.props.filters);
+    var currentTermFilter = filters.term;
     var updatedTermFilter = currentTermFilter.filter(t => {
-      return !isEqual(t, filterToRemove);
+      return !isEqual(t, termFilter);
     })
-    parsedQs[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = updatedTermFilter;
-    let updatedQueryParam = qs.stringify(parsedQs);
-    this.updateURLWithQueryParam('?' + updatedQueryParam);
+    filters['term'] = updatedTermFilter;
+    let searchCollection = Util.searchObjectToCollection(filters);
+    this.updateURLWithQueryParam(searchCollection);
   }
 
   updateURLWithQueryParam(queryParam) {
-    this.props.history.push(window.location.pathname + decodeURIComponent(queryParam))
+    let searchURL = Util.createSearchURL('/search', queryParam);
+    this.props.history.push(searchURL);
   }
 
   render() {
@@ -143,7 +133,7 @@ class searchFilters extends Component {
 
     if (bathroomsFilter) {
       bathroomsElement = (
-        <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
+        <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
       );
     } else if (staticFilters['bathrooms']) {
       bathroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -153,7 +143,7 @@ class searchFilters extends Component {
 
     if (bedroomsFilter) {
       bedroomsElement = (
-        <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
+        <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
       );
     } else if (staticFilters['bedrooms']) {
       bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -163,7 +153,7 @@ class searchFilters extends Component {
 
     if (priceFilter) {
       priceElement = (
-        <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
+        <FilterTag handleRemoveFilter={this.handlePriceFilterRemove} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
       );
     } else if (staticFilters['price']) {
       priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -173,7 +163,7 @@ class searchFilters extends Component {
 
     if (lotSizeFilter) {
       lotSizeElement = (
-        <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
+        <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
       )
     } else if (staticFilters['lotSize']) {
       lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -183,7 +173,7 @@ class searchFilters extends Component {
 
     if (sqftFilter) {
       sqftElement = (
-        <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
+        <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
       );
     } else if (staticFilters['sqft']) {
       sqftElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -199,10 +189,10 @@ class searchFilters extends Component {
     }
     if (termFilters && termFilters.length) {
       if (termFilters.length === 1) {
-        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={this.props.openLocationModal} display={termFilters[0].text} value={termFilters[0].text} />;
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={this.props.openLocationModal} display={termFilters[0].text || 'loading...'} value={termFilters[0].text || 'loading...'} />;
       } else {
         termFilterElement = termFilters.map((t, i) =>
-          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.text} value={t.text} />
+          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove(t)} display={t.text || 'loading...'} value={t.text || 'loading...'} />
         );
       }
     }

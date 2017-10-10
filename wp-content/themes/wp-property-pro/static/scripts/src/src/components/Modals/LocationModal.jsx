@@ -118,7 +118,7 @@ class LocationModal extends Component {
         // Properties results page
         if (this.props.propertiesModalMode) {
           this.props.onTermSelect({
-            prefix: Util.reddoorConvertTermTypeToSearchURLPrefix(termType),
+            term: Util.reddoorConvertTermTypeToSearchURLPrefix(termType),
             slug: term,
             tax: tax,
             text: text

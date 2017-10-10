@@ -275,8 +275,11 @@ class PropertiesModal extends Component {
     let filters = removeDefaultFilters(this.state.filters, defaultFiltervalues);
     let reddoorTermObjects = Util.reddoorConvertToURLTerms(filters.term.slice(0));
     delete filters.term;
+    delete filters['selected_property'];
+    delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
+    delete filters[Lib.TOP_LEFT_URL_PREFIX];
     let collection = Util.searchObjectToCollection(filters);
-    collection = collection.concat(reddoorTermObjects.map(d => ({key: d.key, values: [d.value]}))); 
+    collection = collection.concat(reddoorTermObjects);
     let searchURL = Util.createSearchURL('/search', collection.map(a => Object.assign({}, a)));
     this.props.closeModal();
     this.props.historyPush(searchURL);
@@ -337,15 +340,15 @@ class PropertiesModal extends Component {
     let termFilterElement;
     if (termFilters && termFilters.length) {
       if (termFilters.length === 1) {
-        termFilterElement = <span key={termFilters[0].text} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
+        termFilterElement = <span key={JSON.stringify(termFilters[0])} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
           <i className="fa fa-times" onClick={() => this.handleLastTermRemove(termFilters[0])}></i>
-          <span>{termFilters[0].text}</span>
+          <span>{termFilters[0].text || 'loading...'}</span>
         </span>;
       } else {
         termFilterElement = termFilters.map((t, i) =>
-          <span key={t.text} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
+          <span key={JSON.stringify(t)} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
             <i className="fa fa-times" onClick={() => this.handleTermFilterRemove(t)}></i>
-            <span>{t.text}</span>
+            <span>{t.text || 'loading...'}</span>
           </span>
         );
       }

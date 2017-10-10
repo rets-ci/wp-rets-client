@@ -32,7 +32,7 @@ import Page from './Page.jsx';
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
 import loadGuideArchive from 'bundle-loader?lazy&name=GuideArchive!./guide/Archive.jsx';
 import loadPropertySingle from 'bundle-loader?lazy&name=SingleProperties!./properties/SingleContainer.jsx';
-import loadMapSearchResultsTermFetcher from 'bundle-loader?lazy&name=MapSearchResults!./properties/MapSearchResultsTermFetcher.jsx';
+import loadMapSearchResults from 'bundle-loader?lazy&name=MapSearchResults!./properties/MapSearchResults.jsx';
 
 require('nprogress-css');
 
@@ -147,12 +147,21 @@ class PageLayout extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let currentUrl = this.props.location.pathname + nextProps.location.search;
-    let nextUrl = nextProps.location.pathname + nextProps.location.search;
-    if (nextUrl !== currentUrl) {
-      // reset the post content
-      this.setState({post: {}});
-      this.fetchData(nextUrl);
+    // unless te URL is search, compare URLs to do a request
+    let anyChange = (currentPath, nextPath) => {
+      if (currentPath.indexOf('search') >= 0 && nextPath.indexOf('search') >= 0) {
+        return false;
+      } else {
+        return currentPath !== nextPath;
+      }
+    };
+    if (this.props.location.pathname && nextProps.location.pathname) {
+      if (anyChange(this.props.location.pathname, nextProps.location.pathname)) {
+        // reset the post content
+        this.routeUpdate();
+        this.setState({post: {}});
+        this.fetchData(nextProps.location.pathname + nextProps.location.search);
+      }
     }
   }
 
@@ -182,9 +191,6 @@ class PageLayout extends Component {
       post: get(this.state, 'post', {}),
       rows: get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
     };
-    this.props.history.listen((location, action) => {
-      this.routeUpdate();
-    });
     
     let containerClass = `${Lib.THEME_CLASSES_PREFIX}page-layout-container-inner h-100 d-flex flex-column`;
     if (this.props.saleTypesPanelOpen) {
@@ -251,7 +257,7 @@ class PageLayout extends Component {
             } />
           }
           <Route path={'/search'} render={props => {
-            return <Bundle load={loadMapSearchResultsTermFetcher} nprogress={nprogress}>
+            return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
               {(Comp) => (Comp
                 ? <Comp {...paramsToSet} />
                 : null
@@ -271,7 +277,6 @@ class PageLayout extends Component {
         <Footer/>
       </div>
     );
-
     let main = (
       !Object.keys(this.state.post).length ?
         (isFetching ?
