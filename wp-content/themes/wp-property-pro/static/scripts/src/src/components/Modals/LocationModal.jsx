@@ -17,7 +17,6 @@ import {Lib} from '../../lib.jsx';
 import get from 'lodash/get';
 import Util from '../Util.jsx';
 
-
 const mapStateToProps = (state, ownProps) => {
   return {
     errorMessage: state.locationModal.errorMessage,
@@ -105,7 +104,7 @@ class LocationModal extends Component {
     this.props.closeModal();
   }
 
-  handleResultClick = (eve, tax, term, text, searchType, modifyType, url, historyPush) => {
+  handleResultClick = (eve, tax, term, termType, text, searchType, modifyType, url, historyPush) => {
     eve.preventDefault();
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
     if (searchOptions.error) {
@@ -119,29 +118,34 @@ class LocationModal extends Component {
         // Properties results page
         if (this.props.propertiesModalMode) {
           this.props.onTermSelect({
-            [tax]: text
+            term: Util.reddoorConvertTermTypeToSearchURLPrefix(termType),
+            slug: term,
+            tax: tax,
+            text: text
           });
         } else {
-          let url = new URL();
-          url.resource(get(wpp, 'instance.settings.configuration.base_slug'));
-          //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
+          if (!termType) { console.log('term type is not found, search functionality won\'t work as expected'); }
+
           let modifiedSearchType = searchType === 'Sale' ? 'Buy' : searchType;
-          let URLSearchObject = {
-            [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']']: encodeURIComponent(text),
-            [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[search_type]']: modifiedSearchType,
-            [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType,
-          };
-          URLSearchObject = Object.assign({}, URLSearchObject, propertyTypes.map((p, i) => {
-            return {
-              [`${Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX}[property_type][${i}]`]: p.slug
-            }
-          }).reduce((a, b) => {
-            let key = Object.keys(b)[0];
-            a[key] = b[key];
-            return a;
-          }, {}));
-          url.setSearch(URLSearchObject);
-          historyPush('/' + decodeURIComponent(url.pathname() + url.search()));
+          let termTypeOnlyString = Util.getReddoorSearchTerm(tax, termType);
+          let params = [
+            {
+              key: 'sale',
+              values: [saleType]
+            },
+            {
+              key: 'search',
+              values: [modifiedSearchType]
+            },
+            {
+              key: termTypeOnlyString,
+              values: [term]
+            },
+            ...propertyTypes.map(p => ({key: 'property', values: [p.slug]}))
+          ];
+          let searchURL = Util.createSearchURL('/search', params);
+          
+          historyPush(searchURL);
           this.props.closeModal();
         }
       } else {
@@ -198,7 +202,6 @@ class LocationModal extends Component {
       modifyType
     } = this.props;
     let self = this;
-
     let resultsElements = searchResults.map((s, k) => {
       return (
         <div className="row" key={s.key}>
@@ -215,7 +218,7 @@ class LocationModal extends Component {
                     <div className="container">
                       <div className="row">
                         <a href="#" className="m-0"
-                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.text, searchType, modifyType, get(c, 'url', null), history.push)}>
+                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.termType, c.text, searchType, modifyType, get(c, 'url', null), history.push)}>
                           {c.text}
                         </a>
                       </div>

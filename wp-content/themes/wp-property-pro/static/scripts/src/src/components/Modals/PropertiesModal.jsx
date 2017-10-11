@@ -233,7 +233,6 @@ class PropertiesModal extends Component {
   }
 
   handleTermFilterRemove = filter => {
-    let filterToRemove = {[filter.tax]: filter.value};
     let filters = Object.assign({}, this.state.filters);
     let termFilter = filters.term.slice(0);
     termFilter = termFilter.filter(t => {
@@ -273,18 +272,17 @@ class PropertiesModal extends Component {
   }
 
   saveFilters = () => {
-    let searchResultURL = '/' + get(wpp, 'instance.settings.configuration.base_slug');
-    let url = new URI();
-    // reset URL search to not carry forward curent query params
-    url.search("");
     let filters = removeDefaultFilters(this.state.filters, defaultFiltervalues);
-    let searchFilters = convertToSearchParamObject(filters);
-    let otherFilters = Util.withoutSearchFilters(window.location.href);
-    let allFilters = Object.assign({}, otherFilters, searchFilters);
-    let queryParam = decodeURIComponent(qs.stringify(allFilters))
-    url.setSearch(queryParam);
+    let reddoorTermObjects = Util.reddoorConvertToURLTerms(filters.term.slice(0));
+    delete filters.term;
+    delete filters['selected_property'];
+    delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
+    delete filters[Lib.TOP_LEFT_URL_PREFIX];
+    let collection = Util.searchObjectToCollection(filters);
+    collection = collection.concat(reddoorTermObjects);
+    let searchURL = Util.createSearchURL('/search', collection.map(a => Object.assign({}, a)));
     this.props.closeModal();
-    this.props.historyPush(decodeURIComponent(searchResultURL + url.search()));
+    this.props.historyPush(searchURL);
   }
 
   showFilterBasedOnSaleType(searchType, filter) {
@@ -338,23 +336,19 @@ class PropertiesModal extends Component {
       value: d.value
     }));
 
-    let termFilters = [];
+    let termFilters = term;
     let termFilterElement;
-    let termFilter = term;
-    if (termFilter && termFilter.length) {
-      termFilters = termFilter.map(t => {
-        return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
-      });
+    if (termFilters && termFilters.length) {
       if (termFilters.length === 1) {
-        termFilterElement = <span key={termFilters[0].value} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
-          <i className="fa fa-times" onClick={() => this.handleLastTermRemove({[termFilters[0].tax]: termFilters[0].value})}></i>
-          <span>{termFilters[0].value}</span>
+        termFilterElement = <span key={JSON.stringify(termFilters[0])} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
+          <i className="fa fa-times" onClick={() => this.handleLastTermRemove(termFilters[0])}></i>
+          <span>{termFilters[0].text || 'loading...'}</span>
         </span>;
       } else {
         termFilterElement = termFilters.map((t, i) =>
-          <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
-            <i className="fa fa-times" onClick={() => this.handleTermFilterRemove({[t.tax]: t.value})}></i>
-            <span>{t.value}</span>
+          <span key={JSON.stringify(t)} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
+            <i className="fa fa-times" onClick={() => this.handleTermFilterRemove(t)}></i>
+            <span>{t.text || 'loading...'}</span>
           </span>
         );
       }

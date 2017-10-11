@@ -29,22 +29,21 @@ class HeaderSearch extends Component {
     super(props);
   }
 
-  closeSaleTypePanel = () => {
-    this.props.doOpenSaleTypesPanel(false);
-  }
-
-  handleSaleTypeClick = event => {
-    event.preventDefault();
-
-    this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
-  }
-
   static propTypes = {
     historyPush: PropTypes.func.isRequired,
     propertyTypeOptions: PropTypes.object.isRequired,
     searchFilters: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
+
+  closeSaleTypePanel = () => {
+    this.props.doOpenSaleTypesPanel(false);
+  }
+
+  handleSaleTypeClick = event => {
+    event.preventDefault();
+    this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
+  }
 
   render() {
     let {
@@ -65,6 +64,7 @@ class HeaderSearch extends Component {
         <SaleTypeHeaderSelection
           currentURL={window.location.href}
           closePanel={this.closeSaleTypePanel}
+          termFilters={searchFilters.term}
           historyPush={historyPush}
           propertyTypeOptions={this.props.propertyTypeOptions}
           open={this.props.saleTypesPanelOpen}

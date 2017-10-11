@@ -17,13 +17,11 @@ class FilterBar extends Component {
   }
 
   handleTermFilterRemove = filter => {
-    let filterToRemove = {[filter.tax]: filter.value};
-    this.props.deleteLocalFilterTerm(filterToRemove);
+    this.props.deleteLocalFilterTerm(filter);
   }
 
   handleDeleteLastLocalFilterTerm = filter => {
-    let filterToRemove = {[filter.tax]: filter.value};
-    this.props.deleteLastLocalFilterTerm(filterToRemove)
+    this.props.deleteLastLocalFilterTerm(filter)
   }
 
   render() {
@@ -36,14 +34,12 @@ class FilterBar extends Component {
     let termFilter = filters['term'];
     
     if (termFilter && termFilter.length) {
-      termFilters = termFilter.map(t => {
-        return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
-      });
+      termFilters = termFilter;
       if (termFilters.length === 1) {
-        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.handleDeleteLastLocalFilterTerm(termFilters[0])} display={termFilters[0].value} value={termFilters[0].value} />;
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.handleDeleteLastLocalFilterTerm(termFilters[0])} display={termFilters[0].text} value={termFilters[0].text} />;
       } else {
         termFilterElement = termFilters.map((t, i) =>
-          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove(t)} display={t.value} value={t.value} />
+          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove(t)} display={t.text} value={t.text} />
         );
       }
     }

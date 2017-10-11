@@ -1,4 +1,5 @@
 import {
+  openLoginModal,
   routeChanged,
   receiveWordpressContentFetching,
   receiveWordpressContentFetchingError,
@@ -21,7 +22,6 @@ import {
   Switch
 } from 'react-router-dom';
 import {connect} from 'react-redux';
-import Header from './Header.jsx';
 import LoadingAccordion from './LoadingAccordion.jsx';
 import nprogress from 'nprogress/nprogress.js';
 import UserPanel from './UserPanel.jsx';
@@ -54,6 +54,22 @@ const mapDispatchToProps = dispatch => {
   return {
     closeUserPanel: () => {
       dispatch(toggleUserPanel(false));
+    },
+
+    closeLocationModal: () => {
+      dispatch(openLocationModal(false));
+    },
+
+    openFormModal: (id, open) => {
+      dispatch(openFormModal(id, open));
+    },
+
+    openLoginModal: () => {
+      dispatch(openLoginModal(true));
+    },
+
+    openUserPanel: () => {
+      dispatch(toggleUserPanel(true));
     },
 
     receiveWordpressContentFetchingErrorFunc: errorMessage => {
@@ -131,12 +147,21 @@ class PageLayout extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let currentUrl = this.props.location.pathname + nextProps.location.search;
-    let nextUrl = nextProps.location.pathname + nextProps.location.search;
-    if (nextUrl !== currentUrl) {
-      // reset the post content
-      this.setState({post: {}});
-      this.fetchData(nextUrl);
+    // unless te URL is search, compare URLs to do a request
+    let anyChange = (currentPath, nextPath) => {
+      if (currentPath.indexOf('search') >= 0 && nextPath.indexOf('search') >= 0) {
+        return false;
+      } else {
+        return currentPath !== nextPath;
+      }
+    };
+    if (this.props.location.pathname && nextProps.location.pathname) {
+      if (anyChange(this.props.location.pathname, nextProps.location.pathname)) {
+        // reset the post content
+        this.routeUpdate();
+        this.setState({post: {}});
+        this.fetchData(nextProps.location.pathname + nextProps.location.search);
+      }
     }
   }
 
@@ -152,6 +177,8 @@ class PageLayout extends Component {
       history,
       isFetching,
       location,
+      openLoginModal,
+      openUserPanel,
       userPanelOpen
     } = this.props;
     let paramsToSet = {
@@ -159,12 +186,11 @@ class PageLayout extends Component {
       history: history,
       location: location,
       search_options: get(this.state, 'search_options', null),
+      openLoginModal: openLoginModal,
+      openUserPanel: openUserPanel,
       post: get(this.state, 'post', {}),
       rows: get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
     };
-    this.props.history.listen((location, action) => {
-      this.routeUpdate();
-    });
     
     let containerClass = `${Lib.THEME_CLASSES_PREFIX}page-layout-container-inner h-100 d-flex flex-column`;
     if (this.props.saleTypesPanelOpen) {
@@ -180,13 +206,6 @@ class PageLayout extends Component {
           panelOpen={userPanelOpen}
         />
         <LoginModal />
-        <Header
-          history={history}
-          location={location}
-          saleType={get(this.state, 'post.sale_type')}
-          searchType={get(this.state, 'post.search_type')}
-          locationTerm={get(this.state, 'post.location')}
-        />
         <Switch>
           <Route exact path="/" render={(props) => {
             if (nprogress && nprogress.isStarted()) {
@@ -206,16 +225,6 @@ class PageLayout extends Component {
                 )}
               </Bundle>
             } />
-          }
-          {get(wpp, 'instance.settings.configuration.base_slug', null) &&
-            <Route path={"/" + get(wpp, 'instance.settings.configuration.base_slug')} render={props => {
-              return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
-                {(Comp) => (Comp
-                  ? <Comp {...paramsToSet} />
-                  : null
-                )}
-              </Bundle>
-            }} />
           }
           {get(bundle, 'blog_base', null) &&
             <Route path={"/" + get(bundle, 'blog_base').replace(/\//g, '')} render={props =>
@@ -247,6 +256,14 @@ class PageLayout extends Component {
               </Bundle>
             } />
           }
+          <Route path={'/search'} render={props => {
+            return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
+              {(Comp) => (Comp
+                ? <Comp {...paramsToSet} />
+                : null
+              )}
+            </Bundle>
+          }} />
           <Route render={(props) => {
             if (nprogress && nprogress.isStarted()) {
               nprogress.done();
@@ -260,7 +277,6 @@ class PageLayout extends Component {
         <Footer/>
       </div>
     );
-
     let main = (
       !Object.keys(this.state.post).length ?
         (isFetching ?

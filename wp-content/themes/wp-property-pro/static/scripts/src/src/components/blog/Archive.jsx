@@ -1,3 +1,4 @@
+import HeaderDefault from '../Headers/HeaderDefault.jsx';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Masthead from '../widgets/masthead/Masthead.jsx';
@@ -50,16 +51,25 @@ class ArchiveContent extends Component {
   }
 
   render() {
-
+    let {
+      history,
+      openUserPanel,
+      openLoginModal
+    } = this.props;
     let content = get(this.props.post, 'blog_content', {});
 
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <Masthead widget_cell={get(content, 'masthead')}/>
-          <Subnavigation widget_cell={get(content, 'subnavigation')}
-                         currentUrl={get(this.props.post, 'post_url', '')}/>
-          <Posts seeMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
+      <div>
+        <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-default row no-gutters`}>
+          <HeaderDefault historyPush={history.push} openUserPanel={openUserPanel} openLoginModal={openLoginModal} />
+        </section>
+        <div className="container-fluid">
+          <div className="row">
+            <Masthead widget_cell={get(content, 'masthead')}/>
+            <Subnavigation widget_cell={get(content, 'subnavigation')}
+                          currentUrl={get(this.props.post, 'post_url', '')}/>
+            <Posts seeMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
+          </div>
         </div>
       </div>
     )

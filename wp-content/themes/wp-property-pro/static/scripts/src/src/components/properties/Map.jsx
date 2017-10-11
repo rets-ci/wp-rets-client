@@ -139,10 +139,7 @@ export default class Map extends Component {
       marker.propertyId = p._id;
       marker.selected = false;
       marker.addListener('click', () => {
-        let filter = {'selected_property': marker.propertyId};
-        let queryParam = Util.updateQueryFilter(window.location.href, filter, 'set', false);
-        // TODO: use the location object passed in
-        this.props.historyPush(window.location.pathname + decodeURIComponent(queryParam));
+        this.props.updateSelectedProperty(marker.propertyId)
       });
       this.markers.push(marker);
       this.bounds.extend(loc);
