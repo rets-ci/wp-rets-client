@@ -90,7 +90,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
           'type' => 'checkbox',
           'default' => false,
-          'label' => __($label, 'wp-property-pro'),
+          'label' => __($label === 'Sale' ? 'Buy' : $label, 'wp-property-pro'),
         ];
       }
 
