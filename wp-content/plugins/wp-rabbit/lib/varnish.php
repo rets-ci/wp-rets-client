@@ -7,7 +7,25 @@
  */
 
 // varnish cache purging
-add_action( 'save_post', function( $post_id ) {
+add_action( 'save_post', 'rabbit_save_post_purging_handler', 50 );
+
+/**
+ * Save post purging handler
+ *
+ * @param $post_id
+ */
+function rabbit_save_post_purging_handler( $post_id ) {
+
+  if(get_transient('rabbit_transient_' . $post_id)){
+    return;
+  }
+
+  $r_args = array(
+    "post_id" => $post_id,
+    "post_link" => get_permalink( $post_id )
+  );
+
+  set_transient( 'rabbit_transient_' . $post_id, $r_args, 3 );
 
   // If this is just a revision, don't send the email.
   if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
@@ -30,7 +48,7 @@ add_action( 'save_post', function( $post_id ) {
 
   rabbit_purge_url( $post_url );
 
-}, 50 );
+}
 
 /**
  * Purge Entire Site on Permalink Change.
@@ -117,14 +135,16 @@ function rabbit_purge_url( $url, $args = array() ) {
   if( isset( $parse['query'] ) ) {
     $_purge_url = $_purge_url . '?' . $parse['query'];
   }
+  
+  $_bracch = isset($_SERVER['GIT_BRANCH'])?$_SERVER['GIT_BRANCH']:'';
 
   // make purge request to wpcloud.io. (this gets public DNS of wpcloud servers and then uses GCE load balancers to purge the appropriate machien based on hostname)
   $_purge = wp_remote_request( $_purge_url, $purge_request_args );
 
   if( isset( $args['post_id'] ) ) {
-    rabbit_write_log( 'Post [' . $args['post_id']. '] updated. Purging cache at [' . $parse['host'] . $_purge_url . '] url for ['.$_SERVER['GIT_BRANCH'].'] branch.' );
+    rabbit_write_log( 'Post [' . $args['post_id']. '] updated. Purging cache at [' . $parse['host'] . $_purge_url . '] url for ['.$_bracch.'] branch.' );
   } else {
-    rabbit_write_log( 'Purging cache at [' . $parse['host'] . $_purge_url . '] url for ['.$_SERVER['GIT_BRANCH'].'] branch.' );
+    rabbit_write_log( 'Purging cache at [' . $parse['host'] . $_purge_url . '] url for ['.$_bracch.'] branch.' );
   }
 
   if( $_purge && wp_remote_retrieve_body( $_purge ) && defined( "WP_DEBUG" ) ) {
