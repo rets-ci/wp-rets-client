@@ -4,13 +4,16 @@
  * Plugin URI: https://www.usabilitydynamics.com
  * Description: Rabbit.ci environment helper. Purges cache on Varnish/CloudFront, shows a navbar with information about the container.
  * Author: Usability Dynamics, Inc.
- * Version: 1.0.8
+ * Version: 1.0.9
  * Text Domain: wp-rabbit
  * Author URI: https://www.usabilitydynamics.com
  *
  * Copyright 2016 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
  *
  */
+
+// Set enabled constant for third party compatibility
+define('WP_RABBIT_ENABLED', true);
 
 // Get updates from Git.
 include_once( 'lib/updater.php' );

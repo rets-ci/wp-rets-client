@@ -1,5 +1,9 @@
+### 1.0.9
+* Support for getting Git Branch from disk, if `$_SERVER[GIT_BRANCH]` is not set.
+
 ### 1.0.8
 * Admin navbar now displays host/port used by Redis/Memcached servers, if Object Cache is used.
+* Added `rabbit_purge_url` method for triggering URL purging as neeeded.
 
 ### 1.0.7
 * Performance improvement to self-updater logic.
