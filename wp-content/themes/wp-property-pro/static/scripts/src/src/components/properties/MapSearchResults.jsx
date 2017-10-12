@@ -38,16 +38,18 @@ const isMobile = window.innerWidth < 576;
 
 
 const mapStateToProps = (state, ownProps) => {
+
   let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
   let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
   let termDetails = Util.reddoorTermDetailsFromSearchParam(searchQueryParamsCollection);
-  searchQueryObject = Util.reddoorSearchFormatObject(searchQueryObject);
+  searchQueryObject = Util.searchObjectToCustomFormat(searchQueryObject);
   searchQueryObject['term'] = termDetails;
   for (var key in searchQueryObject) {
     if (termDetails.map(d => d.term).indexOf(key) >= 0) {
       delete searchQueryObject[key];
     }
   }
+  
   return {
     errorMessage: state.errorMessage,
     query: get(state, 'searchResults.query', []),
