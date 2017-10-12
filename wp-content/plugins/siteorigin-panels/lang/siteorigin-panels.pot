@@ -465,7 +465,7 @@ msgstr ""
 msgid "Custom Home Page Builder"
 msgstr ""
 
-#: tmp/inc/revisions.php:59
+#: tmp/inc/revisions.php:79
 msgid "Page Builder Content"
 msgstr ""
 
@@ -1133,11 +1133,11 @@ msgstr ""
 msgid "Read More"
 msgstr ""
 
-#: tmp/siteorigin-panels.php:428
+#: tmp/siteorigin-panels.php:432
 msgid "Edit Home Page"
 msgstr ""
 
-#: tmp/siteorigin-panels.php:448, tmp/tpl/js-templates.php:34, tmp/tpl/js-templates.php:36
+#: tmp/siteorigin-panels.php:452, tmp/tpl/js-templates.php:34, tmp/tpl/js-templates.php:36
 msgid "Live Editor"
 msgstr ""
 

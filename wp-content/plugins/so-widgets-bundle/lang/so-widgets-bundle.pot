@@ -37,35 +37,35 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:44
+#: tmp/admin/tpl/admin.php:48
 msgid "Active"
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:66
+#: tmp/admin/tpl/admin.php:70
 msgid "Activate"
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:67
+#: tmp/admin/tpl/admin.php:71
 msgid "Deactivate"
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:86, tmp/widgets/contact/contact.php:58, tmp/widgets/google-map/google-map.php:70, tmp/widgets/testimonial/testimonial.php:99
+#: tmp/admin/tpl/admin.php:90, tmp/widgets/contact/contact.php:58, tmp/widgets/google-map/google-map.php:70, tmp/widgets/testimonial/testimonial.php:99
 msgid "Settings"
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:100
+#: tmp/admin/tpl/admin.php:104
 msgid "Developers - create your own widgets for the Widgets Bundle."
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:101
+#: tmp/admin/tpl/admin.php:105
 msgid "Read More"
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:108
+#: tmp/admin/tpl/admin.php:112
 msgid "Widget Settings"
 msgstr ""
 
-#: tmp/admin/tpl/admin.php:119
+#: tmp/admin/tpl/admin.php:123
 msgid "Save"
 msgstr ""
 
@@ -233,6 +233,22 @@ msgstr ""
 msgid "Sponsored"
 msgstr ""
 
+#: tmp/base/inc/fields/multi-measurement.class.php:12
+msgid "Padding left"
+msgstr ""
+
+#: tmp/base/inc/fields/multi-measurement.class.php:15
+msgid "Padding right"
+msgstr ""
+
+#: tmp/base/inc/fields/multi-measurement.class.php:16
+msgid "Padding bottom"
+msgstr ""
+
+#: tmp/base/inc/fields/multi-measurement.class.php:17
+msgid "Padding top"
+msgstr ""
+
 #: tmp/base/inc/fields/posts.class.php:22
 msgid "Post type"
 msgstr ""
@@ -281,7 +297,7 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: tmp/base/inc/fields/posts.class.php:82, tmp/widgets/contact/contact.php:47, tmp/widgets/cta/cta.php:63, tmp/widgets/editor/editor.php:32, tmp/widgets/features/features.php:132, tmp/widgets/post-carousel/post-carousel.php:97, tmp/widgets/price-table/price-table.php:41, tmp/widgets/price-table/price-table.php:60, tmp/widgets/simple-masonry/simple-masonry.php:43, tmp/widgets/simple-masonry/simple-masonry.php:74, tmp/widgets/social-media-buttons/social-media-buttons.php:42, tmp/widgets/taxonomy/taxonomy.php:33, tmp/widgets/testimonial/testimonial.php:40, tmp/widgets/video/video.php:32
+#: tmp/base/inc/fields/posts.class.php:82, tmp/widgets/accordion/accordion.php:50, tmp/widgets/contact/contact.php:47, tmp/widgets/cta/cta.php:63, tmp/widgets/editor/editor.php:32, tmp/widgets/features/features.php:132, tmp/widgets/post-carousel/post-carousel.php:97, tmp/widgets/price-table/price-table.php:41, tmp/widgets/price-table/price-table.php:60, tmp/widgets/simple-masonry/simple-masonry.php:43, tmp/widgets/simple-masonry/simple-masonry.php:74, tmp/widgets/social-media-buttons/social-media-buttons.php:42, tmp/widgets/taxonomy/taxonomy.php:33, tmp/widgets/testimonial/testimonial.php:40, tmp/widgets/video/video.php:32
 msgid "Title"
 msgstr ""
 
@@ -373,11 +389,11 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: tmp/base/inc/fields/widget.class.php:36
+#: tmp/base/inc/fields/widget.class.php:37
 msgid "%s does not exist"
 msgstr ""
 
-#: tmp/base/inc/fields/widget.class.php:46
+#: tmp/base/inc/fields/widget.class.php:47
 msgid "%s is not a SiteOrigin Widget"
 msgstr ""
 
@@ -597,12 +613,92 @@ msgstr ""
 msgid "Deactivated"
 msgstr ""
 
-#: tmp/so-widgets-bundle.php:728
+#: tmp/so-widgets-bundle.php:729
 msgid "Manage Widgets"
 msgstr ""
 
-#: tmp/so-widgets-bundle.php:729
+#: tmp/so-widgets-bundle.php:730
 msgid "Support"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:14
+msgid "SiteOrigin Accordion"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:16
+msgid "An accordion widget."
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:46, tmp/widgets/accordion/accordion.php:113
+msgid "Panels"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:54, tmp/widgets/hero/hero.php:59, tmp/widgets/layout-slider/layout-slider.php:47
+msgid "Content"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:58
+msgid "Initial state"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:59
+msgid "Whether this panel should be open or closed when the page first loads."
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:61
+msgid "Open"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:62
+msgid "Closed"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:70, tmp/widgets/contact/contact.php:276, tmp/widgets/cta/cta.php:73, tmp/widgets/testimonial/testimonial.php:182
+msgid "Design"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:75
+msgid "Headings"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:80, tmp/widgets/accordion/accordion.php:118, tmp/widgets/contact/contact.php:286, tmp/widgets/contact/contact.php:515, tmp/widgets/cta/cta.php:77, tmp/widgets/hero/hero.php:113, tmp/widgets/layout-slider/layout-slider.php:81, tmp/widgets/social-media-buttons/social-media-buttons.php:74
+msgid "Background color"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:85
+msgid "Background hover color"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:90, tmp/widgets/cta/cta.php:85
+msgid "Title color"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:95
+msgid "Title hover color"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:99, tmp/widgets/accordion/accordion.php:127, tmp/widgets/contact/contact.php:296, tmp/widgets/contact/contact.php:409, tmp/widgets/contact/contact.php:525, tmp/widgets/cta/cta.php:81
+msgid "Border color"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:103
+msgid "Border hover color"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:107, tmp/widgets/accordion/accordion.php:131, tmp/widgets/contact/contact.php:301, tmp/widgets/contact/contact.php:414, tmp/widgets/contact/contact.php:541
+msgid "Border width"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:123
+msgid "Font color"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:135
+msgid "Bottom margin"
+msgstr ""
+
+#: tmp/widgets/accordion/accordion.php:204
+msgid "Get more customization options and the ability to use widgets and layouts as your accordion content with %sSiteOrigin Premium%s"
 msgstr ""
 
 #: tmp/widgets/button/button.php:14
@@ -1041,24 +1137,8 @@ msgstr ""
 msgid "How to handle submissions that are identified as spam."
 msgstr ""
 
-#: tmp/widgets/contact/contact.php:276, tmp/widgets/cta/cta.php:73, tmp/widgets/testimonial/testimonial.php:182
-msgid "Design"
-msgstr ""
-
 #: tmp/widgets/contact/contact.php:282
 msgid "Container"
-msgstr ""
-
-#: tmp/widgets/contact/contact.php:286, tmp/widgets/contact/contact.php:515, tmp/widgets/cta/cta.php:77, tmp/widgets/hero/hero.php:113, tmp/widgets/layout-slider/layout-slider.php:81, tmp/widgets/social-media-buttons/social-media-buttons.php:74
-msgid "Background color"
-msgstr ""
-
-#: tmp/widgets/contact/contact.php:296, tmp/widgets/contact/contact.php:409, tmp/widgets/contact/contact.php:525, tmp/widgets/cta/cta.php:81
-msgid "Border color"
-msgstr ""
-
-#: tmp/widgets/contact/contact.php:301, tmp/widgets/contact/contact.php:414, tmp/widgets/contact/contact.php:541
-msgid "Border width"
 msgstr ""
 
 #: tmp/widgets/contact/contact.php:306, tmp/widgets/contact/contact.php:530
@@ -1303,10 +1383,6 @@ msgstr ""
 
 #: tmp/widgets/cta/cta.php:68, tmp/widgets/price-table/price-table.php:64
 msgid "Subtitle"
-msgstr ""
-
-#: tmp/widgets/cta/cta.php:85
-msgid "Title color"
 msgstr ""
 
 #: tmp/widgets/cta/cta.php:89
@@ -1939,10 +2015,6 @@ msgstr ""
 
 #: tmp/widgets/hero/hero.php:48, tmp/widgets/layout-slider/layout-slider.php:35, tmp/widgets/slider/slider.php:34
 msgid "Frame"
-msgstr ""
-
-#: tmp/widgets/hero/hero.php:59, tmp/widgets/layout-slider/layout-slider.php:47
-msgid "Content"
 msgstr ""
 
 #: tmp/widgets/hero/hero.php:64, tmp/widgets/taxonomy/taxonomy.php:49
@@ -2731,4 +2803,12 @@ msgstr ""
 
 #: tmp/widgets/video/video.php:106
 msgid "Always use the embedded video rather than the MediaElement player."
+msgstr ""
+
+#: tmp/widgets/video/video.php:115
+msgid "Show related videos."
+msgstr ""
+
+#: tmp/widgets/video/video.php:116
+msgid "If the external host supports it."
 msgstr ""
