@@ -42,9 +42,10 @@ class searchFilters extends Component {
   }
 
   handleBathroomsFilterRemove = () => {
-    let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
-    searchQueryParamsCollection = searchQueryParamsCollection.filter(d => d.key !== 'bathrooms');
-    this.updateURLWithQueryParam(searchQueryParamsCollection);
+    let filters = Object.assign({}, this.props.filters);
+    delete filters['bathrooms'];
+    let searchCollection = Util.searchObjectToCollection(filters);
+    this.updateURLWithQueryParam(searchCollection);
   }
 
   handleBedroomsFilterRemove = () => {

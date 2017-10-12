@@ -278,6 +278,7 @@ class PropertiesModal extends Component {
     delete filters['selected_property'];
     delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
+    filters = Util.customFormatToSearchObject(filters);
     let collection = Util.searchObjectToCollection(filters);
     collection = collection.concat(reddoorTermObjects);
     let searchURL = Util.createSearchURL('/search', collection.map(a => Object.assign({}, a)));

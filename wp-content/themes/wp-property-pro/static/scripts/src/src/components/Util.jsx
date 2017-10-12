@@ -12,11 +12,6 @@ import replace from 'lodash/replace';
 import join from 'lodash/join';
 import split from 'lodash/split';
 
-let termTypeMapper = {
-  "wpp_location": ["city", "zip", "county", "country", "city_state", "state", "route", "subdivision"],
-  "wpp_schools": ["school"]
-};
-
 let minMaxDefaultValues = {0: 'No Min', 1: 'No Max'};
 
 class Util extends React.Component {
@@ -78,6 +73,20 @@ class Util extends React.Component {
     }, '');
   
     return searchPath;
+  }
+
+  static customFormatToSearchObject(obj) {
+    let keyMapper = {
+      'property_type': 'property',
+      'search_type': 'search',
+      'sale_type': 'sale'
+    };
+    let out = {};
+    for (let key in obj) {
+      let newKey = keyMapper[key] || key;
+      out[newKey] = obj[key];
+    }
+    return out;
   }
 
   static decodeHtml(html) {
@@ -379,7 +388,7 @@ class Util extends React.Component {
 
   }
 
-  static reddoorSearchFormatObject = obj => {
+  static searchObjectToCustomFormat = obj => {
     let keyMapper = {
       property: 'property_type',
       search: 'search_type',
@@ -412,6 +421,10 @@ class Util extends React.Component {
   };
 
   static reddoorTermDetailsFromSearchParam = searchQueryParamsCollection => {
+    let termTypeMapper = {
+      "wpp_location": ["city", "zip", "county", "country", "city_state", "state", "route", "subdivision"],
+      "wpp_schools": ["school"]
+    };
     let tax;
     let term;
     let slug;
