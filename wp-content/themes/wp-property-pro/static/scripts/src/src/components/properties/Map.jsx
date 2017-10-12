@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
@@ -136,7 +137,10 @@ export default class Map extends Component {
         position: loc,
         map: this.map
       });
-      marker.propertyId = p._id;
+      if (!get(p, '_source.post_meta.rets_mls_number[0]', null)) {
+        console.log('mls reference missing from the data, property selection on at least some of the items wont work as expected');
+      }
+      marker.propertyId = get(p, '_source.post_meta.rets_mls_number[0]', null);
       marker.selected = false;
       marker.addListener('click', () => {
         this.props.updateSelectedProperty(marker.propertyId)
