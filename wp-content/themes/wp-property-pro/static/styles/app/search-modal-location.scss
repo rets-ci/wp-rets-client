@@ -1,0 +1,50 @@
+.propertypro-location-modal {
+  z-index: 1100;
+}
+
+.propertypro-search-title {
+  color: #8b8c8d;
+}
+
+.propertypro-search-result-group {
+  margin-top: 2rem;
+
+  .list-group {
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+
+    .list-group-item {
+      border: none;
+      background-color: inherit;
+      font-family: 'Playfair Display';
+      font-size: 2.5rem;
+      line-height: 3.25rem;
+      padding: 0;
+      margin-top: 1.5rem;
+      color: #414141;
+
+      &:hover, &:focus {
+        background-color: rgba(255, 255, 255, .5);
+      }
+    }
+  }
+}
+
+/* Extra small devices (portrait phones, less than 640px) */
+@media screen and (max-width: 40.000em) {
+  .propertypro-search-modal .propertypro-search-result-group {
+    margin-top: 1rem;
+  }
+
+  .propertypro-search-result-group {
+    .list-group {
+      margin-bottom: 1rem;
+
+      .list-group-item {
+        font-size: 1rem;
+        line-height: 2.25rem;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

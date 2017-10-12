@@ -96,10 +96,10 @@ export const receiveLocationModalFetchingError = errorMessage => {
   }
 }
 
-export const receiveLocationModalPosts = (payload) => {
+export const receiveLocationModalPosts = (posts) => {
   return {
     type: Lib.RECEIVE_LOCATION_MODAL_POSTS_ACTION,
-    payload,
+    posts: posts
   }
 };
 
