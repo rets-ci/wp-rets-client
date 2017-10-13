@@ -90,7 +90,16 @@ namespace UsabilityDynamics\WPRETSC {
         // try to get by [name]
         if( !$term_data['term_id'] ) {
           $_exists = term_exists( $term_data['name'], $term_data['_taxonomy'] );
-          if( $_exists ) {
+          if(  $_exists && isset( $term_data[ '_id' ] ) ) {
+            // So we should add prefix to our slug here
+            $slug = sanitize_title( $term_data[ 'name' ] );
+            if( get_term_by( 'slug', $slug ) ) {
+              $prefix = !empty( $term_data[ '_type' ] ) ? $term_data[ '_type' ] : rand( 1000, 9999);
+              $slug = sanitize_title( $prefix. '-' . $slug );
+            }
+            $term_data[ 'slug' ] = $slug;
+          }
+          else if( $_exists ) {
             $term_data['term_id'] = $_exists['term_id'];
           }
         }
