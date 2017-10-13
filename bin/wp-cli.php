@@ -42,6 +42,37 @@ if( !class_exists( 'WPP_CLI_RETSCI_Command' ) ) {
   class WPP_CLI_RETSCI_Command extends WP_CLI_Command {
 
     /**
+     * Updates properties and its data:
+     * - updates terms counts
+     *
+     *
+     * Example: wp retsci update
+     *
+     * @synopsis [--taxonomy]
+     * @param array $args
+     * @param array $assoc_args
+     */
+    public function update( $args, $assoc_args ) {
+
+      timer_start();
+
+      add_action( 'wrc::_update_terms_counts_helper::done', array( $this, '_update_terms_counts_action' ), 10, 3 );
+
+      $taxonomy = !empty( $assoc_args[ 'taxonomy' ] ) ? $assoc_args[ 'taxonomy' ] : null;
+
+      // Update property terms counts
+      $result = ud_get_wp_rets_client()->update_terms_counts( $taxonomy );
+
+      if( is_wp_error( $result ) ) {
+        WP_CLI::error( $result->get_error_message() );
+      }
+
+      WP_CLI::log( WP_CLI::colorize( '%Y' . __( 'Total time elapsed: ' ) . '%N' . timer_stop() ) );
+      WP_CLI::success( __( 'Done!' ) );
+
+    }
+
+    /**
      * Cleanup:
      * - removes all unassigned retsci attachments
      *
@@ -53,8 +84,26 @@ if( !class_exists( 'WPP_CLI_RETSCI_Command' ) ) {
      */
     public function cleanup( $args, $assoc_args ) {
 
+      timer_start();
+
       $this->_delete_attachments( $assoc_args );
 
+      WP_CLI::log( WP_CLI::colorize( '%Y' . __( 'Total time elapsed: ' ) . '%N' . timer_stop() ) );
+      WP_CLI::success( __( 'Done!' ) );
+
+    }
+
+    /**
+     * @param $terms
+     * @param $query
+     * @param $error
+     */
+    public function _update_terms_counts_action( $terms, $query, $error ) {
+      if( is_wp_error( $error ) ) {
+        WP_CLI::log( $error->get_error_message() );
+      } else {
+        WP_CLI::log( sprintf( __( 'Updated [%s] terms counts for [%s] taxonomy' ), count( $terms ), $query[ 'taxonomy' ] ) );
+      }
     }
 
     /**
