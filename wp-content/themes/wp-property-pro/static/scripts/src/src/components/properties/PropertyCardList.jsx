@@ -15,6 +15,18 @@ import {
   selectPropertyOnMap,
 } from 'app_root/actions/index.jsx';
 
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    selectPropertyOnMap: (property) => {
+      dispatch(selectPropertyOnMap(property));
+    }
+  }
+}
+
 class PropertyCardList extends Component {
   static propTypes = {
     properties: PropTypes.array.isRequired,
@@ -29,13 +41,25 @@ class PropertyCardList extends Component {
 
   componentDidMount() {
     if (this.props.properties.length && this.props.selectedProperty) {
-      this.scrollToProperty(this.props.selectedProperty)
+      this.scrollToProperty(this.props.selectedProperty);
+      const property = this.getPropertyRecordByMlsID(this.props.selectedProperty);
+      if (!property) {
+        console.log('selected property was not found')
+      } else {
+        this.props.selectPropertyOnMap(property._source); 
+      }
     }
   }
 
   componentDidUpdate() {
     if (this.props.properties.length && this.props.selectedProperty) {
-      this.scrollToProperty(this.props.selectedProperty)
+      this.scrollToProperty(this.props.selectedProperty);
+      const property = this.getPropertyRecordByMlsID(this.props.selectedProperty);
+      if (!property) {
+        console.log('selected property was not found')
+      } else {
+        this.props.selectPropertyOnMap(property._source); 
+      }
     }
   }
 
@@ -53,12 +77,22 @@ class PropertyCardList extends Component {
     }
   }
 
+  getPropertyRecordByMlsID = (mlsID) => {
+    let foundProperty = this.props.properties.filter(d => {
+      return get(d, '_source.post_meta.rets_mls_number[0]', null) === mlsID
+    });
+    return foundProperty.length ? foundProperty[0] : null
+  }
+
   handlePropertyClick = (propertyId) => {
     this.props.onUpdateSelectedProperty(propertyId);
-
-    const property = find(this.props.properties, { '_id': propertyId });
-
-    this.props.selectPropertyOnMap(property._source);
+    const property = this.getPropertyRecordByMlsID(propertyId);
+    
+    if (!property) {
+      console.log('property was not found')
+    } else {
+      this.props.selectPropertyOnMap(property._source);
+    }
   }
 
   render() {
@@ -78,7 +112,7 @@ class PropertyCardList extends Component {
               beds: get(p, '_source.post_meta.rets_beds', 0),
               city: get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
               gallery_images: get(p, '_source.wpp_media', []).map((media) => media.url),
-              id: p._id,
+              id: get(p, '_source.post_meta.rets_mls_number[0]', null),
               living_area: get(p, '_source.post_meta.rets_living_area', 0),
               lots_size: get(p, '_source.post_meta.rets_lot_size_area', 0),
               price: get(p, '_source.post_meta.rets_list_price[0]', 0),
@@ -92,10 +126,10 @@ class PropertyCardList extends Component {
               zip: get(p, '_source.post_meta.rets_postal_code[0]', '')
             };
             return (
-              <div className={`col-12 col-lg-6`} key={p._id}>
+              <div className={`col-12 col-lg-6`} key={item.id}>
                 <PropertyCard
                   data={item}
-                  highlighted={selectedProperty === p._id}
+                  highlighted={selectedProperty === item.id}
                   propertiesDOM={this.propertiesDOM}
                   openPanelWhenClicked={true}
                   onClickCard={this.handlePropertyClick}
@@ -106,20 +140,6 @@ class PropertyCardList extends Component {
         }
       </div>
     );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    selectPropertyOnMap: (property) => {
-      dispatch(selectPropertyOnMap(property));
-    }
   }
 }
 
