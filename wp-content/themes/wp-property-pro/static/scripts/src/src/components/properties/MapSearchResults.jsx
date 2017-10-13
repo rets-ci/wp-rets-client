@@ -191,7 +191,12 @@ class MapSearchResults extends Component {
       this.applyQueryFilters(nextProps.searchQueryParams);
     }
     if (nextProps.displayedResults.length > 0 && !filters.selected_property && isMobile) {
-      this.updateSelectedProperty(nextProps.displayedResults[0]._id);
+      let firstPropertyMLSID = get(nextProps.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
+      if (!firstPropertyMLSID) {
+        console.log('first property MLS id is missing');
+      } else {
+        this.updateSelectedProperty(firstPropertyMLSID);
+      }
     }
     if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type) {
       // this fixes the issue where changing "search_type" would keep the scrolling of the previous search type
