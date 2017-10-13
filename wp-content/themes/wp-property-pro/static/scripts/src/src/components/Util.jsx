@@ -404,7 +404,7 @@ class Util extends React.Component {
           to: obj[key][1],
         }
       } else {
-        out[newKey] = obj[key].length === 1 ? obj[key][0] : obj[key];
+        out[newKey] = obj[key].length === 1 && newKey !== 'property_type' ? obj[key][0] : obj[key];
       }
     }
     return out;
