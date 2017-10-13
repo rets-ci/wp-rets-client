@@ -42,6 +42,7 @@ class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
         'UsabilityDynamics\\WP\\TGM_Bulk_Installer_Skin' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-tgm-bulk-installer.php',
         'UsabilityDynamics\\WP\\TGM_Plugin_Activation' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-tgm-plugin-activation.php',
         'UsabilityDynamics\\WP\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-utility.php',
+        'UsabilityDynamics\\WP_Query_Scroller' => __DIR__ . '/../..' . '/lib/classes/class-query-scroller.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
