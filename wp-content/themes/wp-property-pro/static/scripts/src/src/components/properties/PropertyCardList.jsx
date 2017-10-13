@@ -43,7 +43,11 @@ class PropertyCardList extends Component {
     if (this.props.properties.length && this.props.selectedProperty) {
       this.scrollToProperty(this.props.selectedProperty);
       const property = this.getPropertyRecordByMlsID(this.props.selectedProperty);
-      this.props.selectPropertyOnMap(property._source); 
+      if (!property) {
+        console.log('selected property was not found')
+      } else {
+        this.props.selectPropertyOnMap(property._source); 
+      }
     }
   }
 
@@ -51,7 +55,11 @@ class PropertyCardList extends Component {
     if (this.props.properties.length && this.props.selectedProperty) {
       this.scrollToProperty(this.props.selectedProperty);
       const property = this.getPropertyRecordByMlsID(this.props.selectedProperty);
-      this.props.selectPropertyOnMap(property._source); 
+      if (!property) {
+        console.log('selected property was not found')
+      } else {
+        this.props.selectPropertyOnMap(property._source); 
+      }
     }
   }
 
