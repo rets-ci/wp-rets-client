@@ -232,6 +232,8 @@ class MapSearchResults extends Component {
   updateSelectedProperty = (propertyId) => {
     let filters = Object.assign({}, this.props.searchQueryParams);
     filters['selected_property'] = propertyId;
+    filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
+    filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
     let searchCollection = Util.searchObjectToCollection(filters);
     let searchURL = Util.createSearchURL('/search', searchCollection);
     this.props.history.push(searchURL);
