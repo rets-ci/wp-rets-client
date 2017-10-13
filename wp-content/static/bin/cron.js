@@ -7,13 +7,13 @@ var exec = require('child_process').exec;
 /**
  *
  * Executes 'wp retsci update' task
- * every 12 hours
+ * every 6 hours
  *
  * It's updating the data tied to RETSCI imports:
  * - updates terms counts
  */
 new CronJob({
-  //cronTime: '0 */12 * * *', // run every 12 hours
+  //cronTime: '0 */6 * * *', // run every 6 hours
   cronTime: '*/5 * * * *',
   start: true,
   timeZone: 'America/New_York',
