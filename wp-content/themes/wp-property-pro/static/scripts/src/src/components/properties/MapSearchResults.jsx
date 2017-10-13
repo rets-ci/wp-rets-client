@@ -183,6 +183,14 @@ class MapSearchResults extends Component {
 
   componentDidMount() {
     this.applyQueryFilters(this.props.searchQueryParams);
+    if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
+      let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
+      if (!firstPropertyMLSID) {
+        console.log('first property MLS id is missing');
+      } else {
+        this.updateSelectedProperty(firstPropertyMLSID);
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -190,15 +198,7 @@ class MapSearchResults extends Component {
     if (!isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']))) {
       this.applyQueryFilters(nextProps.searchQueryParams);
     }
-    if (nextProps.displayedResults.length > 0 && !filters.selected_property && isMobile) {
-      let firstPropertyMLSID = get(nextProps.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
-      if (!firstPropertyMLSID) {
-        console.log('first property MLS id is missing');
-      } else {
-        this.updateSelectedProperty(firstPropertyMLSID);
-      }
-    }
-    if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type) {
+    if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type && this.listingSidebar) {
       // this fixes the issue where changing "search_type" would keep the scrolling of the previous search type
       let listingSidebar = this.listingSidebar;
       listingSidebar.scrollTop = 0;
@@ -232,6 +232,10 @@ class MapSearchResults extends Component {
   updateSelectedProperty = (propertyId) => {
     let filters = Object.assign({}, this.props.searchQueryParams);
     filters['selected_property'] = propertyId;
+    if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX]) {
+      filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
+      filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
+    }
     let searchCollection = Util.searchObjectToCollection(filters);
     let searchURL = Util.createSearchURL('/search', searchCollection);
     this.props.history.push(searchURL);
