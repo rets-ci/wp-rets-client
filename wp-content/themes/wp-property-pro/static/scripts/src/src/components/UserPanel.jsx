@@ -15,7 +15,7 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
         <ol className={`${Lib.THEME_CLASSES_PREFIX}user-navigation-list clearfix`}>
           <li>
             <Link
-              to={"/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Buy&wpp_search[sale_type]=Sale&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse"}
+              to={"/search/city_raleigh/property_condo/property_house/property_manufactured/property_residential-other/property_townhouse/sale_Sale/search_Buy"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Home For Sale"
             >
@@ -39,7 +39,7 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen}) => {
           </li>
           <li>
             <Link
-              to={"/listing?wpp_search[term][0][wpp_location]=Durham,%20NC&wpp_search[search_type]=Rent&wpp_search[sale_type]=Rent&wpp_search[property_type][0]=condo&wpp_search[property_type][1]=house&wpp_search[property_type][2]=manufactured&wpp_search[property_type][3]=residential-apartment&wpp_search[property_type][4]=residential-other&wpp_search[property_type][5]=townhouse"}
+              to={"/search/city_raleigh/property_condo/property_house/property_manufactured/property_residential-apartment/property_residential-other/property_townhouse/sale_Rent/search_Rent"}
               className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link"}
               title="Homes for Rent"
             >
