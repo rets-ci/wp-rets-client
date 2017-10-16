@@ -22,6 +22,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    deselectPropertyOnMap: () => {
+      dispatch(deselectPropertyOnMap());
+    },
     selectPropertyOnMap: (property) => {
       dispatch(selectPropertyOnMap(property));
     }
@@ -145,23 +148,6 @@ class PropertyCardList extends Component {
         }
       </div>
     );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deselectPropertyOnMap: () => {
-      dispatch(deselectPropertyOnMap());
-    },
-    selectPropertyOnMap: (property) => {
-      dispatch(selectPropertyOnMap(property));
-    }
   }
 }
 
