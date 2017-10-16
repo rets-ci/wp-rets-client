@@ -151,6 +151,7 @@ class Single extends Component {
       rets_high_school,
       rets_state,
       formatted_address_simple,
+      rets_date_available,
       rets_list_price,
       rets_living_area,
       rets_lot_size_area,
@@ -168,7 +169,6 @@ class Single extends Component {
       officePhoneNumber,
       wpp_import_time
     } = this.props;
-
     let agent;
 
     let RETSAgent = {
@@ -188,6 +188,7 @@ class Single extends Component {
       );
     }
     let daysOnWebsite = daysPassedSincePostedDate(post_date, Lib.COMMON_DATE_FORMAT_1);
+    let datesAvailable = moment.utc(rets_date_available, 'YYYY-MM-DD');
     let lastUpdated = getLastUpdatedMoment(post_date, Lib.COMMON_DATE_FORMAT_1);
 
     let info_box = `<li>${listing_sub_type}</li>`;
@@ -226,7 +227,6 @@ class Single extends Component {
           info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
         }
     }
-
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []}/>
@@ -263,7 +263,7 @@ class Single extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-12 mb-5">
-              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>{renderHTML(post_content)}</p>
+              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>{(saleType === 'rent' && listing_type === 'residential' && datesAvailable.isValid() ? datesAvailable.format('MMMM D, YYYY') + '. ' : '') + renderHTML(post_content)}</p>
             </div>
           </div>
 

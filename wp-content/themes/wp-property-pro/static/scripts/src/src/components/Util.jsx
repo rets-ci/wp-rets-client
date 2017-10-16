@@ -593,6 +593,7 @@ class Util extends React.Component {
     let formatted_address_simple = get(post_meta, 'formatted_address_simple', null);
     let images = wpp_media.map(w => w.url);
     let rets_city = get(tax_input, 'rets_city', null);
+    let rets_date_available = get(post_meta, 'rets_date_available[0]', null);
     let rets_high_school = get(tax_input, 'rets_high_school', null);
     let rets_list_price = get(post_meta, 'rets_list_price', null);
     let rets_living_area = get(post_meta, 'rets_living_area', null);
@@ -609,6 +610,7 @@ class Util extends React.Component {
     let listing_sub_type = get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
     let listing_type = get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
     let officePhoneNumber = get(post_meta, 'rets_lo1_office_phone1_number[0]');
+    let listingTypes = get(tax_input, 'wpp_listing_type.listing_type', []);
     let wpp_location_subdivision = get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
     let wpp_location_city = get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
     let wpp_import_time = get(post_meta, 'wpp_import_time[0]', null);
@@ -634,6 +636,8 @@ class Util extends React.Component {
       rets_city: get(rets_city, 'rets_city[0].name', null),
       rets_state: get(rets_state, 'rets_state[0].name', null),
       formatted_address_simple,
+      listingTypes,
+      rets_date_available,
       rets_list_price,
       rets_living_area,
       rets_lot_size_area,
