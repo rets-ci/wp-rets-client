@@ -93,11 +93,10 @@ namespace UsabilityDynamics\WPRETSC {
           if(  $_exists && isset( $term_data[ '_id' ] ) ) {
             // So we should add prefix to our slug here
             $slug = sanitize_title( $term_data[ 'name' ] );
-            if( get_term_by( 'slug', $slug ) ) {
+            if( get_term_by( 'slug', $slug, $term_data['_taxonomy']  ) ) {
               $prefix = !empty( $term_data[ '_type' ] ) ? $term_data[ '_type' ] : rand( 1000, 9999);
               $slug = sanitize_title( $prefix. '-' . $slug );
             }
-            $term_data[ 'slug' ] = $slug;
           }
           else if( $_exists ) {
             $term_data['term_id'] = $_exists['term_id'];
@@ -109,6 +108,12 @@ namespace UsabilityDynamics\WPRETSC {
           if( isset( $term_data['meta']['parent_term_id'] ) ) {
             $_term_args['parent']  = $term_data['meta']['parent_term_id'];
           }
+
+          // Set term slug if it exist
+          if(isset($slug)){
+            $_term_args['slug'] = $slug;
+          }
+
           $_term_created = wp_insert_term( $term_data['name'], $term_data['_taxonomy'], $_term_args);
           if( isset( $_term_created ) && is_wp_error( $_term_created ) ) {
             error_log( "Unable to insert term [" . $term_data['_taxonomy']. "]." );
@@ -413,10 +418,7 @@ namespace UsabilityDynamics\WPRETSC {
                 if( isset( $_term_name[ '_id'] ) ) {
                   ud_get_wp_rets_client()->write_log( "Have hierarchical object term [$tax_name] with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
 
-                  if( method_exists( 'WPP_F', 'insert_terms' ) ) {
-                    $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
-                    ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
-                  } elseif( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
+                  if( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
                     $_insert_result = self::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                     ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
                   } else {
@@ -518,10 +520,7 @@ namespace UsabilityDynamics\WPRETSC {
               // Item is an array, which means this entry includes term meta.
               if( is_object( $_term_name ) || is_array( $_term_name ) && isset( $_term_name[ '_id'] ) ) {
 
-                if( method_exists( 'WPP_F', 'insert_terms' ) ) {
-                  $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
-                  ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
-                } elseif( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
+                if( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
                   $_insert_result = self::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                   ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
                 } else {
