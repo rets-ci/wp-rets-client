@@ -117,6 +117,14 @@ class Api {
     }
 
     let aggregationsFields = this.getAggregationsFields();
+
+    // Building context's array for listing_type_status context field
+    let type_status_array = [];
+    for(let i in params.propertyTypes){
+      let propType = params.propertyTypes[i];
+      type_status_array.push(propType + '-for-' + params.saleType.toLowerCase());
+    }
+
     let suggest = {
       "post-suggest": {
         "text": params.term,
@@ -124,7 +132,7 @@ class Api {
           "field": "title_suggest",
           "size": Lib.POST_SUGGEST_COUNT,
           "contexts": {
-            "listing_status": ['for-' + params.saleType.toLowerCase()]
+            "listing_type_status": type_status_array
           }
         }
       }
