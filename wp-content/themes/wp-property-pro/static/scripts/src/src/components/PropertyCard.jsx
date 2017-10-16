@@ -22,8 +22,8 @@ class PropertyCard extends Component {
     propertiesDOM: PropTypes.object
   }
 
-  handlePropertyClick = () => {
-    this.props.onClickCard(this.props.data.id);
+  handlePropertyClick = (id) => {
+    this.props.onClickCard(id);
   }
 
   handlePrevClick = (e) => {
@@ -166,7 +166,7 @@ class PropertyCard extends Component {
         <div
           className={classes.join(' ')}
           ref={(r) => this.props.propertiesDOM ? this.props.propertiesDOM[id] = r : null}
-          onClick={this.handlePropertyClick}
+          onClick={() => this.handlePropertyClick(id)}
         >
           { cardImageBlock }
           { cardInfoBlock }

@@ -45,74 +45,7 @@ namespace UsabilityDynamics\WPRETSC {
         // REST API
         add_action( 'rest_api_init', array( $this, 'api_init' ), 100 );
 
-        // Run actions after a property is published. (e.g. associated Agents)
-        add_action( 'wrc_property_published', array( $this, 'property_published' ), 100, 2 );
 
-      }
-
-      /**
-       * Handle post-publish actions.
-       *
-       * - Associate wpp_agents based on wpp_agency_agent terms.
-       * - Agent Users must have a "rets_id" field that matches their unique ID in the MLS.
-       * - the rets.ci service adds agents/office as terms with extra meta to store information such as their MLS/MLN.
-       *
-       * @author potanin@UD
-       */
-      public function property_published( $post_id, $post_data ) {
-        // ud_get_wp_rets_client()->write_log( "Running [property_published] for [" . $post_id . "].", 'debug' );
-
-        // If missing agent module, do nothing.
-        if( !function_exists( 'ud_get_wpp_agents' ) ) {
-          return;
-        }
-
-        $_wpp_agents = array();
-
-        // get "agent" terms.
-        $_agents = wp_get_post_terms( $post_id, 'wpp_agency_agent', array(
-          'orderby'    => 'count',
-          'hide_empty' => false,
-          'fields' => 'ids'
-        ) );
-
-        if( $_agents && is_array( $_agents ) && count($_agents) >= 1 ) {
-
-          foreach( $_agents as $_agent_term_id ) {
-
-            // get the "rets_id" field from agent term.
-            $_rets_id = get_term_meta( $_agent_term_id, 'listing-agent-rets_id', true );
-
-            // Find relevant WP agent users with matching "rets_id" field.
-            $_user_agents = get_users(array(
-              'meta_key' => 'rets_id',
-              'meta_value' => $_rets_id,
-              'fields' => array( 'ID', 'display_name' ),
-              'number' => 1
-            ));
-
-            if( is_array( $_user_agents ) ) {
-
-              foreach( $_user_agents as $_user_object ) {
-                $_wpp_agents[] = $_user_object->ID;
-                ud_get_wp_rets_client()->write_log( "Found agent-user [" . $_user_object->display_name . "] with rets_id [" . $_rets_id . "] for listing [" . $post_id . "].", 'info' );
-              }
-
-            }
-
-          }
-
-          // remove all past agent(s)
-          delete_post_meta( $post_id, 'wpp_agents' );
-
-          // add new agents, if the exist.
-          foreach( (array) $_wpp_agents as $_agent_user_id ){
-            add_post_meta($post_id, 'wpp_agents', $_agent_user_id );
-            // ud_get_wp_rets_client()->write_log( "Associated agent [" . $_agent_user_id . "] to listing [" . $post_id . "].", 'info' );
-          }
-
-
-        }
 
       }
 
@@ -143,6 +76,9 @@ namespace UsabilityDynamics\WPRETSC {
         // Schedule stats/listings for data integrity
         $_methods[ 'wpp.scheduleStats' ] = array( $this, 'get_schedule_stats' );
         $_methods[ 'wpp.scheduleListings' ] = array( $this, 'get_schedule_listings' );
+
+        $_methods[ 'wp.getPosts' ] = array( $this, 'get_posts' );
+        //$_methods[ 'wp.getPost' ] = array( $this, 'get_post' );
 
         return $_methods;
       }
@@ -806,6 +742,8 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
+        do_action('wrc::manage_property::before_update');
+
         $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
           'skipTermCounting' => false,
           'skipTermUpdates' => false,
@@ -884,9 +822,7 @@ namespace UsabilityDynamics\WPRETSC {
         // Insert all the terms and creates taxonomies.
         if( !isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ] ) {
           Utility::insert_property_terms( $_post_id, $_post_data_tax_input, $post_data );
-          if( isset( $options[ 'createWPPTerms' ] ) && $options[ 'createWPPTerms' ] ) {
-            Utility::create_wpp_taxonomies( array_keys( (array)$_post_data_tax_input ) );
-          }
+          do_action( 'wrc::manage_property::taxonomies', $_post_data_tax_input, $options );
         }
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
@@ -897,13 +833,7 @@ namespace UsabilityDynamics\WPRETSC {
           Utility::insert_slideshow_images( $_post_id );
         }
 
-        $postmeta = array();
-        foreach( (array) $post_data[ 'meta_input' ] as $_meta_key => $_meta_value ) {
-          if( !empty( $_meta_value ) && isset( $options[ 'createWPPAttributes' ] ) && $options[ 'createWPPAttributes' ] ) {
-            array_push( $postmeta, $_meta_key );
-          }
-        }
-        Utility::create_wpp_attributes( $postmeta );
+        do_action( 'wrc::manage_property::postmeta', $post_data, $options );
 
         if( $_post_id ) {
           ud_get_wp_rets_client()->write_log( 'Updating property post [' . $_post_id  . '].', 'debug' );
@@ -989,6 +919,8 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
+        do_action('wrc::manage_property::before_update');
+
         $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
           'skipTermCounting' => false,
           'skipTermUpdates' => false,
@@ -1025,20 +957,15 @@ namespace UsabilityDynamics\WPRETSC {
           $wpdb->update( $wpdb->posts, array( 'post_content' => $post_data[ 'post_content' ] ), array( 'ID' => $post_data['ID' ] ) );
         }
 
-        $postmeta = array();
         foreach( (array) $post_data[ 'meta_input' ] as $_meta_key => $_meta_value ) {
           update_post_meta( $post_data['ID' ], $_meta_key, $_meta_value );
-          if( !empty( $_meta_value ) && isset( $options[ 'createWPPAttributes' ] ) && $options[ 'createWPPAttributes' ] ) {
-            array_push($postmeta, $_meta_key);
-          }
         }
-        Utility::create_wpp_attributes( $postmeta );
+
+        do_action( 'wrc::manage_property::postmeta', $post_data, $options );
 
         if( (isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ]) && isset($post_data[ 'tax_input' ]) ) {
           Utility::insert_property_terms( $post_data[ 'ID' ], $post_data[ 'tax_input' ], $post_data );
-          if( isset( $options[ 'createWPPTerms' ] ) && $options[ 'createWPPTerms' ] ) {
-            Utility::create_wpp_taxonomies( array_keys( (array)$post_data[ 'tax_input' ] ) );
-          }
+          do_action( 'wrc::manage_property::taxonomies', $post_data[ 'tax_input' ], $options );
           ud_get_wp_rets_client()->write_log( 'Updated terms.', 'debug' );
         }
 
@@ -1077,6 +1004,8 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
+        do_action('wrc::manage_property::before_update');
+
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.editProperty] request.', 'info' );
 
         $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
@@ -1085,7 +1014,8 @@ namespace UsabilityDynamics\WPRETSC {
           'skipMediaUpdate' => false,
           'skipSlideshowImages' => true,
           'createWPPAttributes' => false,
-          'createWPPTerms' => false
+          'createWPPTerms' => false,
+          'resetPostName' => false
         ));
 
         // Defer term counting until method called again.
@@ -1114,8 +1044,11 @@ namespace UsabilityDynamics\WPRETSC {
           $post_data[ 'post_date' ] = $_post->post_date;
           $post_data[ 'post_status' ] = $_post->post_status;
 
-          // set empty post_name for refreshing it on updating post
-          $post_data[ 'post_name' ] = '';
+          // Set empty post name for refreshing it on updating post
+          if($options['resetPostName']){
+            $post_data[ 'post_name' ] = '';
+          }
+
         } else {
           ud_get_wp_rets_client()->write_log( 'Running wp_insert_post for [new post].', 'debug' );
         }
@@ -1155,9 +1088,7 @@ namespace UsabilityDynamics\WPRETSC {
         // Insert all the terms and creates taxonomies.
         if( !isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ] ) {
           Utility::insert_property_terms( $_post_id, $_post_data_tax_input, $post_data );
-          if( isset( $options[ 'createWPPTerms' ] ) && $options[ 'createWPPTerms' ] ) {
-            Utility::create_wpp_taxonomies( array_keys( (array)$_post_data_tax_input ) );
-          }
+          do_action( 'wrc::manage_property::taxonomies', $_post_data_tax_input, $options );
         }
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
@@ -1168,13 +1099,7 @@ namespace UsabilityDynamics\WPRETSC {
           Utility::insert_slideshow_images( $_post_id );
         }
 
-        $postmeta = array();
-        foreach( (array) $post_data[ 'meta_input' ] as $_meta_key => $_meta_value ) {
-          if( !empty( $_meta_value ) && isset( $options[ 'createWPPAttributes' ] ) && $options[ 'createWPPAttributes' ] ) {
-            array_push( $postmeta, $_meta_key );
-          }
-        }
-        Utility::create_wpp_attributes( $postmeta );
+        do_action( 'wrc::manage_property::postmeta', $post_data, $options );
 
         if( $_post_id ) {
           ud_get_wp_rets_client()->write_log( 'Updating property post [' . $_post_id  . '].', 'debug' );
@@ -1236,7 +1161,7 @@ namespace UsabilityDynamics\WPRETSC {
           "permalink" => isset( $_permalink ) ? $_permalink : null
         );
 
-        ud_get_wp_rets_client()->write_log( 'Sending [wpp.editProperty] reponse.', 'debug' );
+        ud_get_wp_rets_client()->write_log( 'Sending [wpp.editProperty] response.', 'debug' );
 
         self::flush_cache( $_post_id );
 

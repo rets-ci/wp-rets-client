@@ -112,10 +112,10 @@ export const requestSearchResultsPosts = () => {
 export const receiveSearchResultsPosts = (query, searchResults, total, append) => {
   return {
     type: Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION,
-    append: append,
     query: query,
     searchResults: searchResults,
-    totalProps: total
+    totalProps: total,
+    append: append
   }
 };
 
@@ -123,6 +123,13 @@ export const receiveSearchResultsPostsError = (errorMessage) => {
   return {
     type: Lib.RECEIVE_SEARCH_RESULTS_POSTS_ERROR_ACTION,
     errorMessage: errorMessage
+  }
+};
+
+export const receiveTermDetails = (terms) => {
+  return {
+    type: Lib.SET_SEARCH_TERM_DETAILS_ACTION,
+    terms: terms
   }
 };
 

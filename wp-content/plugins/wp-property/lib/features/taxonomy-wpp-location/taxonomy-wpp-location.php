@@ -26,7 +26,8 @@ namespace UsabilityDynamics\WPP {
         add_filter('wpp_taxonomies', array( $this, 'define_taxonomies'), 10 );
 
         // Handle importing data related to [wpp_location] taxonomy ( WP-RETS-Client )
-        add_filter('retsci::insert_property_terms::handle', array( $this, 'retsci_insert_property_terms' ), 10, 3);
+        // @TODO logic is moved to api.rets.ci, so after checking it can be removed
+        //add_filter('retsci::insert_property_terms::handle', array( $this, 'retsci_insert_property_terms' ), 10, 3);
 
         // Handle revalidate address
         add_filter( 'wpp::revalidate_address::return', array( $this, 'revalidate_address' ), 10, 2 );
@@ -104,7 +105,8 @@ namespace UsabilityDynamics\WPP {
           'rets_location_county',
           'rets_location_city',
           'rets_location_route',
-          'rets_subdivision',
+          'rets_location_neighborhood',
+          'rets_location_subdivision',
           'rets_location_zip'
         );
 
@@ -120,7 +122,8 @@ namespace UsabilityDynamics\WPP {
             "county" => isset( $_post_data_tax_input["rets_location_county"] ) ? reset( $_post_data_tax_input["rets_location_county"] ) : null,
             "city" => isset( $_post_data_tax_input["rets_location_city"] ) ? reset( $_post_data_tax_input["rets_location_city"] ) : null,
             "route" => isset( $_post_data_tax_input["rets_location_route"] ) ? reset( $_post_data_tax_input["rets_location_route"] ) : null,
-            "subdivision" => isset( $_post_data_tax_input["rets_subdivision"] ) ? reset( $_post_data_tax_input["rets_subdivision"] ) : null,
+            "subdivision" => isset( $_post_data_tax_input["rets_location_subdivision"] ) ? reset( $_post_data_tax_input["rets_location_subdivision"] ) : null,
+            "neighborhood" => isset( $_post_data_tax_input["rets_location_neighborhood"] ) ? reset( $_post_data_tax_input["rets_location_neighborhood"] ) : null,
             "zip" => isset( $_post_data_tax_input["rets_location_zip"] ) ? reset( $_post_data_tax_input["rets_location_zip"] ) : null,
           );
 
@@ -167,15 +170,21 @@ namespace UsabilityDynamics\WPP {
             )
           ),
           'city' => array(
-            'parent' => 'county',
+            'parent' => 'state',
             'meta' => array(
               '_type' => 'wpp_location_city'
             )
           ),
-          'route' => array(
+          'subdivision' => array(
             'parent' => 'city',
             'meta' => array(
-              '_type' => 'wpp_location_route'
+              '_type' => 'wpp_location_subdivision'
+            )
+          ),
+          'neighborhood' => array(
+            'parent' => 'city',
+            'meta' => array(
+              '_type' => 'wpp_location_neighborhood'
             )
           ),
           'zip' => array(
@@ -184,34 +193,32 @@ namespace UsabilityDynamics\WPP {
               '_type' => 'wpp_location_zip'
             )
           ),
-          'subdivision' => array(
-            'parent' => false,
+          'route' => array(
+            'parent' => 'zip',
             'meta' => array(
-              '_type' => 'wpp_location_subdivision'
+              '_type' => 'wpp_location_route'
             )
           ),
-          'city_state' => array(
-            'parent' => false,
-            'meta' => array(
-              '_type' => 'wpp_location_city_state'
-            )
-          )
         );
 
         $geo_data->terms = array();
 
-        // May be set city_state term
-        if( empty( $geo_data->city_state ) && !empty( $geo_data->city ) && !empty( $geo_data->state ) ) {
-          $geo_data->city_state = trim( $geo_data->city ) . ', ' . trim( $geo_data->state );
-        }
+        // Set defaults value if some of geo data is missing
+        $geo_data->state = !empty($geo_data->state) ? $geo_data->state : 'No State';
+        $geo_data->county = !empty($geo_data->county) ? $geo_data->county : 'No County';
+        $geo_data->city = !empty($geo_data->city) ? $geo_data->city : 'No City';
+        $geo_data->subdivision = !empty($geo_data->subdivision) ? $geo_data->subdivision : 'No Subdivision';
+        $geo_data->neighborhood = !empty($geo_data->neighborhood) ? $geo_data->neighborhood : 'No Neighborhood';
+        $geo_data->zip = !empty($geo_data->zip) ? $geo_data->zip : 'No Zip';
+        $geo_data->route = !empty($geo_data->route) ? $geo_data->route : 'No Route';
 
-        $geo_data->terms['state'] = !empty($geo_data->state) ? get_term_by('name', $geo_data->state, $taxonomy, OBJECT) : false;
-        $geo_data->terms['county'] = !empty($geo_data->county) ? get_term_by('name', $geo_data->county, $taxonomy, OBJECT) : false;
-        $geo_data->terms['city'] = !empty($geo_data->city) ? get_term_by('name', $geo_data->city, $taxonomy, OBJECT) : false;
-        $geo_data->terms['route'] = !empty($geo_data->route) ? get_term_by('name', $geo_data->route, $taxonomy, OBJECT) : false;
-        $geo_data->terms['zip'] = !empty($geo_data->zip) ? get_term_by('name', $geo_data->zip, $taxonomy, OBJECT) : false;
-        $geo_data->terms['subdivision'] = !empty($geo_data->subdivision) ? get_term_by('name', $geo_data->subdivision, $taxonomy, OBJECT) : false;
-        $geo_data->terms['city_state'] = !empty($geo_data->city_state) ? get_term_by('name', $geo_data->city_state, $taxonomy, OBJECT) : false;
+        $geo_data->terms['state'] = get_term_by('name', $geo_data->state, $taxonomy, OBJECT);
+        $geo_data->terms['county'] = get_term_by('name', $geo_data->county, $taxonomy, OBJECT);
+        $geo_data->terms['city'] = get_term_by('name', $geo_data->city, $taxonomy, OBJECT);
+        $geo_data->terms['subdivision'] = get_term_by('name', $geo_data->subdivision, $taxonomy, OBJECT);
+        $geo_data->terms['neighborhood'] = get_term_by('name', $geo_data->neighborhood, $taxonomy, OBJECT);
+        $geo_data->terms['zip'] = get_term_by('name', $geo_data->zip, $taxonomy, OBJECT);
+        $geo_data->terms['route'] = get_term_by('name', $geo_data->route, $taxonomy, OBJECT);
 
         // validate, lookup and add all location terms to object.
         if (isset($geo_data->terms) && is_array($geo_data->terms)) {
@@ -256,6 +263,14 @@ namespace UsabilityDynamics\WPP {
               // $_detail[ 'slug' ] = 'city-slug';
 
               //*/
+
+              // Define slug for location term
+              $_detail['slug'] = sanitize_title( $_value );
+
+              // Add prefix for county slug for prevent duplicates with city
+              if( $_level === 'county' ) {
+                $_detail['slug'] = 'county_' . sanitize_title( $_value );
+              }
 
               $_inserted_term = wp_insert_term( $_value, 'wpp_location', $_detail );
 

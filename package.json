@@ -223,5 +223,8 @@
       "location_zip-sitemap7.xml",
       "location_zip-sitemap8.xml"
     ]
+  },
+  "dependencies": {
+    "cron": "^1.3.0"
   }
 }

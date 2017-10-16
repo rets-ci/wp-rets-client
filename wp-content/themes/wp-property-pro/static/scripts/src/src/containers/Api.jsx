@@ -233,7 +233,7 @@ class Api {
       if (_buckets.length > 0) {
         data = Object.assign({}, data, {
           key: 'properties',
-          text: 'Properties',
+          text: 'Addresses',
           children: _buckets
         });
         rows.push(data);
@@ -337,13 +337,11 @@ class Api {
   }
 
   static createESSearchQuery(params) {
-
     let query = {
       "bool": {
         "must": []
       }
     };
-
     if (params.geoCoordinates) {
       query.bool.must.push(
         {
@@ -357,12 +355,12 @@ class Api {
           "geo_bounding_box": {
             "wpp_location_pin": {
               "top_left": {
-                "lat": params.geoCoordinates.topLeft.lat,
-                "lon": params.geoCoordinates.topLeft.lon
+                "lat": params.geoCoordinates.topLeft[0],
+                "lon": params.geoCoordinates.topLeft[1]
               },
               "bottom_right": {
-                "lat": params.geoCoordinates.bottomRight.lat,
-                "lon": params.geoCoordinates.bottomRight.lon
+                "lat": params.geoCoordinates.bottomRight[0],
+                "lon": params.geoCoordinates.bottomRight[1]
               }
             }
           }
@@ -454,7 +452,7 @@ class Api {
 
     if (!params.geoCoordinates) {
       let terms = params.term.map(term => {
-        return {term: {["terms." + Object.keys(term)[0] + ".name.raw"]: Object.values(term)[0]}}
+        return {term: {["terms." + term.tax + ".slug"]: term.slug}}
       });
 
       query.bool.must.push({
@@ -469,8 +467,7 @@ class Api {
     let size = params.size || 500;
     let from = params.from || 0;
 
-    let aggregations = JSON.stringify({});
-
+    let aggregations = JSON.stringify(params.aggregations || {});
     let source = JSON.stringify([
       "meta.property_type.value",
       "post_title",
@@ -590,6 +587,15 @@ class Api {
         }
       }
     });
+  }
+
+  static termDetailsLookupQuery(terms, callback) {
+    let aggregations = Util.getTermLookupAggregationQuery(terms);
+    let searchObj = {query: {}, aggregations: aggregations};
+    let url = this.getPropertySearchRequestURL(0);
+    this.search(url, searchObj, (err, response) => {
+      callback(err, response);
+    });    
   }
 }
 

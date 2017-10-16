@@ -5,11 +5,14 @@ import qs from 'qs';
 import {Lib} from '../lib.jsx';
 
 import get from 'lodash/get';
+import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
 import last from 'lodash/last';
 import replace from 'lodash/replace';
 import join from 'lodash/join';
 import split from 'lodash/split';
+
+let minMaxDefaultValues = {0: 'No Min', 1: 'No Max'};
 
 class Util extends React.Component {
 
@@ -36,6 +39,56 @@ class Util extends React.Component {
     return centerPoint;
   }
 
+  static createSearchURL = (path, p) => {
+    if (!p instanceof Array) {
+      throw new Error('params arg need to be a collection')
+    }
+    if (!p.every((d) => d.key && d.values && d.values instanceof Array)) {
+      throw new Error('params arg is not in the correct format')
+    }
+    let searchPath = path.match(/^\//) ? path : '/' + path;
+    let params = [];
+    // sort params alphabetically by key first
+    params = p.sort((a, b) => {
+      if (a.key < b.key) return -1;
+      if (a.key > b.key) return 1;
+      if (a.key === b.key) {
+        if (a.values[0] < b.values[0]) return -1;
+        if (a.values[0] > b.values[0]) return 1;
+      }
+      return 0;
+    });
+    
+  
+    // deal with max and min values
+    params.forEach(d => {
+      d.values = d.values.map(e => ['No Max', 'No Min'].indexOf(e) >= 0 ? '' : e);
+      d.values = d.values.map(e => e && typeof e === 'string' ? e.replace(/\_/g, '-') : e);
+    });
+    searchPath += params.reduce((a, b) => {
+      let key = b.key.replace(/\_/g, '-');
+      let values = b.values.join(',');
+      a += `/${key}_${values}`;
+      return a;
+    }, '');
+  
+    return searchPath;
+  }
+
+  static customFormatToSearchObject(obj) {
+    let keyMapper = {
+      'property_type': 'property',
+      'search_type': 'search',
+      'sale_type': 'sale'
+    };
+    let out = {};
+    for (let key in obj) {
+      let newKey = keyMapper[key] || key;
+      out[newKey] = obj[key];
+    }
+    return out;
+  }
+
   static decodeHtml(html) {
     let txt = document.createElement('textarea');
     txt.innerHTML = html;
@@ -57,6 +110,18 @@ class Util extends React.Component {
     return formattedNumber.format('0.00');
   }
 
+  static getReddoorSearchTerm(tax, termType) {
+    let str;
+    if (tax === 'wpp_location') {
+      str = termType.replace(tax + '_', '');
+    } else if (tax === 'wpp_schools') {
+      str = 'school';
+    } else {
+      str = termType;
+    }
+    return str;
+  }
+
   static getSearchFiltersFromURL(url, withoutPrefix) {
 
     let searchFilter = {};
@@ -75,7 +140,52 @@ class Util extends React.Component {
       }
     }
     return searchFilter;
-  }
+  };
+  
+  static getTermLookupAggregationQuery(termDetails) {
+    let aggs = {};
+    termDetails.forEach(t => {
+      let {
+        slug,
+        term,
+        tax
+      } = t;
+      if (tax === 'wpp_location') {
+        aggs[slug] = {
+          "filter": {
+            "term": {
+              [`tax_input.wpp_location.wpp_location_${term}.slug`]: slug
+            }
+          },
+          "aggs": {
+            "inside": {
+              "terms": {
+                "field": `tax_input.wpp_location.wpp_location_${term}.name.raw`,
+                "size": 1
+              }
+            }
+          }
+        };
+      } else if (tax === 'wpp_schools') {
+        aggs[slug] = {
+          "filter": {
+            "term": {
+              [`terms.wpp_schools.slug`]: slug
+            }
+          },
+          "aggs": {
+            "inside": {
+              "terms": {
+                "field": "terms.wpp_schools.name.raw",
+                "size": 1
+              }
+            }
+          }
+        };
+      }
+    });
+    return aggs;
+  };
 
   static getThumbnailUrlBySize(thumbnailUrl = '', size = Lib.PROPERTY_LISTING_IMAGE_SIZE) {
     let urlArray = split(thumbnailUrl, Lib.URL_DELIMITER);
@@ -204,15 +314,14 @@ class Util extends React.Component {
       bottomRight,
       topLeft
     } = params;
-
     return {
       ne: {
-        lat: topLeft.lat,
-        lon: bottomRight.lon
+        lat: topLeft[0],
+        lon: bottomRight[1]
       },
       sw: {
-        lat: bottomRight.lat,
-        lon: topLeft.lon
+        lat: bottomRight[0],
+        lon: topLeft[1]
       }
     }
   }
@@ -268,6 +377,153 @@ class Util extends React.Component {
     }
   }
 
+  static reddoorConvertToURLTerms = terms => {
+    if (!terms instanceof Array) {
+      return console.log('invalid terms arg');
+    }
+
+    return terms.map(t => {
+      return {key: t.term, values: [t.slug]}
+    });
+
+  }
+
+  static searchObjectToCustomFormat = obj => {
+    let keyMapper = {
+      property: 'property_type',
+      search: 'search_type',
+      sale: 'sale_type'
+    };
+    let out = {};
+  
+    for (var key in obj) {
+      let newKey = keyMapper[key] || key;
+      if (['price', 'sqft', 'lotSize'].indexOf(newKey) >= 0) {
+        out[newKey] = {
+          start: obj[key][0],
+          to: obj[key][1],
+        }
+      } else {
+        out[newKey] = obj[key].length === 1 && newKey !== 'property_type' ? obj[key][0] : obj[key];
+      }
+    }
+    return out;
+  };
+
+  static reddoorConvertTermTypeToSearchURLPrefix = (termType) => {
+    if (termType.indexOf('wpp_location') >= 0) {
+      return termType.replace('wpp_location_', '');
+    } else if (termType.indexOf('school') >= 0) {
+      return 'school';
+    } else {
+      throw new Error('couldn`t find the correct term')
+    }
+  };
+
+  static reddoorTermDetailsFromSearchParam = searchQueryParamsCollection => {
+    let termTypeMapper = {
+      "wpp_location": ["city", "zip", "county", "country", "city_state", "state", "route", "subdivision"],
+      "wpp_schools": ["school"]
+    };
+    let tax;
+    let term;
+    let slug;
+    let termDetails = [];
+    searchQueryParamsCollection.forEach(d => {
+      let {
+        key,
+        values
+      } = d;
+      if (termTypeMapper['wpp_location'].indexOf(key) >= 0) {
+        termDetails.push({
+          slug: values[0],
+          tax: "wpp_location",
+          term: key
+        })
+      } else if (key.includes('school')) {
+        termDetails.push({
+          slug: values[0],
+          tax: "wpp_schools",
+          term: key
+        })
+      }
+    });
+    return termDetails;
+  };
+
+  static searchCollectionToObject = collection => {
+    let obj = {};
+    if (collection.every(d => d.key && d.values)) {
+      collection.forEach(c => {
+        if (obj[c.key]) {
+          obj[c.key].push(...c.values);
+        } else {
+          obj[c.key] = c.values;
+        }
+      });
+    }
+    return obj;
+  };
+
+  static searchObjectToCollection = obj => {
+    let collection = [];
+    for (var key in obj) {
+      if (obj[key] instanceof Array) {
+        // term is a special case
+        if (key === 'term') {
+          obj[key].forEach(d => {
+            collection.push({
+              key: d.term,
+              values: [d.slug]
+            });
+          });
+        } else {
+          obj[key].forEach(d => {
+            collection.push({
+              key: key,
+              values: [d]
+            });
+          });
+        }
+      } else if (obj[key].start && obj[key].to) {
+        collection.push({
+          key: key,
+          values: [obj[key].start, obj[key].to]
+        });
+      } else if (obj[key].lat && obj[key].lon) {
+        collection.push({
+          key: key,
+          values: [obj[key].lat, obj[key].lon]
+        });
+      } else {
+        collection.push({
+          key: key,
+          values: [obj[key]]
+        });
+      }
+    }
+    return collection;
+  };
+  
+
+  static searchSegmentsToCollection = (segments) => {
+    return segments.map(p => {
+      let filterSplit = p.split('_');
+      let filterKey = filterSplit[0];
+      filterKey = filterKey.replace(/\-/g, '_');
+      let filterValue = filterSplit[1];
+      if (!filterValue) { return null; }
+      let filterValueEdges = ((val) => {
+        let filterValueSplit = val.split(',');
+        let filterValues = filterValueSplit.map((val, index) => !val ? minMaxDefaultValues[index] : val);
+        return filterValues;
+      })(filterValue);
+  
+      return { key: filterKey, values: filterValueEdges
+      };
+    }).filter(d => d);
+  };
+
   static sqftFilterSearchTagText(filter) {
     if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
       if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
@@ -278,6 +534,18 @@ class Util extends React.Component {
     } else {
       return numeral(filter.start).format('0,0') + '-' + numeral(filter.to).format('0,0') + ' SQFT';
     }
+  }
+
+  static URLSearchParse(prefix, url) {
+    let pathname = URI(url).pathname();
+    // filter out empty, ak.a '' items
+    let pathSegments = pathname.split('/').filter(d => d);
+    pathSegments.splice(pathSegments.indexOf(prefix), 1);
+    
+    pathSegments = pathSegments.map(d => URI.decode(d));
+    
+    let filterCollection = this.searchSegmentsToCollection(pathSegments);
+    return filterCollection; 
   }
 
   static updateQueryFilter(fullUrl, filter, updateType, returnObject) {
@@ -325,6 +593,7 @@ class Util extends React.Component {
     let formatted_address_simple = get(post_meta, 'formatted_address_simple', null);
     let images = wpp_media.map(w => w.url);
     let rets_city = get(tax_input, 'rets_city', null);
+    let rets_date_available = get(post_meta, 'rets_date_available[0]', null);
     let rets_high_school = get(tax_input, 'rets_high_school', null);
     let rets_list_price = get(post_meta, 'rets_list_price', null);
     let rets_living_area = get(post_meta, 'rets_living_area', null);
@@ -341,6 +610,7 @@ class Util extends React.Component {
     let listing_sub_type = get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
     let listing_type = get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
     let officePhoneNumber = get(post_meta, 'rets_lo1_office_phone1_number[0]');
+    let listingTypes = get(tax_input, 'wpp_listing_type.listing_type', []);
     let wpp_location_subdivision = get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
     let wpp_location_city = get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
     let wpp_import_time = get(post_meta, 'wpp_import_time[0]', null);
@@ -366,6 +636,8 @@ class Util extends React.Component {
       rets_city: get(rets_city, 'rets_city[0].name', null),
       rets_state: get(rets_state, 'rets_state[0].name', null),
       formatted_address_simple,
+      listingTypes,
+      rets_date_available,
       rets_list_price,
       rets_living_area,
       rets_lot_size_area,

@@ -4657,7 +4657,7 @@ class WPP_F extends UsabilityDynamics\Utility
     }
 
     ob_start();
-    if($infobox_settings['infowindow_styles'] === 'new') {
+    if( isset( $infobox_settings['infowindow_styles'] ) && $infobox_settings['infowindow_styles'] === 'new') {
       ?>
 
       <div id="infowindow" class="infowindow-style-new" <?php echo $infobox_style; ?>>
@@ -6136,4 +6136,20 @@ add_filter('wpp_settings_save', 'wpp_settings_save_stripslashes');
 function wpp_settings_save_stripslashes($data)
 {
   return stripslashes_array($data);
+}
+
+/**
+ *  Get changelog from changes.md file for Splash page
+ *
+ * @author: Den@ud.com
+ */
+function wpp_get_update_changes()
+{
+  $changes_file = file_get_contents(WPP_Path . 'changes.md');
+  $current_version = ud_get_wp_property('version');
+  $current_version = str_replace('.', '\.', $current_version);
+  preg_match('/### ' . $current_version . '.+?\)([\s\S]+?)###/', $changes_file, $current_changes);
+  $current_changes = str_replace('* ', '', $current_changes[1]);
+  $changes = array_filter(explode("\n", $current_changes));
+  return $changes;
 }

@@ -18,7 +18,6 @@ import {Lib} from '../../lib.jsx';
 import get from 'lodash/get';
 import Util from '../Util.jsx';
 
-
 const mapStateToProps = (state, ownProps) => {
   return {
     errorMessage: state.locationModal.errorMessage,
@@ -122,12 +121,14 @@ class LocationModal extends Component {
         // Properties results page
         if (this.props.propertiesModalMode) {
           this.props.onTermSelect({
-            [tax]: text
+            term: Util.reddoorConvertTermTypeToSearchURLPrefix(termType),
+            slug: term,
+            tax: tax,
+            text: text
           });
         } else {
-          let url = new URL();
-          url.resource(get(wpp, 'instance.settings.configuration.base_slug'));
-          //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
+          if (!termType) { console.log('term type is not found, search functionality won\'t work as expected'); }
+
           let modifiedSearchType = searchType === 'Sale' ? 'Buy' : searchType;
           let termTypeOnlyString = Util.getReddoorSearchTerm(tax, termType);
           let params = [

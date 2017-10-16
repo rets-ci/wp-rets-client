@@ -12,6 +12,9 @@
  *
  */
 
+// Set enabled constant for third party compatibility
+define('WP_RABBIT_ENABLED', true);
+
 // Get updates from Git.
 include_once( 'lib/updater.php' );
 

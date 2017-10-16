@@ -548,93 +548,6 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
-       * Create WP-Property attributes
-       * If WP-Property plugin installed and activated
-       * And WP-Property attribute with provided key does not exist
-       *
-       * @param $keys
-       */
-      static public function create_wpp_attributes( $keys = array() ) {
-        if( empty( $keys ) ) {
-          return;
-        }
-        // Break if WP-Property not activate
-        if( !function_exists( 'ud_get_wp_property' ) ) {
-          return;
-        }
-
-        $wpp_settings = get_option( 'wpp_settings' );
-
-        $added = false;
-
-        foreach( (array)$keys as $key ) {
-          // Break if Property Attribute already exists
-          if( !empty( $wpp_settings[ 'property_stats' ][ $key ] ) ) {
-            continue;
-          }
-
-          // Add attribute
-          if( !isset( $wpp_settings[ 'property_stats' ] ) || !is_array($wpp_settings[ 'property_stats' ]) ) {
-            $wpp_settings[ 'property_stats' ] = array();
-          }
-          // Make attribute hidden ( Admin Only ). So administrator would be able to manage it before it will be shown.
-          $wpp_settings[ 'property_stats' ][ $key ] = ucwords( str_replace( '_', ' ', $key ) );
-
-          if( !isset( $wpp_settings[ 'hidden_frontend_attributes' ] ) || !is_array($wpp_settings[ 'hidden_frontend_attributes' ]) ) {
-            $wpp_settings[ 'hidden_frontend_attributes' ] = array();
-          }
-          if( !in_array( $key, $wpp_settings[ 'hidden_frontend_attributes' ] ) ) {
-            $wpp_settings[ 'hidden_frontend_attributes' ][] = $key;
-          }
-
-          $added = true;
-        }
-
-        if($added) {
-          update_option( 'wpp_settings', $wpp_settings );
-        }
-      }
-
-      /**
-       * Create WP-Property taxonomies
-       * If WP-Property plugin installed and activated
-       * And WP-Property taxonomy with provided key does not exist
-       *
-       * @param $keys
-       */
-      static public function create_wpp_taxonomies( $keys = array() ) {
-
-        if( empty( $keys ) ) {
-          return;
-        }
-        // Break if WP-Property not activate
-        if( !function_exists( 'ud_get_wp_property' ) ) {
-          return;
-        }
-        // Break if WP-Property Terms not activate
-        if( !function_exists( 'ud_get_wpp_terms' ) ) {
-          return;
-        }
-
-        $wpp_settings = get_option( 'wpp_settings' );
-
-        $added = false;
-
-        foreach( (array)$keys as $key ) {
-          // Break if Property Attribute already exists
-          if( !empty( $wpp_settings[ 'taxonomies' ][ $key ] ) ) {
-            continue;
-          }
-          $wpp_settings[ 'taxonomies' ][ $key ] = ud_get_wpp_terms()->prepare_taxonomy( array(), ucwords( str_replace( '_', ' ', $key ) ) );
-          $added = true;
-        }
-
-        if($added) {
-          update_option( 'wpp_settings', $wpp_settings );
-        }
-      }
-
-      /**
        * Registers a system taxonomy if needed with most essential arguments.
        *
        * @since 2.2.1
@@ -881,7 +794,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $strDateTo
        * @return array
        */
-      public static function build_date_range( $strDateFrom,$strDateTo ) {
+      static public function build_date_range( $strDateFrom,$strDateTo ) {
         // takes two dates formatted as YYYY-MM-DD and creates an
         // inclusive array of the dates between the from and to dates.
 
@@ -950,6 +863,81 @@ namespace UsabilityDynamics\WPRETSC {
         $_result = $wpdb->get_results( $_query );
 
         return $_result;
+
+      }
+
+      /**
+       *
+       */
+      static public function update_terms_counts( $taxonomy ) {
+
+        $args = array(
+          "object_type" => array( 'property' )
+        );
+        //$output = 'objects';
+        $output = 'names';
+        $operator = 'and';
+
+        $taxonomies = get_taxonomies( $args, $output, $operator );
+
+        if( !empty( $taxonomy ) ) {
+          $_taxonomies = array();
+          if( is_string( $taxonomy ) ) {
+            $_taxonomies = explode( ',', trim( $taxonomy ) );
+          } else if( is_array( $taxonomy ) ) {
+            $_taxonomies = $taxonomy;
+          }
+          foreach( $_taxonomies as $k => $v ) {
+            $v = trim($v);
+            if( empty( $v ) || !in_array( $v, $taxonomies ) ) {
+              unset( $_taxonomies[$k] );
+            }
+          }
+          $taxonomies = $_taxonomies;
+        }
+
+        if( empty( $taxonomies ) ) {
+          return new \WP_Error( 'error', __( 'Taxonomies not found' ) );
+        }
+
+        $scroller = new \UsabilityDynamics\WP_Query_Scroller();
+
+        foreach( $taxonomies as $taxonomy ) {
+
+          $scroller->scroll( array(
+            'taxonomy'      => $taxonomy,
+            'number'        => 100,
+            'hierarchical'  => false,
+            'hide_empty'    => false,
+          ), 'term', array( __CLASS__, '_update_terms_counts_helper' ), true );
+
+        }
+
+        return true;
+
+      }
+
+      /**
+       * It's just a helper (callback) for update_terms_counts method.
+       * Do not use it directly
+       */
+      static public function _update_terms_counts_helper( $terms, $query ) {
+        $error = null;
+        $term_ids = is_array($terms) ? array_column( $terms, 'term_taxonomy_id' ) : array();
+        $taxonomy = isset( $query[ 'taxonomy' ] ) ? $query[ 'taxonomy' ] : null;
+
+        if( count( $term_ids ) < 1 ) {
+          $error = new \WP_Error( 'error', __('No terms to update'));
+        }
+        else if( !$taxonomy ) {
+          $error = new \WP_Error( 'error', __( 'Taxonomy can not be detected' ) );
+        }
+
+        if( !$error ) {
+          wp_update_term_count_now( $term_ids, $taxonomy );
+        }
+
+        do_action( 'wrc::_update_terms_counts_helper::done', $terms, $query, $error );
 
       }
 

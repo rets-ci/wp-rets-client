@@ -34,14 +34,6 @@ add_filter( 'wpp:elastic:title_suggest', function( $title_suggest, $post_args, $
     isset( $post_args['post_meta']['wpp_address_formatted_simple'] ) ? $post_args['post_meta']['wpp_address_formatted_simple'] : array()
   ));
 
-  /*
-  $title_suggest['payload'] = array_merge( $title_suggest['payload'], array_filter( array(
-    "wpp_address_formatted_simple" => isset( $post_args['post_meta']['wpp_address_formatted_simple'] ) ? $post_args['post_meta']['wpp_address_formatted_simple'][0] : null,
-    "wpp_location_pin" => isset( $post_args['post_meta']['wpp_location_pin'] ) ? $post_args['post_meta']['wpp_location_pin'] : null,
-    "rets_mls_number" => isset( $post_args['post_meta']['rets_mls_number'] ) ? $post_args['post_meta']['rets_mls_number'][0] : null
-  )));
-  //*/
-
   return $title_suggest;
 
 }, 10, 3 );

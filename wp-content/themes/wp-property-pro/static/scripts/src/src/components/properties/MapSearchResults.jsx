@@ -18,12 +18,14 @@ import {
   receiveSearchResultsPosts,
   receiveSearchResultsPostsError,
   requestSearchResultsPosts,
+  receiveTermDetails,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
 } from '../../actions/index.jsx';
 import Util from '../Util.jsx';
 import { Lib } from '../../lib.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
+import HeaderSearch from '../Headers/HeaderSearch.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
 import Map from './Map.jsx';
@@ -36,9 +38,19 @@ const isMobile = window.innerWidth < 576;
 
 
 const mapStateToProps = (state, ownProps) => {
-  let allQueryParams = qs.parse(ownProps.location.search.replace('?', ''));
+
+  let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
+  let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
+  let termDetails = Util.reddoorTermDetailsFromSearchParam(searchQueryParamsCollection);
+  searchQueryObject = Util.searchObjectToCustomFormat(searchQueryObject);
+  searchQueryObject['term'] = termDetails;
+  for (var key in searchQueryObject) {
+    if (termDetails.map(d => d.term).indexOf(key) >= 0) {
+      delete searchQueryObject[key];
+    }
+  }
+  
   return {
-    allQueryParams: allQueryParams,
     errorMessage: state.errorMessage,
     query: get(state, 'searchResults.query', []),
     isFetching: get(state, 'searchResults.isFetching', []),
@@ -52,8 +64,10 @@ const mapStateToProps = (state, ownProps) => {
     resultsTotal: get(state, 'searchResults.totalProps', 0),
     propertyOnPanel: state.singleProperty.propertyOnPanel,
     panelOnMapShown: state.singleProperty.panelOnMapShown,
-    searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
+    searchQueryParams: searchQueryObject,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
+    termDetails: get(state, 'termDetails.terms')
   }
 };
 
@@ -71,7 +85,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
 
-    doSearchWithQuery: (errorMessage, query, append) => {
+    doSearchWithQuery: (query, currentTermDetails, append) => {
       let url = Api.getPropertySearchRequestURL();
       dispatch(requestSearchResultsPosts());
       Api.search(url, query, (err, response) => {
@@ -94,13 +108,39 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(receiveSearchResultsPosts({}, [], 0));
     },
 
-    standardSearch: (errorMessage, params) => {
+    standardSearch: p => {
       dispatch(requestSearchResultsPosts());
+      let params = Object.assign({}, p);
+      // params.aggregations = Util.getTermLookupAggregationQuery(params['term']);
+      if (p[Lib.BOTTOM_RIGHT_URL_PREFIX] && p[Lib.TOP_LEFT_URL_PREFIX]) {
+        params.geoCoordinates = {
+          bottomRight: [p[Lib.BOTTOM_RIGHT_URL_PREFIX][0], p[Lib.BOTTOM_RIGHT_URL_PREFIX][1]],
+          topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]]
+        };
+      }
+      
       Api.makeStandardPropertySearch(params, (err, query, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
         }
         dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), false));
+      });
+      Api.termDetailsLookupQuery(params['term'], (err, response) => {
+        if (err) {
+          //TODO: handle the error
+          console.log('error thrown')
+        }
+        let terms = [];
+        if (response.aggregations) {
+          terms = params['term'].map(d => {
+            let termText = get(response, 'aggregations[' + d.slug + '.inside.buckets[0].key');
+            return {
+              ...d,
+              text: termText
+            }
+          });
+        }
+        dispatch(receiveTermDetails(terms))
       });
     },
 
@@ -127,7 +167,9 @@ class MapSearchResults extends Component {
     propertiesModalResultCountIsFetching: PropTypes.bool.isRequired,
     resetSearchResults: PropTypes.func.isRequired,
     results: PropTypes.array.isRequired,
-    searchResultsErrorMessage: PropTypes.string
+    searchResultsErrorMessage: PropTypes.string,
+    searchQueryParams: PropTypes.object.isRequired,
+    termDetails: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -140,19 +182,24 @@ class MapSearchResults extends Component {
   }
 
   componentDidMount() {
-    this.applyQueryFilters();
+    let filters = this.props.searchQueryParams;
+    this.applyQueryFilters(this.props.searchQueryParams);
+    if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
+      let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
+      if (!firstPropertyMLSID) {
+        console.log('first property MLS id is missing');
+      } else {
+        this.updateSelectedProperty(firstPropertyMLSID);
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    let filters = qs.parse(window.location.search.replace('?', ''));
-    if (!isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
-      this.applyQueryFilters();
+    let filters = nextProps.searchQueryParams;
+    if (!isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']))) {
+      this.applyQueryFilters(nextProps.searchQueryParams);
     }
-
-    if (nextProps.displayedResults.length > 0 && !filters.selected_property && isMobile) {
-      this.updateSelectedProperty(nextProps.displayedResults[0]._id);
-    }
-    if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type) {
+    if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type && this.listingSidebar) {
       // this fixes the issue where changing "search_type" would keep the scrolling of the previous search type
       let listingSidebar = this.listingSidebar;
       listingSidebar.scrollTop = 0;
@@ -170,12 +217,11 @@ class MapSearchResults extends Component {
   seeMoreHandler = () => {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
-    this.props.doSearchWithQuery(this.props.errorMessage, modifiedQuery, true);
+    this.props.doSearchWithQuery(modifiedQuery, this.props.termDetails, true);
   }
 
-  applyQueryFilters() {
-    let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
-    this.props.standardSearch(this.props.errorMEssage, searchFilters);
+  applyQueryFilters(searchFilters) {
+    this.props.standardSearch(searchFilters);
   }
 
   clickMobileSwitcherHandler(mapDisplay) {
@@ -185,26 +231,26 @@ class MapSearchResults extends Component {
   }
 
   updateSelectedProperty = (propertyId) => {
-    let filter = {'selected_property': propertyId};
-    let queryParam = Util.updateQueryFilter(window.location.href, filter, 'set', false);
-    // TODO: use location passed in
-    this.props.history.push(window.location.pathname + decodeURIComponent(queryParam))
+    let filters = Object.assign({}, this.props.searchQueryParams);
+    filters['selected_property'] = propertyId;
+    if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX]) {
+      filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
+      filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
+    }
+    let searchCollection = Util.searchObjectToCollection(filters);
+    let searchURL = Util.createSearchURL('/search', searchCollection);
+    this.props.history.push(searchURL);
   }
 
-  updateURIGeoCoordinates(geoCoordinates) {
-    //TODO: this should be refactored to use the URL related functions in Util.jsx
-    // update URL
-    let url = new URI(window.location.href);
-    let queryParam = window.location.search.replace('?', '');
-    let currentFilters = qs.parse(queryParam);
-    // remove any current geoCorrdinates before adding additional ones
-    delete currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'];
-    // remove selected property as well
-    delete currentFilters['selected_property'];
-    currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'] = geoCoordinates;
-    let newSearchQuery = '?' + qs.stringify(currentFilters);
-    let constructedQuery = decodeURIComponent(url.pathname() + newSearchQuery);
-    this.props.history.push(constructedQuery);
+  updateURIGeoCoordinates = (geoCoordinates) => {
+    let filters = Object.assign({}, this.props.searchQueryParams);
+    delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
+    filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: geoCoordinates['bottomRight']['lat'], lon: geoCoordinates['bottomRight']['lon']};
+    delete filters[Lib.TOP_LEFT_URL_PREFIX];
+    filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: geoCoordinates['topLeft']['lat'], lon: geoCoordinates['topLeft']['lon']};
+    let searchCollection = Util.searchObjectToCollection(filters);
+    let searchURL = Util.createSearchURL('/search', searchCollection);
+    this.props.history.push(searchURL);
   }
 
   render() {
@@ -223,11 +269,16 @@ class MapSearchResults extends Component {
       propertiesModalResultCountIsFetching,
       propertyTypeOptions,
       results,
-      resultsTotal
+      resultsTotal,
+      searchQueryParams,
+      termDetails
     } = this.props;
-
-    let filters = qs.parse(window.location.search.replace('?', ''));
-    let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+    // create a clone because we might change it in the if statement
+    let searchFilters = Object.assign({}, searchQueryParams);
+    if (termDetails.length) {
+      // termDetails has the display information as well
+      searchFilters.term = termDetails;
+    }
     const captionElement = (this.state.noticeDisplay && displayedResults.length > 0)
       ? (
           <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
@@ -257,19 +308,20 @@ class MapSearchResults extends Component {
 
     const mapElement = (
       <Map
-        currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} 
+        currentGeoBounds={(searchFilters.geotl && searchFilters.geobr) ? Util.elasticsearchGeoFormatToGoogle({bottomRight: searchFilters[Lib.BOTTOM_RIGHT_URL_PREFIX], topLeft: searchFilters[Lib.TOP_LEFT_URL_PREFIX]}) : null} 
         historyPush={history.push}
         location={this.props.location}
         properties={displayedResults}
-        searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}
-        selectedProperty={filters.selected_property}
+        searchByCoordinates={this.updateURIGeoCoordinates}
+        selectedProperty={searchFilters.selected_property}
+        updateSelectedProperty={this.updateSelectedProperty}
       />
     );
 
     const sliderElement = (
       <CarouselOnMap
         properties={displayedResults}
-        selectedProperty={filters.selected_property}
+        selectedProperty={searchFilters.selected_property}
         onChangeSlide={this.updateSelectedProperty}
       />
     );
@@ -323,7 +375,7 @@ class MapSearchResults extends Component {
                     properties={displayedResults}
                     seeMoreHandler={this.seeMoreHandler}
                     onUpdateSelectedProperty={this.updateSelectedProperty}
-                    selectedProperty={filters.selected_property}
+                    selectedProperty={searchFilters.selected_property}
                     total={this.props.resultsTotal}
                   />
                 :
@@ -356,8 +408,18 @@ class MapSearchResults extends Component {
     );
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-container h-100`}>
-        {elementToShow}
+      <div className="h-100">
+        <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
+          <HeaderSearch
+            historyPush={history.push}
+            openUserPanel={this.props.openUserPanel}
+            searchFilters={searchFilters}
+            termDetails={this.props.termDetails}
+          />
+        </section>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-container h-100`}>
+          {elementToShow}
+        </div>
       </div>
     );
   }

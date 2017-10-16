@@ -27,8 +27,7 @@ export default class CarouselOnMap extends Component {
   }
 
   slideToId = (propertyId) => {
-    const index = (this.props.properties || []).findIndex(e => e._id === propertyId);
-
+    const index = (this.props.properties || []).findIndex(e => get(e, '_source.post_meta.rets_mls_number[0]', null) === propertyId);
     if (this.swiper && index > -1) {
       this.swiper.slideTo(index);
     }
@@ -45,7 +44,7 @@ export default class CarouselOnMap extends Component {
       },
       onSlideChangeEnd: (swiper) => {
         const property = this.props.properties[ swiper.activeIndex ];
-        this.props.onChangeSlide(property._id);
+        this.props.onChangeSlide(get(property, '_source.post_meta.rets_mls_number[0]', null));
       }
     };
 

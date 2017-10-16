@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import get from 'lodash/get';
 
 import {
   receivePropertySingleResult,
@@ -9,6 +8,8 @@ import {
   requestPropertySingleResult
 } from '../../actions/index.jsx';
 import ErrorMessageModal from '../ErrorMessageModal.jsx';
+import HeaderPropertySingle from '../Headers/HeaderPropertySingle.jsx';
+import get from 'lodash/get';
 import Api from '../../containers/Api.jsx';
 import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
@@ -85,10 +86,15 @@ class SingleContainer extends Component {
   render() {
     let {
       agents,
+      history,
       errorMessage,
       isFetching,
+      openUserPanel,
       post: {
-        post_id : id
+        location: locationTerm,
+        post_id : id,
+        sale_type: saleType,
+        search_type: searchType
       },
       property
     } = this.props;
@@ -99,20 +105,26 @@ class SingleContainer extends Component {
     }
 
     return (
-      !property ?
-        (isFetching ?
-          <LoadingAccordion containerHeight="600px" verticallyCentered={true} /> :
-          (errorMessage ?
-            <ErrorMessageModal errorMessage={errorMessage} />
-          :
-          <p>Request property id {id} could not be found</p>)
-          ):
-          <Single
-            agents={agents}
-            {...propertyMeta}
-            all={property}
-          />
-
+      <div className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
+        <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>
+        {!property ?
+          (isFetching ?
+            <LoadingAccordion containerHeight="600px" verticallyCentered={true} /> :
+            (errorMessage ?
+              <ErrorMessageModal errorMessage={errorMessage} />
+            :
+            <p>Request property id {id} could not be found</p>)
+            ):
+            <Single
+              agents={agents}
+              {...propertyMeta}
+              all={property}
+              locationTerm={locationTerm}
+              saleType={saleType}
+              searchType={searchType}
+            />
+        }
+      </div>
     );
   }
 };

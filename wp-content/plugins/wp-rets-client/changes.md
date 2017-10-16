@@ -1,3 +1,12 @@
+#### 0.3.7
+* Added compatibility with Houzez theme.
+* Added compatibility with wp-rabbit plugin.
+* Added `wrc::manage_property::before_update` action to xmlrpc class.
+
+#### 0.3.6
+* Added removing of all property attachments on property delete.
+* Fixed the bug related to managing of WPP taxonomies.
+
 #### 0.3.5
 * Added flushing of cache object to all API endpoints which are managing property data (add/update/delete).
 * Fixed `wpp.trashProperty`. There were different issues because of setting of trash status directly via SQL query.
