@@ -8,10 +8,11 @@
 
 .propertypro-search-result-group {
   margin-top: 2rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
 
   .list-group {
     margin-bottom: 1.5rem;
-    cursor: pointer;
 
     .list-group-item {
       border: none;

@@ -4,6 +4,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 import { Lib } from 'app_root/lib.jsx';
 
+const PAGE_SIZE = Lib.AGGREGATION_PAGE_SIZE;
+
 
 const Fade = ({ children, ...props }) => (
   <CSSTransition
@@ -21,35 +23,61 @@ class SearchResultsGroup extends Component {
     super(props);
 
     this.state = {
-      items: [],
+      title: '',
+      itemsInitial: [],
+      itemsVisible: [],
+      offset: 0,
+      hasMoreItems: false,
     };
   }
 
   componentDidMount() {
-    this.setState({
-      items: this.props.children
-    });
+    const { group } = this.props;
+    if (group && group.children) {
+      this.setState({
+        title: group.text,
+        itemsInitial: group.children,
+        itemsVisible: group.children.slice(0, PAGE_SIZE),
+        offset: PAGE_SIZE,
+        hasMoreItems: group.children.length > PAGE_SIZE,
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      items: nextProps.children,
-    });
+
   }
 
   handleItemClick = (item) => {
     this.props.onClickResult(item)
   }
 
+  handleMoreClick = () => {
+    if (!this.state.hasMoreItems) {
+      return;
+    }
+
+    this.setState(prevState => {
+      const total = prevState.itemsInitial.length;
+      const hasMoreItems = total > prevState.offset + PAGE_SIZE;
+      const newItems = prevState.itemsInitial.slice(prevState.offset, prevState.offset + PAGE_SIZE)
+
+      return {
+        itemsVisible: prevState.itemsVisible.concat(newItems),
+        offset: prevState.offset + PAGE_SIZE,
+        hasMoreItems,
+      };
+    });
+  }
+
   render() {
-    let { items } = this.state;
-    let { group } = this.props;
+    let { title, itemsVisible, hasMoreItems } = this.state;
 
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-result-group`}>
-        <h4 className={`${Lib.THEME_CLASSES_PREFIX}search-title container text-left`}>{group.text}</h4>
+        <h4 className={`${Lib.THEME_CLASSES_PREFIX}search-title container text-left`}>{title}</h4>
         <TransitionGroup className="list-group">
-          {group.children.map((item, i) =>
+          {itemsVisible.map((item, i) =>
             <Fade key={i}>
               <div onClick={this.handleItemClick.bind(this, item)} className="list-group-item">
                 <div className="container text-left">{item.text}</div>
@@ -57,6 +85,11 @@ class SearchResultsGroup extends Component {
             </Fade>
           )}
         </TransitionGroup>
+        {hasMoreItems &&
+          <div className={`${Lib.THEME_CLASSES_PREFIX}view-link container text-left`} onClick={this.handleMoreClick}>
+            {`+ Load More`}
+          </div>
+        }
       </div>
     );
   }
