@@ -72,9 +72,10 @@ class SearchResultsGroup extends Component {
 
   render() {
     let { title, itemsVisible, hasMoreItems } = this.state;
+    let { className } = this.props;
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-result-group`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-result-group ${className || ''}`}>
         <h4 className={`${Lib.THEME_CLASSES_PREFIX}search-title container text-left`}>{title}</h4>
         <TransitionGroup className="list-group">
           {itemsVisible.map((item, i) =>

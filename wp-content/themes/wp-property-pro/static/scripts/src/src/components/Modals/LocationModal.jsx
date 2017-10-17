@@ -268,7 +268,7 @@ class LocationModal extends Component {
                 !this.props.open
                   ? null
                   : searchResults.length
-                    ? <div>{ resultsElements }</div>
+                    ? <GroupTransition>{ resultsElements }</GroupTransition>
                     : isFetching
                       ? <LoadingAccordion />
                       : errorMessage
