@@ -182,6 +182,7 @@ class MapSearchResults extends Component {
   }
 
   componentDidMount() {
+    let filters = this.props.searchQueryParams;
     this.applyQueryFilters(this.props.searchQueryParams);
     if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
       let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);

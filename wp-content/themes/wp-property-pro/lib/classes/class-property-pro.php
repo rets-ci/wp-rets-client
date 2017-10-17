@@ -245,6 +245,7 @@ namespace UsabilityDynamics {
 
           $_types = $types;
         }elseif($label === 'Sale'){
+          $label = 'Buy';
           $_types = array_filter($_property_types, function($type){
             return $type['slug'] !== 'residential-apartment';
           });
@@ -794,6 +795,11 @@ namespace UsabilityDynamics {
                 unset($options_array[0]);
                 unset($options_array[1]);
                 $property_types = array_values($options_array);
+
+                /** Mapping for search type option label */
+                if($label === 'Sale'){
+                  $label = 'Buy';
+                }
 
                 $new_field[$label] = [
                   'sale_type' => $sale_type,
