@@ -6,7 +6,7 @@ import {
 } from '../../actions/index.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
 import GroupTransition from '../GroupTransition.jsx';
-import SearchResultsGroup from './components/SearchResultsGroup.jsx';
+import PaginatedSearchResults from './components/PaginatedSearchResults.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
@@ -203,7 +203,7 @@ class LocationModal extends Component {
     } = this.props;
 
     let resultsElements = searchResults.map(s => (
-      <SearchResultsGroup key={s.key} group={s} onClickResult={this.handleResultClick} />
+      <PaginatedSearchResults key={s.key} group={s} onClickResult={this.handleResultClick} />
     ));
 
     let placeholder = 'Address, City, Zip, or Neighborhood.';

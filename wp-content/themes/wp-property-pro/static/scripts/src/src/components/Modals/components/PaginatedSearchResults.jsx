@@ -17,7 +17,7 @@ const Fade = ({ children, ...props }) => (
   </CSSTransition>
 );
 
-class SearchResultsGroup extends Component {
+class PaginatedSearchResults extends Component {
 
   constructor(props) {
     super(props);
@@ -96,4 +96,4 @@ class SearchResultsGroup extends Component {
   }
 }
 
-export default SearchResultsGroup;
+export default PaginatedSearchResults;
