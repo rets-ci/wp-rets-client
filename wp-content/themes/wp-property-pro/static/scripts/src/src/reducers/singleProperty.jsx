@@ -35,11 +35,6 @@ const propertySingle = (state = defaultState, action) => {
           propertyOnPanel: action.property,
         };
       case Lib.DESELECT_PROPERTY_ON_MAP_ACTION:
-        return {
-          ...state,
-          panelOnMapShown: false,
-          propertyOnPanel: null,
-        };
       case LOCATION_CHANGE:
       case Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:
         return {

@@ -13,6 +13,7 @@ import {
   receivePropertySingleFetchingError,
   requestPropertySingleResult,
   selectPropertyOnMap,
+  deselectPropertyOnMap,
 } from 'app_root/actions/index.jsx';
 
 const mapStateToProps = (state) => {
@@ -21,6 +22,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    deselectPropertyOnMap: () => {
+      dispatch(deselectPropertyOnMap());
+    },
     selectPropertyOnMap: (property) => {
       dispatch(selectPropertyOnMap(property));
     }
@@ -91,7 +95,11 @@ class PropertyCardList extends Component {
     if (!property) {
       console.log('property was not found')
     } else {
-      this.props.selectPropertyOnMap(property._source);
+      this.props.deselectPropertyOnMap();
+
+      setTimeout(() => {
+        this.props.selectPropertyOnMap(property._source);
+      });
     }
   }
 

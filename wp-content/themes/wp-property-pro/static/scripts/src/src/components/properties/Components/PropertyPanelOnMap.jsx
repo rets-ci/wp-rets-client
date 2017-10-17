@@ -16,7 +16,8 @@ class PropertyPanelOnMap extends Component {
   handleOpen = () => {
     if (this.props.historyPush && this.props.property) {
       const link = '/' + bundle.property_single_url + '/' + this.props.property.post_name;
-      this.props.historyPush(link);
+      // this.props.historyPush(link);
+      window.open(link, '_blank');
     }
   }
 
