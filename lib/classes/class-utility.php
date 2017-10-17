@@ -36,27 +36,48 @@ namespace UsabilityDynamics\WPRETSC {
        */
       static public function insert_term( $term_data ) {
         global $wpdb;
+
         $result = array(
           '_id' => null,
           '_type' => null,
           'meta' => array(),
           'errors' => array()
         );
+
         $term_data = apply_filters( 'wpp:insert_term', $term_data );
+
         if( !isset( $term_data['_type'] )) {
-          return new WP_Error( 'missing-type' );
+          ud_get_wp_rets_client()->write_log( "The term has missing _type: " . json_encode( $term_data ), 'info' );
+          return new \WP_Error( 'missing-type' );
         }
-        // try to find by [_id]
-        if( isset( $term_data[ '_id' ] ) &&  $term_data[ '_id' ] ) {
-          $term_data['term_id'] = intval( $wpdb->get_var($wpdb->prepare("SELECT term_id FROM $wpdb->termmeta as tm WHERE meta_key='%s' AND meta_value='%s';", array( '_id', $term_data['_id']))) );
-        }
+
         // Use _type for _taxonomy if not provided.
         if( !isset( $term_data['_taxonomy'] ) && isset( $term_data['_type'] ) ) {
           $term_data['_taxonomy'] = $term_data['_type'];
         }
+
+        // try to find by [_id]
+        if( isset( $term_data[ '_id' ] ) &&  $term_data[ '_id' ] ) {
+
+          $term_data['term_id'] = intval( $wpdb->get_var($wpdb->prepare("
+            SELECT tm.term_id
+              FROM $wpdb->termmeta as tm
+              LEFT JOIN $wpdb->term_taxonomy as tt ON tt.term_id = tm.term_id
+              WHERE tm.meta_key=%s AND tm.meta_value=%s AND tt.taxonomy=%s;
+          ", array( '_id', $term_data['_id'], $term_data['_taxonomy']))));
+
+        }
+
         // Parent set, try to find it.
         if( isset( $term_data[ '_parent' ] ) && $term_data[ '_parent' ] ) {
-          $term_data['meta']['parent_term_id'] = intval( $wpdb->get_var($wpdb->prepare("SELECT term_id FROM $wpdb->termmeta as tm WHERE meta_key='%s' AND meta_value='%s';", array( '_id', $term_data['_parent']))) );
+
+          $term_data['meta']['parent_term_id'] = intval( $wpdb->get_var($wpdb->prepare("
+            SELECT tm.term_id
+              FROM $wpdb->termmeta as tm
+              LEFT JOIN $wpdb->term_taxonomy as tt ON tt.term_id = tm.term_id
+              WHERE tm.meta_key=%s AND tm.meta_value=%s AND tt.taxonomy=%s;
+          ", array( '_id', $term_data['_parent'], $term_data['_taxonomy']))) );
+
           // Parent not found, we try findint it using [parent_name] instead of the [_parent], which is its UID.
           if( !$term_data['meta']['parent_term_id'] ) {
             $_exists = term_exists( $term_data['meta']['parent_name'], $term_data['_taxonomy'] );
