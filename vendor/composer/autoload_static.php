@@ -24,6 +24,7 @@ class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
         'UsabilityDynamics\\WPRETSC\\Connectors\\Loader' => __DIR__ . '/../..' . '/lib/connectors/class-loader.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\WPML' => __DIR__ . '/../..' . '/lib/connectors/class-wpml.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\WPProperty' => __DIR__ . '/../..' . '/lib/connectors/class-wp-property.php',
+        'UsabilityDynamics\\WPRETSC\\Connectors\\WPRABBIT' => __DIR__ . '/../..' . '/lib/connectors/class-wprabbit.php',
         'UsabilityDynamics\\WPRETSC\\Dashboard_Widget' => __DIR__ . '/../..' . '/lib/classes/class-dashboard-widget.php',
         'UsabilityDynamics\\WPRETSC\\Logger' => __DIR__ . '/../..' . '/lib/classes/class-logger.php',
         'UsabilityDynamics\\WPRETSC\\Media' => __DIR__ . '/../..' . '/lib/classes/class-media.php',
@@ -41,6 +42,7 @@ class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
         'UsabilityDynamics\\WP\\TGM_Bulk_Installer_Skin' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-tgm-bulk-installer.php',
         'UsabilityDynamics\\WP\\TGM_Plugin_Activation' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-tgm-plugin-activation.php',
         'UsabilityDynamics\\WP\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-utility.php',
+        'UsabilityDynamics\\WP_Query_Scroller' => __DIR__ . '/../..' . '/lib/classes/class-query-scroller.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

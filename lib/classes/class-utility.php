@@ -90,7 +90,15 @@ namespace UsabilityDynamics\WPRETSC {
         // try to get by [name]
         if( !$term_data['term_id'] ) {
           $_exists = term_exists( $term_data['name'], $term_data['_taxonomy'] );
-          if( $_exists ) {
+          if(  $_exists && isset( $term_data[ '_id' ] ) ) {
+            // So we should add prefix to our slug here
+            $slug = sanitize_title( $term_data[ 'name' ] );
+            if( get_term_by( 'slug', $slug, $term_data['_taxonomy']  ) ) {
+              $prefix = !empty( $term_data[ '_type' ] ) ? $term_data[ '_type' ] : rand( 1000, 9999);
+              $slug = sanitize_title( $prefix. '-' . $slug );
+            }
+          }
+          else if( $_exists ) {
             $term_data['term_id'] = $_exists['term_id'];
           }
         }
@@ -100,6 +108,12 @@ namespace UsabilityDynamics\WPRETSC {
           if( isset( $term_data['meta']['parent_term_id'] ) ) {
             $_term_args['parent']  = $term_data['meta']['parent_term_id'];
           }
+
+          // Set term slug if it exist
+          if(isset($slug)){
+            $_term_args['slug'] = $slug;
+          }
+
           $_term_created = wp_insert_term( $term_data['name'], $term_data['_taxonomy'], $_term_args);
           if( isset( $_term_created ) && is_wp_error( $_term_created ) ) {
             error_log( "Unable to insert term [" . $term_data['_taxonomy']. "]." );
@@ -404,10 +418,7 @@ namespace UsabilityDynamics\WPRETSC {
                 if( isset( $_term_name[ '_id'] ) ) {
                   ud_get_wp_rets_client()->write_log( "Have hierarchical object term [$tax_name] with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
 
-                  if( method_exists( 'WPP_F', 'insert_terms' ) ) {
-                    $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
-                    ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
-                  } elseif( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
+                  if( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
                     $_insert_result = self::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                     ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
                   } else {
@@ -509,10 +520,7 @@ namespace UsabilityDynamics\WPRETSC {
               // Item is an array, which means this entry includes term meta.
               if( is_object( $_term_name ) || is_array( $_term_name ) && isset( $_term_name[ '_id'] ) ) {
 
-                if( method_exists( 'WPP_F', 'insert_terms' ) ) {
-                  $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
-                  ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
-                } elseif( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
+                if( method_exists( 'UsabilityDynamics\WPRETSC\Utility', 'insert_terms' ) ) {
                   $_insert_result = self::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
                   ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
                 } else {
@@ -794,7 +802,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $strDateTo
        * @return array
        */
-      public static function build_date_range( $strDateFrom,$strDateTo ) {
+      static public function build_date_range( $strDateFrom,$strDateTo ) {
         // takes two dates formatted as YYYY-MM-DD and creates an
         // inclusive array of the dates between the from and to dates.
 
@@ -863,6 +871,81 @@ namespace UsabilityDynamics\WPRETSC {
         $_result = $wpdb->get_results( $_query );
 
         return $_result;
+
+      }
+
+      /**
+       *
+       */
+      static public function update_terms_counts( $taxonomy ) {
+
+        $args = array(
+          "object_type" => array( 'property' )
+        );
+        //$output = 'objects';
+        $output = 'names';
+        $operator = 'and';
+
+        $taxonomies = get_taxonomies( $args, $output, $operator );
+
+        if( !empty( $taxonomy ) ) {
+          $_taxonomies = array();
+          if( is_string( $taxonomy ) ) {
+            $_taxonomies = explode( ',', trim( $taxonomy ) );
+          } else if( is_array( $taxonomy ) ) {
+            $_taxonomies = $taxonomy;
+          }
+          foreach( $_taxonomies as $k => $v ) {
+            $v = trim($v);
+            if( empty( $v ) || !in_array( $v, $taxonomies ) ) {
+              unset( $_taxonomies[$k] );
+            }
+          }
+          $taxonomies = $_taxonomies;
+        }
+
+        if( empty( $taxonomies ) ) {
+          return new \WP_Error( 'error', __( 'Taxonomies not found' ) );
+        }
+
+        $scroller = new \UsabilityDynamics\WP_Query_Scroller();
+
+        foreach( $taxonomies as $taxonomy ) {
+
+          $scroller->scroll( array(
+            'taxonomy'      => $taxonomy,
+            'number'        => 100,
+            'hierarchical'  => false,
+            'hide_empty'    => false,
+          ), 'term', array( __CLASS__, '_update_terms_counts_helper' ), true );
+
+        }
+
+        return true;
+
+      }
+
+      /**
+       * It's just a helper (callback) for update_terms_counts method.
+       * Do not use it directly
+       */
+      static public function _update_terms_counts_helper( $terms, $query ) {
+        $error = null;
+        $term_ids = is_array($terms) ? array_column( $terms, 'term_taxonomy_id' ) : array();
+        $taxonomy = isset( $query[ 'taxonomy' ] ) ? $query[ 'taxonomy' ] : null;
+
+        if( count( $term_ids ) < 1 ) {
+          $error = new \WP_Error( 'error', __('No terms to update'));
+        }
+        else if( !$taxonomy ) {
+          $error = new \WP_Error( 'error', __( 'Taxonomy can not be detected' ) );
+        }
+
+        if( !$error ) {
+          wp_update_term_count_now( $term_ids, $taxonomy );
+        }
+
+        do_action( 'wrc::_update_terms_counts_helper::done', $terms, $query, $error );
 
       }
 
