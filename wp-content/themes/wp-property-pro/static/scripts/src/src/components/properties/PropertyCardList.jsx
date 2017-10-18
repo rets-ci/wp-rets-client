@@ -15,6 +15,7 @@ import {
   selectPropertyOnMap,
   deselectPropertyOnMap,
 } from 'app_root/actions/index.jsx';
+import { Lib } from 'app_root/lib.jsx';
 
 const mapStateToProps = (state) => {
   return {};
@@ -39,7 +40,9 @@ class PropertyCardList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      selectedPropertyOnList: null
+    };
     this.propertiesDOM = {};
   }
 
@@ -57,7 +60,10 @@ class PropertyCardList extends Component {
 
   componentDidUpdate() {
     if (this.props.properties.length && this.props.selectedProperty) {
-      this.scrollToProperty(this.props.selectedProperty);
+      // If a property is selected on list section, do not scroll
+      if (this.props.selectedProperty !== this.state.selectedPropertyOnList) {
+        this.scrollToProperty(this.props.selectedProperty);
+      }
       const property = this.getPropertyRecordByMlsID(this.props.selectedProperty);
       if (!property) {
         console.log('selected property was not found')
@@ -77,7 +83,14 @@ class PropertyCardList extends Component {
      console.log('chosen property was not found in the results');
     } else {
       let node = findDOMNode(this.propertiesDOM[propertyId]);
-      node.scrollIntoView({ behaviour: 'smooth' });
+      // node.scrollIntoView({ behaviour: 'smooth' });
+
+      // it's listing container (not body) which is scrollable
+      var container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}listing-sidebar`);
+      var offset = node.offsetParent ? node.offsetParent.offsetTop : 0;
+      if (container) {
+        container.scrollTop = offset;
+      }
     }
   }
 
@@ -95,6 +108,10 @@ class PropertyCardList extends Component {
     if (!property) {
       console.log('property was not found')
     } else {
+      this.setState({
+        selectedPropertyOnList: propertyId
+      });
+
       this.props.deselectPropertyOnMap();
 
       setTimeout(() => {
