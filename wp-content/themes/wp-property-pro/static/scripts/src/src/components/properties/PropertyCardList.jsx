@@ -13,9 +13,9 @@ import {
   receivePropertySingleFetchingError,
   requestPropertySingleResult,
   selectPropertyOnMap,
-  deselectPropertyOnMap,
 } from 'app_root/actions/index.jsx';
 import { Lib } from 'app_root/lib.jsx';
+import Util from 'app_root/components/Util.jsx';
 
 const mapStateToProps = (state) => {
   return {};
@@ -23,9 +23,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deselectPropertyOnMap: () => {
-      dispatch(deselectPropertyOnMap());
-    },
     selectPropertyOnMap: (property) => {
       dispatch(selectPropertyOnMap(property));
     }
@@ -40,9 +37,7 @@ class PropertyCardList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      selectedPropertyOnList: null
-    };
+    this.selectedPropertyOnList = null;
     this.propertiesDOM = {};
   }
 
@@ -61,8 +56,9 @@ class PropertyCardList extends Component {
   componentDidUpdate() {
     if (this.props.properties.length && this.props.selectedProperty) {
       // If a property is selected on list section, do not scroll
-      if (this.props.selectedProperty !== this.state.selectedPropertyOnList) {
+      if (this.props.selectedProperty !== this.selectedPropertyOnList) {
         this.scrollToProperty(this.props.selectedProperty);
+        this.selectedPropertyOnList = this.props.selectedProperty;
       }
       const property = this.getPropertyRecordByMlsID(this.props.selectedProperty);
       if (!property) {
@@ -82,15 +78,10 @@ class PropertyCardList extends Component {
     if (!this.propertiesDOM[propertyId]) {
      console.log('chosen property was not found in the results');
     } else {
-      let node = findDOMNode(this.propertiesDOM[propertyId]);
-      // node.scrollIntoView({ behaviour: 'smooth' });
-
       // it's listing container (not body) which is scrollable
-      var container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}listing-sidebar`);
-      var offset = node.offsetParent ? node.offsetParent.offsetTop : 0;
-      if (container) {
-        container.scrollTop = offset;
-      }
+      const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}listing-sidebar`);
+      const node = findDOMNode(this.propertiesDOM[propertyId]);
+      Util.scrollToElement(container, node, 500);
     }
   }
 
@@ -108,15 +99,8 @@ class PropertyCardList extends Component {
     if (!property) {
       console.log('property was not found')
     } else {
-      this.setState({
-        selectedPropertyOnList: propertyId
-      });
-
-      this.props.deselectPropertyOnMap();
-
-      setTimeout(() => {
-        this.props.selectPropertyOnMap(property._source);
-      });
+      this.selectedPropertyOnList = propertyId;
+      this.props.selectPropertyOnMap(property._source);
     }
   }
 
