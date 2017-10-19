@@ -1686,12 +1686,15 @@ button.swiper-pagination-bullet {
   padding: 0;
   overflow: hidden;
   background-color: transparent;
-  z-index: 10; }
+  z-index: 10;
+  display: block !important; }
   .propertypro-listing-map .propertypro-panel-on-map.propertypro-hide {
-    display: block !important;
-    animation: slideToLeft .3s ease-in-out forwards; }
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease-in; }
   .propertypro-listing-map .propertypro-panel-on-map.propertypro-display {
-    animation: slideToRight .3s ease-in-out forwards; }
+    opacity: 1;
+    transition: opacity 500ms ease-in; }
 
 .propertypro-listing-map .propertypro-single-container {
   width: calc(100% - 25px);
@@ -1716,26 +1719,6 @@ button.swiper-pagination-bullet {
 
 .propertypro-listing-map .propertypro-panel-on-map-open {
   top: 70px; }
-
-@keyframes slideToRight {
-  0% {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-100%); }
-  100% {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0); } }
-
-@keyframes slideToLeft {
-  0% {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0); }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-100%); } }
 
 .propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open .propertypro-single-container::after {
   position: absolute;
@@ -1859,9 +1842,6 @@ html, body {
   height: 100%; }
 
 /** Layout **/
-.propertypro-page-content, .propertypro-footer-container {
-  flex: 1 0 auto; }
-
 .propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open {
   overflow: hidden; }
 
