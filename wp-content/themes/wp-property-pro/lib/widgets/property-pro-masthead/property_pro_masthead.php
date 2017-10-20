@@ -52,19 +52,8 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
       // @TODO temporary solution for right search options loading, because it looks like caching.
       wp_cache_flush();
 
-      $taxonomy = 'wpp_listing_type';
-
       $search_options = [];
       $delimiter = '-';
-
-      $_property_types = array_map(function($t){
-        return str_replace('-', '.', $t->slug);
-      }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
-        if($t->parent){
-          $parent_term = get_term($t->parent);
-        }
-        return $t->parent && !in_array($parent_term->name, ['Land', 'Commercial']);
-      }));
 
       /** Build search options array */
       foreach ([
@@ -74,20 +63,15 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
                  'Commercial'
                ] as $label) {
 
-
         $sale_type = $label;
-        if (in_array($label, ['Rent', 'Sale']))
-          $key = implode($delimiter, $_property_types);
+        if (in_array($label, ['Rent', 'Sale'])){
+          $key = $label . $delimiter . $sale_type . $delimiter . 'residential' ;
+        }
         else {
-          $term = get_term_by('slug', $label, $taxonomy);
-          $types = array_map(function ($id) use ($taxonomy) {
-            return str_replace('-', '.', get_term_by('id', $id, $taxonomy)->slug);
-          }, get_term_children($term->term_id, $taxonomy));
-          $key = implode($delimiter, $types);
-          $sale_type = 'Sale';
+          $key = $label . $delimiter . '' . $delimiter . strtolower($label) ;
         }
 
-        $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
+        $search_options[$key] = [
           'type' => 'checkbox',
           'default' => false,
           'label' => __($label === 'Sale' ? 'Buy' : $label, 'wp-property-pro'),
