@@ -162,8 +162,7 @@ class PropertiesModal extends Component {
   }
 
   handleSearchTypeSelect = (searchType, propertyTypeOptions) => {
-    let modifiedSearchType = searchType === 'Buy' ? 'Sale' : searchType;
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(modifiedSearchType, propertyTypeOptions);
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, propertyTypeOptions);
     let filter = {
       property_type: get(searchOptions, 'propertyTypes', []).map(d => d.slug),
       sale_type: get(searchOptions, 'saleType', ''),
@@ -354,9 +353,7 @@ class PropertiesModal extends Component {
         );
       }
     }
-
-    let modifiedSearchType = search_type === 'Buy' ? 'Sale' : search_type;
-    let property_types_options = Object.values(get(propertyTypeOptions, `[${modifiedSearchType}].property_types`, {})).map(d => ({
+    let property_types_options = Object.values(get(propertyTypeOptions, `[${search_type}].property_types`, {})).map(d => ({
       slug: d.slug,
       title: d.title,
       selected: property_type && property_type.indexOf(d.slug) >= 0

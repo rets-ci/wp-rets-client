@@ -90,11 +90,11 @@ class HeaderPropertySingle extends Component {
 
   render() {
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
-    let searchType = this.props.searchType === 'Sale' ? 'Buy' : this.props.searchType;
+    //TODO: remove the bellow code
     let propertySingleStaticFilters = {
       property_type: searchOptions.propertyTypes.map(d => d.slug),
       sale_type: this.props.saleType,
-      search_type: searchType,
+      search_type: this.props.searchType,
       term: [{'wpp_location': this.props.locationTerm}]
     };
 
@@ -146,7 +146,7 @@ class HeaderPropertySingle extends Component {
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav hidden-sm-down`} onClick={this.handleSaleTypeClick}>
             <a href="#">
-              {searchType}
+              {this.props.searchType}
               { this.props.saleTypesPanelOpen
                   ? <i className="fa fa-caret-down up ml-2"></i>
                   : <i className="fa fa-caret-down ml-2"></i>
