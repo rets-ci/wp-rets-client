@@ -240,6 +240,17 @@ namespace UsabilityDynamics\WPP {
 
         $_taxonomies = $this->get( 'config.taxonomies', array() );
 
+        // We must not set taxonomy as system one,
+        // If it's not registered via main WP-Property logic.
+        //
+        // For example, if we disabled specific feature, which registered system taxonomy, - it's not system anymore
+        // And we should be able to delete or update it.
+        foreach( $_taxonomies as $_taxonomy => $_taxonomy_data ) {
+          if( !isset( $taxonomies[ $_taxonomy ] ) ) {
+            $_taxonomies[ $_taxonomy ][ 'system' ] = false;
+          }
+        }
+
         foreach( $taxonomies as $_taxonomy => $_taxonomy_data ) {
 
           // Make sure we dont override any [system] taxonomies.

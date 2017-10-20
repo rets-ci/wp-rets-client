@@ -52,7 +52,7 @@ namespace UsabilityDynamics\WPP {
         add_filter('wpp_taxonomies', function( $taxonomies = array() ) {
           $taxonomies[ self::$taxonomy ] = array(
             'default' => true,
-            'readonly' => true,
+            'readonly' => false,
             'system' => true,
             'hidden' => true,
             'hierarchical' => true,
@@ -83,7 +83,7 @@ namespace UsabilityDynamics\WPP {
           );
           $taxonomies[ self::$sub_taxonomy ] = array(
             'default' => true,
-            'readonly' => true,
+            'readonly' => false,
             'system' => true,
             'hidden' => true,
             'hierarchical' => false,
@@ -110,8 +110,8 @@ namespace UsabilityDynamics\WPP {
               'not_found' => sprintf(_x('No %s Sub type found', 'property sub type taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
               'menu_name' => sprintf(_x('%s Sub Type', 'property sub type taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
             ),
-            'query_var' => 'type',
-            'rewrite' => array('slug' => 'type')
+            'query_var' => 'sub_type',
+            'rewrite' => array('slug' => 'sub_type')
           );
           return $taxonomies;
         }, 10 );
@@ -615,16 +615,40 @@ namespace UsabilityDynamics\WPP {
        */
       public function elastic_title_suggest( $title_suggest, $args, $post_id ) {
 
-        $terms = wp_get_object_terms( $post_id, self::$taxonomy );
+        $types = wp_get_object_terms( $post_id, self::$taxonomy );
+        $subtypes = wp_get_object_terms( $post_id, self::$sub_taxonomy );
 
-        if( empty( $terms ) ) {
+        if( empty( $types ) ) {
           return $title_suggest;
         }
 
         $listing_type = array();
-        foreach( $terms as $term ) {
-          $listing_type[ sanitize_title( 'slug-' . $term->slug ) ] = $term->slug;
-          $listing_type[ sanitize_title( 'name-' . $term->name ) ] = $term->name;
+        foreach( $types as $type ) {
+          $listing_type[ sanitize_title( 'slug-' . $type->slug ) ] = $type->slug;
+          $listing_type[ sanitize_title( 'name-' . $type->name ) ] = $type->name;
+
+          // Combine Property Types and Property Sub Types
+          if( !empty( $subtypes ) && is_array( $subtypes ) ) {
+
+            foreach( $subtypes as $subtype ) {
+
+              if( !isset( $listing_type[ sanitize_title( 'slug-' . $subtype->slug ) ] ) ) {
+                $listing_type[ sanitize_title( 'slug-' . $subtype->slug ) ] = $subtype->slug;
+              }
+
+              if( !isset( $listing_type[ sanitize_title( 'name-' . $subtype->name ) ] ) ) {
+                $listing_type[ sanitize_title( 'name-' . $subtype->name ) ] = $subtype->name;
+              }
+
+              $combined_slug = sanitize_title( $type->slug . '-' . $subtype->slug );
+              $combined_value = sanitize_title( $type->name . '-' . $subtype->name );
+
+              $listing_type[ sanitize_title( 'slug-' . $combined_slug ) ] = $combined_slug;
+              $listing_type[ sanitize_title( 'name-' . $combined_value ) ] = $type->name . ' ' . $subtype->name;
+            }
+
+          }
+
         }
 
         $listing_type = array_unique( $listing_type );
