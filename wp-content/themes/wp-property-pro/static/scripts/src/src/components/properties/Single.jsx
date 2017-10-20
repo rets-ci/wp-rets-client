@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import renderHTML from 'react-render-html';
 import scrollToElement from 'scroll-to-element';
 import ImageMixer from './Components/ImageMixer.jsx';
-import Util from '../Util.jsx';
+import Util from 'app_root/components/Util.jsx';
 
 let getAgentImage = (agentObject) => get(agentObject, 'data.images[0][0]', null);
 let getAgentName = (agentObject) => get(agentObject, 'data.display_name', null);
@@ -95,6 +95,14 @@ class Single extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.mlsId !== nextProps.mlsId) {
+      const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
+      const node = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}image-mixer`);
+      Util.scrollToElement(container, node, 500);
+    }
+  }
+
   correctAgent = (RETSAgent, agents, scenario) => {
     let agent;
     if (scenario === 'rentRDC') {
@@ -124,9 +132,13 @@ class Single extends Component {
   }
 
   requestButtonClicked = tab => {
-    scrollToElement('#' + this.agentCardContainer.id, {
-      duration: 500
-    });
+    if (this.props.fromMapView) {
+      const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
+      const node = document.getElementById(this.agentCardContainer.id);
+      Util.scrollToElement(container, node, 500);
+    } else {
+      scrollToElement('#' + this.agentCardContainer.id, { duration: 500 });
+    }
     this.props.setAgentCardTab(tab);
   }
 

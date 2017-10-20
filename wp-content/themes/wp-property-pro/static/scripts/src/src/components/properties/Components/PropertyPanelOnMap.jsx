@@ -43,6 +43,7 @@ class PropertyPanelOnMap extends Component {
             agents={agents}
             {...propertyMeta}
             all={property}
+            fromMapView={true}
           />
         : <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}></div>
       }
