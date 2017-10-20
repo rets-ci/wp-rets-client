@@ -105,8 +105,10 @@ class SingleContainer extends Component {
     }
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
-        <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>
+      <div>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
+          <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>
+        </div>
         {!property ?
           (isFetching ?
             <LoadingAccordion containerHeight="600px" verticallyCentered={true} /> :
