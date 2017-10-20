@@ -408,7 +408,7 @@ class MapSearchResults extends Component {
     );
 
     return (
-      <div className="h-100">
+      <div className="h-100 d-flex flex-column">
         <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
           <HeaderSearch
             historyPush={history.push}

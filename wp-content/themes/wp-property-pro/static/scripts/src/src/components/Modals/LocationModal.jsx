@@ -6,6 +6,7 @@ import {
 } from '../../actions/index.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
 import GroupTransition from '../GroupTransition.jsx';
+import PaginatedSearchResults from './components/PaginatedSearchResults.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
@@ -104,8 +105,10 @@ class LocationModal extends Component {
     this.props.closeModal();
   }
 
-  handleResultClick = (eve, tax, term, termType, text, searchType, modifyType, url, historyPush) => {
-    eve.preventDefault();
+  handleResultClick = (result) => {
+    const { taxonomy: tax, term, termType, text, url } = result;
+    const { searchType, modifyType, history } = this.props;
+
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
     if (searchOptions.error) {
       console.log('%c ' + searchOptions.msg, 'color: #ff0000');
@@ -114,7 +117,7 @@ class LocationModal extends Component {
         propertyTypes,
         saleType
       } = searchOptions;
-      if (url === null) {
+      if (!url) {
         // Properties results page
         if (this.props.propertiesModalMode) {
           this.props.onTermSelect({
@@ -145,12 +148,12 @@ class LocationModal extends Component {
           ];
           let searchURL = Util.createSearchURL('/search', params);
           
-          historyPush(searchURL);
+          history.push(searchURL);
           this.props.closeModal();
         }
       } else {
         // Single property page
-        historyPush(url)
+        history.push(url)
         this.props.closeModal();
       }
     }
@@ -195,42 +198,13 @@ class LocationModal extends Component {
   render() {
     let {
       errorMessage,
-      history,
       isFetching,
       searchResults,
-      searchType,
-      modifyType
     } = this.props;
-    let self = this;
-    let resultsElements = searchResults.map((s, k) => {
-      return (
-        <div className="row" key={s.key}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}search-result-group`}>
-            <div className="container">
-              <div className="row">
-                <h4 className={Lib.THEME_CLASSES_PREFIX + "search-title"}>{s.text}</h4>
-              </div>
-            </div>
-            {s.children.length ?
-              <ol className="list-group">
-                {s.children.map((c, i) =>
-                  <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}search-result-item border-0 p-0`} key={i}>
-                    <div className="container">
-                      <div className="row">
-                        <a href="#" className="m-0"
-                           onClick={(eve) => self.handleResultClick(eve, c.taxonomy, c.term, c.termType, c.text, searchType, modifyType, get(c, 'url', null), history.push)}>
-                          {c.text}
-                        </a>
-                      </div>
-                    </div>
-                  </li>
-                )}
-              </ol>
-              : null}
-          </div>
-        </div>
-      )
-    });
+
+    let resultsElements = searchResults.map(s => (
+      <PaginatedSearchResults key={s.key} group={s} onClickResult={this.handleResultClick} />
+    ));
 
     let placeholder = 'Address, City, Zip, or Neighborhood.';
     let inputClasses = 'form-control';

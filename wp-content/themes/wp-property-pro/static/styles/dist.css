@@ -1366,6 +1366,20 @@ button.swiper-pagination-bullet {
   -o-transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
   transition: opacity 300ms ease-in-out, transform 300ms ease-in-out; }
 
+.fade-enter {
+  opacity: 0.01; }
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in; }
+
+.fade-exit {
+  opacity: 1; }
+
+.fade-exit.fade-exit-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in; }
+
 /*-----------------------------------------------------------------------------------*/
 /*  css animations
 /*-----------------------------------------------------------------------------------*/
@@ -1672,12 +1686,15 @@ button.swiper-pagination-bullet {
   padding: 0;
   overflow: hidden;
   background-color: transparent;
-  z-index: 10; }
+  z-index: 10;
+  display: block !important; }
   .propertypro-listing-map .propertypro-panel-on-map.propertypro-hide {
-    display: block !important;
-    animation: slideToLeft .3s ease-in-out forwards; }
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease-in; }
   .propertypro-listing-map .propertypro-panel-on-map.propertypro-display {
-    animation: slideToRight .3s ease-in-out forwards; }
+    opacity: 1;
+    transition: opacity 500ms ease-in; }
 
 .propertypro-listing-map .propertypro-single-container {
   width: calc(100% - 25px);
@@ -1703,26 +1720,6 @@ button.swiper-pagination-bullet {
 .propertypro-listing-map .propertypro-panel-on-map-open {
   top: 70px; }
 
-@keyframes slideToRight {
-  0% {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-100%); }
-  100% {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0); } }
-
-@keyframes slideToLeft {
-  0% {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0); }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-100%); } }
-
 .propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open .propertypro-single-container::after {
   position: absolute;
   content: '';
@@ -1737,6 +1734,41 @@ button.swiper-pagination-bullet {
 
 .propertypro-single-container {
   position: relative; }
+
+.propertypro-location-modal {
+  z-index: 1100; }
+
+.propertypro-search-title {
+  color: #8b8c8d; }
+
+.propertypro-search-result-group {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  cursor: pointer; }
+  .propertypro-search-result-group .list-group {
+    margin-bottom: 1.5rem; }
+    .propertypro-search-result-group .list-group .list-group-item {
+      border: none;
+      background-color: inherit;
+      font-family: 'Playfair Display';
+      font-size: 2.5rem;
+      line-height: 3.25rem;
+      padding: 0;
+      margin-top: 1.5rem;
+      color: #414141; }
+      .propertypro-search-result-group .list-group .list-group-item:hover, .propertypro-search-result-group .list-group .list-group-item:focus {
+        background-color: rgba(255, 255, 255, 0.5); }
+
+/* Extra small devices (portrait phones, less than 640px) */
+@media screen and (max-width: 40em) {
+  .propertypro-search-modal .propertypro-search-result-group {
+    margin-top: 1rem; }
+  .propertypro-search-result-group .list-group {
+    margin-bottom: 1rem; }
+    .propertypro-search-result-group .list-group .list-group-item {
+      font-size: 1rem;
+      line-height: 2.25rem;
+      margin-top: 0.5rem; } }
 
 /* @TODO split this file into components */
 /**
@@ -1810,9 +1842,6 @@ html, body {
   height: 100%; }
 
 /** Layout **/
-.propertypro-page-content, .propertypro-footer-container {
-  flex: 1 0 auto; }
-
 .propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open {
   overflow: hidden; }
 
@@ -2789,36 +2818,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-search-modal form input.propertypro-with-padding {
   padding: .5rem 1rem; }
-
-.propertypro-search-result-group {
-  margin-top: 2rem;
-  width: 100%; }
-
-.propertypro-search-title {
-  color: #8b8c8d;
-  padding-left: .5rem; }
-
-.propertypro-search-modal-box ol {
-  list-style-type: none;
-  margin: 0 0 1.875rem;
-  padding: 0; }
-
-.propertypro-location-modal {
-  z-index: 1100; }
-
-.propertypro-search-modal-box ol li.propertypro-search-result-item {
-  display: block;
-  margin-top: 1.5rem;
-  background-color: inherit; }
-
-.propertypro-search-modal-box ol li.propertypro-search-result-item:hover, .propertypro-search-modal-box ol li:focus {
-  background-color: rgba(255, 255, 255, 0.5); }
-
-.propertypro-search-modal-box ol li.propertypro-search-result-item a {
-  font-size: 2.5rem;
-  line-height: 3.25rem;
-  padding-left: .5rem;
-  color: #414141; }
 
 .propertypro-filter-section {
   margin-bottom: 4rem; }
@@ -4543,15 +4542,6 @@ ul.propertypro-details-list li span.propertypro-item-name {
   .propertypro-search-modal .propertypro-modal-header .btn {
     padding: 0.4rem 1rem;
     font-size: 1rem; }
-  .propertypro-search-modal .propertypro-search-result-group {
-    margin-top: 1rem; }
-  .propertypro-search-modal-box ol {
-    margin-bottom: 1rem; }
-  .propertypro-search-modal-box ol li.propertypro-search-result-item {
-    margin-top: 0.5rem; }
-  .propertypro-search-modal-box ol li.propertypro-search-result-item a {
-    font-size: 1rem;
-    line-height: 2.25rem; }
   .propertypro-image-mixer {
     min-height: 20rem; } }
 

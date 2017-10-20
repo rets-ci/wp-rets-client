@@ -83,10 +83,6 @@ html, body {
 
 /** Layout **/
 
-.propertypro-page-content, .propertypro-footer-container {
-    flex: 1 0 auto;
-}
-
 .propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open {
     overflow: hidden;
 }
@@ -1273,43 +1269,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-search-modal form input.propertypro-with-padding {
     padding: .5rem 1rem;
-}
-
-.propertypro-search-result-group {
-    margin-top: 2rem;
-    width: 100%;
-}
-
-.propertypro-search-title {
-    color: #8b8c8d;
-    padding-left: .5rem;
-}
-
-.propertypro-search-modal-box ol {
-    list-style-type: none;
-    margin: 0 0 1.875rem;
-    padding: 0;
-}
-
-.propertypro-location-modal {
-    z-index: 1100;
-}
-
-.propertypro-search-modal-box ol li.propertypro-search-result-item {
-    display: block;
-    margin-top: 1.5rem;
-    background-color: inherit;
-}
-
-.propertypro-search-modal-box ol li.propertypro-search-result-item:hover, .propertypro-search-modal-box ol li:focus {
-    background-color: rgba(255, 255, 255, .5);
-}
-
-.propertypro-search-modal-box ol li.propertypro-search-result-item a {
-    font-size: 2.5rem;
-    line-height: 3.25rem;
-    padding-left: .5rem;
-    color: #414141;
 }
 
 .propertypro-filter-section {
@@ -3608,23 +3567,6 @@ ul.propertypro-details-list li span.propertypro-item-name {
     .propertypro-search-modal .propertypro-modal-header .btn {
         padding: 0.4rem 1rem;
         font-size: 1rem;
-    }
-
-    .propertypro-search-modal .propertypro-search-result-group {
-        margin-top: 1rem;
-    }
-
-    .propertypro-search-modal-box ol {
-        margin-bottom: 1rem;
-    }
-
-    .propertypro-search-modal-box ol li.propertypro-search-result-item {
-        margin-top: 0.5rem;
-    }
-
-    .propertypro-search-modal-box ol li.propertypro-search-result-item a {
-        font-size: 1rem;
-        line-height: 2.25rem;
     }
 
     .propertypro-image-mixer {

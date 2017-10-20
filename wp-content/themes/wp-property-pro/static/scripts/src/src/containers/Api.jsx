@@ -130,7 +130,7 @@ class Api {
         "text": params.term,
         "completion": {
           "field": "title_suggest",
-          "size": Lib.POST_SUGGEST_COUNT,
+          "size": Lib.AGGREGATION_LOAD_LIMIT,
           "contexts": {
             "listing_type_status": type_status_array
           }
@@ -269,7 +269,7 @@ class Api {
       body.aggs[aggIndex] = {
         "terms": {
           "field": get(aggregation, 'terms.field', ''),
-          "size": Lib.TOP_AGGREGATIONS_COUNT
+          "size": Lib.AGGREGATION_LOAD_LIMIT
         }
       };
 
