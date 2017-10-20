@@ -1,6 +1,11 @@
+## Flush Imported Properties Data
+
+In some cases, we have to flush all imported data. To make ability to sync everything from scratch.
+Here is the instructions, how it can be done fast.
+
 ### Steps
 
-Because of bug amount of the data, the process of removing all properties, their attachments and taxonomy terms may take too long time.
+Because of huge amount of the data, the process of removing all properties, their attachments and taxonomy terms may take too long time.
 To force the process, the following steps are proposed:
 
 * Delete media attachments and post meta using direct SQL queries. See: SQL queries section below.
