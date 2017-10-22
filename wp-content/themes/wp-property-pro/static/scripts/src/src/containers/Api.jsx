@@ -344,12 +344,14 @@ class Api {
     });
   }
 
-  static createESSearchQuery(params) {
+  static createESSearchQuery(params, defaults) {
     let query = {
       "bool": {
         "must": []
       }
     };
+    console.log('params');
+    console.log(params);
     if (params.geoCoordinates) {
       query.bool.must.push(
         {
@@ -386,7 +388,7 @@ class Api {
 
     query.bool.must.push({
       "terms": {
-        "terms.wpp_listing_type.slug": params.property_type || []
+        "terms.wpp_listing_type.slug": params.property_subtype || defaults['property_subtype']
       }
     });
 
@@ -535,13 +537,17 @@ class Api {
     }, callback);
   }
 
-  static makeStandardPropertySearch(params, callback) {
+  static makeStandardPropertySearch(params, propertyTypeOptions, callback) {
     let searchParams = {
       ...params,
       size: Lib.PROPERTY_PER_PAGE
     };
+
+    let defaults = {
+      property_subtype: get(propertyTypeOptions[params.search_type], 'property_types', []).map(d => d.slug)
+    };
     
-    let query = this.createESSearchQuery(searchParams);
+    let query = this.createESSearchQuery(searchParams, defaults);
     let url = this.getPropertySearchRequestURL();
     this.search(url, query, (err, response) => {
       callback(err, query, response);
