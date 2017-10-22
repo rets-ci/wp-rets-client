@@ -350,8 +350,6 @@ class Api {
         "must": []
       }
     };
-    console.log('params');
-    console.log(params);
     if (params.geoCoordinates) {
       query.bool.must.push(
         {
@@ -377,14 +375,21 @@ class Api {
         }
       );
     }
-
+    let saleTypeShouldArray = [];
     if (params.sale_type) {
-      query.bool.must.push({
-        "term": {
-          "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
-        }
+      params.sale_type.forEach(saleType => {
+        saleTypeShouldArray.push({
+          "term": {
+            "terms.wpp_listing_status.slug": 'for-' + saleType.toLowerCase()
+          }
+        })
       });
     }
+    query.bool.must.push({
+      "bool": {
+        "should": saleTypeShouldArray
+      }
+    });
 
     query.bool.must.push({
       "terms": {

@@ -299,6 +299,9 @@ class PropertiesModal extends Component {
     delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     delete filters['search_type'];
+    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete filters['sale_type']
+    }
     filters = Util.customFormatToSearchObject(filters);
     let collection = Util.searchObjectToCollection(filters);
     collection = collection.concat(reddoorTermObjects);
@@ -339,7 +342,6 @@ class PropertiesModal extends Component {
         lotSize,
         price,
         property_subtype,
-        sale_type,
         search_type,
         sqft,
         term
@@ -483,7 +485,7 @@ class PropertiesModal extends Component {
         <div className="row" key="type">
           <div
             className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
-            <h3>Type</h3>
+            <h3>Property Type</h3>
             <div className="filter-type">
               {propertySubtypeOptions.map(d =>
                 <a

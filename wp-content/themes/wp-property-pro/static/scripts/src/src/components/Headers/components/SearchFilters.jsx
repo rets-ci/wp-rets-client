@@ -90,6 +90,9 @@ class searchFilters extends Component {
 
   updateURLWithQueryParam = (queryParam) => {
     delete queryParam['search_type']
+    if (queryParam['sale_type'] && isEqual(queryParam['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete queryParam['sale_type']
+    }
     queryParam = Util.customFormatToSearchObject(queryParam);
     let searchCollection = Util.searchObjectToCollection(queryParam);
     let searchURL = Util.createSearchURL('/search', searchCollection);

@@ -51,6 +51,9 @@ const mapStateToProps = (state, ownProps) => {
   searchQueryObject['search_type'] = searchType;
   if (!searchQueryObject.sale) {
     searchQueryObject.sale = ['Rent', 'Sale'];
+  } else {
+    // we only support an array of sale items
+    searchQueryObject.sale = [searchQueryObject.sale];
   }
   searchQueryObject = Util.searchObjectToCustomFormat(searchQueryObject);
   searchQueryObject['term'] = termDetails;
@@ -254,6 +257,9 @@ class MapSearchResults extends Component {
       filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
     }
     delete filters['search_type'];
+    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete filters['sale_type']
+    }
     filters = Util.customFormatToSearchObject(filters);
     let searchCollection = Util.searchObjectToCollection(filters);
     let searchURL = Util.createSearchURL('/search', searchCollection);
@@ -267,6 +273,9 @@ class MapSearchResults extends Component {
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: geoCoordinates['topLeft']['lat'], lon: geoCoordinates['topLeft']['lon']};
     delete filters['search_type'];
+    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete filters['sale_type']
+    }
     filters = Util.customFormatToSearchObject(filters);
     let searchCollection = Util.searchObjectToCollection(filters);
     let searchURL = Util.createSearchURL('/search', searchCollection);
