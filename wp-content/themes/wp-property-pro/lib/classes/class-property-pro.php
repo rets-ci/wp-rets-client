@@ -228,34 +228,25 @@ namespace UsabilityDynamics {
                  'Commercial'
                ] as $label) {
 
-
         $sale_type = $label;
-
-        $_types = $_property_types;
-
-        if (!in_array($label, ['Rent', 'Sale'])){
-          $term = get_term_by('slug', $label, $taxonomy);
-          $types = array_map(function ($id) use ($taxonomy) {
-            return [
-              'slug' => get_term_by('id', $id, $taxonomy)->slug,
-              'title' => get_term_by('id', $id, $taxonomy)->name
-            ];
-          }, get_term_children($term->term_id, $taxonomy));
-          $sale_type = 'Sale';
-
-          $_types = $types;
-        }elseif($label === 'Sale'){
-          $label = 'Buy';
-          $_types = array_filter($_property_types, function($type){
-            return $type['slug'] !== 'residential-apartment';
-          });
+        if (in_array($label, ['Rent', 'Sale'])){
+          $type = 'residential';
+        }
+        else {
+          $sale_type = "";
+          $type = strtolower($label);
         }
 
-        $property_search_options[$label] = [
-          'sale_type' => $sale_type,
-          'property_types' => array_values($_types)
+        $option = [
+            'search' => $label,
+            'property_type' => $type
         ];
 
+        if($sale_type){
+          $option['sale'] = $sale_type;
+        }
+
+        $property_search_options[] = $option;
       }
 
       $params['property_search_options'] = $property_search_options;
