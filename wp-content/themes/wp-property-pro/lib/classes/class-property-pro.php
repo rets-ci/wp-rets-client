@@ -237,8 +237,10 @@ namespace UsabilityDynamics {
           $type = strtolower($label);
         }
 
+        $search = $label === 'Sale' ? 'Buy' : $label;
+
         $option = [
-            'search' => $label,
+            'search' => $search,
             'property_type' => $type
         ];
 
