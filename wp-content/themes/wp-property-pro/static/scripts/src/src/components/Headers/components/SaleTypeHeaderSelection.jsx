@@ -17,7 +17,7 @@ class SaleTypeHeaderSelection extends Component {
   }
 
   handleSaleSelectionItemClick = (currentURL, termFilters, locationTerm, searchType, propertyTypeOptions, historyPush) => {
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType === 'Buy' ? 'Sale' : searchType, propertyTypeOptions);
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, propertyTypeOptions);
     if (searchOptions.error) {
       // TODO: better handle these types of error
       console.log('%c ' + searchOptions.msg, 'color: #ff0000');
