@@ -443,16 +443,20 @@ namespace UsabilityDynamics {
           }
 
           /** Get property location */
+          $location_city_term_type = 'wpp_location_city';
           $city_terms = array_filter(array_map(function ($term) {
             $term->term_type = get_term_meta($term->term_id, '_type', true);
             return $term;
-          }, wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false])), function ($term) {
-            return $term->term_type === 'wpp_location_city_state';
+          }, wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false])), function ($term) use ($location_city_term_type) {
+            return $term->term_type === $location_city_term_type;
           });
 
           if(count($city_terms) === 1){
             $city_term = reset($city_terms);
-            $params['post']['location'] = $city_term->name;
+            $params['post']['location'] = [
+                'term_type' => $location_city_term_type,
+                'term' => $city_term->name
+            ];
           }
 
           /** Get property type */
