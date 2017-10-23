@@ -344,7 +344,7 @@ class Api {
     });
   }
 
-  static createESSearchQuery(params) {
+  static createESSearchQuery(params, defaults) {
     let query = {
       "bool": {
         "must": []
@@ -375,18 +375,25 @@ class Api {
         }
       );
     }
-
+    let saleTypeShouldArray = [];
     if (params.sale_type) {
-      query.bool.must.push({
-        "term": {
-          "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
-        }
+      params.sale_type.forEach(saleType => {
+        saleTypeShouldArray.push({
+          "term": {
+            "terms.wpp_listing_status.slug": 'for-' + saleType.toLowerCase()
+          }
+        })
       });
     }
+    query.bool.must.push({
+      "bool": {
+        "should": saleTypeShouldArray
+      }
+    });
 
     query.bool.must.push({
       "terms": {
-        "terms.wpp_listing_type.slug": params.property_type || []
+        "terms.wpp_listing_type.slug": params.property_subtype || defaults['property_subtype']
       }
     });
 
@@ -535,13 +542,17 @@ class Api {
     }, callback);
   }
 
-  static makeStandardPropertySearch(params, callback) {
+  static makeStandardPropertySearch(params, propertyTypeOptions, callback) {
     let searchParams = {
       ...params,
       size: Lib.PROPERTY_PER_PAGE
     };
+
+    let defaults = {
+      property_subtype: get(propertyTypeOptions[params.search_type], 'property_types', []).map(d => d.slug)
+    };
     
-    let query = this.createESSearchQuery(searchParams);
+    let query = this.createESSearchQuery(searchParams, defaults);
     let url = this.getPropertySearchRequestURL();
     this.search(url, query, (err, response) => {
       callback(err, query, response);
