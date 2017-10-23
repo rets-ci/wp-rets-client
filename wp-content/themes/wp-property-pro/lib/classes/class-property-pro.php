@@ -237,13 +237,16 @@ namespace UsabilityDynamics {
           $type = strtolower($label);
         }
 
+        /** Mapping for search type option label */
         $search = $label === 'Sale' ? 'Buy' : $label;
 
+        /** Build option array */
         $option = [
             'search' => $search,
             'property_type' => $type
         ];
 
+        /** Include sale type just if it is not empty */
         if($sale_type){
           $option['sale'] = $sale_type;
         }
@@ -778,31 +781,39 @@ namespace UsabilityDynamics {
             if ($k === 'search_options' && is_array($field)) {
               $new_field = [];
               foreach ($field as $field_key => $value) {
+
+                /** Skip empty values */
                 if (!$value) {
                   continue;
                 }
 
+                /** Determine sale type from field key */
                 $options_array = explode('-', $field_key);
                 $label = $options_array[0];
                 $sale_type = $options_array[1];
+
+                /** Remove un-needed vars */
                 unset($options_array[0]);
                 unset($options_array[1]);
-                $property_types = array_values($options_array);
+
+                /** Determine property type */
+                $property_type = reset(array_values($options_array));
 
                 /** Mapping for search type option label */
-                if($label === 'Sale'){
-                  $label = 'Buy';
+                $search = $label === 'Sale' ? 'Buy' : $label;
+
+                /** Build option array */
+                $option = [
+                    'search' => $search,
+                    'property_type' => str_replace('.', '-', $property_type)
+                ];
+
+                /** Include sale type just if it is not empty */
+                if($sale_type){
+                  $option['sale'] = $sale_type;
                 }
 
-                $new_field[$label] = [
-                  'sale_type' => $sale_type,
-                  'property_types' => array_map(function($type){
-                    return [
-                      'title' => ucfirst(str_replace('.', ' ', $type)),
-                      'slug' => str_replace('.', '-', $type)
-                    ];
-                  }, $property_types)
-                ];
+                $new_field[$label] = $option;
               }
 
               $field = $new_field;
