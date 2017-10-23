@@ -8,7 +8,7 @@ class SearchFilterDescription extends Component {
     bathrooms: PropTypes.string,
     bedrooms: PropTypes.string,
     price: PropTypes.object,
-    saleType: PropTypes.string.isRequired,
+    saleType: PropTypes.array,
     total: PropTypes.number
   }
 
@@ -22,7 +22,7 @@ class SearchFilterDescription extends Component {
     } = props;
     let text = '';
     if (total && saleType) {
-      text += `There are ${total} homes for ${saleType} in this area`;
+      text += `There are ${total} homes for ${saleType.join(' and ')} in this area`;
     }
     if (price && !(price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
       text += ` that are priced`;
@@ -46,7 +46,7 @@ class SearchFilterDescription extends Component {
   }
 
   render() {
-    let headText = `Homes for ${this.props.saleType}`;
+    let headText = `Homes for ${this.props.saleType.join(' and ')}`;
     
     let mainText = this.getMainText(this.props);
     return (

@@ -9,7 +9,8 @@ class FilterBar extends Component {
     deleteSingleLocalFilter: PropTypes.func.isRequired,
     deleteLocalFilterTerm: PropTypes.func.isRequired,
     filters: PropTypes.object.isRequired,
-    deleteLastLocalFilterTerm: PropTypes.func.isRequired
+    deleteLastLocalFilterTerm: PropTypes.func.isRequired,
+    deleteSubPropertyTypeFilter: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -54,6 +55,8 @@ class FilterBar extends Component {
     let priceElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
+    let subPropertyTypeFilter = filters['property_subtype'];
+    let subPropertyTypeElement;
     if (bathroomsFilter) {
       bathroomsElement = (
         <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('bathrooms')} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
@@ -78,6 +81,12 @@ class FilterBar extends Component {
       );
     }
 
+    if (subPropertyTypeFilter) {
+      subPropertyTypeElement = subPropertyTypeFilter.map((s, i) =>
+        <FilterTag key={JSON.stringify(s)} handleRemoveFilter={() => this.props.deleteSubPropertyTypeFilter(s.slug)} display={s.title} value={s.slug} />
+      );
+    }
+
     if (sqftFilter) {
       sqftElement = (
         <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('sqft')} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
@@ -92,6 +101,7 @@ class FilterBar extends Component {
         {priceElement}
         {sqftElement}
         {lotSizeElement}
+        {subPropertyTypeElement}
         {!termFilterElement &&
           <input type="text" size="1" placeholder="Select bedroom type, amenities"/>
         }

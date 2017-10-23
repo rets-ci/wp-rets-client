@@ -121,7 +121,7 @@ class PropertiesModal extends Component {
   }
 
   displayAllFilters(filters) {
-    return !!filters['bathrooms'] || !!filters['sqft'] || !!filters['lotSize'];
+    return !!filters['bathrooms'] || !!filters['sqft'] || !!filters['lotSize'] || !!filters['property_subtype'];
   }
 
   setInitialFilters(searchFilters, defaultFiltervalues) {
@@ -150,6 +150,17 @@ class PropertiesModal extends Component {
     this.props.closeModal();
   }
 
+  handleDeleteSubPropertyTypeFilter = slug => {
+    let filters = Object.assign({}, this.state.filters);
+    filters['property_subtype'] = filters['property_subtype'].filter(d => d.slug !== slug);
+    
+    // remove property_subtype if none exists
+    if (!filters['property_subtype'].length) {
+      delete filters['property_subtype'];
+    }
+    this.setState({filters: filters});
+  }
+
   handlePriceSelect = (start, to) => {
     let filter = {
       price: {
@@ -162,14 +173,12 @@ class PropertiesModal extends Component {
   }
 
   handleSearchTypeSelect = (searchType, propertyTypeOptions) => {
-    let modifiedSearchType = searchType === 'Buy' ? 'Sale' : searchType;
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(modifiedSearchType, propertyTypeOptions);
-    let filter = {
-      property_type: get(searchOptions, 'propertyTypes', []).map(d => d.slug),
-      sale_type: get(searchOptions, 'saleType', ''),
-      search_type: searchType
-    };
-    let filters = Object.assign({}, this.state.filters, filter);
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, propertyTypeOptions);
+    let property_type = get(searchOptions, 'propertyTypes', []).map(d => d.slug);
+    let sale_type = get(searchOptions, 'saleType', '');
+    let searchTypeArray = Util.determineSearchTypeArrayParams(searchType, sale_type);
+    let searchTypeObject = searchTypeArray.reduce((a, b) => { a[b.key] = b.values[0]; return a; }, {});
+    let filters = Object.assign({}, this.state.filters, searchTypeObject);
     this.setState({filters: filters});
   }
 
@@ -218,16 +227,23 @@ class PropertiesModal extends Component {
     this.setState({filters: filters});
   }
 
-  handlePropertyTypeToggle = val => {
+  handlePropertySubTypeToggle = filter => {
     let filters = Object.assign({}, this.state.filters);
     // we check whether property_type exists for cases where all property types have been removed by the user
-    let propertyTypeArray = filters.property_type ? filters.property_type.slice(0) : [];
-    if (propertyTypeArray.indexOf(val) >= 0) {
-      propertyTypeArray = difference(propertyTypeArray, [val]);
+    let propertySubTypeArray = filters.property_subtype ? filters.property_subtype.slice(0) : [];
+    if (propertySubTypeArray.map(d => d.slug).indexOf(filter.slug) >= 0) {
+      propertySubTypeArray = propertySubTypeArray.filter(d => d.slug !== filter.slug);
     } else {
-      propertyTypeArray.push(val);
+      propertySubTypeArray.push(filter);
     }
-    filters.property_type = propertyTypeArray;
+
+    // if nothing is left in the filter, delete it
+    if (propertySubTypeArray.length) {
+      filters.property_subtype = propertySubTypeArray;
+    } else {
+      delete filters.property_subtype;
+    }
+    
     this.setState({filters: filters});
     
   }
@@ -272,12 +288,20 @@ class PropertiesModal extends Component {
   }
 
   saveFilters = () => {
-    let filters = removeDefaultFilters(this.state.filters, defaultFiltervalues);
+    let filters = Object.assign({}, this.state.filters);
+    if (filters['property_subtype']) {
+      filters['property_subtype'] = filters['property_subtype'].map(d => d.slug);
+    }
+    filters = removeDefaultFilters(filters, defaultFiltervalues);
     let reddoorTermObjects = Util.reddoorConvertToURLTerms(filters.term.slice(0));
     delete filters.term;
     delete filters['selected_property'];
     delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
+    delete filters['search_type'];
+    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete filters['sale_type']
+    }
     filters = Util.customFormatToSearchObject(filters);
     let collection = Util.searchObjectToCollection(filters);
     collection = collection.concat(reddoorTermObjects);
@@ -317,8 +341,7 @@ class PropertiesModal extends Component {
         bathrooms,
         lotSize,
         price,
-        property_type,
-        sale_type,
+        property_subtype,
         search_type,
         sqft,
         term
@@ -354,12 +377,10 @@ class PropertiesModal extends Component {
         );
       }
     }
-
-    let modifiedSearchType = search_type === 'Buy' ? 'Sale' : search_type;
-    let property_types_options = Object.values(get(propertyTypeOptions, `[${modifiedSearchType}].property_types`, {})).map(d => ({
+    let propertySubtypeOptions = Object.values(get(propertyTypeOptions, `[${search_type}].property_types`, {})).map(d => ({
       slug: d.slug,
       title: d.title,
-      selected: property_type && property_type.indexOf(d.slug) >= 0
+      selected: property_subtype && property_subtype.map(d => d.slug).indexOf(d.slug) >= 0
     }));
 
     // keep DOM elements of filter options, to be rendered in transition group
@@ -464,14 +485,14 @@ class PropertiesModal extends Component {
         <div className="row" key="type">
           <div
             className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
-            <h3>Type</h3>
+            <h3>Property Type</h3>
             <div className="filter-type">
-              {property_types_options.map(d =>
+              {propertySubtypeOptions.map(d =>
                 <a
                   key={d.slug}
                   href="#"
                   className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : "")}`}
-                  onClick={() => this.handlePropertyTypeToggle(d.slug)}>{d.title}</a>
+                  onClick={() => this.handlePropertySubTypeToggle(d)}>{d.title}</a>
               )}
             </div>
           </div>
@@ -513,6 +534,7 @@ class PropertiesModal extends Component {
                       <FilterBar
                         deleteSingleLocalFilter={(filterKey) => this.handleSingleFilterRemove(filterKey, defaultFiltervalues)}
                         deleteLocalFilterTerm={this.handleTermFilterRemove}
+                        deleteSubPropertyTypeFilter={this.handleDeleteSubPropertyTypeFilter}
                         filters={displayedOnFilterBar(this.state.filters, defaultFiltervalues)}
                         deleteLastLocalFilterTerm={this.handleLastTermRemove}
                       />

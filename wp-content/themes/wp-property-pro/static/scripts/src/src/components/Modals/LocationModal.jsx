@@ -128,24 +128,19 @@ class LocationModal extends Component {
           });
         } else {
           if (!termType) { console.log('term type is not found, search functionality won\'t work as expected'); }
-
-          let modifiedSearchType = searchType === 'Sale' ? 'Buy' : searchType;
           let termTypeOnlyString = Util.getReddoorSearchTerm(tax, termType);
           let params = [
             {
-              key: 'sale',
-              values: [saleType]
-            },
-            {
-              key: 'search',
-              values: [modifiedSearchType]
-            },
-            {
               key: termTypeOnlyString,
               values: [term]
-            },
-            ...propertyTypes.map(p => ({key: 'property', values: [p.slug]}))
+            }
           ];
+
+
+          let searchTypeArrayParams = Util.determineSearchTypeArrayParams(searchType, saleType);
+
+          params = params.concat(searchTypeArrayParams);
+          
           let searchURL = Util.createSearchURL('/search', params);
           
           history.push(searchURL);
@@ -201,7 +196,6 @@ class LocationModal extends Component {
       isFetching,
       searchResults,
     } = this.props;
-
     let resultsElements = searchResults.map(s => (
       <PaginatedSearchResults key={s.key} group={s} onClickResult={this.handleResultClick} />
     ));

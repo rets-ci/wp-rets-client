@@ -44,36 +44,37 @@ class searchFilters extends Component {
   handleBathroomsFilterRemove = () => {
     let filters = Object.assign({}, this.props.filters);
     delete filters['bathrooms'];
-    let searchCollection = Util.searchObjectToCollection(filters);
-    this.updateURLWithQueryParam(searchCollection);
+    this.updateURLWithQueryParam(filters);
   }
 
   handleBedroomsFilterRemove = () => {
     let filters = Object.assign({}, this.props.filters);
     delete filters['bedrooms'];
-    let searchCollection = Util.searchObjectToCollection(filters);
-    this.updateURLWithQueryParam(searchCollection);
+    this.updateURLWithQueryParam(filters);
+  }
+
+  handleDeleteSubPropertyTypeFilter = (slug) => {
+    let filters = Object.assign({}, this.props.filters);
+    filters['property_subtype'] = filters['property_subtype'].filter(d => d.slug !== slug).map(d => d.slug);
+    this.updateURLWithQueryParam(filters);
   }
 
   handleLotSizefilterRemove = () => {
     let filters = Object.assign({}, this.props.filters);
     delete filters['lotSize'];
-    let searchCollection = Util.searchObjectToCollection(filters);
-    this.updateURLWithQueryParam(searchCollection);
+    this.updateURLWithQueryParam(filters);
   }
 
   handlePriceFilterRemove = () => {
     let filters = Object.assign({}, this.props.filters);
     delete filters['price'];
-    let searchCollection = Util.searchObjectToCollection(filters);
-    this.updateURLWithQueryParam(searchCollection);
+    this.updateURLWithQueryParam(filters);
   }
 
   handleSQFTFilterRemove = () => {
     let filters = Object.assign({}, this.props.filters);
     delete filters['sqft'];
-    let searchCollection = Util.searchObjectToCollection(filters);
-    this.updateURLWithQueryParam(searchCollection);
+    this.updateURLWithQueryParam(filters);
   }
 
   handleTermFilterRemove = termFilter => {
@@ -83,12 +84,18 @@ class searchFilters extends Component {
       return !isEqual(t, termFilter);
     })
     filters['term'] = updatedTermFilter;
-    let searchCollection = Util.searchObjectToCollection(filters);
-    this.updateURLWithQueryParam(searchCollection);
+    
+    this.updateURLWithQueryParam(filters);
   }
 
-  updateURLWithQueryParam(queryParam) {
-    let searchURL = Util.createSearchURL('/search', queryParam);
+  updateURLWithQueryParam = (queryParam) => {
+    delete queryParam['search_type']
+    if (queryParam['sale_type'] && isEqual(queryParam['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete queryParam['sale_type']
+    }
+    queryParam = Util.customFormatToSearchObject(queryParam);
+    let searchCollection = Util.searchObjectToCollection(queryParam);
+    let searchURL = Util.createSearchURL('/search', searchCollection);
     this.props.history.push(searchURL);
   }
 
@@ -131,6 +138,8 @@ class searchFilters extends Component {
     let priceElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
+    let subPropertyTypeFilter = filters['property_subtype'];
+    let subPropertyTypeElement;
 
     if (bathroomsFilter) {
       bathroomsElement = (
@@ -182,6 +191,12 @@ class searchFilters extends Component {
       </span>);
     }
 
+    if (subPropertyTypeFilter) {
+      subPropertyTypeElement = subPropertyTypeFilter.map((s, i) =>
+        <FilterTag key={JSON.stringify(s)} handleRemoveFilter={this.handleDeleteSubPropertyTypeFilter} display={s.title} value={s.slug} />
+      );
+    }
+
     let termFilter = filters['term'];
     let termFilterElement;
     let termFilters = termFilter;
@@ -206,6 +221,7 @@ class searchFilters extends Component {
           {priceElement}
           {lotSizeElement}
           {sqftElement}
+          {subPropertyTypeElement}
           <span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
             <span>+</span>
             More Filters

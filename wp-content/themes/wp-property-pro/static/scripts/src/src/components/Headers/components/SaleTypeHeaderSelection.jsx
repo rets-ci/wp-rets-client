@@ -17,7 +17,7 @@ class SaleTypeHeaderSelection extends Component {
   }
 
   handleSaleSelectionItemClick = (currentURL, termFilters, locationTerm, searchType, propertyTypeOptions, historyPush) => {
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType === 'Buy' ? 'Sale' : searchType, propertyTypeOptions);
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, propertyTypeOptions);
     if (searchOptions.error) {
       // TODO: better handle these types of error
       console.log('%c ' + searchOptions.msg, 'color: #ff0000');
@@ -29,17 +29,9 @@ class SaleTypeHeaderSelection extends Component {
       saleType
     } = searchOptions;
 
-    let params = [
-      {
-        key: 'sale',
-        values: [saleType]
-      },
-      {
-        key: 'search',
-        values: [searchType]
-      },
-      ...propertyTypes.map(p => ({key: 'property', values: [p.slug]}))
-    ];
+    let params = [];
+    let searchTypeArrayParams = Util.determineSearchTypeArrayParams(searchType, saleType);
+    params = params.concat(searchTypeArrayParams);
 
     if (locationTerm) {
       //TODO: this need to be handled but we we can't do it without the term type
