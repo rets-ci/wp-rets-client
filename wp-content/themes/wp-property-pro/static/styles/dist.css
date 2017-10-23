@@ -2846,6 +2846,13 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
   margin-right: .30em;
   margin-bottom: .5rem; }
 
+.propertypro-filter-section .propertypro-filter-section-button:focus {
+  outline: none;
+  box-shadow: none; }
+
+.propertypro-filter-section .propertypro-filter-section-button:hover {
+  background-color: #fff; }
+
 .propertypro-filter-section .btn-primary.selected {
   background-color: #fff; }
 

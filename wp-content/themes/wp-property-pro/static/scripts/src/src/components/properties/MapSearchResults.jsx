@@ -38,10 +38,23 @@ const isMobile = window.innerWidth < 576;
 
 
 const mapStateToProps = (state, ownProps) => {
-
+  let propertyTypeOptions = get(state, 'propertyTypeOptions.options');
   let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
   let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
   let termDetails = Util.reddoorTermDetailsFromSearchParam(searchQueryParamsCollection);
+  // get the search type
+  let searchType = Util.determineSearchType(searchQueryObject.property_type, searchQueryObject.sale && searchQueryObject.sale.length ? searchQueryObject.sale[0] : null);
+  if (searchType instanceof Error) {
+    //TODO: handle not determining searchQueryObject
+    console.log('error determining search type: ', searchType.message);
+  }
+  searchQueryObject['search_type'] = searchType;
+  if (!searchQueryObject.sale) {
+    searchQueryObject.sale = ['Rent', 'Sale'];
+  } else {
+    // we only support an array of sale items
+    searchQueryObject.sale = [searchQueryObject.sale];
+  }
   searchQueryObject = Util.searchObjectToCustomFormat(searchQueryObject);
   searchQueryObject['term'] = termDetails;
   for (var key in searchQueryObject) {
@@ -49,7 +62,14 @@ const mapStateToProps = (state, ownProps) => {
       delete searchQueryObject[key];
     }
   }
-  
+
+  if (searchQueryObject['property_subtype']) {
+    let property_subtype = searchQueryObject['property_subtype'] instanceof Array ? searchQueryObject['property_subtype'] : [searchQueryObject['property_subtype']];
+    searchQueryObject['property_subtype'] = get(propertyTypeOptions[searchQueryObject.search_type], 'property_types', []).filter(d => {
+      return property_subtype.indexOf(d.slug) >= 0;
+    });
+  }
+
   return {
     errorMessage: state.errorMessage,
     query: get(state, 'searchResults.query', []),
@@ -59,7 +79,7 @@ const mapStateToProps = (state, ownProps) => {
     propertiesModalResultCountErrorMessage: get(state, 'propertiesModal.errorMessage'),
     propertiesModalResultCountIsFetching: get(state, 'propertiesModal.isFetching'),
     propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
-    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
+    propertyTypeOptions: propertyTypeOptions,
     results: get(state, 'searchResults.searchResults', []),
     resultsTotal: get(state, 'searchResults.totalProps', 0),
     propertyOnPanel: state.singleProperty.propertyOnPanel,
@@ -77,15 +97,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openLocationModal(false));
     },
 
-    doPropertiesModalSearch: (filters) => {
+    doPropertiesModalSearch: (filters, propertyTypeOptions) => {
       dispatch(requestPropertiesModalResultCount());
-      Api.makeStandardPropertySearch(filters, (err, query, response) => {
+      Api.makeStandardPropertySearch(filters, propertyTypeOptions, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
     },
 
-    doSearchWithQuery: (query, currentTermDetails, append) => {
+    doSearchWithQuery: (query, append) => {
       let url = Api.getPropertySearchRequestURL();
       dispatch(requestSearchResultsPosts());
       Api.search(url, query, (err, response) => {
@@ -108,18 +128,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(receiveSearchResultsPosts({}, [], 0));
     },
 
-    standardSearch: p => {
+    standardSearch: (p, propertyTypeOptions) => {
       dispatch(requestSearchResultsPosts());
       let params = Object.assign({}, p);
-      // params.aggregations = Util.getTermLookupAggregationQuery(params['term']);
+      // geoCorrdinates
       if (p[Lib.BOTTOM_RIGHT_URL_PREFIX] && p[Lib.TOP_LEFT_URL_PREFIX]) {
         params.geoCoordinates = {
           bottomRight: [p[Lib.BOTTOM_RIGHT_URL_PREFIX][0], p[Lib.BOTTOM_RIGHT_URL_PREFIX][1]],
           topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]]
         };
       }
-      
-      Api.makeStandardPropertySearch(params, (err, query, response) => {
+      Api.makeStandardPropertySearch(params, propertyTypeOptions, (err, query, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
         }
@@ -183,7 +202,7 @@ class MapSearchResults extends Component {
 
   componentDidMount() {
     let filters = this.props.searchQueryParams;
-    this.applyQueryFilters(this.props.searchQueryParams);
+    this.applyQueryFilters(this.props.propertyTypeOptions, filters);
     if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
       let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
       if (!firstPropertyMLSID) {
@@ -197,7 +216,7 @@ class MapSearchResults extends Component {
   componentWillReceiveProps(nextProps) {
     let filters = nextProps.searchQueryParams;
     if (!isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']))) {
-      this.applyQueryFilters(nextProps.searchQueryParams);
+      this.applyQueryFilters(this.props.propertyTypeOptions, nextProps.searchQueryParams);
     }
     if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type && this.listingSidebar) {
       // this fixes the issue where changing "search_type" would keep the scrolling of the previous search type
@@ -217,11 +236,11 @@ class MapSearchResults extends Component {
   seeMoreHandler = () => {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
-    this.props.doSearchWithQuery(modifiedQuery, this.props.termDetails, true);
+    this.props.doSearchWithQuery(modifiedQuery, true);
   }
 
-  applyQueryFilters(searchFilters) {
-    this.props.standardSearch(searchFilters);
+  applyQueryFilters(propertyTypeOptions, searchFilters) {
+    this.props.standardSearch(searchFilters, propertyTypeOptions);
   }
 
   clickMobileSwitcherHandler(mapDisplay) {
@@ -237,6 +256,11 @@ class MapSearchResults extends Component {
       filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
       filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
     }
+    delete filters['search_type'];
+    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete filters['sale_type']
+    }
+    filters = Util.customFormatToSearchObject(filters);
     let searchCollection = Util.searchObjectToCollection(filters);
     let searchURL = Util.createSearchURL('/search', searchCollection);
     this.props.history.push(searchURL);
@@ -248,6 +272,11 @@ class MapSearchResults extends Component {
     filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: geoCoordinates['bottomRight']['lat'], lon: geoCoordinates['bottomRight']['lon']};
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: geoCoordinates['topLeft']['lat'], lon: geoCoordinates['topLeft']['lon']};
+    delete filters['search_type'];
+    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+      delete filters['sale_type']
+    }
+    filters = Util.customFormatToSearchObject(filters);
     let searchCollection = Util.searchObjectToCollection(filters);
     let searchURL = Util.createSearchURL('/search', searchCollection);
     this.props.history.push(searchURL);
@@ -343,7 +372,7 @@ class MapSearchResults extends Component {
         <PropertiesModal
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => openPropertiesModal(false)}
-          doSearch={doPropertiesModalSearch}
+          doSearch={(filters) => { doPropertiesModalSearch(filters, propertyTypeOptions); }}
           errorMessage={propertiesModalResultCountErrorMessage}
           historyPush={history.push}
           open={propertiesModalOpen}

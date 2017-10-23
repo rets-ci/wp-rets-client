@@ -131,19 +131,16 @@ class LocationModal extends Component {
           let termTypeOnlyString = Util.getReddoorSearchTerm(tax, termType);
           let params = [
             {
-              key: 'sale',
-              values: [saleType]
-            },
-            {
-              key: 'search',
-              values: [searchType]
-            },
-            {
               key: termTypeOnlyString,
               values: [term]
-            },
-            ...propertyTypes.map(p => ({key: 'property', values: [p.slug]}))
+            }
           ];
+
+
+          let searchTypeArrayParams = Util.determineSearchTypeArrayParams(searchType, saleType);
+
+          params = params.concat(searchTypeArrayParams);
+          
           let searchURL = Util.createSearchURL('/search', params);
           
           history.push(searchURL);
