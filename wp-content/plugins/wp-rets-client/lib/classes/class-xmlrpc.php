@@ -1055,6 +1055,8 @@ namespace UsabilityDynamics\WPRETSC {
 
         $_post_data_tax_input = $post_data['tax_input'];
 
+        //ud_get_wp_rets_client()->write_log( "TAX INPUT: " . json_encode( $_post_data_tax_input ), 'info' );
+
         $post_data['tax_input'] = array();
 
         // legacy support.

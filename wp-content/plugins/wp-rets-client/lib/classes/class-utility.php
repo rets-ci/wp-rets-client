@@ -56,6 +56,8 @@ namespace UsabilityDynamics\WPRETSC {
           $term_data['_taxonomy'] = $term_data['_type'];
         }
 
+        //ud_get_wp_rets_client()->write_log( "Insert term: " . json_encode( $term_data ), "info" );
+
         // try to find by [_id]
         if( isset( $term_data[ '_id' ] ) &&  $term_data[ '_id' ] ) {
 
@@ -285,7 +287,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( empty( $_results['errors'] )) {
           unset( $_results['errors'] );
         } else {
-          error_log( 'WP-Properrty Errors creating terms: ' . print_r($_results['errors'],true) );
+          error_log( 'WP-Property Errors creating terms: ' . print_r($_results['errors'],true) );
         }
         return $_results;
       }
