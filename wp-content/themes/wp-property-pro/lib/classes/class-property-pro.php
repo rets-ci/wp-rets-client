@@ -228,34 +228,30 @@ namespace UsabilityDynamics {
                  'Commercial'
                ] as $label) {
 
-
         $sale_type = $label;
-
-        $_types = $_property_types;
-
-        if (!in_array($label, ['Rent', 'Sale'])){
-          $term = get_term_by('slug', $label, $taxonomy);
-          $types = array_map(function ($id) use ($taxonomy) {
-            return [
-              'slug' => get_term_by('id', $id, $taxonomy)->slug,
-              'title' => get_term_by('id', $id, $taxonomy)->name
-            ];
-          }, get_term_children($term->term_id, $taxonomy));
-          $sale_type = 'Sale';
-
-          $_types = $types;
-        }elseif($label === 'Sale'){
-          $label = 'Buy';
-          $_types = array_filter($_property_types, function($type){
-            return $type['slug'] !== 'residential-apartment';
-          });
+        if (in_array($label, ['Rent', 'Sale'])){
+          $type = 'residential';
+        }
+        else {
+          $sale_type = "";
+          $type = strtolower($label);
         }
 
-        $property_search_options[$label] = [
-          'sale_type' => $sale_type,
-          'property_types' => array_values($_types)
+        /** Mapping for search type option label */
+        $search = $label === 'Sale' ? 'Buy' : $label;
+
+        /** Build option array */
+        $option = [
+            'search' => $search,
+            'property_type' => $type
         ];
 
+        /** Include sale type just if it is not empty */
+        if($sale_type){
+          $option['listing_status'] = $sale_type;
+        }
+
+        $property_search_options[] = $option;
       }
 
       $params['property_search_options'] = $property_search_options;
@@ -785,31 +781,39 @@ namespace UsabilityDynamics {
             if ($k === 'search_options' && is_array($field)) {
               $new_field = [];
               foreach ($field as $field_key => $value) {
+
+                /** Skip empty values */
                 if (!$value) {
                   continue;
                 }
 
+                /** Determine sale type from field key */
                 $options_array = explode('-', $field_key);
                 $label = $options_array[0];
                 $sale_type = $options_array[1];
+
+                /** Remove un-needed vars */
                 unset($options_array[0]);
                 unset($options_array[1]);
-                $property_types = array_values($options_array);
+
+                /** Determine property type */
+                $property_type = reset(array_values($options_array));
 
                 /** Mapping for search type option label */
-                if($label === 'Sale'){
-                  $label = 'Buy';
+                $search = $label === 'Sale' ? 'Buy' : $label;
+
+                /** Build option array */
+                $option = [
+                    'search' => $search,
+                    'property_type' => str_replace('.', '-', $property_type)
+                ];
+
+                /** Include sale type just if it is not empty */
+                if($sale_type){
+                  $option['listing_status'] = $sale_type;
                 }
 
-                $new_field[$label] = [
-                  'sale_type' => $sale_type,
-                  'property_types' => array_map(function($type){
-                    return [
-                      'title' => ucfirst(str_replace('.', ' ', $type)),
-                      'slug' => str_replace('.', '-', $type)
-                    ];
-                  }, $property_types)
-                ];
+                $new_field[$label] = $option;
               }
 
               $field = $new_field;
