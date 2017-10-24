@@ -2,8 +2,8 @@
 Tags: bundle, widget, button, slider, image, carousel, price table, google maps, tinymce, social links
 Requires at least: 4.2
 Tested up to: 4.8.1
-Stable tag: 1.10.0
-Build time: 2017-10-11T09:35:25+02:00
+Stable tag: 1.10.2
+Build time: 2017-10-20T17:00:13+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -53,6 +53,14 @@ The SiteOrigin Widgets Bundle is the perfect platform to build widgets for your 
 3. An example of the button widget.
 
 == Changelog ==
+
+= 1.10.2 - 20 October 2017 =
+* Fix for links sometimes not working in slider widgets.
+* Fix multi-measurement field labels.
+
+= 1.10.1 - 13 October 2017 =
+* Fix subwidget fields initializion when not contained in a section.
+* TinyMCE field: fix initialization in repeaters.
 
 = 1.10.0 - 11 October 2017 =
 * New Accordion widget!
