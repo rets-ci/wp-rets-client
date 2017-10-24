@@ -430,12 +430,16 @@ namespace UsabilityDynamics {
         } elseif ($post->post_type === 'property') {
 
           /** Get listing statuses */
-          $params['post']['wpp_listing_status'] = array_map(function($t){
+          $statuses = array_map(function($t){
             /** Cut off prefix 'For ' from name */
             return explode(' ', $t->name)[1];
           }, array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
             return $term->parent;
           }));
+
+          if(count($statuses) === 1){
+            $params['post']['wpp_listing_status'] = reset(array_values($statuses));
+          }
 
           /** Get listing type */
           $params['post']['wpp_listing_type'] = reset(wp_get_post_terms($post->ID, 'wpp_listing_type', ['hide_empty' => false]))->slug;
@@ -732,7 +736,6 @@ namespace UsabilityDynamics {
      */
     private static function property_pro_rebuild_builder_content($content, $post_id)
     {
-
       $rows = [];
 
       $posts_array_for_caching = [];
@@ -854,14 +857,11 @@ namespace UsabilityDynamics {
                   $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
                   $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
 
-                  $types = get_the_terms($postId, 'wpp_listing_type');
-                  foreach ($types as $type){
-                    if($type->parent === 0){
-                      $formatted_post->type = $type->slug;
-                    }else{
-                      $formatted_post->sub_type = $type->name;
-                    }
-                  }
+                  $formatted_post->type = reset(get_the_terms($postId, 'wpp_listing_type'))->slug;
+                  $subtypes = get_the_terms($postId, 'wpp_listing_subtype');
+                  $formatted_post->sub_type = implode(',', array_map(function($subtype){
+                    return $subtype->name;
+                  }, $subtypes));
 
                   $wpp_location_terms = get_the_terms($postId, 'wpp_location');
 
