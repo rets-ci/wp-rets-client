@@ -429,12 +429,15 @@ namespace UsabilityDynamics {
           ];
         } elseif ($post->post_type === 'property') {
 
-          /** Get property sale type */
+          /** Get listing statuses */
           $params['post']['wpp_listing_status'] = array_map(function($t){
+            /** Cut off prefix 'For ' from name */
             return explode(' ', $t->name)[1];
           }, array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
             return $term->parent;
           }));
+
+          /** Get listing type */
           $params['post']['wpp_listing_type'] = reset(wp_get_post_terms($post->ID, 'wpp_listing_type', ['hide_empty' => false]))->slug;
 
           /** Get property location */
