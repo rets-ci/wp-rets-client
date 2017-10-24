@@ -25,12 +25,12 @@ class SaleTypeHeaderSelection extends Component {
     }
 
     let {
-      propertyTypes,
-      saleType
+      property_type,
+      sale_type
     } = searchOptions;
 
     let params = [];
-    let searchTypeArrayParams = Util.determineSearchTypeArrayParams(searchType, saleType);
+    let searchTypeArrayParams = Util.createSearchTypeArrayParams(property_type, sale_type);
     params = params.concat(searchTypeArrayParams);
 
     if (locationTerm) {
@@ -39,7 +39,6 @@ class SaleTypeHeaderSelection extends Component {
     } else if (termFilters) {
       params = params.concat(termFilters.map(d => ({key: d.term, values: [d.slug]})));
     }
-
     let searchURL = Util.createSearchURL('/search', params);
     historyPush(searchURL);
     this.props.closePanel();

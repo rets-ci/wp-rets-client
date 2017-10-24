@@ -95,6 +95,10 @@ class Util extends React.Component {
   }
 
   static determineSearchType(pt, s) {
+    // let rules = "d.property_type === property_type";
+    // if (sale) { rules += " && d.sale === sale"; }
+    // let func = new Function('d', rules);
+    // return arr.filter(func);
     if (!pt || !(pt instanceof Array)) {
       return new Error('property type is not set or not an array');
     }
@@ -112,6 +116,28 @@ class Util extends React.Component {
         return sale === 'Sale' ? 'Buy' : 'Rent';
       }
     }
+  }
+
+  static createSearchTypeArrayParams(property_type, sale_type) {
+    let params = [];
+    if (!property_type || typeof property_type !== 'string') {
+      throw new Error('property type is not set or not a string');
+    }
+    if (property_type) {
+      params.push({
+        key: 'property_type',
+        values: [property_type]
+      });
+    }
+
+    if (sale_type) {
+      params.push({
+        key: 'sale',
+        values: [sale_type]
+      })
+    }
+
+    return params;
   }
 
   static determineSearchTypeArrayParams(searchType, saleType) {
@@ -329,28 +355,22 @@ class Util extends React.Component {
       returnObject.msg = 'search type was not specified';
       return returnObject;
     }
-    if (!propertyTypeOptionsObject[searchType]) {
+    if (!propertyTypeOptionsObject.filter(d => d.search === searchType).length) {
       returnObject.error = true;
       returnObject.msg = `search type ${searchType} wasn't found in property type options`;
       return returnObject;
     }
-    let propertyTypes = get(propertyTypeOptionsObject, `[${searchType}].property_types`);
-    let saleType = get(propertyTypeOptionsObject, `[${searchType}].sale_type`);
-    if (!propertyTypes) {
+    let selectedSearch = propertyTypeOptionsObject.filter(d => d.search === searchType)[0];
+    let property_type = selectedSearch.property_type;
+    let sale_type = selectedSearch.listing_status;
+    if (!property_type) {
       returnObject.error = true;
       returnObject.msg = 'property types are missing from the data source';
       return returnObject;
     }
-    if (!saleType) {
-      returnObject.error = true;
-      returnObject.msg = 'sale type are missing from the data source';
-      return returnObject;
-    }
-    if (!(propertyTypes instanceof Array)) {
-      propertyTypes = Object.values(propertyTypes);
-    }
-    returnObject.propertyTypes = propertyTypes;
-    returnObject.saleType = saleType;
+    
+    returnObject.property_type = property_type;
+    returnObject.sale_type = sale_type;
     return returnObject;
   }
 

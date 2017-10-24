@@ -69,7 +69,7 @@ class HeaderPropertySingle extends Component {
     historyPush: PropTypes.func.isRequired,
     locationTerm: PropTypes.string.isRequired,
     openUserPanel: PropTypes.func.isRequired,
-    propertyTypeOptions: PropTypes.object.isRequired,
+    propertyTypeOptions: PropTypes.array.isRequired,
     saleTypesPanelOpen: PropTypes.bool.isRequired,
     searchType: PropTypes.string.isRequired
   }

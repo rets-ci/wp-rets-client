@@ -64,7 +64,7 @@ class PropertiesModal extends Component {
       PropTypes.string,
     ]),
     resultCountButtonLoading: PropTypes.bool.isRequired,
-    propertyTypeOptions: PropTypes.object.isRequired,
+    propertyTypeOptions: PropTypes.array.isRequired,
     searchFilters: PropTypes.object.isRequired,
     turnOnPropertiesModalModeInLocationModal: PropTypes.func,
     turnOffPropertiesModalModeInLocationModal: PropTypes.func
@@ -172,11 +172,11 @@ class PropertiesModal extends Component {
     this.setState({filters: filters});
   }
 
-  handleSearchTypeSelect = (searchType, propertyTypeOptions) => {
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, propertyTypeOptions);
-    let property_type = get(searchOptions, 'propertyTypes', []).map(d => d.slug);
-    let sale_type = get(searchOptions, 'saleType', '');
-    let searchTypeArray = Util.determineSearchTypeArrayParams(searchType, sale_type);
+  handleSearchTypeSelect = (searchType) => {
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
+    let property_type = searchOptions.property_type;
+    let sale_type = searchOptions.sale_type;
+    let searchTypeArray = Util.createSearchTypeArrayParams(property_type, sale_type);
     let searchTypeObject = searchTypeArray.reduce((a, b) => { a[b.key] = b.values[0]; return a; }, {});
     let filters = Object.assign({}, this.state.filters, searchTypeObject);
     this.setState({filters: filters});

@@ -31,7 +31,7 @@ class HeaderSearch extends Component {
 
   static propTypes = {
     historyPush: PropTypes.func.isRequired,
-    propertyTypeOptions: PropTypes.object.isRequired,
+    propertyTypeOptions: PropTypes.array.isRequired,
     searchFilters: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
