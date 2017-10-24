@@ -857,7 +857,7 @@ namespace UsabilityDynamics {
                   $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
                   $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
 
-                  $formatted_post->type = reset(get_the_terms($postId, 'wpp_listing_type'));
+                  $formatted_post->type = reset(get_the_terms($postId, 'wpp_listing_type'))->slug;
                   $subtypes = get_the_terms($postId, 'wpp_listing_subtype');
                   $formatted_post->sub_type = implode(',', array_map(function($subtype){
                     return $subtype->name;
