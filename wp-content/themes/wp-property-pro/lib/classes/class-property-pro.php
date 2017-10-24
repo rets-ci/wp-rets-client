@@ -736,7 +736,6 @@ namespace UsabilityDynamics {
      */
     private static function property_pro_rebuild_builder_content($content, $post_id)
     {
-
       $rows = [];
 
       $posts_array_for_caching = [];
@@ -858,14 +857,11 @@ namespace UsabilityDynamics {
                   $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
                   $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
 
-                  $types = get_the_terms($postId, 'wpp_listing_type');
-                  foreach ($types as $type){
-                    if($type->parent === 0){
-                      $formatted_post->type = $type->slug;
-                    }else{
-                      $formatted_post->sub_type = $type->name;
-                    }
-                  }
+                  $formatted_post->type = reset(get_the_terms($postId, 'wpp_listing_type'))->slug;
+                  $subtypes = get_the_terms($postId, 'wpp_listing_subtype');
+                  $formatted_post->sub_type = implode(',', array_map(function($subtype){
+                    return $subtype->name;
+                  }, $subtypes));
 
                   $wpp_location_terms = get_the_terms($postId, 'wpp_location');
 
