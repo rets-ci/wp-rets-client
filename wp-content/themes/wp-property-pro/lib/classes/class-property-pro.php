@@ -438,7 +438,7 @@ namespace UsabilityDynamics {
           }));
 
           if(count($statuses) === 1){
-            $params['post']['wpp_listing_status'] = array_values($statuses);
+            $params['post']['wpp_listing_status'] = reset(array_values($statuses));
           }
 
           /** Get listing type */
