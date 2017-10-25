@@ -1752,9 +1752,10 @@ namespace UsabilityDynamics\WPRETSC {
           return $data;
         }
 
-        @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+        //@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+        //die( json_encode( $data, JSON_PRETTY_PRINT ) );
 
-        die( json_encode( $data, JSON_PRETTY_PRINT ) );
+        wp_send_json( $data );
 
       }
 
