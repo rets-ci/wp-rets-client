@@ -45,7 +45,70 @@ namespace UsabilityDynamics\WPRETSC {
         // REST API
         add_action( 'rest_api_init', array( $this, 'api_init' ), 100 );
 
+      }
 
+      /**
+       * Parse XML-RPC request
+       * Make sure credentials are valid.
+       * @param null $args
+       * @param null $defaults
+       * @return array
+       */
+      static public function parseRequest( $args = null, $defaults = null ) {
+        global $wp_xmlrpc_server;
+
+        // Do nothing for non-xmlrpc.
+        if( !defined( 'XMLRPC_REQUEST' ) || ( defined( 'XMLRPC_REQUEST' ) && !XMLRPC_REQUEST ) ) {
+
+          if( is_callable( array( $args, 'get_json_params' ) ) ) {
+
+            if( !self::token_login( isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : null, isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : null ) ) {
+
+              http_response_code( 401 );
+
+              return array_filter(array(
+                'ok' => false,
+                'error' => "Unable to login.",
+                'errorCode' => 401,
+                'username' => isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : '',
+                'password' => isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : ''
+              ));
+
+            }
+
+            return $args->get_json_params();
+
+          }
+
+          return wp_parse_args( $_REQUEST, $defaults ? $defaults : array() );
+
+        }
+
+        if( isset( $wp_xmlrpc_server ) ) {
+          $wp_xmlrpc_server->escape( $args );
+        }
+
+        // @note Shouldn't this be done automatically elsewhere?
+        if( $args[0] && (int)$args[0] !== 1 ) {
+          switch_to_blog($args[0]);
+        }
+
+        if( !$wp_xmlrpc_server->login( $args[ 1 ], $args[ 2 ] ) && !self::token_login( $args[ 1 ], $args[ 2 ] ) ) {
+
+          return array(
+            'ok' => false,
+            'error' => isset( $wp_xmlrpc_server->error ) ? $wp_xmlrpc_server->error : 'Invalid credentials.',
+            'username' => $args[ 1 ],
+            'password' => $args[ 2 ],
+          );
+
+        }
+
+        // remove filter which slows down updates significantly. (experimental)
+        // remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
+
+        // Return blank array of nothing provided so auth does not fail.
+        return $args[ 3 ] ? $args[ 3 ] : array();
 
       }
 
@@ -57,28 +120,30 @@ namespace UsabilityDynamics\WPRETSC {
        */
       public function xmlrpc_methods( $_methods ) {
 
-        $_methods[ 'wpp.systemCheck' ] = array( $this, 'rpc_system_check' );
-        $_methods[ 'wpp.systemPing' ] = array( $this, 'rpc_system_ping' );
-        $_methods[ 'wpp.deleteProperty' ] = array( $this, 'delete_property' );
-        $_methods[ 'wpp.trashProperty' ] = array( $this, 'trash_property' );
-        $_methods[ 'wpp.getPostIdByMlsId' ] = array( $this, 'get_post_id_by_mls_id' );
-        $_methods[ 'wpp.editProperty' ] = array( $this, 'edit_property' );
-        $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
-        $_methods[ 'wpp.modifiedHistogram' ] = array( $this, 'rpc_get_modified_histogram' );
-        $_methods[ 'wpp.flushCache' ] = array( $this, 'rpc_flush_cache' );
+        //
+        $_methods[ 'wpp.systemCheck' ]          = array( $this, 'rpc_system_check' );
+        $_methods[ 'wpp.systemPing' ]           = array( $this, 'rpc_system_ping' );
 
-        // New full/partial updates
-        $_methods[ 'wpp.createProperty' ] = array( $this, 'create_property' );
-        $_methods[ 'wpp.updateProperty' ] = array( $this, 'update_property' );
-        $_methods[ 'wpp.insertMedia' ] = array( $this, 'insert_media' );
-        $_methods[ 'wpp.getProperty' ] = array( $this, 'get_property' );
+        // Flush/clean up data (properties, terms, )
+        $_methods[ 'wpp.cleanupProcess' ]       = array( $this, 'rpc_cleanup_process' );
+
+        //
+        $_methods[ 'wpp.getPostIdByMlsId' ]     = array( $this, 'rpc_get_post_id_by_mls_id' );
+        $_methods[ 'wpp.removeDuplicatedMLS' ]  = array( $this, 'rpc_remove_duplicated_mls' );
+        $_methods[ 'wpp.modifiedHistogram' ]    = array( $this, 'rpc_get_modified_histogram' );
+
+        // Property management
+        $_methods[ 'wpp.createProperty' ]       = array( $this, 'rpc_create_property' );
+        $_methods[ 'wpp.editProperty' ]         = array( $this, 'rpc_edit_property' );
+        $_methods[ 'wpp.updateProperty' ]       = array( $this, 'rpc_update_property' );
+        $_methods[ 'wpp.insertMedia' ]          = array( $this, 'rpc_insert_media' );
+        $_methods[ 'wpp.getProperty' ]          = array( $this, 'rpc_get_property' );
+        $_methods[ 'wpp.deleteProperty' ]       = array( $this, 'rpc_delete_property' );
+        $_methods[ 'wpp.trashProperty' ]        = array( $this, 'rpc_trash_property' );
 
         // Schedule stats/listings for data integrity
-        $_methods[ 'wpp.scheduleStats' ] = array( $this, 'get_schedule_stats' );
-        $_methods[ 'wpp.scheduleListings' ] = array( $this, 'get_schedule_listings' );
-
-        $_methods[ 'wp.getPosts' ] = array( $this, 'get_posts' );
-        //$_methods[ 'wp.getPost' ] = array( $this, 'get_post' );
+        $_methods[ 'wpp.scheduleStats' ]        = array( $this, 'rpc_get_schedule_stats' );
+        $_methods[ 'wpp.scheduleListings' ]     = array( $this, 'rpc_get_schedule_listings' );
 
         return $_methods;
       }
@@ -105,32 +170,32 @@ namespace UsabilityDynamics\WPRETSC {
 
         register_rest_route( 'wp-rets-client/v1', '/deleteProperty', array(
           'methods' => array( 'POST', 'GET' ),
-          'callback' => array( $this, 'delete_property' ),
+          'callback' => array( $this, 'rpc_delete_property' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/trashProperty', array(
           'methods' => array( 'POST', 'GET' ),
-          'callback' => array( $this, 'trash_property' ),
+          'callback' => array( $this, 'rpc_trash_property' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/getPostIdByMlsId', array(
           'methods' => array( 'POST', 'GET' ),
-          'callback' => array( $this, 'get_post_id_by_mls_id' ),
+          'callback' => array( $this, 'rpc_get_post_id_by_mls_id' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/editProperty', array(
           'methods' => 'POST',
-          'callback' => array( $this, 'edit_property' ),
+          'callback' => array( $this, 'rpc_edit_property' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/updateProperty', array(
           'methods' => 'POST',
-          'callback' => array( $this, 'update_property' ),
+          'callback' => array( $this, 'rpc_update_property' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/getProperty', array(
           'methods'   => array('GET', 'POST' ),
-          'callback'  => array( $this, 'get_property' ),
+          'callback'  => array( $this, 'rpc_get_property' ),
           'args'      => array(
             'ID' => array(
               'default' => null,
@@ -146,7 +211,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         register_rest_route( 'wp-rets-client/v1', '/createProperty', array(
           'methods' => 'POST',
-          'callback' => array( $this, 'create_property' ),
+          'callback' => array( $this, 'rpc_create_property' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/removeDuplicates', array(
@@ -159,24 +224,14 @@ namespace UsabilityDynamics\WPRETSC {
           'callback' => array( $this, 'rpc_get_modified_histogram' ),
         ) );
 
-        register_rest_route( 'wp-rets-client/v1', '/flushCache', array(
+        register_rest_route( 'wp-rets-client/v1', '/cleanupProcess', array(
           'methods' => 'GET',
-          'callback' => array( $this, 'rpc_flush_cache' ),
-        ) );
-
-        register_rest_route( 'wp-rets-client/v1', '/cleanup/process', array(
-          'methods' => 'GET',
-          'callback' => array( $this, 'cleanup_handler' ),
-        ));
-
-        register_rest_route( 'wp-rets-client/v1', '/cleanup/status', array(
-          'methods' => 'GET',
-          'callback' => array( $this, 'cleanup_status_handler' ),
+          'callback' => array( $this, 'rpc_cleanup_process' ),
         ));
 
         register_rest_route( 'wp-rets-client/v1', '/scheduleStats', array(
           'methods' => array( 'POST', 'GET' ),
-          'callback' => array( $this, 'get_schedule_stats' ),
+          'callback' => array( $this, 'rpc_get_schedule_stats' ),
         ));
 
         register_rest_route( 'wp-rets-client/v1', '/scheduleListings', array(
@@ -213,12 +268,12 @@ namespace UsabilityDynamics\WPRETSC {
               'sanitize_callback' => 'sanitize_title',
             )
           ),
-          'callback' => array( $this, 'get_schedule_listings' ),
+          'callback' => array( $this, 'rpc_get_schedule_listings' ),
         ));
 
         register_rest_route( 'wp-rets-client/v1', '/insertMedia', array(
           'methods' => 'POST',
-          'callback' => array( $this, 'insert_media' ),
+          'callback' => array( $this, 'rpc_insert_media' ),
           'args'      => array(
             'post_id' => array(
               'default' => null,
@@ -232,6 +287,84 @@ namespace UsabilityDynamics\WPRETSC {
           )
 
         ) );
+
+      }
+
+      /**
+       * Login with UD Site ID and Secret Token.
+       *
+       * @author potanin@UD
+       * @param null $site_id
+       * @param null $secret_token
+       * @return bool
+       */
+      static public function token_login( $site_id = null, $secret_token = null ) {
+        global $wp_xmlrpc_server;
+
+        if( !$site_id || !$secret_token ) {
+          return false;
+        }
+
+        $ud_site_id = get_site_option( 'ud_site_id' );
+        $ud_site_secret_token = get_site_option( 'ud_site_secret_token' );
+
+        if( defined( 'WP_UD_SITE_ID' ) && WP_UD_SITE_ID ) {
+          $ud_site_id = WP_UD_SITE_ID;
+        }
+
+        if( defined( 'WP_UD_SITE_SECRET_TOKEN' ) && WP_UD_SITE_SECRET_TOKEN ) {
+          $ud_site_secret_token = WP_UD_SITE_SECRET_TOKEN;
+        }
+
+        if( !$ud_site_id || !$ud_site_secret_token ) {
+          return false;
+        }
+
+        if( $site_id === $ud_site_id && $secret_token === $ud_site_secret_token ) {
+
+          if( isset ( $wp_xmlrpc_server ) ) {
+            $wp_xmlrpc_server->error = null;
+          }
+
+          return true;
+
+        }
+
+        return false;
+
+      }
+
+      /**
+       * Handle Sending Response
+       *
+       * @author potanin@UD
+       * @param array $response
+       * @return null
+       */
+      static public function send( $response = array() ) {
+
+        if( is_wp_error( $response ) ) {
+          $response = array(
+            'ok' => false,
+            'error' => $response->get_error_message(),
+          );
+        } else if( !is_array( $response ) ) {
+          $response = array();
+        }
+
+        $response = wp_parse_args( $response, array(
+          'ok' => true,
+          'error' => null,
+          'message' => null,
+          'data' => array()
+        ) );
+
+        // Do nothing if we really are RPC.
+        if( defined( 'XMLRPC_REQUEST' ) ) {
+          return $response;
+        }
+
+        wp_send_json( $response );
 
       }
 
@@ -253,7 +386,7 @@ namespace UsabilityDynamics\WPRETSC {
        *
        * @return array
        */
-      static public function get_schedule_listings( $request_data ) {
+      public function rpc_get_schedule_listings( $request_data ) {
         global $wp_xmlrpc_server, $wpdb;
 
         $post_data = self::parseRequest( $request_data );
@@ -390,7 +523,7 @@ namespace UsabilityDynamics\WPRETSC {
        *
        * @return array
        */
-      static public function get_schedule_stats() {
+      public function rpc_get_schedule_stats() {
 
         $_stats = Utility::get_schedule_stats(array(
           'cache' => false
@@ -407,252 +540,42 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
-       * Show clean-up data status.
-       *
-       * @return array
-       */
-      static public function cleanup_status_handler() {
-        global $wpdb;
-        $_taxonomies = $wpdb->get_col( "SELECT distinct(taxonomy) FROM {$wpdb->term_taxonomy}" );
-
-        $_data = array();
-
-        foreach( $_taxonomies as $tax_name ) {
-
-          if( !taxonomy_exists( $tax_name ) ) {
-            register_taxonomy( $tax_name, array( 'property' ), array( 'hierarchical' => true ) );
-          }
-
-          $_data[] = array(
-            'taxonomy' => $tax_name,
-            'count' => intval( wp_count_terms( $tax_name ) )
-          );
-
-        }
-
-        return array( 'ok' => true, 'message' => 'API Online.', 'data' => $_data );
-      }
-
-      /**
        * Process Taxonomy Cleanup
        *
        * @return array
        */
-      static public function cleanup_handler() {
-        global $wpdb;
+      public function rpc_cleanup_process( $args ) {
+        global $_terms_counts_details;
 
-        // get all taxonomies in DB....
-        $_taxonomies = $wpdb->get_col( "SELECT distinct(taxonomy) FROM {$wpdb->term_taxonomy} ORDER BY RAND() LIMIT 0, 5;" );
+        $_terms_counts_details = array();
+        $response = array();
 
-        // randomize order of operations so this can be ran multiple times with less conflict.
-        shuffle( $_taxonomies );
-
-        foreach( $_taxonomies as $_tax ) {
-          self::clean_taxonomy( $_tax, array( 'limit' => 15 ) );
+        $data = self::parseRequest( $args );
+        if( !empty( $data['error'] ) ) {
+          return self::send( $data );
         }
 
-        return array( 'ok' => true, 'time' => timer_stop(), 'taxonomies' => $_taxonomies );
+        Utility::write_log( "rpc_cleanup_process", "info" );
 
-      }
+        add_action( 'wrc::_update_terms_counts_helper::done', function( $terms, $query, $error ) {
+          global $_terms_counts_details;
+          array_push( $_terms_counts_details, array(
+            "taxonomy" => $query["taxonomy"],
+            "terms" => !empty($terms) ? count( $terms ) : 0,
+            "error" => !empty($error) && is_wp_error($error) ? $error->get_error_message() : null
+          ) );
+        }, 10, 3 );
 
-      /**
-       * This can/shold be ran multiple times, and will continue to remove some orphaned terms as its ran.
-       *
-       * This function may die while processing and now lose any state.
-       * @param string $tax_name
-       * @param array $args
-       */
-      static public function clean_taxonomy( $tax_name = '', $args = array() ) {
-        global $wpdb;
-
-        if( !taxonomy_exists( $tax_name ) ) {
-          register_taxonomy( $tax_name, array( 'property' ), array( 'hierarchical' => true ) );
-        }
-
-        //ud_get_wp_rets_client()->write_log( "Starting to clean [$tax_name] taxonomy. Current term count is [" . wp_count_terms( $tax_name ) . "]." );
-        ud_get_wp_rets_client()->write_log( "Starting to clean [$tax_name] taxonomy, using the [". DB_NAME ."] database.", 'debug' );
-
-        $orphaned_relationships = $wpdb->get_results( "SELECT tr.term_taxonomy_id as term_taxonomy_id, tt.term_id as term_id, object_id as post_id FROM $wpdb->term_relationships tr INNER JOIN $wpdb->term_taxonomy tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id) WHERE tt.taxonomy = '$tax_name' AND tr.object_id NOT IN (SELECT ID FROM $wpdb->posts) LIMIT 0, " . $args['limit'] . ";");
-
-        $_removed = array();
-
-        if( !count( $orphaned_relationships ) ) {
-          self::clean_delete_zero_count_terms( $tax_name );
-          return;
-        }
-
-        ud_get_wp_rets_client()->write_log("Have at least [" . count( $orphaned_relationships ) . "] orphaned term taxonomy relationships for [$tax_name] taxonomy, about to remove them for each post that is now gone.");
-
-        foreach( $orphaned_relationships as $_relationship_data ) {
-
-          //wp_delete_object_term_relationships( $_relationship_data->post_id, $tax_name );
-          $_result = wp_remove_object_terms( $_relationship_data->post_id, array( $_relationship_data->term_id ), $tax_name );
-
-          if( is_wp_error( $_result ) ) {
-            die( '<pre>error...' . print_r( $_result, true ) . '</pre>' );
-          } else {
-            $_removed[] = $_relationship_data->post_id;
-          }
-        }
-
-        ud_get_wp_rets_client()->write_log( "Removed [" . count( $_removed ) . "] orphaned relationships for the [$tax_name] taxonomy." );
-
-        // After removing orphans, update term counts again. This will cause total count (select sum(count) FROM wp_term_taxonomy where taxonomy = 'mls_id';) to first go down, then go back up.
-        $_terms =  $wpdb->get_col( "SELECT term_taxonomy_id FROM $wpdb->term_taxonomy WHERE taxonomy='$tax_name';");
-
-        if( wp_update_term_count_now( $_terms, $tax_name ) ) {
-          ud_get_wp_rets_client()->write_log( "Updated term counts for [$tax_name]. New count is [" . wp_count_terms( $tax_name ) . "]." );
-        }
-
-        // @note probably shouldn't do this until all counts have been updated.
-        self::clean_delete_zero_count_terms( $tax_name );
-
-      }
-
-      /**
-       * Remove terms with zero count.
-       *
-       * @param string $tax_name
-       * @param array $args
-       */
-      static public function clean_delete_zero_count_terms( $tax_name = '', $args = array() ) {
-        global $wpdb;
-
-        $_terms_with_no_count = $wpdb->query("DELETE FROM {$wpdb->term_taxonomy} WHERE count = 0 AND taxonomy='$tax_name';");
-
-        //ud_get_wp_rets_client()->write_log("SELECT term_id FROM $wpdb->term_taxonomy tt INNER JOIN $wpdb->terms t ON (tt.term_id = t.term_id ) WHERE  tt.count = 0  AND tt.taxonomy='$tax_name');");
-        if( $_terms_with_no_count ) {
-          ud_get_wp_rets_client()->write_log( "Deleting all terms with 0 count for [$tax_name], query affected [$_terms_with_no_count] rows." );
-        }
-
-      }
-
-      /**
-       * Parse XML-RPC request
-       * Make sure credentials are valid.
-       * @param null $args
-       * @param null $defaults
-       * @return array
-       */
-      static public function parseRequest( $args = null, $defaults = null ) {
-        global $wp_xmlrpc_server;
-
-        // Do nothing for non-xmlrpc.
-        if( !defined( 'XMLRPC_REQUEST' ) || ( defined( 'XMLRPC_REQUEST' ) && !XMLRPC_REQUEST ) ) {
-
-          if( is_callable( array( $args, 'get_json_params' ) ) ) {
-
-            if( !self::token_login( isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : null, isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : null ) ) {
-
-              http_response_code( 401 );
-
-              return array_filter(array(
-                'ok' => false,
-                'error' => "Unable to login.",
-                'errorCode' => 401,
-                'username' => isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : '',
-                'password' => isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : ''
-              ));
-
-            }
-
-            return $args->get_json_params();
-
-          }
-
-          return wp_parse_args( $_REQUEST, $defaults ? $defaults : array() );
-
-        }
-
-        if( isset( $wp_xmlrpc_server ) ) {
-          $wp_xmlrpc_server->escape( $args );
-        }
-
-        // @note Shouldn't this be done automatically elsewhere?
-        if( $args[0] && (int)$args[0] !== 1 ) {
-          switch_to_blog($args[0]);
-        }
-
-        if( !$wp_xmlrpc_server->login( $args[ 1 ], $args[ 2 ] ) && !self::token_login( $args[ 1 ], $args[ 2 ] ) ) {
-
-          return array(
-            'ok' => false,
-            'error' => isset( $wp_xmlrpc_server->error ) ? $wp_xmlrpc_server->error : 'Invalid credentials.',
-            'username' => $args[ 1 ],
-            'password' => $args[ 2 ],
+        $response = Utility::update_terms_counts();
+        if( !is_wp_error( $response ) ) {
+          $response = array(
+            "message" => sprintf( __( "%s taxonomies were cleaned up.", ud_get_wp_rets_client()->domain ), count($_terms_counts_details ) ),
+            "data" => $_terms_counts_details
           );
-
         }
 
-        // remove filter which slows down updates significantly. (experimental)
-        // remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
+        return self::send( $response );
 
-        // Return blank array of nothing provided so auth does not fail.
-        return $args[ 3 ] ? $args[ 3 ] : array();
-
-      }
-
-      /**
-       * Login with UD Site ID and Secret Token.
-       *
-       * @author potanin@UD
-       * @param null $site_id
-       * @param null $secret_token
-       * @return bool
-       */
-      static public function token_login( $site_id = null, $secret_token = null ) {
-        global $wp_xmlrpc_server;
-
-        if( !$site_id || !$secret_token ) {
-          return false;
-        }
-
-        $ud_site_id = get_site_option( 'ud_site_id' );
-        $ud_site_secret_token = get_site_option( 'ud_site_secret_token' );
-
-        if( defined( 'WP_UD_SITE_ID' ) && WP_UD_SITE_ID ) {
-          $ud_site_id = WP_UD_SITE_ID;
-        }
-
-        if( defined( 'WP_UD_SITE_SECRET_TOKEN' ) && WP_UD_SITE_SECRET_TOKEN ) {
-          $ud_site_secret_token = WP_UD_SITE_SECRET_TOKEN;
-        }
-
-        if( !$ud_site_id || !$ud_site_secret_token ) {
-          return false;
-        }
-
-        if( $site_id === $ud_site_id && $secret_token === $ud_site_secret_token ) {
-
-          if( isset ( $wp_xmlrpc_server ) ) {
-            $wp_xmlrpc_server->error = null;
-          }
-
-          return true;
-
-        }
-
-        return false;
-
-      }
-
-      /**
-       * Return list of plugins.
-       *
-       * @author potanin@UD
-       * @param $args
-       * @return array
-       */
-      static public function get_plugins( $args = null ) {
-
-        $_active = wp_get_active_and_valid_plugins();
-        $result = array();
-
-        foreach( $_active as $_plugin ) {
-          $result[] = basename( dirname($_plugin) );
-        }
-
-        return $result;
       }
 
       /**
@@ -681,7 +604,7 @@ namespace UsabilityDynamics\WPRETSC {
           "stylesheet" => get_option( 'stylesheet' ),
           "template" => get_option( 'stylesheet' ),
           "post_types" => get_post_types(),
-          "activePlugins" => self::get_plugins(),
+          "activePlugins" => Utility::get_plugins(),
           "time" => timer_stop(),
           "support" => array(
             "insert_media",
@@ -731,7 +654,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $args
        * @return array
        */
-      public function create_property( $args ) {
+      public function rpc_create_property( $args ) {
         global $wp_xmlrpc_server;
 
         add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
@@ -891,7 +814,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'Term counting complete for [' . $_post_id . '].', 'info' );
 
-        self::flush_cache( $_post_id );
+        ud_get_wp_rets_client()->flush_cache( $_post_id );
 
         return array(
           "ok" => true,
@@ -908,7 +831,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $args
        * @return array
        */
-      public function update_property( $args ) {
+      public function rpc_update_property( $args ) {
         global $wp_xmlrpc_server, $wpdb;
 
         add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
@@ -975,7 +898,7 @@ namespace UsabilityDynamics\WPRETSC {
         //  ep_sync_post( $post_data[ 'ID' ] );
         //}
 
-        self::flush_cache( $post_data[ 'ID' ] );
+        ud_get_wp_rets_client()->flush_cache( $post_data[ 'ID' ] );
 
         return array(
           "ok" => true,
@@ -993,7 +916,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $args
        * @return array
        */
-      public function edit_property( $args ) {
+      public function rpc_edit_property( $args ) {
         global $wp_xmlrpc_server;
 
         add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
@@ -1163,7 +1086,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'Sending [wpp.editProperty] response.', 'debug' );
 
-        self::flush_cache( $_post_id );
+        ud_get_wp_rets_client()->flush_cache( $_post_id );
 
         return $_response;
 
@@ -1179,7 +1102,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @return array
        *
        */
-      public function get_property( $args ) {
+      public function rpc_get_property( $args ) {
         global $wp_xmlrpc_server;
 
         $post_data = self::parseRequest( $args );
@@ -1247,7 +1170,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $args
        * @return array
        */
-      public function delete_property( $args ) {
+      public function rpc_delete_property( $args ) {
         global $wp_xmlrpc_server, $wpdb, $wrc_rets_id;
 
         add_filter( 'ep_sync_delete_permissions_bypass', '__return_true', 99, 2 );
@@ -1321,7 +1244,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $response['time' ] = timer_stop();
 
-        self::flush_cache( $post_id );
+        ud_get_wp_rets_client()->flush_cache( $post_id );
 
         return $response;
 
@@ -1333,7 +1256,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $args
        * @return array
        */
-      public function trash_property( $args ) {
+      public function rpc_trash_property( $args ) {
         global $wp_xmlrpc_server, $wpdb;
 
         add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
@@ -1379,7 +1302,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $response['time' ] = timer_stop();
 
-        self::flush_cache( $post_id );
+        ud_get_wp_rets_client()->flush_cache( $post_id );
 
         return $response;
 
@@ -1391,7 +1314,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $args
        * @return array
        */
-      public function get_post_id_by_mls_id( $args ) {
+      public function rpc_get_post_id_by_mls_id( $args ) {
         global $wp_xmlrpc_server, $wpdb;
 
         $data = self::parseRequest( $args );
@@ -1433,7 +1356,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @param $args
        * @return array
        */
-      public function insert_media( $args ) {
+      public function rpc_insert_media( $args ) {
 
         add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
 
@@ -1666,35 +1589,6 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
-       * Flush Cache.
-       *
-       * Mostly a placeholder for future.
-       *
-       * @author potanin@UD
-       * @param null $args
-       * @return null
-       */
-      public function rpc_flush_cache( $args = null ) {
-
-        $args = self::parseRequest( $args, array(
-          'taxonomies' => true
-        ) );
-
-        foreach( array( 'wpp_categorical') as $taxonomy ) {
-          wp_cache_delete( 'all_ids', $taxonomy );
-          wp_cache_delete( 'get', $taxonomy );
-          delete_option( "{$taxonomy}_children" );
-          _get_term_hierarchy( $taxonomy );
-
-        }
-
-        return self::send( array(
-          "ok" => true
-        ) );
-
-      }
-
-      /**
        * Allows you to get property detail histogram properties.
        *
        *
@@ -1734,47 +1628,6 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         return self::send($_detail);
-
-      }
-
-      /**
-       * Handle Sending Response
-       *
-       * @todo Make this handle both XMLRPC and REST.
-       * @author potanin@UD
-       * @param null $data
-       * @return null
-       */
-      static public function send( $data = null ) {
-
-        // Do nothing if we really are RPC.
-        if( defined( 'XMLRPC_REQUEST' ) ) {
-          return $data;
-        }
-
-        //@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
-        //die( json_encode( $data, JSON_PRETTY_PRINT ) );
-
-        wp_send_json( $data );
-
-      }
-
-      /**
-       * Flush Object Caches related to particular property
-       *
-       * @param int $post_id
-       */
-      static protected function flush_cache( $post_id ) {
-        global $wrc_rets_id;
-
-        ud_get_wp_rets_client()->write_log( "Flushing object cache for [" . $post_id . "] post_id", 'debug' );
-        clean_post_cache( $post_id );
-        do_action( 'wrc::xmlrpc::on_flush_cache', $post_id );
-
-        if( !empty( $wrc_rets_id ) ) {
-          ud_get_wp_rets_client()->write_log( "Flushing object cache [mls-id-" . $wrc_rets_id . "]", 'debug' );
-          wp_cache_delete( 'mls-id-' . $wrc_rets_id, 'wp-rets-client' );
-        }
 
       }
 
