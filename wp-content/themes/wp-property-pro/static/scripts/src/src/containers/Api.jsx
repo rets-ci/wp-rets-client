@@ -145,9 +145,9 @@ class Api {
 
     // Building context's array for listing_type_status context field
     let type_status_array = [];
-    for(let i in params.propertyTypes){
-      let propType = params.propertyTypes[i];
-      type_status_array.push(propType + '-for-' + params.saleType.toLowerCase());
+    for(let i in params.saleTypes){
+      let saleType = params.saleTypes[i];
+      type_status_array.push(params.propertyType + '-for-' + saleType.toLowerCase());
     }
 
     let suggest = {
