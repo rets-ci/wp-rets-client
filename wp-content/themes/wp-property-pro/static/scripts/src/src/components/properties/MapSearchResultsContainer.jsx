@@ -89,6 +89,7 @@ class MapSearchResultsContainer extends Component {
 
   render() {
     let {
+      agents,
       history
     } = this.props;
     let {
@@ -97,6 +98,7 @@ class MapSearchResultsContainer extends Component {
     return Object.keys(data).length ?
       <div className="h-100">
         <MapSearchResults
+          agents={agents}
           {...data}
           history={history}
           currentPathname={history.location.pathname}
