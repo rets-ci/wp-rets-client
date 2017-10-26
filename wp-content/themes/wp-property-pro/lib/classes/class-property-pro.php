@@ -234,7 +234,7 @@ namespace UsabilityDynamics {
 
         /** Include sale type just if it is not empty */
         if($sale_type){
-          $option['listing_status'] = $sale_type;
+          $option['listing_statuses'] = $sale_type;
         }
 
         $property_search_options[] = $option;
