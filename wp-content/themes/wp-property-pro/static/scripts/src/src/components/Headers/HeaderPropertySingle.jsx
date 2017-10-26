@@ -90,7 +90,7 @@ class HeaderPropertySingle extends Component {
     //TODO: remove the bellow code
     let propertySingleStaticFilters = {
       property_type: this.props.propertyType,
-      sale_type: [this.props.sale],
+      sale_type: this.props.sale,
       search_type: this.props.searchType,
       term: [{
         slug: this.props.location.slug,

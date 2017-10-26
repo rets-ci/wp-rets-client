@@ -134,13 +134,11 @@ class LocationModal extends Component {
               values: [term]
             }
           ];
-
-
+          
           let searchTypeArrayParams = Util.createSearchTypeArrayParams(property_type, sale_type);
 
           params = params.concat(searchTypeArrayParams);
           let searchURL = Util.createSearchURL('/search', params);
-          
           history.push(searchURL);
           this.props.closeModal();
         }
