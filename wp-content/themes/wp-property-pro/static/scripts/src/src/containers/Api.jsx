@@ -630,8 +630,12 @@ class Api {
 
   static getSearchPageMetadata(terms, propertyType, callback) {
     let aggregations = {};
-    aggregations = Util.getTermLookupAggregationQuery(terms);
-    aggregations['property_subtype_based_on_type'] = this.getPropertySubTypesByPropertyType(propertyType);
+    if (terms) {
+      aggregations = Util.getTermLookupAggregationQuery(terms);
+    }
+    if (propertyType) {
+      aggregations['property_subtype_based_on_type'] = this.getPropertySubTypesByPropertyType(propertyType);
+    }
     let searchObj = {query: {}, aggregations: aggregations};
     let url = this.getPropertySearchRequestURL(0);
     this.search(url, searchObj, (err, response) => {

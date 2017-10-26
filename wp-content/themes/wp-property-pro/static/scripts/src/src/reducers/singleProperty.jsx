@@ -6,6 +6,7 @@ let defaultState = {
   errorMessage: null,
   isFetching: false,
   property: null,
+  propertySubTypes: [],
   panelOnMapShown: false,
   propertyOnPanel: null,
 };
@@ -27,6 +28,7 @@ const propertySingle = (state = defaultState, action) => {
           errorMessage: null,
           isFetching: false,
           property: action.property,
+          propertySubTypes: action.propertySubTypes
         });
       case Lib.SELECT_PROPERTY_ON_MAP_ACTION:
         return {

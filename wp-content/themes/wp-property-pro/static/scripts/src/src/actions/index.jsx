@@ -139,10 +139,11 @@ export const receivePropertySingleFetchingError = (errorMessage) => {
   }
 }
 
-export const receivePropertySingleResult = (property) => {
+export const receivePropertySingleResult = (property, propertySubTypes) => {
   return {
     type: Lib.RECEIVE_PROPERTY_SINGLE_RESULT_ACTION,
-    property: property
+    property: property,
+    propertySubTypes: propertySubTypes
   }
 }
 
