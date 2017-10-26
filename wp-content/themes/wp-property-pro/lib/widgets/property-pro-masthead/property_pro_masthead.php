@@ -54,6 +54,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
 
       $search_options = [];
       $delimiter = '-';
+      $sale_types_array = ['Rent', 'Sale'];
 
       /** Build search options array */
       foreach ([
@@ -64,11 +65,11 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
                ] as $label) {
 
         $sale_type = $label;
-        if (in_array($label, ['Rent', 'Sale'])){
+        if (in_array($label, $sale_types_array)){
           $key = $label . $delimiter . $sale_type . $delimiter . 'residential' ;
         }
         else {
-          $key = $label . $delimiter . '' . $delimiter . strtolower($label) ;
+          $key = $label . $delimiter . join(',', $sale_types_array) . $delimiter . strtolower($label) ;
         }
 
         $search_options[$key] = [

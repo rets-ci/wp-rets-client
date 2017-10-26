@@ -200,25 +200,11 @@ namespace UsabilityDynamics {
       }
 
       /** Build search options array for search type dropDown at search result page */
-      $taxonomy = 'wpp_listing_type';
-
-      $search_options = [];
-      $delimiter = '-';
-
-      $_property_types = array_map(function($t){
-        return [
-          'slug' => $t->slug,
-          'title' => $t->name
-        ];
-      }, array_filter(get_terms(['taxonomy' => $taxonomy, 'hide_empty' => false ]), function($t){
-        if($t->parent){
-          $parent_term = get_term($t->parent);
-        }
-        return $t->parent && !in_array($parent_term->name, ['Land', 'Commercial']);
-      }));
 
       /** Array for filters modal */
       $property_search_options = [];
+
+      $sale_types_array = ['Rent', 'Sale'];
 
       /** Build search options and filters modal array */
       foreach ([
@@ -228,12 +214,12 @@ namespace UsabilityDynamics {
                  'Commercial'
                ] as $label) {
 
-        $sale_type = $label;
-        if (in_array($label, ['Rent', 'Sale'])){
+        $sale_type = [$label];
+        if (in_array($label, $sale_types_array)){
           $type = 'residential';
         }
         else {
-          $sale_type = "";
+          $sale_type = $sale_types_array;
           $type = strtolower($label);
         }
 
@@ -438,7 +424,7 @@ namespace UsabilityDynamics {
           }));
 
           if(count($statuses) === 1){
-            $params['post']['wpp_listing_status'] = reset(array_values($statuses));
+            $params['post']['wpp_listing_statuses'] = array_values($statuses);
           }
 
           /** Get listing type */
@@ -796,7 +782,7 @@ namespace UsabilityDynamics {
                 /** Determine sale type from field key */
                 $options_array = explode('-', $field_key);
                 $label = $options_array[0];
-                $sale_type = $options_array[1];
+                $sale_types_array = explode(',', $options_array[1]);
 
                 /** Remove un-needed vars */
                 unset($options_array[0]);
@@ -815,8 +801,8 @@ namespace UsabilityDynamics {
                 ];
 
                 /** Include sale type just if it is not empty */
-                if($sale_type){
-                  $option['listing_status'] = $sale_type;
+                if($sale_types_array){
+                  $option['listing_statuses'] = $sale_types_array;
                 }
 
                 $new_field[$label] = $option;
