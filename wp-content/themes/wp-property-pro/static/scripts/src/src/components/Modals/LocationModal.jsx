@@ -72,7 +72,7 @@ class LocationModal extends Component {
     onTermSelect: PropTypes.func,
     open: PropTypes.bool.isRequired,
     propertiesModalMode: PropTypes.bool.isRequired,
-    propertyTypeOptions: PropTypes.object.isRequired,
+    propertyTypeOptions: PropTypes.array.isRequired,
     searchHandler: PropTypes.func.isRequired,
     topQuery: PropTypes.func.isRequired
   }
@@ -108,14 +108,13 @@ class LocationModal extends Component {
   handleResultClick = (result) => {
     const { taxonomy: tax, term, termType, text, url } = result;
     const { searchType, modifyType, history } = this.props;
-
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
     if (searchOptions.error) {
       console.log('%c ' + searchOptions.msg, 'color: #ff0000');
     } else {
       let {
-        propertyTypes,
-        saleType
+        property_type,
+        sale_type
       } = searchOptions;
       if (!url) {
         // Properties results page
@@ -137,10 +136,9 @@ class LocationModal extends Component {
           ];
 
 
-          let searchTypeArrayParams = Util.determineSearchTypeArrayParams(searchType, saleType);
+          let searchTypeArrayParams = Util.createSearchTypeArrayParams(property_type, sale_type);
 
           params = params.concat(searchTypeArrayParams);
-          
           let searchURL = Util.createSearchURL('/search', params);
           
           history.push(searchURL);

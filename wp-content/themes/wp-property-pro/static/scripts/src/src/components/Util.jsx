@@ -94,74 +94,35 @@ class Util extends React.Component {
     return txt.value;
   }
 
-  static determineSearchType(pt, s) {
-    if (!pt || !(pt instanceof Array)) {
-      return new Error('property type is not set or not an array');
+  static determineSearchType(options, property_type, sale) {
+    let rules = "d.property_type === property_type";
+    if (sale) { rules += " && d.listing_status === sale"; }
+    let filteredSearch = options.filter(d => eval(rules));
+    if (!filteredSearch.length) {
+      return new Error('search could not be determined');
     }
-
-    let propertyTypes = pt;
-    let sale = s;
-    if (propertyTypes.indexOf('commercial') >= 0) {
-      return 'Commercial';
-    } else if (propertyTypes.indexOf('land') >= 0) {
-      return 'Land';
-    } else if (propertyTypes.indexOf('residential') >= 0) {
-      if (!s || ['Sale', 'Rent'].indexOf(sale) < 0) {
-        return new Error('sale type is not defined or not Sale or Rent even tho property type is residential');
-      } else {
-        return sale === 'Sale' ? 'Buy' : 'Rent';
-      }
-    }
+    return filteredSearch.length ? filteredSearch[0].search : null;
   }
 
-  static determineSearchTypeArrayParams(searchType, saleType) {
+  static createSearchTypeArrayParams(property_type, sale_type) {
     let params = [];
-    switch(searchType) {
-      case 'Buy':
-        params.push({
-          key: 'sale',
-          values: ['Sale']
-        });
-        params.push({
-          key: 'property_type',
-          values: ['residential']
-        });
-        break;
-      case 'Rent':
-        params.push({
-          key: 'sale',
-          values: ['Rent']
-        });
-        params.push({
-          key: 'property_type',
-          values: ['residential']
-        });
-        break;
-      case 'Commercial':
-        if (saleType) {
-          params.push({
-            key: 'sale',
-            values: [saleType]
-          });
-        }
-        params.push({
-          key: 'property_type',
-          values: ['commercial']
-        });
-        break;
-      case 'Land':
-        if (saleType) {
-          params.push({
-            key: 'sale',
-            values: [saleType]
-          });
-        }
-        params.push({
-          key: 'property_type',
-          values: ['land']
-        });
-        break;
+    if (!property_type || typeof property_type !== 'string') {
+      throw new Error('property type is not set or not a string');
     }
+    if (property_type) {
+      params.push({
+        key: 'property_type',
+        values: [property_type]
+      });
+    }
+
+    if (sale_type) {
+      params.push({
+        key: 'sale',
+        values: [sale_type]
+      })
+    }
+
     return params;
   }
 
@@ -329,28 +290,22 @@ class Util extends React.Component {
       returnObject.msg = 'search type was not specified';
       return returnObject;
     }
-    if (!propertyTypeOptionsObject[searchType]) {
+    if (!propertyTypeOptionsObject.filter(d => d.search === searchType).length) {
       returnObject.error = true;
       returnObject.msg = `search type ${searchType} wasn't found in property type options`;
       return returnObject;
     }
-    let propertyTypes = get(propertyTypeOptionsObject, `[${searchType}].property_types`);
-    let saleType = get(propertyTypeOptionsObject, `[${searchType}].sale_type`);
-    if (!propertyTypes) {
+    let selectedSearch = propertyTypeOptionsObject.filter(d => d.search === searchType)[0];
+    let property_type = selectedSearch.property_type;
+    let sale_type = selectedSearch.listing_status;
+    if (!property_type) {
       returnObject.error = true;
       returnObject.msg = 'property types are missing from the data source';
       return returnObject;
     }
-    if (!saleType) {
-      returnObject.error = true;
-      returnObject.msg = 'sale type are missing from the data source';
-      return returnObject;
-    }
-    if (!(propertyTypes instanceof Array)) {
-      propertyTypes = Object.values(propertyTypes);
-    }
-    returnObject.propertyTypes = propertyTypes;
-    returnObject.saleType = saleType;
+    
+    returnObject.property_type = property_type;
+    returnObject.sale_type = sale_type;
     return returnObject;
   }
 

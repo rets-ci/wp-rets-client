@@ -12,7 +12,6 @@ import {combineReducers} from 'redux';
 import searchResults from './searchResults.jsx';
 import singleProperty from './singleProperty.jsx';
 import searchType from './searchType.jsx';
-import termDetails from './termDetails.jsx';
 import testimonialsCarouselState from './testimonialsCarousel.jsx';
 import userPanel from './userPanel.jsx';
 import wordpressContentFetching from './wordpressContentFetching.jsx';
@@ -27,7 +26,6 @@ const propertyProApp = combineReducers({
     propertyTypeOptions,
     searchResults,
     searchType,
-    termDetails,
     routing: routerReducer,
     filterTermsState,
     userPanel,

@@ -32,10 +32,9 @@ import Page from './Page.jsx';
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
 import loadGuideArchive from 'bundle-loader?lazy&name=GuideArchive!./guide/Archive.jsx';
 import loadPropertySingle from 'bundle-loader?lazy&name=SingleProperties!./properties/SingleContainer.jsx';
-import loadMapSearchResults from 'bundle-loader?lazy&name=MapSearchResults!./properties/MapSearchResults.jsx';
+import loadMapSearchResultsContainer from 'bundle-loader?lazy&name=MapSearchResultsContainer!./properties/MapSearchResultsContainer.jsx';
 
 require('nprogress-css');
-
 nprogress.configure({
   showSpinner: false,
   template: `<div class="${Lib.THEME_CLASSES_PREFIX}bar bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>`
@@ -257,7 +256,7 @@ class PageLayout extends Component {
             } />
           }
           <Route path={'/search'} render={props => {
-            return <Bundle load={loadMapSearchResults} nprogress={nprogress}>
+            return <Bundle load={loadMapSearchResultsContainer} nprogress={nprogress}>
               {(Comp) => (Comp
                 ? <Comp {...paramsToSet} />
                 : null

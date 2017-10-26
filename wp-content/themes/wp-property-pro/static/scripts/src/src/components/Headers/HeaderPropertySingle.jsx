@@ -22,12 +22,6 @@ import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    propertiesModalOpen: get(state, 'propertiesModal.open'),
-    propertiesModalResultCountErrorMessage: get(state, 'propertiesModal.errorMessage'),
-    propertiesModalResultCountIsFetching: get(state, 'propertiesModal.isFetching'),
-    propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
-    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
-    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -37,9 +31,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openLocationModal(false));
     },
 
-    doPropertiesModalSearch: (filters) => {
+    doPropertiesModalSearch: (filters, queryDefaults) => {
       dispatch(requestPropertiesModalResultCount());
-      Api.makeStandardPropertySearch(filters, (err, query, response) => {
+      // TODO: Replace second argument with the default query object
+      Api.makeStandardPropertySearch(filters, queryDefaults, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
@@ -67,11 +62,14 @@ class HeaderPropertySingle extends Component {
   static propTypes = {
     doOpenSaleTypesPanel: PropTypes.func.isRequired,
     historyPush: PropTypes.func.isRequired,
-    locationTerm: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired,
-    propertyTypeOptions: PropTypes.object.isRequired,
+    propertiesModalOpen: PropTypes.bool.isRequired,
+    propertySubTypes: PropTypes.array.isRequired,
+    propertyTypeOptions: PropTypes.array.isRequired,
+    propertyType: PropTypes.string.isRequired,
     saleTypesPanelOpen: PropTypes.bool.isRequired,
-    searchType: PropTypes.string.isRequired
+    searchType: PropTypes.string
   }
 
   constructor(props) {
@@ -89,29 +87,36 @@ class HeaderPropertySingle extends Component {
   }
 
   render() {
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
     //TODO: remove the bellow code
     let propertySingleStaticFilters = {
-      property_type: searchOptions.propertyTypes.map(d => d.slug),
-      sale_type: this.props.saleType,
+      property_type: this.props.propertyType,
+      sale_type: [this.props.sale],
       search_type: this.props.searchType,
-      term: [{'wpp_location': this.props.locationTerm}]
+      term: [{
+        slug: this.props.location.slug,
+        tax: "wpp_location",
+        term: this.props.location.term_type.replace('wpp_location_', ''),
+        text: this.props.location.term
+      }]
     };
-
     let containerClass = `${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single`;
     if (this.props.saleTypesPanelOpen) {
       containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
+    }
+    let queryDefaults = {
+      property_subtype: this.props.propertySubTypes.map(d => d.slug)
     }
     return (
       <div className={containerClass}>
         <PropertiesModal
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => this.props.openPropertiesModal(false)}
-          doSearch={this.props.doPropertiesModalSearch}
+          doSearch={(filters) => { this.props.doPropertiesModalSearch(filters, queryDefaults); }}
           errorMessage={this.props.propertiesModalResultCountErrorMessage}
           historyPush={this.props.historyPush}
           open={this.props.propertiesModalOpen}
           openLocationModal={this.props.openLocationModal}
+          propertySubTypes={this.props.propertySubTypes}
           propertyTypeOptions={this.props.propertyTypeOptions}
           resultCount={this.props.propertiesModalResultCount}
           resultCountButtonLoading={this.props.propertiesModalResultCountIsFetching}
@@ -122,7 +127,7 @@ class HeaderPropertySingle extends Component {
         <SaleTypeHeaderSelection
           closePanel={this.closeSaleTypePanel}
           historyPush={this.props.historyPush}
-          locationTerm={this.props.locationTerm}
+          location={this.props.location}
           propertyTypeOptions={this.props.propertyTypeOptions}
           open={this.props.saleTypesPanelOpen}
         />
@@ -154,7 +159,11 @@ class HeaderPropertySingle extends Component {
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}search-box-wrap`}>
-            <SearchFilters filters={propertySingleStaticFilters} propertyTypeOptions={this.props.propertyTypeOptions} />
+            <SearchFilters
+              filters={propertySingleStaticFilters}
+              historyPush={this.props.historyPush}
+              propertyTypeOptions={this.props.propertyTypeOptions}
+            />
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}top-nav-bar d-flex align-items-center hidden-sm-down`}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />

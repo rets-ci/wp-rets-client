@@ -79,6 +79,31 @@ class Api {
       }
     };
   }
+  
+  static getPropertySubTypesByPropertyType(propertyTypeSlug) {
+    return {
+      "filter": {
+        "term": {
+          "tax_input.wpp_listing_type.listing_type.slug": propertyTypeSlug
+        }
+      },
+      "aggs": {
+        "property_subtype_slugs": {
+          "terms": {
+            "field": "tax_input.wpp_listing_subtype.listing_sub_type.slug"
+          },
+          "aggs": {
+            "property_subtype_name": {
+              "terms": {
+                "field": "tax_input.wpp_listing_subtype.listing_sub_type.name.raw",
+                "size": 1
+              }
+            }
+          }
+        }
+      }
+    };
+  }
 
   static getTopAggregations() {
     return {
@@ -344,7 +369,7 @@ class Api {
     });
   }
 
-  static createESSearchQuery(params, defaults) {
+  static createESSearchQuery(params, queryDefaults) {
     let query = {
       "bool": {
         "must": []
@@ -390,10 +415,9 @@ class Api {
         "should": saleTypeShouldArray
       }
     });
-
     query.bool.must.push({
       "terms": {
-        "terms.wpp_listing_type.slug": params.property_subtype || defaults['property_subtype']
+        "tax_input.wpp_listing_subtype.listing_sub_type.slug": params.property_subtype || queryDefaults['property_subtype']
       }
     });
 
@@ -542,17 +566,13 @@ class Api {
     }, callback);
   }
 
-  static makeStandardPropertySearch(params, propertyTypeOptions, callback) {
+  static makeStandardPropertySearch(params, queryDefaults, callback) {
     let searchParams = {
       ...params,
       size: Lib.PROPERTY_PER_PAGE
     };
-
-    let defaults = {
-      property_subtype: get(propertyTypeOptions[params.search_type], 'property_types', []).map(d => d.slug)
-    };
     
-    let query = this.createESSearchQuery(searchParams, defaults);
+    let query = this.createESSearchQuery(searchParams, queryDefaults);
     let url = this.getPropertySearchRequestURL();
     this.search(url, query, (err, response) => {
       callback(err, query, response);
@@ -608,13 +628,19 @@ class Api {
     });
   }
 
-  static termDetailsLookupQuery(terms, callback) {
-    let aggregations = Util.getTermLookupAggregationQuery(terms);
+  static getSearchPageMetadata(terms, propertyType, callback) {
+    let aggregations = {};
+    if (terms) {
+      aggregations = Util.getTermLookupAggregationQuery(terms);
+    }
+    if (propertyType) {
+      aggregations['property_subtype_based_on_type'] = this.getPropertySubTypesByPropertyType(propertyType);
+    }
     let searchObj = {query: {}, aggregations: aggregations};
     let url = this.getPropertySearchRequestURL(0);
     this.search(url, searchObj, (err, response) => {
       callback(err, response);
-    });    
+    });
   }
 }
 

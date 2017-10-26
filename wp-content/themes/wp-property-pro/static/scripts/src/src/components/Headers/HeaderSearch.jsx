@@ -31,7 +31,7 @@ class HeaderSearch extends Component {
 
   static propTypes = {
     historyPush: PropTypes.func.isRequired,
-    propertyTypeOptions: PropTypes.object.isRequired,
+    propertyTypeOptions: PropTypes.array.isRequired,
     searchFilters: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
@@ -97,7 +97,7 @@ class HeaderSearch extends Component {
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}search-box-wrap`}>
-            <SearchFilters filters={searchFilters} propertyTypeOptions={propertyTypeOptions} />
+            <SearchFilters filters={searchFilters} historyPush={historyPush} propertyTypeOptions={propertyTypeOptions} />
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}top-nav-bar d-flex align-items-center hidden-sm-down`}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />

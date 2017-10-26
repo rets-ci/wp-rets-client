@@ -17,18 +17,24 @@ import Single from './Single.jsx';
 
 import Util from 'app_root/components/Util.jsx';
 
-
 const mapStateToProps = (state, ownProps) => {
   return {
     errorMessage: state.singleProperty.errorMessage,
     isFetching: state.singleProperty.isFetching,
-    property: state.singleProperty.property
+    propertiesModalOpen: get(state, 'propertiesModal.open'),
+    propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
+    propertiesModalResultCountErrorMessage: get(state, 'propertiesModal.errorMessage'),
+    propertiesModalResultCountIsFetching: get(state, 'propertiesModal.isFetching'),
+    property: state.singleProperty.property,
+    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
+    propertySubTypes: state.singleProperty.propertySubTypes,
+    saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    searchProperty: (id) => {
+    searchProperty: (id, propertyType) => {
       let url = 'https://' + bundle.elasticsearch_host + '/v3/search/advanced?size=1';
       let query = {
         "query": {
@@ -46,7 +52,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         } else if (!get(data, 'hits.hits[0]', null)) {
           dispatch(receivePropertySingleFetchingError('property not found'));
         } else {
-          dispatch(receivePropertySingleResult(get(data, 'hits.hits[0]._source')));
+          Api.getSearchPageMetadata(null, propertyType, (err, response) => {
+            if (err) {
+              dispatch(receivePropertySingleFetchingError(err));
+            } else if (!response.aggregations) {
+              dispatch(receivePropertySingleFetchingError('response aggregations not found'));
+            } else {
+              let propertySubtypes = get(response.aggregations, 'property_subtype_based_on_type.property_subtype_slugs.buckets', []).map(d => {
+                let obj = {};
+                obj['slug'] = d.key;
+                obj['title'] = get(d, 'property_subtype_name.buckets[0].key');
+                return obj;
+              });
+              dispatch(receivePropertySingleResult(get(data, 'hits.hits[0]._source'), propertySubtypes));
+            }
+          });
         }
       });
     }
@@ -67,6 +87,7 @@ class SingleContainer extends Component {
     ]),
     isFetching: PropTypes.bool.isRequired,
     property: PropTypes.object,
+    propertySubTypes: PropTypes.array.isRequired,
     searchProperty: PropTypes.func.isRequired
   }
 
@@ -79,7 +100,7 @@ class SingleContainer extends Component {
     if (!get(this.props, 'post.post_id', null)) {
       console.log('property id is not defined');
     } else {
-      this.props.searchProperty(this.props.post.post_id);
+      this.props.searchProperty(this.props.post.post_id, this.props.post.wpp_listing_type);
     }
   }
 
@@ -91,23 +112,41 @@ class SingleContainer extends Component {
       isFetching,
       openUserPanel,
       post: {
-        location: locationTerm,
+        wpp_location: location,
         post_id : id,
-        sale_type: saleType,
-        search_type: searchType
+        wpp_listing_status: sale,
+        wpp_listing_type: propertyType
       },
-      property
+      propertyTypeOptions,
+      propertiesModalOpen,
+      propertiesModalResultCount,
+      propertiesModalResultCountErrorMessage,
+      propertiesModalResultCountIsFetching,
+      property,
+      propertySubTypes,
+      saleTypesPanelOpen
     } = this.props;
-
     let propertyMeta = {};
-    if (property) {
-      propertyMeta = Util.transformPropertyMeta(property);
-    }
-
+    if (property) { propertyMeta = Util.transformPropertyMeta(property); }
+    let searchType = Util.determineSearchType(propertyTypeOptions, propertyType, sale ? sale : null);
     return (
       <div>
         <div className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
-          <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>
+          <HeaderPropertySingle
+            historyPush={history.push}
+            location={location}
+            sale={sale}
+            propertiesModalOpen={propertiesModalOpen}
+            propertiesModalResultCount={propertiesModalResultCount}
+            propertiesModalResultCountErrorMessage={propertiesModalResultCountErrorMessage}
+            propertiesModalResultCountIsFetching={propertiesModalResultCountIsFetching}
+            propertyType={propertyType}
+            propertyTypeOptions={propertyTypeOptions}
+            propertySubTypes={propertySubTypes}
+            openUserPanel={openUserPanel}
+            saleTypesPanelOpen={saleTypesPanelOpen}
+            searchType={searchType}
+          />
         </div>
         {!property ?
           (isFetching ?
@@ -121,8 +160,7 @@ class SingleContainer extends Component {
               agents={agents}
               {...propertyMeta}
               all={property}
-              locationTerm={locationTerm}
-              saleType={saleType}
+              saleType={sale}
               searchType={searchType}
             />
         }
