@@ -39,7 +39,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     doPropertiesModalSearch: (filters) => {
       dispatch(requestPropertiesModalResultCount());
-      Api.makeStandardPropertySearch(filters, (err, query, response) => {
+      // TODO: Replace second argument with the default query object
+      Api.makeStandardPropertySearch(filters, {}, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
@@ -67,11 +68,11 @@ class HeaderPropertySingle extends Component {
   static propTypes = {
     doOpenSaleTypesPanel: PropTypes.func.isRequired,
     historyPush: PropTypes.func.isRequired,
-    locationTerm: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired,
     propertyTypeOptions: PropTypes.array.isRequired,
-    saleTypesPanelOpen: PropTypes.bool.isRequired,
-    searchType: PropTypes.string.isRequired
+    propertyType: PropTypes.string.isRequired,
+    saleTypesPanelOpen: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -89,13 +90,14 @@ class HeaderPropertySingle extends Component {
   }
 
   render() {
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
+    
+    let searchType = Util.determineSearchType(this.props.propertyTypeOptions, this.props.propertyType, this.props.sale ? this.props.sale[0] : null);
     //TODO: remove the bellow code
     let propertySingleStaticFilters = {
-      property_type: searchOptions.propertyTypes.map(d => d.slug),
-      sale_type: this.props.saleType,
-      search_type: this.props.searchType,
-      term: [{'wpp_location': this.props.locationTerm}]
+      property_type: this.props.propertyType,
+      sale_type: this.props.sale,
+      search_type: searchType,
+      term: [{'wpp_location': this.props.location.term}]
     };
 
     let containerClass = `${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single`;

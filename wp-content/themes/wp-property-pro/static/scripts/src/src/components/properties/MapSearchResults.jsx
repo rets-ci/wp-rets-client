@@ -18,7 +18,6 @@ import {
   receiveSearchResultsPosts,
   receiveSearchResultsPostsError,
   requestSearchResultsPosts,
-  receiveTermDetails,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
 } from '../../actions/index.jsx';
@@ -39,15 +38,17 @@ const isMobile = window.innerWidth < 576;
 
 const mapStateToProps = (state, ownProps) => {
   let propertyTypeOptions = get(state, 'propertyTypeOptions.options');
+  let queryDefaults = ownProps.queryDefaults;
+  let propertySubTypes = ownProps.propertySubtypes;
   let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
   let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
-  let termDetails = Util.reddoorTermDetailsFromSearchParam(searchQueryParamsCollection);
-  // get the search type
-  let searchType = Util.determineSearchType(searchQueryObject.property_type, searchQueryObject.sale && searchQueryObject.sale.length ? searchQueryObject.sale[0] : null);
+  let searchType = Util.determineSearchType(propertyTypeOptions, searchQueryObject.property_type[0], searchQueryObject.sale ? searchQueryObject.sale[0] : null);
+  let termDetails = get(ownProps, 'termDetails');
   if (searchType instanceof Error) {
     //TODO: handle not determining searchQueryObject
     console.log('error determining search type: ', searchType.message);
   }
+  searchQueryObject['property_type'] = searchQueryObject.property_type[0];
   searchQueryObject['search_type'] = searchType;
   if (!searchQueryObject.sale) {
     searchQueryObject.sale = ['Rent', 'Sale'];
@@ -55,6 +56,7 @@ const mapStateToProps = (state, ownProps) => {
     // we only support an array of sale items
     searchQueryObject.sale = [searchQueryObject.sale];
   }
+
   searchQueryObject = Util.searchObjectToCustomFormat(searchQueryObject);
   searchQueryObject['term'] = termDetails;
   for (var key in searchQueryObject) {
@@ -65,7 +67,7 @@ const mapStateToProps = (state, ownProps) => {
 
   if (searchQueryObject['property_subtype']) {
     let property_subtype = searchQueryObject['property_subtype'] instanceof Array ? searchQueryObject['property_subtype'] : [searchQueryObject['property_subtype']];
-    searchQueryObject['property_subtype'] = get(propertyTypeOptions[searchQueryObject.search_type], 'property_types', []).filter(d => {
+    searchQueryObject['property_subtype'] = propertySubTypes.filter(d => {
       return property_subtype.indexOf(d.slug) >= 0;
     });
   }
@@ -79,15 +81,17 @@ const mapStateToProps = (state, ownProps) => {
     propertiesModalResultCountErrorMessage: get(state, 'propertiesModal.errorMessage'),
     propertiesModalResultCountIsFetching: get(state, 'propertiesModal.isFetching'),
     propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
+    propertySubTypes: propertySubTypes,
     propertyTypeOptions: propertyTypeOptions,
     results: get(state, 'searchResults.searchResults', []),
     resultsTotal: get(state, 'searchResults.totalProps', 0),
     propertyOnPanel: state.singleProperty.propertyOnPanel,
     panelOnMapShown: state.singleProperty.panelOnMapShown,
+    queryDefaults: queryDefaults,
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     searchQueryParams: searchQueryObject,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
-    termDetails: get(state, 'termDetails.terms')
+    termDetails: termDetails
   }
 };
 
@@ -97,9 +101,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openLocationModal(false));
     },
 
-    doPropertiesModalSearch: (filters, propertyTypeOptions) => {
+    doPropertiesModalSearch: (filters, queryDefaults) => {
       dispatch(requestPropertiesModalResultCount());
-      Api.makeStandardPropertySearch(filters, propertyTypeOptions, (err, query, response) => {
+      Api.makeStandardPropertySearch(filters, queryDefaults, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
@@ -128,7 +132,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(receiveSearchResultsPosts({}, [], 0));
     },
 
-    standardSearch: (p, propertyTypeOptions) => {
+    standardSearch: (p, defaults) => {
       dispatch(requestSearchResultsPosts());
       let params = Object.assign({}, p);
       // geoCorrdinates
@@ -138,28 +142,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]]
         };
       }
-      Api.makeStandardPropertySearch(params, propertyTypeOptions, (err, query, response) => {
+      Api.makeStandardPropertySearch(params, defaults, (err, query, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
         }
         dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), false));
-      });
-      Api.termDetailsLookupQuery(params['term'], (err, response) => {
-        if (err) {
-          //TODO: handle the error
-          console.log('error thrown')
-        }
-        let terms = [];
-        if (response.aggregations) {
-          terms = params['term'].map(d => {
-            let termText = get(response, 'aggregations[' + d.slug + '.inside.buckets[0].key');
-            return {
-              ...d,
-              text: termText
-            }
-          });
-        }
-        dispatch(receiveTermDetails(terms))
       });
     },
 
@@ -184,6 +171,8 @@ class MapSearchResults extends Component {
     ]),
     propertiesModalResultCountErrorMessage: PropTypes.string,
     propertiesModalResultCountIsFetching: PropTypes.bool.isRequired,
+    propertySubTypes: PropTypes.array.isRequired,
+    queryDefaults: PropTypes.object.isRequired,
     resetSearchResults: PropTypes.func.isRequired,
     results: PropTypes.array.isRequired,
     searchResultsErrorMessage: PropTypes.string,
@@ -202,7 +191,7 @@ class MapSearchResults extends Component {
 
   componentDidMount() {
     let filters = this.props.searchQueryParams;
-    this.applyQueryFilters(this.props.propertyTypeOptions, filters);
+    this.applyQueryFilters(filters);
     if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
       let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
       if (!firstPropertyMLSID) {
@@ -216,7 +205,7 @@ class MapSearchResults extends Component {
   componentWillReceiveProps(nextProps) {
     let filters = nextProps.searchQueryParams;
     if (!isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']))) {
-      this.applyQueryFilters(this.props.propertyTypeOptions, nextProps.searchQueryParams);
+      this.applyQueryFilters(nextProps.searchQueryParams);
     }
     if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type && this.listingSidebar) {
       // this fixes the issue where changing "search_type" would keep the scrolling of the previous search type
@@ -239,8 +228,8 @@ class MapSearchResults extends Component {
     this.props.doSearchWithQuery(modifiedQuery, true);
   }
 
-  applyQueryFilters(propertyTypeOptions, searchFilters) {
-    this.props.standardSearch(searchFilters, propertyTypeOptions);
+  applyQueryFilters = searchFilters => {
+    this.props.standardSearch(searchFilters, this.props.queryDefaults);
   }
 
   clickMobileSwitcherHandler(mapDisplay) {
@@ -296,7 +285,9 @@ class MapSearchResults extends Component {
       propertiesModalResultCount,
       propertiesModalResultCountErrorMessage,
       propertiesModalResultCountIsFetching,
+      propertySubTypes,
       propertyTypeOptions,
+      queryDefaults,
       results,
       resultsTotal,
       searchQueryParams,
@@ -363,7 +354,6 @@ class MapSearchResults extends Component {
         historyPush={history.push}
       />
     );
-
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
         {this.props.searchResultsErrorMessage &&
@@ -372,11 +362,12 @@ class MapSearchResults extends Component {
         <PropertiesModal
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => openPropertiesModal(false)}
-          doSearch={(filters) => { doPropertiesModalSearch(filters, propertyTypeOptions); }}
+          doSearch={(filters) => { doPropertiesModalSearch(filters, queryDefaults); }}
           errorMessage={propertiesModalResultCountErrorMessage}
           historyPush={history.push}
           open={propertiesModalOpen}
           openLocationModal={this.props.openLocationModal}
+          propertySubTypes={propertySubTypes}
           propertyTypeOptions={propertyTypeOptions}
           resultCount={propertiesModalResultCount}
           resultCountButtonLoading={propertiesModalResultCountIsFetching}

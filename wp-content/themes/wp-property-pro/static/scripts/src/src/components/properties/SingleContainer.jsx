@@ -17,7 +17,6 @@ import Single from './Single.jsx';
 
 import Util from 'app_root/components/Util.jsx';
 
-
 const mapStateToProps = (state, ownProps) => {
   return {
     errorMessage: state.singleProperty.errorMessage,
@@ -91,10 +90,10 @@ class SingleContainer extends Component {
       isFetching,
       openUserPanel,
       post: {
-        location: locationTerm,
+        wpp_location: location,
         post_id : id,
-        sale_type: saleType,
-        search_type: searchType
+        wpp_listing_status: sale,
+        wpp_listing_type: propertyType
       },
       property
     } = this.props;
@@ -103,11 +102,10 @@ class SingleContainer extends Component {
     if (property) {
       propertyMeta = Util.transformPropertyMeta(property);
     }
-
     return (
       <div>
         <div className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
-          <HeaderPropertySingle historyPush={history.push} locationTerm={locationTerm} saleType={saleType} searchType={searchType} openUserPanel={openUserPanel}/>
+          <HeaderPropertySingle historyPush={history.push} location={location} sale={sale} propertyType={propertyType} openUserPanel={openUserPanel}/>
         </div>
         {!property ?
           (isFetching ?

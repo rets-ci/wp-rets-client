@@ -129,11 +129,12 @@ class PropertyCardList extends Component {
               state: get(p, '_source.tax_input.wpp_location.wpp_location_state[0].name', ''),
               type: get(p, '_source.tax_input.wpp_listing_type.listing_type[0].slug', ''),
               sqft: get(p, '_source.post_meta.sqft[0]', ''),
-              sub_type: get(p, '_source.tax_input.wpp_listing_type.listing_sub_type[0].name', ''),
+              sub_type: get(p, '_source.tax_input.wpp_listing_subtype.listing_sub_type[0].name', ''),
               relative_permalink: get(p, '_source.permalink', ''),
               thumbnail: get(p, '_source.post_meta.rets_thumbnail_url', [''])[0],
               zip: get(p, '_source.post_meta.rets_postal_code[0]', '')
             };
+
             return (
               <div className={`col-12 col-lg-6`} key={item.id}>
                 <PropertyCard

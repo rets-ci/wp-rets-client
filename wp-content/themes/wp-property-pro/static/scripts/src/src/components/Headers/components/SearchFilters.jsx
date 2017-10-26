@@ -32,9 +32,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class searchFilters extends Component {
   static propTypes = {
     filters: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+    historyPush: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -96,7 +94,7 @@ class searchFilters extends Component {
     queryParam = Util.customFormatToSearchObject(queryParam);
     let searchCollection = Util.searchObjectToCollection(queryParam);
     let searchURL = Util.createSearchURL('/search', searchCollection);
-    this.props.history.push(searchURL);
+    this.props.historyPush(searchURL);
   }
 
   render() {
@@ -235,7 +233,7 @@ class searchFilters extends Component {
   }
 };
 
-export default withRouter(connect(
+export default connect(
   null,
   mapDispatchToProps
-)(searchFilters));
+)(searchFilters);

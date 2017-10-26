@@ -126,13 +126,6 @@ export const receiveSearchResultsPostsError = (errorMessage) => {
   }
 };
 
-export const receiveTermDetails = (terms) => {
-  return {
-    type: Lib.SET_SEARCH_TERM_DETAILS_ACTION,
-    terms: terms
-  }
-};
-
 export const requestPropertySingleResult = () => {
   return {
     type: Lib.REQUEST_PROPERTY_SINGLE_RESULT_ACTION

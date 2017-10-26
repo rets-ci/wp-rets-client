@@ -94,28 +94,14 @@ class Util extends React.Component {
     return txt.value;
   }
 
-  static determineSearchType(pt, s) {
-    // let rules = "d.property_type === property_type";
-    // if (sale) { rules += " && d.sale === sale"; }
-    // let func = new Function('d', rules);
-    // return arr.filter(func);
-    if (!pt || !(pt instanceof Array)) {
-      return new Error('property type is not set or not an array');
+  static determineSearchType(options, property_type, sale) {
+    let rules = "d.property_type === property_type";
+    if (sale) { rules += " && d.listing_status === sale"; }
+    let filteredSearch = options.filter(d => eval(rules));
+    if (!filteredSearch.length) {
+      return new Error('search could not be determined');
     }
-
-    let propertyTypes = pt;
-    let sale = s;
-    if (propertyTypes.indexOf('commercial') >= 0) {
-      return 'Commercial';
-    } else if (propertyTypes.indexOf('land') >= 0) {
-      return 'Land';
-    } else if (propertyTypes.indexOf('residential') >= 0) {
-      if (!s || ['Sale', 'Rent'].indexOf(sale) < 0) {
-        return new Error('sale type is not defined or not Sale or Rent even tho property type is residential');
-      } else {
-        return sale === 'Sale' ? 'Buy' : 'Rent';
-      }
-    }
+    return filteredSearch.length ? filteredSearch[0].search : null;
   }
 
   static createSearchTypeArrayParams(property_type, sale_type) {
@@ -137,57 +123,6 @@ class Util extends React.Component {
       })
     }
 
-    return params;
-  }
-
-  static determineSearchTypeArrayParams(searchType, saleType) {
-    let params = [];
-    switch(searchType) {
-      case 'Buy':
-        params.push({
-          key: 'sale',
-          values: ['Sale']
-        });
-        params.push({
-          key: 'property_type',
-          values: ['residential']
-        });
-        break;
-      case 'Rent':
-        params.push({
-          key: 'sale',
-          values: ['Rent']
-        });
-        params.push({
-          key: 'property_type',
-          values: ['residential']
-        });
-        break;
-      case 'Commercial':
-        if (saleType) {
-          params.push({
-            key: 'sale',
-            values: [saleType]
-          });
-        }
-        params.push({
-          key: 'property_type',
-          values: ['commercial']
-        });
-        break;
-      case 'Land':
-        if (saleType) {
-          params.push({
-            key: 'sale',
-            values: [saleType]
-          });
-        }
-        params.push({
-          key: 'property_type',
-          values: ['land']
-        });
-        break;
-    }
     return params;
   }
 
