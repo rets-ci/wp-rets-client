@@ -1,6 +1,6 @@
 {
-  "MapSearchResults": {
-    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/MapSearchResults.chunk.js"
+  "MapSearchResultsContainer": {
+    "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/MapSearchResultsContainer.chunk.js"
   },
   "SingleProperties": {
     "js": "/wp-content/themes/wp-property-pro/static/scripts/src/dist/SingleProperties.chunk.js"

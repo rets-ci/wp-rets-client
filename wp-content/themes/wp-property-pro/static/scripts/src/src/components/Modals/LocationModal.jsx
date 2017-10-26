@@ -32,12 +32,12 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    searchHandler: (term, saleType, propertyTypes) => {
+    searchHandler: (term, saleTypes, propertyType) => {
 
       let searchParams = {
         term: term,
-        saleType: saleType,
-        propertyTypes: propertyTypes
+        saleTypes: saleTypes,
+        propertyType: propertyType
       };
       dispatch(requestLocationModalPosts());
       Api.autocompleteQuery(searchParams,
@@ -153,14 +153,14 @@ class LocationModal extends Component {
   search() {
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
     let {
-      propertyTypes,
-      saleType
+      property_type,
+      sale_type
     } = searchOptions;
     let val = this.state.searchValue;
     if (!val) {
       this.props.topQuery();
     } else {
-      this.props.searchHandler(val, saleType, propertyTypes.map(p => p.slug));
+      this.props.searchHandler(val, sale_type, property_type);
     }
   }
 
