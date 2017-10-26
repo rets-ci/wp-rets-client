@@ -114,7 +114,7 @@ class SingleContainer extends Component {
       post: {
         wpp_location: location,
         post_id : id,
-        wpp_listing_status: sale,
+        wpp_listing_statuses: sale,
         wpp_listing_type: propertyType
       },
       propertyTypeOptions,

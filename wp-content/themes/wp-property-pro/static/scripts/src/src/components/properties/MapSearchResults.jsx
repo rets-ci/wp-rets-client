@@ -42,7 +42,7 @@ const mapStateToProps = (state, ownProps) => {
   let propertySubTypes = ownProps.propertySubtypes;
   let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
   let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
-  let searchType = Util.determineSearchType(propertyTypeOptions, searchQueryObject.property_type[0], searchQueryObject.sale ? searchQueryObject.sale[0] : null);
+  let searchType = Util.determineSearchType(propertyTypeOptions, searchQueryObject.property_type[0], searchQueryObject.sale);
   let termDetails = get(ownProps, 'termDetails');
   if (searchType instanceof Error) {
     //TODO: handle not determining searchQueryObject

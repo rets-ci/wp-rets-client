@@ -7,6 +7,7 @@ import {Lib} from '../lib.jsx';
 import get from 'lodash/get';
 import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
 import replace from 'lodash/replace';
 import join from 'lodash/join';
@@ -95,8 +96,9 @@ class Util extends React.Component {
   }
 
   static determineSearchType(options, property_type, sale) {
+    let lodashIntersection = intersection;
     let rules = "d.property_type === property_type";
-    if (sale) { rules += " && d.listing_status === sale"; }
+    if (sale) { rules += " && lodashIntersection(d.listing_statuses, sale).length > 0"; }
     let filteredSearch = options.filter(d => eval(rules));
     if (!filteredSearch.length) {
       return new Error('search could not be determined');
@@ -109,6 +111,9 @@ class Util extends React.Component {
     if (!property_type || typeof property_type !== 'string') {
       throw new Error('property type is not set or not a string');
     }
+    if (!sale_type || !(sale_type instanceof Array)) {
+      throw new Error('sale_type needs to be an array');
+    }
     if (property_type) {
       params.push({
         key: 'property_type',
@@ -116,7 +121,7 @@ class Util extends React.Component {
       });
     }
 
-    if (sale_type) {
+    if (sale_type && !isEqual(sale_type.sort(), ['Rent', 'Sale'])) {
       params.push({
         key: 'sale',
         values: [sale_type]
@@ -297,7 +302,7 @@ class Util extends React.Component {
     }
     let selectedSearch = propertyTypeOptionsObject.filter(d => d.search === searchType)[0];
     let property_type = selectedSearch.property_type;
-    let sale_type = selectedSearch.listing_status;
+    let sale_type = selectedSearch.listing_statuses;
     if (!property_type) {
       returnObject.error = true;
       returnObject.msg = 'property types are missing from the data source';
