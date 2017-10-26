@@ -457,6 +457,7 @@ namespace UsabilityDynamics {
             $city_term = reset($city_terms);
             $params['post']['wpp_location'] = [
                 'term_type' => $location_city_term_type,
+                'slug' => $city_term->slug,
                 'term' => $city_term->name
             ];
           }
