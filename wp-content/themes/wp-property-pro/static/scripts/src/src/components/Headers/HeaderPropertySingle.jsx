@@ -31,10 +31,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openLocationModal(false));
     },
 
-    doPropertiesModalSearch: (filters) => {
+    doPropertiesModalSearch: (filters, queryDefaults) => {
       dispatch(requestPropertiesModalResultCount());
       // TODO: Replace second argument with the default query object
-      Api.makeStandardPropertySearch(filters, {}, (err, query, response) => {
+      Api.makeStandardPropertySearch(filters, queryDefaults, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
@@ -99,17 +99,19 @@ class HeaderPropertySingle extends Component {
         text: this.props.location.term
       }]
     };
-
     let containerClass = `${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single`;
     if (this.props.saleTypesPanelOpen) {
       containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
+    }
+    let queryDefaults = {
+      property_subtype: this.props.propertySubTypes.map(d => d.slug)
     }
     return (
       <div className={containerClass}>
         <PropertiesModal
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => this.props.openPropertiesModal(false)}
-          doSearch={this.props.doPropertiesModalSearch}
+          doSearch={(filters) => { this.props.doPropertiesModalSearch(filters, queryDefaults); }}
           errorMessage={this.props.propertiesModalResultCountErrorMessage}
           historyPush={this.props.historyPush}
           open={this.props.propertiesModalOpen}
@@ -125,7 +127,7 @@ class HeaderPropertySingle extends Component {
         <SaleTypeHeaderSelection
           closePanel={this.closeSaleTypePanel}
           historyPush={this.props.historyPush}
-          locationTerm={this.props.locationTerm}
+          location={this.props.location}
           propertyTypeOptions={this.props.propertyTypeOptions}
           open={this.props.saleTypesPanelOpen}
         />

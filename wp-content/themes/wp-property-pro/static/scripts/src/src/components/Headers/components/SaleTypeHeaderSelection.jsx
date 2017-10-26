@@ -12,11 +12,11 @@ class SaleTypeHeaderSelection extends Component {
     historyPush: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     closePanel: PropTypes.func.isRequired,
-    locationTerm: PropTypes.string,
+    location: PropTypes.object,
     termFilters: PropTypes.array
   }
 
-  handleSaleSelectionItemClick = (currentURL, termFilters, locationTerm, searchType, propertyTypeOptions, historyPush) => {
+  handleSaleSelectionItemClick = (currentURL, termFilters, location, searchType, propertyTypeOptions, historyPush) => {
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, propertyTypeOptions);
     if (searchOptions.error) {
       // TODO: better handle these types of error
@@ -32,10 +32,11 @@ class SaleTypeHeaderSelection extends Component {
     let params = [];
     let searchTypeArrayParams = Util.createSearchTypeArrayParams(property_type, sale_type);
     params = params.concat(searchTypeArrayParams);
-
-    if (locationTerm) {
-      //TODO: this need to be handled but we we can't do it without the term type
-      // params[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = [{'wpp_location': locationTerm}];
+    if (location) {
+      params.push({
+        key: location.term_type.replace('wpp_location_', ''),
+        values: [location.slug]
+      })
     } else if (termFilters) {
       params = params.concat(termFilters.map(d => ({key: d.term, values: [d.slug]})));
     }
@@ -47,7 +48,7 @@ class SaleTypeHeaderSelection extends Component {
   render() {
     let {
       historyPush,
-      locationTerm,
+      location,
       open,
       propertyTypeOptions,
       termFilters
@@ -61,25 +62,25 @@ class SaleTypeHeaderSelection extends Component {
       <div className={containerClasses}>
         <div className="container d-flex justify-content-center">
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, locationTerm, 'Buy', propertyTypeOptions, historyPush)}}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Buy', propertyTypeOptions, historyPush)}}>
               <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
               <span>Buy</span>
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, locationTerm, 'Rent', propertyTypeOptions, historyPush) }}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Rent', propertyTypeOptions, historyPush) }}>
               <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
               <span>Rent</span>
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, locationTerm, 'Commercial', propertyTypeOptions, historyPush); }}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Commercial', propertyTypeOptions, historyPush); }}>
               <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
               <span>Commercial</span>
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, locationTerm, 'Land', propertyTypeOptions, historyPush); }}>
+            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Land', propertyTypeOptions, historyPush); }}>
               <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
               <span>Land</span>
             </a>
