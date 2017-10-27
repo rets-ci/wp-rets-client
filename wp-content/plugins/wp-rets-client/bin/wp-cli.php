@@ -42,17 +42,17 @@ if( !class_exists( 'WPP_CLI_RETSCI_Command' ) ) {
   class WPP_CLI_RETSCI_Command extends WP_CLI_Command {
 
     /**
-     * Updates properties and its data:
+     * Cleans up properties and its data:
      * - updates terms counts
      *
      *
-     * Example: wp retsci update
+     * Example: wp retsci cleanup
      *
      * @synopsis [--taxonomy]
      * @param array $args
      * @param array $assoc_args
      */
-    public function update( $args, $assoc_args ) {
+    public function cleanup( $args, $assoc_args ) {
 
       timer_start();
 
@@ -76,13 +76,13 @@ if( !class_exists( 'WPP_CLI_RETSCI_Command' ) ) {
      * Cleanup:
      * - removes all unassigned retsci attachments
      *
-     * Example: wp retsci cleanup --posts-per-page=100
+     * Example: wp retsci delete_attachments --posts-per-page=100
      *
      * @synopsis [--posts-per-page]
      * @param array $args
      * @param array $assoc_args
      */
-    public function cleanup( $args, $assoc_args ) {
+    public function delete_attachments( $args, $assoc_args ) {
 
       timer_start();
 
