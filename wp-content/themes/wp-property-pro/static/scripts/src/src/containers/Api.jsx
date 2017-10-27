@@ -417,7 +417,7 @@ class Api {
     });
     query.bool.must.push({
       "terms": {
-        "tax_input.wpp_listing_subtype.listing_sub_type.slug": params.property_subtype || queryDefaults['property_subtype']
+        "tax_input.wpp_listing_subtype.listing_sub_type.slug": (params.property_subtype && params.property_subtype.map(d => d.slug)) || queryDefaults['property_subtype']
       }
     });
 
