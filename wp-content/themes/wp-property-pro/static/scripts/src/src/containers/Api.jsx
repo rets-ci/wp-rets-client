@@ -415,6 +415,13 @@ class Api {
         "should": saleTypeShouldArray
       }
     });
+
+    query.bool.must.push({
+      "terms": {
+        "tax_input.wpp_listing_subtype.listing_sub_type.slug": (params.property_subtype && params.property_subtype.map(d => d.slug)) || queryDefaults['property_subtype']
+      }
+    });
+
     query.bool.must.push({
       "terms": {
         "tax_input.wpp_listing_type.listing_type.slug": [(params.property_type) || queryDefaults['property_type']]
