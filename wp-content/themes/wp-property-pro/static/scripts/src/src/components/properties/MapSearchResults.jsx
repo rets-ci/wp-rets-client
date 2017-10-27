@@ -191,7 +191,7 @@ class MapSearchResults extends Component {
 
   componentDidMount() {
     let filters = this.props.searchQueryParams;
-    this.applyQueryFilters(filters);
+    this.applyQueryFilters(filters, this.props.queryDefaults);
     if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
       let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
       if (!firstPropertyMLSID) {
@@ -204,8 +204,10 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     let filters = nextProps.searchQueryParams;
-    if (!isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']))) {
-      this.applyQueryFilters(nextProps.searchQueryParams);
+    let anyFilterChange = !isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']));
+    let anyDefaultQueryChange = !isEqual(nextProps.queryDefaults, this.props.queryDefaults);
+    if (anyFilterChange || anyDefaultQueryChange) {
+      this.applyQueryFilters(nextProps.searchQueryParams, nextProps.queryDefaults);
     }
     if (nextProps.searchQueryParams.search_type !== this.props.searchQueryParams.search_type && this.listingSidebar) {
       // this fixes the issue where changing "search_type" would keep the scrolling of the previous search type
@@ -228,8 +230,8 @@ class MapSearchResults extends Component {
     this.props.doSearchWithQuery(modifiedQuery, true);
   }
 
-  applyQueryFilters = searchFilters => {
-    this.props.standardSearch(searchFilters, this.props.queryDefaults);
+  applyQueryFilters = (searchFilters, queryDefaults) => {
+    this.props.standardSearch(searchFilters, queryDefaults);
   }
 
   clickMobileSwitcherHandler(mapDisplay) {

@@ -3,6 +3,7 @@ import {
   setSearchType,
   openPropertiesModal
 } from '../../../actions/index.jsx';
+import difference from 'lodash/difference';
 import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
@@ -86,7 +87,14 @@ class searchFilters extends Component {
     this.updateURLWithQueryParam(filters);
   }
 
-  updateURLWithQueryParam = (queryParam) => {
+  showStaticFilters() {
+    let filters = this.props.filters;
+    let notCountingFilters = ['property_type', 'search_type', 'sale_type', 'term'];
+    return !difference(Object.keys(filters), notCountingFilters).length;
+  }
+
+  updateURLWithQueryParam = queryParam => {
+    queryParam = Object.assign({}, queryParam);
     delete queryParam['search_type']
     if (queryParam['sale_type'] && isEqual(queryParam['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
       delete queryParam['sale_type']
@@ -138,12 +146,11 @@ class searchFilters extends Component {
     let sqftElement;
     let subPropertyTypeFilter = filters['property_subtype'];
     let subPropertyTypeElement;
-
     if (bathroomsFilter) {
       bathroomsElement = (
         <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
       );
-    } else if (staticFilters['bathrooms']) {
+    } else if (staticFilters['bathrooms'] && this.showStaticFilters()) {
       bathroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Bathroom
       </span>);
@@ -153,7 +160,7 @@ class searchFilters extends Component {
       bedroomsElement = (
         <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
       );
-    } else if (staticFilters['bedrooms']) {
+    } else if (staticFilters['bedrooms'] && this.showStaticFilters()) {
       bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Bedroom
       </span>);
@@ -163,7 +170,7 @@ class searchFilters extends Component {
       priceElement = (
         <FilterTag handleRemoveFilter={this.handlePriceFilterRemove} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
       );
-    } else if (staticFilters['price']) {
+    } else if (staticFilters['price'] && this.showStaticFilters()) {
       priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Price
       </span>);
@@ -173,7 +180,7 @@ class searchFilters extends Component {
       lotSizeElement = (
         <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
       )
-    } else if (staticFilters['lotSize']) {
+    } else if (staticFilters['lotSize'] && this.showStaticFilters()) {
       lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Lot Size
       </span>);
@@ -183,7 +190,7 @@ class searchFilters extends Component {
       sqftElement = (
         <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
       );
-    } else if (staticFilters['sqft']) {
+    } else if (staticFilters['sqft'] && this.showStaticFilters()) {
       sqftElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> SQFT
       </span>);
