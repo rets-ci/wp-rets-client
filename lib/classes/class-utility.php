@@ -14,6 +14,25 @@ namespace UsabilityDynamics\WPRETSC {
     final class Utility {
 
       /**
+       * Flush Object Caches related to particular property
+       *
+       * @param int $post_id
+       */
+      static protected function flush_cache( $post_id ) {
+        global $wrc_rets_id;
+
+        ud_get_wp_rets_client()->write_log( "Flushing object cache for [" . $post_id . "] post_id", 'debug' );
+        clean_post_cache( $post_id );
+        do_action( 'wrc::xmlrpc::on_flush_cache', $post_id );
+
+        if( !empty( $wrc_rets_id ) ) {
+          ud_get_wp_rets_client()->write_log( "Flushing object cache [mls-id-" . $wrc_rets_id . "]", 'debug' );
+          wp_cache_delete( 'mls-id-' . $wrc_rets_id, 'wp-rets-client' );
+        }
+
+      }
+
+      /**
        * Insert Term. (Port from WP-Property)
        *
        * - If term exists, we update it. Otherwise its created.
@@ -628,6 +647,24 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
+       * Return list of plugins.
+       *
+       * @author potanin@UD
+       * @return array
+       */
+      static public function get_plugins() {
+
+        $_active = wp_get_active_and_valid_plugins();
+        $result = array();
+
+        foreach( $_active as $_plugin ) {
+          $result[] = basename( dirname($_plugin) );
+        }
+
+        return $result;
+      }
+
+      /**
        * Get published, private and future property counts for each schedule.
        *
        * @param array $options
@@ -907,14 +944,18 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
+       * Updates terms counts for the specified taxonomy.
+       * If taxonomy is not specified: it updates all property taxonomies.
        *
+       * @param null|string $taxonomy
+       * @return boolean|WP_Error
        */
-      static public function update_terms_counts( $taxonomy ) {
+      static public function update_terms_counts( $taxonomy = null ) {
 
         $args = array(
           "object_type" => array( 'property' )
         );
-        //$output = 'objects';
+
         $output = 'names';
         $operator = 'and';
 
