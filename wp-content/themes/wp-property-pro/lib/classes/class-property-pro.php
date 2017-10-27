@@ -792,7 +792,7 @@ namespace UsabilityDynamics {
                 $property_type = reset(array_values($options_array));
 
                 /** Mapping for search type option label */
-                $search = $label === 'Sale' ? 'Buy' : $label;
+                $search = $label = $label === 'Sale' ? 'Buy' : $label;
 
                 /** Build option array */
                 $option = [
