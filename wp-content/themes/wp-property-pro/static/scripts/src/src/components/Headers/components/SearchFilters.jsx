@@ -89,7 +89,7 @@ class searchFilters extends Component {
 
   showStaticFilters() {
     let filters = this.props.filters;
-    let notCountingFilters = ['property_type', 'search_type', 'sale_type', 'term'];
+    let notCountingFilters = ['geobr', 'geotl', 'property_type', 'search_type', 'selected_property', 'sale_type', 'term'];
     return !difference(Object.keys(filters), notCountingFilters).length;
   }
 
