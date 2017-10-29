@@ -20,6 +20,7 @@ import {
   requestSearchResultsPosts,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
+  toggleUserPanel
 } from '../../actions/index.jsx';
 import Util from '../Util.jsx';
 import { Lib } from '../../lib.jsx';
@@ -149,6 +150,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
 
+    openUserPanel: () => {
+      dispatch(toggleUserPanel(true));
+    },
+
     togglePropertiesModalModeInLocationModal: on => {
       dispatch(togglePropertiesModalModeInLocationModal(on));
     }
@@ -176,7 +181,8 @@ class MapSearchResults extends Component {
     results: PropTypes.array.isRequired,
     searchResultsErrorMessage: PropTypes.string,
     searchQueryParams: PropTypes.object.isRequired,
-    termDetails: PropTypes.array.isRequired
+    termDetails: PropTypes.array.isRequired,
+    openUserPanel: PropTypes.func.isRequired
   };
 
   constructor(props) {
