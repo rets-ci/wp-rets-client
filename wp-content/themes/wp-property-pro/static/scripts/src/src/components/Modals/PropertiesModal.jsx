@@ -161,6 +161,7 @@ class PropertiesModal extends Component {
     }
     this.setState({filters: filters});
   }
+  
 
   handlePriceSelect = (start, to) => {
     let filter = {
@@ -170,6 +171,12 @@ class PropertiesModal extends Component {
       }
     };
     let filters = Object.assign({}, this.state.filters, filter);
+    this.setState({filters: filters});
+  }
+
+  handleSaleTypeFilterRemove = saleType => {
+    let filters = Object.assign({}, this.state.filters);
+    filters['sale_type'] = filters['sale_type'].filter(d => d !== saleType);
     this.setState({filters: filters});
   }
 
@@ -251,7 +258,12 @@ class PropertiesModal extends Component {
 
   handleSaleTypeToggle = filter => {
     let filters = Object.assign({}, this.state.filters);
-    let saleArray = filters.sale_type.slice(0);
+    let saleArray;
+    if (!filters.sale_type) {
+      saleArray = [];
+    } else {
+      saleArray = filters.sale_type.slice(0);
+    }
     if (saleArray.indexOf(filter.title) >= 0) {
       saleArray = difference(saleArray, [filter.title]);
     } else {
@@ -312,9 +324,6 @@ class PropertiesModal extends Component {
     delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     delete filters['search_type'];
-    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
-      delete filters['sale_type']
-    }
     filters = Util.customFormatToSearchObject(filters);
     let collection = Util.searchObjectToCollection(filters);
     collection = collection.concat(reddoorTermObjects);
@@ -374,14 +383,15 @@ class PropertiesModal extends Component {
       selected: d.value === bedrooms,
       value: d.value
     }));
+    let saleType = sale_type;
     let saleTypeOptions = [];
-    if (sale_type) {
+    if (['Commercial', 'Land'].indexOf(search_type) >= 0) {
       saleTypeOptions = [{
-        selected: sale_type.indexOf('Sale') >= 0,
+        selected: saleType && saleType.indexOf('Sale') >= 0,
         title: 'Sale',
         value: 'sale'
       }, {
-        selected: sale_type.indexOf('Rent') >= 0,
+        selected: saleType && saleType.indexOf('Rent') >= 0,
         title: 'Rent',
         value: 'rent'
       }];
@@ -585,6 +595,7 @@ class PropertiesModal extends Component {
                         deleteSubPropertyTypeFilter={this.handleDeleteSubPropertyTypeFilter}
                         filters={displayedOnFilterBar(this.state.filters, defaultFiltervalues)}
                         deleteLastLocalFilterTerm={this.handleLastTermRemove}
+                        deleteSaleTypeFilter={this.handleSaleTypeFilterRemove}
                       />
                     </div>
                     <div className="p-2 my-auto">

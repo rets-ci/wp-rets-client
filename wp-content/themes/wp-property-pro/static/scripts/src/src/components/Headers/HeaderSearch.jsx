@@ -58,7 +58,6 @@ class HeaderSearch extends Component {
     if (saleTypesPanelOpen) {
       containerClass += ` ${Lib.THEME_CLASSES_PREFIX}with-sale-types-panel-open`;
     }
-
     return (
       <div className={containerClass}>
         <SaleTypeHeaderSelection

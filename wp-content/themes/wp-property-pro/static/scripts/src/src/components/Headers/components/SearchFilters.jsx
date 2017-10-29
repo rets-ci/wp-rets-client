@@ -54,7 +54,16 @@ class searchFilters extends Component {
 
   handleDeleteSubPropertyTypeFilter = (slug) => {
     let filters = Object.assign({}, this.props.filters);
-    filters['property_subtype'] = filters['property_subtype'].filter(d => d.slug !== slug).map(d => d.slug);
+    filters['property_subtype'] = filters['property_subtype'].filter(d => d.slug !== slug);
+    this.updateURLWithQueryParam(filters);
+  }
+
+  handleSaleTypeRemove = saleType => {
+    let filters = Object.assign({}, this.props.filters);
+    filters['sale_type'] = filters['sale_type'].filter(d => d !== saleType);
+    if (!filters['sale_type'].length) {
+      delete filters['sale_type'];
+    }
     this.updateURLWithQueryParam(filters);
   }
 
@@ -99,6 +108,9 @@ class searchFilters extends Component {
     if (queryParam['sale_type'] && isEqual(queryParam['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
       delete queryParam['sale_type']
     }
+    if (queryParam['property_subtype'] && queryParam['property_subtype'].every(d => d.slug)) {
+      queryParam['property_subtype'] = queryParam['property_subtype'].map(d => d.slug);
+    }
     queryParam = Util.customFormatToSearchObject(queryParam);
     let searchCollection = Util.searchObjectToCollection(queryParam);
     let searchURL = Util.createSearchURL('/search', searchCollection);
@@ -142,10 +154,13 @@ class searchFilters extends Component {
     let lotSizeFilter = filters['lotSize'];
     let priceFilter = filters['price'];
     let priceElement;
+    let saleTypeFilter = filters['sale_type'];
+    let saleTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
     let subPropertyTypeFilter = filters['property_subtype'];
     let subPropertyTypeElement;
+
     if (bathroomsFilter) {
       bathroomsElement = (
         <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
@@ -184,6 +199,12 @@ class searchFilters extends Component {
       lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Lot Size
       </span>);
+    }
+
+    if (['Commercial', 'Land'].indexOf(filters.search_type) >= 0 && saleTypeFilter) {
+      saleTypeElement = saleTypeFilter.map((s, i) =>
+        <FilterTag key={JSON.stringify(s)} handleRemoveFilter={this.handleSaleTypeRemove} display={s} value={s} />
+      );
     }
 
     if (sqftFilter) {
@@ -227,6 +248,7 @@ class searchFilters extends Component {
           {lotSizeElement}
           {sqftElement}
           {subPropertyTypeElement}
+          {saleTypeElement}
           <span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
             <span>+</span>
             More Filters

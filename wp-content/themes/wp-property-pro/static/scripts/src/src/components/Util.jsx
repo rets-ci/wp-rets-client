@@ -424,7 +424,7 @@ class Util extends React.Component {
       sale: 'sale_type'
     };
     let out = {};
-  
+    
     for (var key in obj) {
       let newKey = keyMapper[key] || key;
       if (['price', 'sqft', 'lotSize'].indexOf(newKey) >= 0) {
@@ -433,7 +433,7 @@ class Util extends React.Component {
           to: obj[key][1],
         }
       } else {
-        out[newKey] = obj[key].length === 1 && newKey !== 'property_type' ? obj[key][0] : obj[key];
+        out[newKey] = obj[key].length === 1 && newKey !== 'property_type' && newKey !== 'sale_type' ? obj[key][0] : obj[key];
       }
     }
     return out;
@@ -636,7 +636,7 @@ class Util extends React.Component {
     let mlsId = get(post_meta, 'rets_mls_number[0]');
     let listing_office = get(tax_input, 'wpp_office.listing_office[0].name', null);
     let listing_status_sale = get(tax_input, 'wpp_listing_status.listing_status_sale[0].slug', null);
-    let listing_sub_type = get(tax_input, 'wpp_listing_type.listing_sub_type[0].name', null);
+    let listing_sub_type = get(tax_input, 'wpp_listing_subtype.listing_sub_type[0].name', null);
     let listing_type = get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
     let officePhoneNumber = get(post_meta, 'rets_lo1_office_phone1_number[0]');
     let listingTypes = get(tax_input, 'wpp_listing_type.listing_type', []);
