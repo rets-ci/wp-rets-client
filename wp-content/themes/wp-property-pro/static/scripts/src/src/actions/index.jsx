@@ -61,6 +61,13 @@ export const requestPropertiesModalResultCount = () => {
   }
 };
 
+export const receiveAvailablePropertySubTypesForSearch = subTypes => {
+  return {
+    type: Lib.RECEIVE_AVAILABLE_PROPERTY_SUBTYPES_FOR_SEARCH_ACTION,
+    subTypes: subTypes
+  }
+};
+
 export const receivePropertiesModalResultCount = resultCount => {
   return {
     type: Lib.RECEIVE_PROPERTIES_MODAL_RESULT_COUNT_ACTION,

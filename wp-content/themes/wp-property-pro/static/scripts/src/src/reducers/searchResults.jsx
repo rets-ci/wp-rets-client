@@ -1,6 +1,7 @@
 import {Lib} from "../lib.jsx";
 
 let defaultState = {
+  availableSubTypes: [],
   displayedResults: [],
   errorMessage: null,
   searchResults: [],
@@ -10,6 +11,10 @@ let defaultState = {
 
 const searchResults = (state = defaultState, action) => {
   switch (action.type) {
+    case Lib.RECEIVE_AVAILABLE_PROPERTY_SUBTYPES_FOR_SEARCH_ACTION:
+      return Object.assign({}, state, {
+        availableSubTypes: action.subTypes
+      });
     case Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION:
       let displayedResults = [];
       if (action.append) {
@@ -27,6 +32,7 @@ const searchResults = (state = defaultState, action) => {
       });
     case Lib.RECEIVE_SEARCH_RESULTS_POSTS_ERROR_ACTION:
       return Object.assign({}, state, {
+        availableSubTypes: [],
         errorMessage: action.errorMessage,
         isFetching: false
       });

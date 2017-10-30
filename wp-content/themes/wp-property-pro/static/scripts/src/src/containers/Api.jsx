@@ -105,6 +105,16 @@ class Api {
     };
   }
 
+  static getPropertySubTypesAggregations() {
+    return {
+      "property_subtype_slugs": {
+        "terms": {
+          "field": "tax_input.wpp_listing_subtype.listing_sub_type.slug"
+        }
+      }
+    };
+  }
+
   static getTopAggregations() {
     return {
       "aggs": {
