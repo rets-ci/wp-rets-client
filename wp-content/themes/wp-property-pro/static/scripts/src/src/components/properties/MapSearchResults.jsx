@@ -263,8 +263,8 @@ class MapSearchResults extends Component {
       filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
     }
     delete filters['search_type'];
-    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
-      delete filters['sale_type']
+    if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {
+      filters['property_subtype'] = filters['property_subtype'].map(d => d.slug);
     }
     filters = Util.customFormatToSearchObject(filters);
     let searchCollection = Util.searchObjectToCollection(filters);
@@ -281,6 +281,9 @@ class MapSearchResults extends Component {
     delete filters['search_type'];
     if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
       delete filters['sale_type']
+    }
+    if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {
+      filters['property_subtype'] = filters['property_subtype'].map(d => d.slug);
     }
     filters = Util.customFormatToSearchObject(filters);
     let searchCollection = Util.searchObjectToCollection(filters);

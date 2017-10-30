@@ -3,9 +3,10 @@ import {
   openLocationModal,
   openPropertiesModal,
   requestPropertiesModalResultCount,
+  receiveAvailablePropertySubTypesForSearch,
   receivePropertiesModalResultCount,
   receivePropertiesModalResultCountFetchingError,
-  togglePropertiesModalModeInLocationModal,
+  togglePropertiesModalModeInLocationModal
 } from '../../actions/index.jsx';
 import Api from '../../containers/Api.jsx';
 import PropTypes from 'prop-types';
@@ -22,6 +23,7 @@ import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    availableSubTypes: get(state, 'searchResults.availableSubTypes')
   }
 };
 
@@ -32,10 +34,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     doPropertiesModalSearch: (filters, queryDefaults) => {
+      let params = Object.assign({}, filters);
       dispatch(requestPropertiesModalResultCount());
-      // TODO: Replace second argument with the default query object
-      Api.makeStandardPropertySearch(filters, queryDefaults, (err, query, response) => {
+      params.aggregations = Api.getPropertySubTypesAggregations();
+      Api.makeStandardPropertySearch(params, queryDefaults, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
+        let availableSubTypes = get(response, 'aggregations.property_subtype_slugs.buckets', []).map(d => ({key: d.key, count: d.doc_count}));
+        dispatch(receiveAvailablePropertySubTypesForSearch(availableSubTypes));
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
     },
@@ -60,6 +65,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class HeaderPropertySingle extends Component {
   static propTypes = {
+    availableSubTypes: PropTypes.array.isRequired,
     doOpenSaleTypesPanel: PropTypes.func.isRequired,
     historyPush: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
@@ -109,6 +115,7 @@ class HeaderPropertySingle extends Component {
     return (
       <div className={containerClass}>
         <PropertiesModal
+          availableSubTypes={this.props.availableSubTypes}
           closeLocationModal={this.props.closeLocationModal}
           closeModal={() => this.props.openPropertiesModal(false)}
           doSearch={(filters) => { this.props.doPropertiesModalSearch(filters, queryDefaults); }}

@@ -99,6 +99,9 @@ class searchFilters extends Component {
   showStaticFilters() {
     let filters = this.props.filters;
     let notCountingFilters = ['geobr', 'geotl', 'property_type', 'search_type', 'selected_property', 'term'];
+    if (['Commercial', 'Land'].indexOf(filters.search_type) < 0) {
+      notCountingFilters.push('sale_type');
+    }
     return !difference(Object.keys(filters), notCountingFilters).length;
   }
 
