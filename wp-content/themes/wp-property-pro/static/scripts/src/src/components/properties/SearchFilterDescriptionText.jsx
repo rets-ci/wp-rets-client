@@ -12,11 +12,10 @@ class SearchFilterDescription extends Component {
     total: PropTypes.number
   }
 
-  getMainText(props) {
+  getMainText(saleType, props) {
     let {
       bathrooms,
       bedrooms,
-      saleType,
       total,
       price
     } = props;
@@ -46,9 +45,10 @@ class SearchFilterDescription extends Component {
   }
 
   render() {
-    let headText = `Homes for ${this.props.saleType.join(' and ')}`;
+    let saleType = this.props.saleType || ['Rent', 'Sale'];
+    let headText = `Homes for ${saleType.join(' and ')}`;
     
-    let mainText = this.getMainText(this.props);
+    let mainText = this.getMainText(saleType, this.props);
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
         <h1>{headText}</h1>

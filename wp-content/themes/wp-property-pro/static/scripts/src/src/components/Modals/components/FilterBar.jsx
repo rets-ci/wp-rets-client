@@ -10,6 +10,7 @@ class FilterBar extends Component {
     deleteLocalFilterTerm: PropTypes.func.isRequired,
     filters: PropTypes.object.isRequired,
     deleteLastLocalFilterTerm: PropTypes.func.isRequired,
+    deleteSaleTypeFilter: PropTypes.func.isRequired,
     deleteSubPropertyTypeFilter: PropTypes.func.isRequired
   };
 
@@ -53,6 +54,8 @@ class FilterBar extends Component {
     let lotSizeFilter = filters['lotSize'];
     let priceFilter = filters['price'];
     let priceElement;
+    let saleTypeFilter = filters['sale_type'];
+    let saleTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
     let subPropertyTypeFilter = filters['property_subtype'];
@@ -87,6 +90,12 @@ class FilterBar extends Component {
       );
     }
 
+    if (['Commercial', 'Land'].indexOf(filters.search_type) >= 0 && saleTypeFilter) {
+      saleTypeElement = saleTypeFilter.map((s, i) =>
+        <FilterTag key={s} handleRemoveFilter={this.props.deleteSaleTypeFilter} display={s} value={s} />
+      );
+    }
+
     if (sqftFilter) {
       sqftElement = (
         <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('sqft')} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
@@ -102,6 +111,7 @@ class FilterBar extends Component {
         {sqftElement}
         {lotSizeElement}
         {subPropertyTypeElement}
+        {saleTypeElement}
         {!termFilterElement &&
           <input type="text" size="1" placeholder="Select bedroom type, amenities"/>
         }

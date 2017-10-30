@@ -401,15 +401,14 @@ class Api {
       );
     }
     let saleTypeShouldArray = [];
-    if (params.sale_type) {
-      params.sale_type.forEach(saleType => {
-        saleTypeShouldArray.push({
-          "term": {
-            "terms.wpp_listing_status.slug": 'for-' + saleType.toLowerCase()
-          }
-        })
-      });
-    }
+    let saleType = params.sale_type || queryDefaults['sale_type'];
+    saleType.forEach(saleType => {
+      saleTypeShouldArray.push({
+        "term": {
+          "terms.wpp_listing_status.slug": 'for-' + saleType.toLowerCase()
+        }
+      })
+    });
     query.bool.must.push({
       "bool": {
         "should": saleTypeShouldArray

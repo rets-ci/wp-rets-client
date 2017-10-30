@@ -20,6 +20,7 @@ import {
   requestSearchResultsPosts,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
+  toggleUserPanel
 } from '../../actions/index.jsx';
 import Util from '../Util.jsx';
 import { Lib } from '../../lib.jsx';
@@ -50,11 +51,10 @@ const mapStateToProps = (state, ownProps) => {
   }
   searchQueryObject['property_type'] = searchQueryObject.property_type[0];
   searchQueryObject['search_type'] = searchType;
-  if (!searchQueryObject.sale) {
-    searchQueryObject.sale = ['Rent', 'Sale'];
-  } else {
-    // we only support an array of sale items
-    searchQueryObject.sale = [searchQueryObject.sale];
+  if (searchQueryObject.sale) {
+    if (!(searchQueryObject.sale instanceof Array)) {
+      searchQueryObject.sale = [searchQueryObject.sale];
+    }
   }
 
   searchQueryObject = Util.searchObjectToCustomFormat(searchQueryObject);
@@ -150,6 +150,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
 
+    openUserPanel: () => {
+      dispatch(toggleUserPanel(true));
+    },
+
     togglePropertiesModalModeInLocationModal: on => {
       dispatch(togglePropertiesModalModeInLocationModal(on));
     }
@@ -177,7 +181,8 @@ class MapSearchResults extends Component {
     results: PropTypes.array.isRequired,
     searchResultsErrorMessage: PropTypes.string,
     searchQueryParams: PropTypes.object.isRequired,
-    termDetails: PropTypes.array.isRequired
+    termDetails: PropTypes.array.isRequired,
+    openUserPanel: PropTypes.func.isRequired
   };
 
   constructor(props) {
