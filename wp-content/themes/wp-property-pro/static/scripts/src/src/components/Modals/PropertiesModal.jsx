@@ -52,6 +52,7 @@ function displayedOnFilterBar(filters, defaults) {
 
 class PropertiesModal extends Component {
   static propTypes = {
+    availableSubTypes: PropTypes.array.isRequired,
     closeModal: PropTypes.func.isRequired,
     closeLocationModal: PropTypes.func.isRequired,
     doSearch: PropTypes.func.isRequired,
@@ -353,6 +354,7 @@ class PropertiesModal extends Component {
 
   render() {
     let {
+      availableSubTypes,
       open,
       propertySubTypes,
       propertyTypeOptions
@@ -415,9 +417,11 @@ class PropertiesModal extends Component {
       }
     }
     let propertySubtypeOptions = propertySubTypes.map(d => ({
+      count: availableSubTypes.filter(e => e.key === d.slug).length ? availableSubTypes.filter(e => e.key === d.slug)[0].count : 0,
+      disabled: availableSubTypes.map(e => e.key).indexOf(d.slug) < 0,
       slug: d.slug,
       title: d.title,
-      selected: property_subtype && property_subtype.map(d => d.slug).indexOf(d.slug) >= 0
+      selected: property_subtype && property_subtype.map(e => e.slug).indexOf(d.slug) >= 0
     }));
 
     // keep DOM elements of filter options, to be rendered in transition group
@@ -549,8 +553,11 @@ class PropertiesModal extends Component {
                 <a
                   key={d.slug}
                   href="#"
-                  className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : "")}`}
-                  onClick={() => this.handlePropertySubTypeToggle(d)}>{d.title}</a>
+                  className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : (d.disabled ? "disabled" : ""))}`}
+                  onClick={() => this.handlePropertySubTypeToggle(d)}>
+                    {d.title}
+                    <span> ({d.count})</span>
+                  </a>
               )}
             </div>
           </div>
