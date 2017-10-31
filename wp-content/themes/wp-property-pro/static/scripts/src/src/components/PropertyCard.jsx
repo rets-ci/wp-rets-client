@@ -77,6 +77,7 @@ class PropertyCard extends Component {
 
     let info_box = [];
 
+    sub_types = sub_types || [];
     info_box.push(`<li>${sub_types.join(', ')}</li>`);
 
     if (type !== 'commercial' && type !== 'land') {
