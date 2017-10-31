@@ -11,10 +11,6 @@ let defaultState = {
 
 const searchResults = (state = defaultState, action) => {
   switch (action.type) {
-    case Lib.RECEIVE_AVAILABLE_PROPERTY_SUBTYPES_FOR_SEARCH_ACTION:
-      return Object.assign({}, state, {
-        availableSubTypes: action.subTypes
-      });
     case Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION:
       let displayedResults = [];
       if (action.append) {

@@ -16,8 +16,10 @@ import {
   receivePropertiesModalResultCountFetchingError,
   requestPropertiesModalResultCount,
   receiveAvailablePropertySubTypesForSearch,
+  receiveAvailablePropertySubTypesForSearchError,
   receiveSearchResultsPosts,
   receiveSearchResultsPostsError,
+  requestAvailablePropertySubTypesForSearch,
   requestSearchResultsPosts,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
@@ -74,7 +76,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   return {
-    availableSubTypes: get(state, 'searchResults.availableSubTypes'),
+    availableSubTypes: get(state, 'availablePropertySubTypesForSearch.items'),
     errorMessage: state.errorMessage,
     query: get(state, 'searchResults.query', []),
     isFetching: get(state, 'searchResults.isFetching', []),
@@ -106,11 +108,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     doPropertiesModalSearch: (filters, queryDefaults) => {
       let params = Object.assign({}, filters);
       dispatch(requestPropertiesModalResultCount());
-      params.aggregations = Api.getPropertySubTypesAggregations();
       Api.makeStandardPropertySearch(params, queryDefaults, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
-        let availableSubTypes = get(response, 'aggregations.property_subtype_slugs.buckets', []).map(d => ({key: d.key, count: d.doc_count}));
-        dispatch(receiveAvailablePropertySubTypesForSearch(availableSubTypes));
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
     },
@@ -123,6 +122,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           return dispatch(receiveSearchResultsPostsError(err));
         }
         dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), append));
+      });
+    },
+
+    getAvailablePropertySubTypes: (filters, queryDefaults) => {
+      let params = Object.assign({}, omit(filters, ['property_subtype']));
+      params.aggregations = Api.getPropertySubTypesAggregations();
+      dispatch(requestAvailablePropertySubTypesForSearch());
+      Api.makeStandardPropertySearch(params, queryDefaults, (err, query, response) => {
+        if (err) {
+          return dispatch(receiveAvailablePropertySubTypesForSearchError(err));
+        }
+        let availableSubTypes = get(response, 'aggregations.property_subtype_slugs.buckets', []).map(d => ({key: d.key, count: d.doc_count}));
+        dispatch(receiveAvailablePropertySubTypesForSearch(availableSubTypes));
       });
     },
 
@@ -148,13 +160,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]]
         };
       }
-      params.aggregations = Api.getPropertySubTypesAggregations();;  
       Api.makeStandardPropertySearch(params, defaults, (err, query, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
         }
-        let availableSubTypes = get(response, 'aggregations.property_subtype_slugs.buckets', []).map(d => ({key: d.key, count: d.doc_count}));
-        dispatch(receiveAvailablePropertySubTypesForSearch(availableSubTypes));
         dispatch(receiveSearchResultsPosts(query, get(response, 'hits.hits', []), get(response, 'hits.total', 0), false));
       });
     },
@@ -171,7 +180,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class MapSearchResults extends Component {
   static propTypes = {
-    availableSubTypes: PropTypes.array.isRequired,
+    availableSubTypes: PropTypes.array,
     doPropertiesModalSearch: PropTypes.func.isRequired,
     doSearchWithQuery: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -297,6 +306,7 @@ class MapSearchResults extends Component {
       errorMessage,
       displayedResults,
       doPropertiesModalSearch,
+      getAvailablePropertySubTypes,
       history,
       isFetching,
       location,
@@ -385,6 +395,7 @@ class MapSearchResults extends Component {
           closeModal={() => openPropertiesModal(false)}
           doSearch={(filters) => { doPropertiesModalSearch(filters, queryDefaults); }}
           errorMessage={propertiesModalResultCountErrorMessage}
+          getAvailablePropertySubTypes={(filters) => { getAvailablePropertySubTypes(filters, queryDefaults) }}
           historyPush={history.push}
           open={propertiesModalOpen}
           openLocationModal={this.props.openLocationModal}

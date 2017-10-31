@@ -43,6 +43,12 @@ export const setSearchProps = (searchProps) => {
   }
 };
 
+export const requestAvailablePropertySubTypesForSearch = () => {
+  return {
+    type: Lib.REQUEST_AVAILABLE_PROPERTY_SUBTYPES_FOR_SEARCH_ACTION
+  }
+}
+
 export const requestLocationModalPosts = () => {
   return {
     type: Lib.REQUEST_LOCATION_MODAL_POSTS_ACTION
@@ -58,6 +64,13 @@ export const requestWordpressContentFetch = () => {
 export const requestPropertiesModalResultCount = () => {
   return {
     type: Lib.REQUEST_PROPERTIES_MODAL_RESULT_COUNT_ACTION
+  }
+};
+
+export const receiveAvailablePropertySubTypesForSearchError = errorMessage => {
+  return {
+    type: Lib.RECEIVE_AVAILABLE_PROPERTY_SUBTYPES_FOR_SEARCH_ERROR_ACTION,
+    errorMessage: errorMessage
   }
 };
 
