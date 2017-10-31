@@ -3892,7 +3892,7 @@ ul.propertypro-details-list li span.propertypro-item-name {
 /*  Agent cards
 /*-----------------------------------------------------------------------------------*/
 .propertypro-agent-card {
-  border: 0.0625px solid #e1e5e6;
+  border: 1px solid #e1e5e6;
   border-radius: 0.3125rem; }
 
 .propertypro-agent-card .propertypro-agent-card-head {

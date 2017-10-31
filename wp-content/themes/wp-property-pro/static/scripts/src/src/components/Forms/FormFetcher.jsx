@@ -46,7 +46,9 @@ class FormFetcher extends Component {
     let {
       formId
     } = this.props;
-    this.fetchSchema(this.schemaURL(formId));
+    if (formId) {
+      this.fetchSchema(this.schemaURL(formId));
+    }
   }
 
   componentWillReceiveProps(nextProps) {

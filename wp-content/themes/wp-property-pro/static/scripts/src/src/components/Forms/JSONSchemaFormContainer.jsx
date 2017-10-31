@@ -111,8 +111,11 @@ class JSONSchemaFormContainer extends Component {
     let {
       jsonSchemaForm,
       closeModal,
+      formData,
       showConfirmation
     } = this.props;
+
+    let initialFormData = Object.assign(jsonSchemaForm.initialData, formData);
 
     let successElement = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}form-success-message-container`}>
@@ -123,22 +126,23 @@ class JSONSchemaFormContainer extends Component {
         </div>
       </div>
     );
-
-    let formElement = (<Form
-      action={jsonSchemaForm.schema.action}
-      FieldTemplate={CustomFieldTemplate}
-      formData={jsonSchemaForm.initialData}
-      method="post"
-      schema={jsonSchemaForm.schema}
-      uiSchema={jsonSchemaForm.uiSchema}
-      onSubmit={this.submit}
-      noHtml5Validate={true}
-      showErrorList={false}
-      transformErrors={transformErrors}
-      widgets={widgets}
-    >
-      <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
-    </Form>);
+    let formElement = (
+      <Form
+        action={jsonSchemaForm.schema.action}
+        FieldTemplate={CustomFieldTemplate}
+        formData={initialFormData}
+        method="post"
+        schema={jsonSchemaForm.schema}
+        uiSchema={jsonSchemaForm.uiSchema}
+        onSubmit={this.submit}
+        noHtml5Validate={true}
+        showErrorList={false}
+        transformErrors={transformErrors}
+        widgets={widgets}
+      >
+        <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
+      </Form>
+    );
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}form`}>
         {formSuccess && this.props.showConfirmation ?
