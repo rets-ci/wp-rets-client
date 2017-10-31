@@ -257,6 +257,15 @@ class Single extends Component {
                 >
                   Request Showing
                 </button>
+                {['rentNOTRdc', 'saleRDC', 'saleNotRdc'].indexOf(correctScenario) >= 0 &&
+                  <button
+                    className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button ml-md-3`}
+                    onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-information-' + saleType)}}
+                    type="button"
+                  >
+                    Request Information
+                  </button> 
+                }
                 {correctScenario === 'rentRDC' &&
                   <button
                     className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button ml-md-3`}
@@ -343,6 +352,7 @@ class Single extends Component {
               correctScenario={correctScenario}
               agent={agent}
               listingOffice={correctScenario.includes('sale') ? "Red Door Company" : Util.decodeHtml(this.props.listing_office)}
+              mlsId={mlsId}
               rdcListing={rdcListing}
               officePhoneNumber={officePhoneNumber}
               setAgentCardTab={this.props.setAgentCardTab}
