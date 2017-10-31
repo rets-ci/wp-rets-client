@@ -75,19 +75,34 @@ class PropertyCard extends Component {
     let link = '/' + bundle.property_single_url + '/' + post_name;
     let classes;
 
-    let info_box = `<li>${sub_types.join(', ')}</li>`;
+    let info_box = [];
+
+    info_box.push(`<li>${sub_types.join(', ')}</li>`);
 
     if (type !== 'commercial' && type !== 'land') {
-      info_box += `<li>${beds} Bed</li><li>${baths} Bath</li>`;
+      info_box.push(`<li>${beds} Bed</li><li>${baths} Bath</li>`);
     }
 
     if (type !== 'land' && !!+sqft) {
-      info_box += `<li>${Util.formatSQFTValue(sqft)} SF</li>`;
+      info_box.push(`<li>${Util.formatSQFTValue(sqft)} SF</li>`);
     }
 
     if (type === 'land' && !!+lots_size) {
-      info_box += `<li>${Util.formatLotSizeValue(lots_size)} Acres</li>`;
+      info_box.push(`<li>${Util.formatLotSizeValue(lots_size)} Acres</li>`);
     }
+
+    // residential - remove the property subtype from residential cards. #1526
+    if (type === 'residential') {
+      info_box.shift();
+    }
+
+    // commercial/land - order subtype to last in attribute row. #1526
+    if (type === 'commercial' || type === 'land') {
+      const temp = info_box.shift();
+      info_box.push(temp);
+    }
+
+    info_box = info_box.join('');
 
     classes = ['card', `${Lib.THEME_CLASSES_PREFIX}card`]
     if (this.props.highlighted) {
