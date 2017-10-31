@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class HeaderPropertySingle extends Component {
   static propTypes = {
-    availableSubTypes: PropTypes.array.isRequired,
+    availableSubTypes: PropTypes.array,
     doOpenSaleTypesPanel: PropTypes.func.isRequired,
     historyPush: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
