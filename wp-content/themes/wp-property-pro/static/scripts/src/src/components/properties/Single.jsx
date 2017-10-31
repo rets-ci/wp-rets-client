@@ -177,7 +177,7 @@ class Single extends Component {
       listing_office,
       listing_status_sale,
       listing_type,
-      listing_sub_type,
+      listing_sub_types,
       officePhoneNumber,
       wpp_import_time
     } = this.props;
@@ -203,7 +203,7 @@ class Single extends Component {
     let datesAvailable = moment.utc(rets_date_available, 'YYYY-MM-DD');
     let lastUpdated = getLastUpdatedMoment(post_date, Lib.COMMON_DATE_FORMAT_1);
 
-    let info_box = `<li>${listing_sub_type}</li>`;
+    let info_box = `<li>${listing_sub_types.join(', ')}</li>`;
     let post_modified_moment = moment.utc(post_modified, Lib.COMMON_DATE_FORMAT_1);
     let wpp_import_time_moment = moment.utc(wpp_import_time, Lib.COMMON_DATE_FORMAT_1);
 

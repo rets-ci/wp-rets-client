@@ -55,7 +55,7 @@ class PropertyCard extends Component {
       sqft,
       thumbnail,
       type,
-      sub_type,
+      sub_types,
       zip
     } = this.props.data;
     const swiperParams = {
@@ -75,7 +75,7 @@ class PropertyCard extends Component {
     let link = '/' + bundle.property_single_url + '/' + post_name;
     let classes;
 
-    let info_box = `<li>${sub_type}</li>`;
+    let info_box = `<li>${sub_types.join(', ')}</li>`;
 
     if (type !== 'commercial' && type !== 'land') {
       info_box += `<li>${beds} Bed</li><li>${baths} Bath</li>`;
