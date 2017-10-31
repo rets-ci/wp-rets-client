@@ -137,7 +137,7 @@ class PropertyCardList extends Component {
             };
 
             return (
-              <div className={`col-12 col-lg-6`} key={item.id}>
+              <div className={`col-12 col-xl-6`} key={item.id}>
                 <PropertyCard
                   data={item}
                   highlighted={selectedProperty === item.id}
