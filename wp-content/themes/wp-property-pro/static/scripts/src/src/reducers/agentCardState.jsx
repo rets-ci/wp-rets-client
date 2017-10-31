@@ -2,7 +2,7 @@ import {Lib} from "../lib.jsx";
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 let defaultState = {
-  tab: 'request-showing-rent'
+  tab: ''
 };
 
 const agentCardState = (state=defaultState, action) => {

@@ -6,8 +6,27 @@ import Util from '../../Util.jsx';
 
 let formIdMapper = {
   'request-showing-rent': 'form-rent-inquiry',
-  'request-showing-buy': 'form-buy-inquiry-listing',
+  'request-showing-sale': 'form-buy-inquiry-listing',
+  'request-information-sale': 'form-buy-inquiry-listing',
   'request-application': 'form-rent-application',
+};
+
+
+let initialFormData = (address, mlsId) => {
+  return (selectedTab) => {
+    let obj = {
+      'request-information-sale': {
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'm interested in ${address} (MLS ${mlsId})`
+      },
+      'request-showing-sale': {
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'd like to schedule a showing for ${address} (MLS ${mlsId})`
+      },
+      'request-showing-rent': {
+        'powf_7e1aec73bc16e61180e9c4346bace2d4': `I'd like to schedule a showing for ${address} (MLS ${mlsId})`
+      }
+    };
+    return obj[selectedTab] || {};
+  }
 };
 
 class AgentCardForms extends Component {
@@ -17,6 +36,7 @@ class AgentCardForms extends Component {
     correctScenario: PropTypes.string.isRequired,
     officePhoneNumber: PropTypes.string.isRequired,
     listingOffice: PropTypes.string,
+    mlsId: PropTypes.string,
     rdcListing: PropTypes.bool.isRequired,
     saleType: PropTypes.string.isRequired
   }
@@ -26,6 +46,26 @@ class AgentCardForms extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    let initialTab;
+    switch (this.props.correctScenario) {
+      case 'rentRDC':
+        initialTab = 'request-showing-rent';
+        break;
+      case 'saleRDC':
+        initialTab = 'request-showing-sale';
+        break;
+      case 'saleNotRdc':
+        initialTab = 'request-showing-sale';
+        break;
+    }
+    this.setTab(initialTab);
+  }
+
+  setTab = name => {
+    this.props.setAgentCardTab(name);
+  }
+
   render() {
     let {
       address,
@@ -33,14 +73,15 @@ class AgentCardForms extends Component {
       correctScenario,
       officePhoneNumber,
       listingOffice,
+      mlsId,
       selectedTab,
       setAgentCardTab
     } = this.props;
     let defaultAgentImage = `${bundle.static_images_url}user-placeholder-image.png`;
     let contactElement;
-
     switch(correctScenario) {
-      case 'rentRDC':
+      case 'rentRDC': {
+        let formData = initialFormData(address, mlsId);
         contactElement = (
           <div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
@@ -53,38 +94,62 @@ class AgentCardForms extends Component {
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
               <FormFetcher formId={formIdMapper[selectedTab]}>
-                <JSONSchemaFormContainer jsonSchemaForm={this.props.jsonSchemaForm} showConfirmation={true} />
+                <JSONSchemaFormContainer formData={formData(selectedTab)} jsonSchemaForm={this.props.jsonSchemaForm} showConfirmation={true} />
               </FormFetcher>
             </div>
           </div>
         );
         break;
-      case 'rentNOTRdc':
+      }
+      case 'rentNOTRdc': {
         contactElement = (
           <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
             <p className={`${Lib.THEME_CLASSES_PREFIX}agent-card-description`}>Please contact {agent.name} at {listingOffice} direct by phone at {agent.phone}. You may also reach {listingOffice} by phone at {officePhoneNumber}. </p>
           </div>
         )
         break;
-      case 'saleRDC':
+      }
+      case 'saleRDC': {
+        let formData = initialFormData(address, mlsId);
         contactElement = (
-          <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
-            <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Request Showing for {address}</h5>
-            <FormFetcher formId={formIdMapper['request-showing-buy']}>
-              <JSONSchemaFormContainer showConfirmation={true} />
-            </FormFetcher>
+          <div>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
+              <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-showing-sale')}}>Request Showing</a>
+              </div>
+              <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-information-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-information-sale')}}>Request Information</a>
+              </div>
+            </div>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
+              <FormFetcher formId={formIdMapper[selectedTab]}>
+                <JSONSchemaFormContainer formData={formData(selectedTab)} showConfirmation={true} jsonSchemaForm={this.props.jsonSchemaForm} />
+              </FormFetcher>
+            </div>
           </div>
         );
         break;
-      case 'saleNotRdc':
+      }
+      case 'saleNotRdc': {
+        let formData = initialFormData(address, mlsId);
         contactElement = (
-          <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
-            <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Request Showing for {address}</h5>
-            <FormFetcher formId={formIdMapper['request-showing-buy']}>
-              <JSONSchemaFormContainer showConfirmation={true} />
-            </FormFetcher>
+          <div>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
+              <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-showing-sale')}}>Request Showing</a>
+              </div>
+              <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-information-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-information-sale')}}>Request Information</a>
+              </div>
+            </div>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
+              <FormFetcher formId={formIdMapper['request-showing-sale']}>
+                <JSONSchemaFormContainer formData={formData(selectedTab)} showConfirmation={true}  />
+              </FormFetcher>
+            </div>
           </div>
         );
+      }
       default:
         
     }
