@@ -340,7 +340,7 @@ class PropertiesModal extends Component {
     let filtersSearchTypeMap = {
       'Buy': ['bedrooms', 'bathrooms', 'location', 'lotSize', 'price', 'property_subtype', 'sqft'],
       'Commercial': ['location', 'lotSize', 'price', 'property_subtype', 'sale_type', 'sqft'],
-      'Rent': ['bathrooms', 'bedrooms', 'location', 'lotSize', 'price', 'property_subtype', 'sqft'],
+      'Rent': ['bathrooms', 'bedrooms', 'location', 'lotSize', 'price', 'property_subtype'],
       'Land': ['location', 'lotSize', 'price', 'property_subtype', 'sale_type']
     };
     if (!filtersSearchTypeMap[searchType]) {
