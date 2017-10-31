@@ -18,7 +18,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-history": "^0.18.2",
-    "react-id-swiper": "^1.4.0",
+    "react-id-swiper": "1.4.0",
     "react-images": "^0.5.4",
     "react-jsonschema-form": "^0.49.0",
     "react-onclickoutside": "^5.9.0",
