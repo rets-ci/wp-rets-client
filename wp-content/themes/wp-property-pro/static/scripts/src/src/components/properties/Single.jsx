@@ -275,7 +275,7 @@ class Single extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-12 mb-5">
-              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>{(saleType === 'rent' && listing_type === 'residential' && datesAvailable.isValid() ? datesAvailable.format('MMMM D, YYYY') + '. ' : '') + renderHTML(post_content)}</p>
+              <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>{(saleType === 'rent' && listing_type === 'residential' && datesAvailable.isValid() ? "Available " + datesAvailable.format('MMMM D, YYYY') + '. ' : '') + renderHTML(post_content)}</p>
             </div>
           </div>
 

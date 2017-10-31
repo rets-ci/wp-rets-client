@@ -52,11 +52,12 @@ function displayedOnFilterBar(filters, defaults) {
 
 class PropertiesModal extends Component {
   static propTypes = {
-    availableSubTypes: PropTypes.array.isRequired,
+    availableSubTypes: PropTypes.array,
     closeModal: PropTypes.func.isRequired,
     closeLocationModal: PropTypes.func.isRequired,
     doSearch: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
+    getAvailablePropertySubTypes: PropTypes.func.isRequired,
     historyPush: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     openLocationModal: PropTypes.func.isRequired,
@@ -97,6 +98,7 @@ class PropertiesModal extends Component {
       if (!isEqual(prevState.filters, this.state.filters)) {
         let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
         this.props.doSearch(filters);
+        this.props.getAvailablePropertySubTypes(Object.assign({}, this.state.filters));
       }
     }
   }
@@ -108,6 +110,7 @@ class PropertiesModal extends Component {
         this.setInitialFilters(this.props.searchFilters, defaultFiltervalues);
         let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
         this.props.doSearch(Object.assign({}, filters));
+        this.props.getAvailablePropertySubTypes(Object.assign({}, filters));
         let showAllFilters = this.displayAllFilters(this.props.searchFilters);
         this.setState({
           showAllFilters
@@ -417,8 +420,8 @@ class PropertiesModal extends Component {
       }
     }
     let propertySubtypeOptions = propertySubTypes.map(d => ({
-      count: availableSubTypes.filter(e => e.key === d.slug).length ? availableSubTypes.filter(e => e.key === d.slug)[0].count : 0,
-      disabled: availableSubTypes.map(e => e.key).indexOf(d.slug) < 0,
+      count: !availableSubTypes ? null : (availableSubTypes.filter(e => e.key === d.slug).length ? availableSubTypes.filter(e => e.key === d.slug)[0].count : 0),
+      disabled: !availableSubTypes ? null : availableSubTypes.map(e => e.key).indexOf(d.slug) < 0,
       slug: d.slug,
       title: d.title,
       selected: property_subtype && property_subtype.map(e => e.slug).indexOf(d.slug) >= 0
@@ -553,10 +556,12 @@ class PropertiesModal extends Component {
                 <a
                   key={d.slug}
                   href="#"
-                  className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : (d.disabled ? "disabled" : ""))}`}
+                  className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : (d.disabled !== null && d.disabled ? "disabled" : ""))}`}
                   onClick={() => this.handlePropertySubTypeToggle(d)}>
                     {d.title}
-                    <span> ({d.count})</span>
+                    {d.count !== null &&
+                      <span> ({d.count})</span>
+                    }
                   </a>
               )}
             </div>
