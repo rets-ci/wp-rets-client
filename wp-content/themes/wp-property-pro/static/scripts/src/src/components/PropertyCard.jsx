@@ -89,7 +89,7 @@ class PropertyCard extends Component {
     }
 
     if (type === 'land' && !!+lots_size) {
-      info_box.push(`<li>${Util.formatLotSizeValue(lots_size)} Acres</li>`);
+      info_box.push(`<li>${Util.formatAcresValue(lots_size)} Acres</li>`);
     }
 
     // residential - remove the property subtype from residential cards. #1526

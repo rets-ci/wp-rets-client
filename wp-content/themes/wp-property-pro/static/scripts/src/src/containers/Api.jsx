@@ -492,14 +492,14 @@ class Api {
         }
       });
     }
-    if (params.lotSize) {
+    if (params.acres) {
       let range = {};
-      if (params.lotSize.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-        range.gte = params.lotSize.start
+      if (params.acres.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        range.gte = params.acres.start
       }
 
-      if (params.lotSize.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
-        range.lt = params.lotSize.to
+      if (params.acres.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+        range.lt = params.acres.to
       }
       query.bool.must.push({
         "range": {

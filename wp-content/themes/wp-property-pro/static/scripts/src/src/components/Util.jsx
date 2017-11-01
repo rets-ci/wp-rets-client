@@ -148,7 +148,7 @@ class Util extends React.Component {
     return formattedNumber.format('0,0');
   }
 
-  static formatLotSizeValue(lotSize) {
+  static formatAcresValue(lotSize) {
     let formattedNumber = numeral(lotSize);
     return formattedNumber.format('0.00');
   }
@@ -393,12 +393,12 @@ class Util extends React.Component {
   static lotSizeFilterSearchTagText(filter) {
     if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
       if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-        return 'Under ' + this.formatLotSizeValue(filter.to) + ' ACRES';
+        return 'Under ' + this.formatAcresValue(filter.to) + ' ACRES';
       } else {
-        return 'Over ' + this.formatLotSizeValue(filter.start) + ' ACRES';
+        return 'Over ' + this.formatAcresValue(filter.start) + ' ACRES';
       }
     } else {
-      return this.formatLotSizeValue(filter.start) + '-' + this.formatLotSizeValue(filter.to) + ' ACRES';
+      return this.formatAcresValue(filter.start) + '-' + this.formatAcresValue(filter.to) + ' ACRES';
     }
   }
 
@@ -435,7 +435,7 @@ class Util extends React.Component {
     
     for (var key in obj) {
       let newKey = keyMapper[key] || key;
-      if (['price', 'sqft', 'lotSize'].indexOf(newKey) >= 0) {
+      if (['price', 'sqft', 'acres'].indexOf(newKey) >= 0) {
         out[newKey] = {
           start: obj[key][0],
           to: obj[key][1],

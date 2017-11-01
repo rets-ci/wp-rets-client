@@ -29,7 +29,7 @@ let defaultPropertyFilters = {
     start: 'No Min',
     to: 'No Max'
   },
-  lotSize: {
+  acres: {
     start: 'No Min',
     to: 'No Max'
   }

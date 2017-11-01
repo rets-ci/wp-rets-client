@@ -126,7 +126,7 @@ class PropertiesModal extends Component {
   }
 
   displayAllFilters(filters) {
-    return !!filters['bathrooms'] || !!filters['sqft'] || !!filters['lotSize'] || !!filters['property_subtype'];
+    return !!filters['bathrooms'] || !!filters['sqft'] || !!filters['acres'] || !!filters['property_subtype'];
   }
 
   setInitialFilters(searchFilters, defaultFiltervalues) {
@@ -228,9 +228,9 @@ class PropertiesModal extends Component {
     this.props.closeLocationModal();
   }
 
-  handleLotSizeSelect = (start, to) => {
+  handleAcresSelect = (start, to) => {
     let filter = {
-      lotSize: {
+      acres: {
         start: start,
         to: to
       }
@@ -338,10 +338,10 @@ class PropertiesModal extends Component {
 
   showFilterBasedOnSearchType(searchType, filter) {
     let filtersSearchTypeMap = {
-      'Buy': ['bedrooms', 'bathrooms', 'location', 'lotSize', 'price', 'property_subtype', 'sqft'],
-      'Commercial': ['location', 'lotSize', 'price', 'property_subtype', 'sale_type', 'sqft'],
-      'Rent': ['bathrooms', 'bedrooms', 'location', 'lotSize', 'price', 'property_subtype'],
-      'Land': ['location', 'lotSize', 'price', 'property_subtype', 'sale_type']
+      'Buy': ['bedrooms', 'bathrooms', 'location', 'acres', 'price', 'property_subtype', 'sqft'],
+      'Commercial': ['location', 'acres', 'price', 'property_subtype', 'sale_type', 'sqft'],
+      'Rent': ['bathrooms', 'bedrooms', 'location', 'acres', 'price', 'property_subtype'],
+      'Land': ['location', 'acres', 'price', 'property_subtype', 'sale_type']
     };
     if (!filtersSearchTypeMap[searchType]) {
       return false;
@@ -365,9 +365,9 @@ class PropertiesModal extends Component {
 
     let {
       filters: {
+        acres,
         bedrooms,
         bathrooms,
-        lotSize,
         price,
         property_subtype,
         sale_type,
@@ -507,16 +507,16 @@ class PropertiesModal extends Component {
         </div>
       );
     }
-    if (showAllFilters && this.showFilterBasedOnSearchType(search_type, 'lotSize')) {
+    if (showAllFilters && this.showFilterBasedOnSearchType(search_type, 'acres')) {
       modalBody.push(
         <div className="row" key="lot-size">
           <div
             className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-slider ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}>
             <h3>Lot Size <span>(Acres)</span></h3>
             <div>
-              {search_type && lotSize.start && lotSize.to ?
-                <LotSize saleType={search_type} start={lotSize.start}
-                        to={lotSize.to} handleOnClick={this.handleLotSizeSelect}/>
+              {search_type && acres.start && acres.to ?
+                <LotSize saleType={search_type} start={acres.start}
+                        to={acres.to} handleOnClick={this.handleAcresSelect}/>
                 : null}
             </div>
             <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
