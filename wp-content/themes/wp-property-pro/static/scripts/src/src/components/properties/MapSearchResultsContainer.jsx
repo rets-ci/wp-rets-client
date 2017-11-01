@@ -77,7 +77,7 @@ class MapSearchResultsContainer extends Component {
           propertySubtypes: propertySubtypes,
           queryDefaults: {
             property_subtype: propertySubtypes.map(d => d.slug),
-            sale_type: ['Rent', 'Sale']
+            sale_type: ['rent', 'sale']
           },
           termDetails
         };

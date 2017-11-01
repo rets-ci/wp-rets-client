@@ -1,3 +1,4 @@
+import capitalize from 'lodash/capitalize';
 import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
@@ -91,9 +92,10 @@ class FilterBar extends Component {
     }
 
     if (['Commercial', 'Land'].indexOf(filters.search_type) >= 0 && saleTypeFilter) {
-      saleTypeElement = saleTypeFilter.map((s, i) =>
-        <FilterTag key={s} handleRemoveFilter={this.props.deleteSaleTypeFilter} display={s} value={s} />
-      );
+      saleTypeElement = saleTypeFilter.map((s, i) => {
+        let saleType = s === 'sale' ? 'buy' : s;
+        return <FilterTag key={s} handleRemoveFilter={this.props.deleteSaleTypeFilter} display={capitalize(saleType)} value={s} />
+      });
     }
 
     if (sqftFilter) {

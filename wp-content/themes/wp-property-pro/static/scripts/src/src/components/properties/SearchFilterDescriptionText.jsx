@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Lib} from '../../lib.jsx';
 import Util from '../Util.jsx';
-import {get, startCase, first, isArray} from 'lodash';
+import {get, startCase, first, isArray, capitalize} from 'lodash';
 
 class SearchFilterDescription extends Component {
   static propTypes = {
@@ -72,7 +72,7 @@ class SearchFilterDescription extends Component {
     }
 
     // Checking selected sale types
-    let saleTypes = this.props.saleType || ['Rent', 'Sale'];
+    let saleTypes = (this.props.saleType && this.props.saleType.map(d => capitalize(d))) || ['Rent', 'Sale'];
     if(!isArray(saleTypes)){
       saleTypes = [saleTypes];
     }

@@ -5,7 +5,8 @@ import {
   receiveWordpressContentFetchingError,
   requestWordpressContentFetch,
   setPropertyTypeOptions,
-  toggleUserPanel
+  toggleUserPanel,
+  updateWindowStats,
 } from '../actions/index.jsx';
 import ErrorMessageModal from './ErrorMessageModal.jsx';
 import BootstrapModal from './Modals/components/BootstrapModal.jsx';
@@ -27,6 +28,7 @@ import nprogress from 'nprogress/nprogress.js';
 import UserPanel from './UserPanel.jsx';
 import {Lib} from '../lib.jsx';
 import get from 'lodash/get';
+import throttle from 'lodash/throttle';
 
 import Page from './Page.jsx';
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
@@ -90,6 +92,10 @@ const mapDispatchToProps = dispatch => {
     setPropertyTypeOptions: (options) => {
       dispatch(setPropertyTypeOptions(options));
     },
+
+    updateWindowStats: (stats) => {
+      dispatch(updateWindowStats(stats));
+    }
   }
 }
 
@@ -105,6 +111,43 @@ class PageLayout extends Component {
     this.state = {
       post: {}
     };
+
+    this.handleWindowSizeChange = throttle(this.handleWindowSizeChange, 500);
+  }
+
+  componentWillMount() {
+    window.addEventListener('resize', this.handleWindowSizeChange)
+  }
+
+  componentDidMount() {
+    let {
+      location
+    } = this.props;
+    let url = location.pathname + location.search;
+    this.fetchData(url);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // unless te URL is search, compare URLs to do a request
+    let anyChange = (currentPath, nextPath) => {
+      if (currentPath.indexOf('search') >= 0 && nextPath.indexOf('search') >= 0) {
+        return false;
+      } else {
+        return currentPath !== nextPath;
+      }
+    };
+    if (this.props.location.pathname && nextProps.location.pathname) {
+      if (anyChange(this.props.location.pathname, nextProps.location.pathname)) {
+        // reset the post content
+        this.routeUpdate();
+        this.setState({post: {}});
+        this.fetchData(nextProps.location.pathname + nextProps.location.search);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowSizeChange)
   }
 
   fetchData = (url) => {
@@ -137,31 +180,10 @@ class PageLayout extends Component {
     });
   }
 
-  componentDidMount() {
-    let {
-      location
-    } = this.props;
-    let url = location.pathname + location.search;
-    this.fetchData(url);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // unless te URL is search, compare URLs to do a request
-    let anyChange = (currentPath, nextPath) => {
-      if (currentPath.indexOf('search') >= 0 && nextPath.indexOf('search') >= 0) {
-        return false;
-      } else {
-        return currentPath !== nextPath;
-      }
-    };
-    if (this.props.location.pathname && nextProps.location.pathname) {
-      if (anyChange(this.props.location.pathname, nextProps.location.pathname)) {
-        // reset the post content
-        this.routeUpdate();
-        this.setState({post: {}});
-        this.fetchData(nextProps.location.pathname + nextProps.location.search);
-      }
-    }
+  handleWindowSizeChange = () => {
+    this.props.updateWindowStats({
+      width: window.innerWidth,
+    })
   }
 
   routeUpdate = () => {

@@ -1,0 +1,148 @@
+/** Property card */
+
+.propertypro-card {
+    border-radius: .625rem;
+    overflow: hidden;
+    border-color: #d2dae0;
+    opacity: 0.99;
+    margin-bottom: 1px;
+}
+
+.propertypro-card .propertypro-card-block {
+    position: relative;
+    padding: 1rem 1.5rem 1.25rem;
+}
+
+.propertypro-card .propertypro-listing-top {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 1rem 1.5rem;
+    z-index: 2;
+    color: #fff;
+}
+
+.propertypro-card .propertypro-listing-top .propertypro-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+}
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group {
+    display: none;
+    float: right;
+}
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group a {
+    width: 3.125rem;
+    height: 3.125rem;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.1);
+    border-radius: 3.125rem;
+    background-color: #ffffff;
+    float: left;
+    text-align: center;
+    line-height: 3.25rem;
+    margin: .75rem 0 0 .625rem;
+}
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group i {
+    font-size: 1.125rem;
+    color: rgba(65, 65, 65, 0.5);
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group .propertypro-active i, .propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:hover i {
+    color: #fff;
+}
+
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group .propertypro-hide i {
+    font-size: 1.25rem;
+}
+
+.propertypro-card .propertypro-card-img-top:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, #000000 100%);
+}
+
+.propertypro-card .propertypro-card-block > * {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.propertypro-card .propertypro-card-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.5rem;
+    color: #414141;
+}
+
+.propertypro-card .propertypro-card-text {
+    color: #8b8c8d;
+    font-size: .875rem;
+    line-height: 1.5rem;
+}
+
+.propertypro-card .propertypro-listing-info-box {
+    margin: 0;
+}
+
+.propertypro-card .propertypro-card-img .bg-card-img {
+    width: 100%;
+    padding-bottom: 52.8%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.propertypro-card-img {
+    position: relative;
+}
+
+/** Responsive attribute labels on property cards **/
+.propertypro-card .propertypro-listing-info-box {
+    li.attr-bd::after {
+        content: "Bed";
+    }
+    li.attr-ba::after {
+        content: "Bath";
+    }
+    li.attr-sf::after {
+        content: "SQFT";
+    }
+    li.attr-ac::after {
+        content: "Acres";
+    }
+
+    @media (min-width: 618px) and (max-width: 710px), (min-width: 1200px) and (max-width: 1380px) {
+        li.attr-bd::after {
+            content: "BD";
+        }
+        li.attr-ba::after {
+            content: "BA";
+        }
+        li.attr-ba+li.attr-sf::after {
+            content: "SF";
+        }
+        /*li.attr-ac::after {
+            content: "AC";
+        }*/
+    }
+
+    @media (min-width: 576px) and (max-width: 618px) {
+        li.attr-ba+li.attr-sf {
+            display: none;
+        }
+    }
+}
+/** End of attribute labels **/

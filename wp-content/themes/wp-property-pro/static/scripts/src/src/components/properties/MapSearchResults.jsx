@@ -292,7 +292,7 @@ class MapSearchResults extends Component {
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: geoCoordinates['topLeft']['lat'], lon: geoCoordinates['topLeft']['lon']};
     delete filters['search_type'];
-    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+    if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['rent', 'sale'].sort())) {
       delete filters['sale_type']
     }
     if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {

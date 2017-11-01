@@ -130,7 +130,7 @@ class HeaderPropertySingle extends Component {
     }
     let queryDefaults = {
       property_subtype: this.props.propertySubTypes.map(d => d.slug),
-      sale_type: ['Rent', 'Sale']
+      sale_type: ['rent', 'sale']
     }
     return (
       <div className={containerClass}>

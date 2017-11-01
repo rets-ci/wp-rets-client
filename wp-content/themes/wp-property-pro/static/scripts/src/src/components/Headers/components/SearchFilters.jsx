@@ -3,6 +3,7 @@ import {
   setSearchType,
   openPropertiesModal
 } from '../../../actions/index.jsx';
+import capitalize from 'lodash/capitalize';
 import difference from 'lodash/difference';
 import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
@@ -108,7 +109,7 @@ class searchFilters extends Component {
   updateURLWithQueryParam = queryParam => {
     queryParam = Object.assign({}, queryParam);
     delete queryParam['search_type']
-    if (queryParam['sale_type'] && isEqual(queryParam['sale_type'].sort(), ['Rent', 'Sale'].sort())) {
+    if (queryParam['sale_type'] && isEqual(queryParam['sale_type'].sort(), ['rent', 'sale'].sort())) {
       delete queryParam['sale_type']
     }
     if (queryParam['property_subtype'] && queryParam['property_subtype'].every(d => d.slug)) {
@@ -205,9 +206,10 @@ class searchFilters extends Component {
     }
 
     if (['Commercial', 'Land'].indexOf(filters.search_type) >= 0 && saleTypeFilter) {
-      saleTypeElement = saleTypeFilter.map((s, i) =>
-        <FilterTag key={JSON.stringify(s)} handleRemoveFilter={this.handleSaleTypeRemove} display={s} value={s} />
-      );
+      saleTypeElement = saleTypeFilter.map((s, i) => {
+        let saleType = s === 'sale' ? 'buy' : s;
+        return <FilterTag key={JSON.stringify(s)} handleRemoveFilter={this.handleSaleTypeRemove} display={capitalize(saleType)} value={s} />
+      });
     }
 
     if (sqftFilter) {

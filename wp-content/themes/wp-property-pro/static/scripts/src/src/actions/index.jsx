@@ -249,3 +249,10 @@ export const deselectPropertyOnMap = property => {
     type: Lib.DESELECT_PROPERTY_ON_MAP_ACTION,
   };
 }
+
+export const updateWindowStats = payload => {
+  return {
+    type: Lib.WINDOW_RESIZE,
+    payload,
+  };
+}
