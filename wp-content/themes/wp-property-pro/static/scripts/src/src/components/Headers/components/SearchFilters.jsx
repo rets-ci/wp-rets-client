@@ -69,7 +69,7 @@ class searchFilters extends Component {
 
   handleLotSizefilterRemove = () => {
     let filters = Object.assign({}, this.props.filters);
-    delete filters['lotSize'];
+    delete filters['acres'];
     this.updateURLWithQueryParam(filters);
   }
 
@@ -126,7 +126,7 @@ class searchFilters extends Component {
     } = this.props;
     let staticFilters = {
       'bedrooms': false,
-      'lotSize': false,
+      'acres': false,
       'price': false,
       'sqft': false
     };
@@ -145,7 +145,7 @@ class searchFilters extends Component {
         staticFilters['price'] = true;
         break;
       case 'Land':
-        staticFilters['lotSize'] = true
+        staticFilters['acres'] = true
         staticFilters['price'] = true;
     }
 
@@ -154,7 +154,7 @@ class searchFilters extends Component {
     let bedroomsFilter = filters['bedrooms'];
     let bedroomsElement;
     let lotSizeElement;
-    let lotSizeFilter = filters['lotSize'];
+    let lotSizeFilter = filters['acres'];
     let priceFilter = filters['price'];
     let priceElement;
     let saleTypeFilter = filters['sale_type'];
@@ -198,7 +198,7 @@ class searchFilters extends Component {
       lotSizeElement = (
         <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
       )
-    } else if (staticFilters['lotSize'] && this.showStaticFilters()) {
+    } else if (staticFilters['acres'] && this.showStaticFilters()) {
       lotSizeElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
         <span>+</span> Lot Size
       </span>);

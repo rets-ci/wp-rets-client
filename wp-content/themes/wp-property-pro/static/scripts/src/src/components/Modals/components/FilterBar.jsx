@@ -51,7 +51,7 @@ class FilterBar extends Component {
     let bedroomsFilter = filters['bedrooms'];
     let bedroomsElement;
     let lotSizeElement;
-    let lotSizeFilter = filters['lotSize'];
+    let lotSizeFilter = filters['acres'];
     let priceFilter = filters['price'];
     let priceElement;
     let saleTypeFilter = filters['sale_type'];
@@ -74,7 +74,7 @@ class FilterBar extends Component {
 
     if (lotSizeFilter) {
       lotSizeElement = (
-        <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('lotSize')} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
+        <FilterTag handleRemoveFilter={() => this.props.deleteSingleLocalFilter('acres')} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
       )
     }
 

@@ -215,7 +215,7 @@ class Single extends Component {
     switch (listing_type) {
       case 'land':
         if (rets_lot_size_area) {
-          info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
+          info_box += `<li>${Util.formatAcresValue(rets_lot_size_area)} Acres</li>`;
         }
         break;
       case 'commercial':
@@ -237,7 +237,7 @@ class Single extends Component {
         }
 
         if (rets_lot_size_area) {
-          info_box += `<li>${Util.formatLotSizeValue(rets_lot_size_area)} Acres</li>`;
+          info_box += `<li>${Util.formatAcresValue(rets_lot_size_area)} Acres</li>`;
         }
     }
     return (
