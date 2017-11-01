@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Lib} from '../../lib.jsx';
 import Util from '../Util.jsx';
+import {get, startCase, first, isArray} from 'lodash';
 
 class SearchFilterDescription extends Component {
   static propTypes = {
@@ -9,8 +10,11 @@ class SearchFilterDescription extends Component {
     bedrooms: PropTypes.string,
     price: PropTypes.object,
     saleType: PropTypes.array,
-    total: PropTypes.number
-  }
+    subtypes: PropTypes.array,
+    terms: PropTypes.array,
+    total: PropTypes.number,
+    type: PropTypes.string
+  };
 
   getMainText(saleType, props) {
     let {
@@ -45,10 +49,72 @@ class SearchFilterDescription extends Component {
   }
 
   render() {
-    let saleType = this.props.saleType || ['Rent', 'Sale'];
-    let headText = `Homes for ${saleType.join(' and ')}`;
+    // Count of items which can be displayed at title
+    let items_limit = 2;
+
+    // Build locations array
+    let terms = get(this.props, 'terms' ,[]).map(term => (term.text));
+    let locations = '';
+    if(terms && terms.length <= items_limit){
+      locations = terms.join(' and ');
+    }
+
+    // Get listing subtypes array with plural values
+    let subtypes = get(this.props, 'subtypes' ,[]).map(subtype => (get(bundle, ['listing_subtypes_plural_values', this.props.type, subtype.slug].join('.'))));
+
+    // Checking if using 'other' subtype
+    let exist_other_values = get(this.props, 'subtypes' ,[]).map(subtype => (subtype.slug)).indexOf('other') !== -1;
+
+    // If there is no selected subtypes or one of selected is 'other' then just display listing type
+    let types = startCase(this.props.type);
+    if(subtypes && subtypes.length <= items_limit && !exist_other_values){
+      types = subtypes.join(' and ');
+    }
+
+    // Checking selected sale types
+    let saleTypes = this.props.saleType || ['Rent', 'Sale'];
+    if(!isArray(saleTypes)){
+      saleTypes = [saleTypes];
+    }
+
+    // Define sale type title's part
+    let saleType;
+    let shortSaleType;
+    switch(this.props.type){
+      case 'residential':
+        shortSaleType = saleType = 'Real Estate';
+        break;
+      case 'commercial':
+        shortSaleType = saleType = 'Commercial Real Estate';
+        if(exist_other_values){
+          types = saleType;
+        }
+        break;
+      case 'land':
+        saleType = 'Land Real Estate';
+        shortSaleType = 'Land';
+        if(exist_other_values){
+          types = saleType;
+        }
+        break;
+    }
+
+    // If display all sale type, then drop it
+    if(saleTypes.length === 2 && subtypes.length > 0){
+      saleType = '';
+    }else if(saleTypes.length === 1){
+      // Case when displayed particular sale type with listing subtype
+      if(subtypes.length > 0 && subtypes.length <= 2){
+        saleType = [['For', first(saleTypes)].join(' ')].join(' ');
+      }else{ //Case when displayed particular sale type without subtypes
+        saleType = [shortSaleType, ['For', first(saleTypes)].join(' ')].join(' ')
+      }
+    }
+
+    // Set header text
+    let headText = [locations, types, saleType].join(' ');
     
-    let mainText = this.getMainText(saleType, this.props);
+    let mainText = this.getMainText(saleTypes, this.props);
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
         <h1>{headText}</h1>
@@ -56,6 +122,6 @@ class SearchFilterDescription extends Component {
       </div>
     );
   }
-};
+}
 
 export default SearchFilterDescription;
