@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Lib} from '../../lib.jsx';
 import Util from '../Util.jsx';
-import {get, startCase, first, isArray, capitalize} from 'lodash';
+import {get, first, isArray, capitalize} from 'lodash';
 
 class SearchFilterDescription extends Component {
   static propTypes = {
@@ -66,7 +66,7 @@ class SearchFilterDescription extends Component {
     let exist_other_values = get(this.props, 'subtypes' ,[]).map(subtype => (subtype.slug)).indexOf('other') !== -1;
 
     // If there is no selected subtypes or one of selected is 'other' then just display listing type
-    let types = startCase(this.props.type);
+    let types = capitalize(this.props.type);
     if(subtypes && subtypes.length <= items_limit && !exist_other_values){
       types = subtypes.join(' and ');
     }
