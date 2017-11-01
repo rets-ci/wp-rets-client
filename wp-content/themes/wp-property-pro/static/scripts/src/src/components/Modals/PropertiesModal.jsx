@@ -98,7 +98,7 @@ class PropertiesModal extends Component {
       if (!isEqual(prevState.filters, this.state.filters)) {
         let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
         this.props.doSearch(filters);
-        this.props.getAvailablePropertySubTypes(Object.assign({}, this.state.filters));
+        this.props.getAvailablePropertySubTypes(Object.assign({}, filters));
       }
     }
   }
@@ -268,10 +268,10 @@ class PropertiesModal extends Component {
     } else {
       saleArray = filters.sale_type.slice(0);
     }
-    if (saleArray.indexOf(filter.title) >= 0) {
-      saleArray = difference(saleArray, [filter.title]);
+    if (saleArray.indexOf(filter.value) >= 0) {
+      saleArray = difference(saleArray, [filter.value]);
     } else {
-      saleArray.push(filter.title);
+      saleArray.push(filter.value);
     }
     filters.sale_type = saleArray;
     this.setState({filters: filters});
@@ -392,11 +392,11 @@ class PropertiesModal extends Component {
     let saleTypeOptions = [];
     if (['Commercial', 'Land'].indexOf(search_type) >= 0) {
       saleTypeOptions = [{
-        selected: saleType && saleType.indexOf('Sale') >= 0,
+        selected: saleType && saleType.indexOf('sale') >= 0,
         title: 'Sale',
         value: 'sale'
       }, {
-        selected: saleType && saleType.indexOf('Rent') >= 0,
+        selected: saleType && saleType.indexOf('rent') >= 0,
         title: 'Rent',
         value: 'rent'
       }];

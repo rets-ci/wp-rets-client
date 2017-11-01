@@ -1,3 +1,4 @@
+import capitalize from 'lodash/capitalize';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Lib} from '../../lib.jsx';
@@ -45,7 +46,7 @@ class SearchFilterDescription extends Component {
   }
 
   render() {
-    let saleType = this.props.saleType || ['Rent', 'Sale'];
+    let saleType = (this.props.saleType && this.props.saleType.map(d => capitalize(d))) || ['Rent', 'Sale'];
     let headText = `Homes for ${saleType.join(' and ')}`;
     
     let mainText = this.getMainText(saleType, this.props);

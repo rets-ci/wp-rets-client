@@ -124,7 +124,7 @@ class Util extends React.Component {
     if (sale_type && !isEqual(sale_type.sort(), ['Rent', 'Sale'])) {
       params.push({
         key: 'sale_type',
-        values: [sale_type]
+        values: [sale_type[0].toLowerCase()]
       })
     }
 
