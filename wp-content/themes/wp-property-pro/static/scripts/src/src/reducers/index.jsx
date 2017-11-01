@@ -16,6 +16,7 @@ import searchType from './searchType.jsx';
 import testimonialsCarouselState from './testimonialsCarousel.jsx';
 import userPanel from './userPanel.jsx';
 import wordpressContentFetching from './wordpressContentFetching.jsx';
+import viewport from './viewport.jsx';
 
 const propertyProApp = combineReducers({
     agentCardState,
@@ -34,7 +35,8 @@ const propertyProApp = combineReducers({
     testimonialsCarouselState,
     blogPostsState,
     headerSearch,
-    wordpressContentFetching
+    wordpressContentFetching,
+    viewport,
 });
 
 export default propertyProApp
