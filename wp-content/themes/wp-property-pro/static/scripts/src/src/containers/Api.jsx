@@ -416,7 +416,7 @@ class Api {
       saleType.forEach(saleType => {
         saleTypeShouldArray.push({
           "term": {
-            "terms.wpp_listing_status.slug": 'for-' + saleType.toLowerCase()
+            "terms.wpp_listing_status.slug": 'for-' + saleType
           }
         })
       });
