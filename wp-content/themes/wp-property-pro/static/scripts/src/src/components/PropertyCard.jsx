@@ -78,18 +78,18 @@ class PropertyCard extends Component {
     let info_box = [];
 
     sub_types = sub_types || [];
-    info_box.push(`<li>${sub_types.join(', ')}</li>`);
+    info_box.push(`<li class="attr-subtypes">${sub_types.join(', ')}</li>`);
 
     if (type !== 'commercial' && type !== 'land') {
-      info_box.push(`<li>${beds} Bed</li><li>${baths} Bath</li>`);
+      info_box.push(`<li class="attr-bd">${beds} </li><li class="attr-ba">${baths} </li>`);
     }
 
     if (type !== 'land' && !!+sqft) {
-      info_box.push(`<li>${Util.formatSQFTValue(sqft)} SF</li>`);
+      info_box.push(`<li class="attr-sf">${Util.formatSQFTValue(sqft)} </li>`);
     }
 
     if (type === 'land' && !!+lots_size) {
-      info_box.push(`<li>${Util.formatAcresValue(lots_size)} Acres</li>`);
+      info_box.push(`<li class="attr-ac">${Util.formatAcresValue(lots_size)} </li>`);
     }
 
     // residential - remove the property subtype from residential cards. #1526
