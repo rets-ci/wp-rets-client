@@ -70,6 +70,8 @@ class ImageMixer extends Component {
       spaceBetween: 5,
       preloadImages: false,
       lazyLoading: true,
+      // Reinit swiper on update images
+      rebuildOnUpdate: true,
       onInit: (swiper) => {
         this.swiper = swiper;
       },
@@ -81,7 +83,9 @@ class ImageMixer extends Component {
       lazyLoading: true,
       lazyLoadingInPrevNext: true,
       lazyLoadingInPrevNextAmount: 3,
+      // Reinit swiper on update images
       lazyLoadingOnTransitionStart: true,
+      rebuildOnUpdate: true,
       onInit: (swiper) => {
         this.swiper = swiper;
       },

@@ -340,7 +340,7 @@ class PropertiesModal extends Component {
     let filtersSearchTypeMap = {
       'Buy': ['bedrooms', 'bathrooms', 'location', 'lotSize', 'price', 'property_subtype', 'sqft'],
       'Commercial': ['location', 'lotSize', 'price', 'property_subtype', 'sale_type', 'sqft'],
-      'Rent': ['bathrooms', 'bedrooms', 'location', 'lotSize', 'price', 'property_subtype', 'sqft'],
+      'Rent': ['bathrooms', 'bedrooms', 'location', 'lotSize', 'price', 'property_subtype'],
       'Land': ['location', 'lotSize', 'price', 'property_subtype', 'sale_type']
     };
     if (!filtersSearchTypeMap[searchType]) {
@@ -532,12 +532,16 @@ class PropertiesModal extends Component {
             className={`col-12 all-filters ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
             <h3>Sale Type</h3>
             <div className="filter-type">
-              {saleTypeOptions.map(d =>
-                <a
-                  key={d.value}
-                  href="#"
-                  className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : "")}`}
-                  onClick={() => this.handleSaleTypeToggle(d)}>{d.title}</a>
+              {saleTypeOptions.map(d => {
+                let title = d.title === 'Sale' ? 'Buy' : d.title;
+                return (
+                  <a
+                    key={d.value}
+                    href="#"
+                    className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : "")}`}
+                    onClick={() => this.handleSaleTypeToggle(d)}>{title}</a>
+                );
+              }
               )}
             </div>
           </div>
