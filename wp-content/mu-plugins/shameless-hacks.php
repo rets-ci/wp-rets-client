@@ -63,12 +63,12 @@ add_filter( 'wpp:elastic:prepare', function( $post_args, $post_id ) {
 add_filter( 'wpp:elastic:prepare', function( $post_args, $post_id ) {
 
   $latitude = get_post_meta( $post_id, 'wpp_location_latitude', true );
-  if( empty( $latitude ) ) {
+  if( empty( $latitude ) && $latitude == '0' ) {
     $latitude = get_post_meta( $post_id, 'latitude', true );
   }
 
   $longitude = get_post_meta( $post_id, 'wpp_location_longitude', true );
-  if( empty( $longitude ) ) {
+  if( empty( $longitude ) && $longitude == '0' ) {
     $longitude = get_post_meta( $post_id, 'longitude', true );
   }
 
