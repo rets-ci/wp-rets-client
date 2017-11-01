@@ -54,9 +54,9 @@ const mapStateToProps = (state, ownProps) => {
   }
   searchQueryObject['property_type'] = searchQueryObject.property_type[0];
   searchQueryObject['search_type'] = searchType;
-  if (searchQueryObject.sale) {
-    if (!(searchQueryObject.sale instanceof Array)) {
-      searchQueryObject.sale = [searchQueryObject.sale];
+  if (searchQueryObject.sale_type) {
+    if (!(searchQueryObject.sale_type instanceof Array)) {
+      searchQueryObject.sale_type = [searchQueryObject.sale_type];
     }
   }
 
@@ -108,7 +108,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     doPropertiesModalSearch: (filters, queryDefaults) => {
       let params = Object.assign({}, filters);
       dispatch(requestPropertiesModalResultCount());
-      Api.makeStandardPropertySearch(params, queryDefaults, (err, query, response) => {
+      params = Util.enricSearchParamshWithDefaults(params, queryDefaults);
+      Api.makeStandardPropertySearch(params, (err, query, response) => {
         if (err) { return dispatch(receivePropertiesModalResultCountFetchingError(err)); }
         dispatch(receivePropertiesModalResultCount(get(response, 'hits.total', null)));
       });
@@ -126,10 +127,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     getAvailablePropertySubTypes: (filters, queryDefaults) => {
-      let params = Object.assign({}, omit(filters, ['property_subtype']));
+      let params = Object.assign({}, filters);
       params.aggregations = Api.getPropertySubTypesAggregations();
+      params = Util.enricSearchParamshWithDefaults(params, queryDefaults);
+      params = omit(params, ['property_subtype']);
       dispatch(requestAvailablePropertySubTypesForSearch());
-      Api.makeStandardPropertySearch(params, queryDefaults, (err, query, response) => {
+      Api.makeStandardPropertySearch(params, (err, query, response) => {
         if (err) {
           return dispatch(receiveAvailablePropertySubTypesForSearchError(err));
         }
@@ -160,7 +163,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]]
         };
       }
-      Api.makeStandardPropertySearch(params, defaults, (err, query, response) => {
+      params = Util.enricSearchParamshWithDefaults(params, defaults);
+      Api.makeStandardPropertySearch(params, (err, query, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
         }
