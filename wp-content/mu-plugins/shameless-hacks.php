@@ -62,37 +62,21 @@ add_filter( 'wpp:elastic:prepare', function( $post_args, $post_id ) {
 
 add_filter( 'wpp:elastic:prepare', function( $post_args, $post_id ) {
 
-  if( get_post_meta( $post_id, 'wpp_location_latitude', true ) ) {
-
-    // ensure we have a wpp_location_pin
-    $post_args[ 'post_meta' ][ 'wpp_location_pin' ] = array(
-      get_post_meta( $post_id, 'wpp_location_latitude', true ),
-      get_post_meta( $post_id, 'wpp_location_longitude', true ),
-    );
-
-    // rdc_log( "Using [wpp_location_latitude] for coordinates for $post_id [wpp_location_pin]. ", $post_args[ 'post_meta' ][ 'wpp_location_pin' ] );
-
-    return $post_args;
-
+  $latitude = get_post_meta( $post_id, 'wpp_location_latitude', true );
+  if( empty( $latitude ) ) {
+    $latitude = get_post_meta( $post_id, 'latitude', true );
   }
 
-  if( get_post_meta( $post_id, 'rets_latitude', true ) ) {
-
-    // ensure we have a wpp_location_pin
-    $post_args[ 'post_meta' ][ 'wpp_location_pin' ] = array(
-      get_post_meta( $post_id, 'rets_latitude', true ),
-      get_post_meta( $post_id, 'rets_longitude', true ),
-    );
-
-    // rdc_log( "Using [rets_latitude] for  coordinates for $post_id [wpp_location_pin]",  $post_args[ 'post_meta' ][ 'wpp_location_pin' ] );
-
-    return $post_args;
-
+  $longitude = get_post_meta( $post_id, 'wpp_location_longitude', true );
+  if( empty( $longitude ) ) {
+    $longitude = get_post_meta( $post_id, 'longitude', true );
   }
 
-  //rdc_log( "Missing coordinates for $post_id", $post_args );
+  if( !empty( $latitude ) && !empty( $longitude ) ) {
+    $post_args[ 'post_meta' ][ 'wpp_location_pin' ] = array($latitude,$longitude);
+  }
 
-return $post_args;
+  return $post_args;
 
 }, 50, 2 );
 
