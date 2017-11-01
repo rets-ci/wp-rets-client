@@ -1,20 +1,23 @@
-import {setAgentCardTab} from '../../actions/index.jsx';
-import AgentCardForms from './Components/AgentCardForms.jsx';
-import FormFetcher from '../Forms/FormFetcher.jsx';
-import get from 'lodash/get';
-import {Lib} from '../../lib.jsx';
-import moment from 'moment';
-import PropertyHighlights from './Components/PropertyHighlights.jsx';
-import PropertyInfoTabs from './Components/PropertyInfoTabs.jsx';
-import propertyDataStructure from '../../../static_data/property-data-structure.json';
-import PropertiesModal from '../Modals/PropertiesModal.jsx';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import renderHTML from 'react-render-html';
 import scrollToElement from 'scroll-to-element';
-import ImageMixer from './Components/ImageMixer.jsx';
-import Util from 'app_root/components/Util.jsx';
+import moment from 'moment';
+import get from 'lodash/get';
+
+import { Lib }              from 'app_root/lib.jsx';
+import { setAgentCardTab }  from 'app_root/actions/index.jsx';
+import Util                 from 'app_root/components/Util.jsx';
+import FormFetcher          from 'app_root/components/Forms/FormFetcher.jsx';
+import PropertiesModal      from 'app_root/components/Modals/PropertiesModal.jsx';
+
+import AgentCardForms     from 'app_root/components/PropertySingle/components/AgentCardForms.jsx';
+import PropertyHighlights from 'app_root/components/PropertySingle/components/PropertyHighlights.jsx';
+import PropertyInfoTabs   from 'app_root/components/PropertySingle/components/PropertyInfoTabs.jsx';
+import ImageMixer         from 'app_root/components/PropertySingle/components/ImageMixer.jsx';
+
+import propertyDataStructure from '../../../static_data/property-data-structure.json';
 
 let getAgentImage = (agentObject) => get(agentObject, 'data.images[0][0]', null);
 let getAgentName = (agentObject) => get(agentObject, 'data.display_name', null);

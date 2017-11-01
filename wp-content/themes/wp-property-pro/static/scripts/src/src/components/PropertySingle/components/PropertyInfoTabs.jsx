@@ -1,9 +1,11 @@
-import {Lib} from '../../../lib.jsx';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import merge from 'lodash/merge';
 
-import PropertySingleTabContent from './PropertySingleTabContent.jsx';
+import { Lib } from 'app_root/lib.jsx';
+import PropertySingleTabContent
+	from 'app_root/components/PropertySingle/components/PropertySingleTabContent.jsx';
+
 
 let getAllTabData = (propertyData, colNumbers) => {
 	let propertyDataModified = propertyData;

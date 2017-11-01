@@ -1,6 +1,8 @@
-import {Lib} from '../../../lib.jsx';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+
+import { Lib } from 'app_root/lib.jsx';
+
 
 function PropertyHighlights(props) {
   let {

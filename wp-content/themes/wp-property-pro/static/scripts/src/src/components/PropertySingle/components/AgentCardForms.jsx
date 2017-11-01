@@ -1,8 +1,12 @@
-import FormFetcher from '../../Forms/FormFetcher.jsx';import {Lib} from '../../../lib.jsx';
-import JSONSchemaFormContainer from '../../Forms/JSONSchemaFormContainer.jsx';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Util from '../../Util.jsx';
+
+import { Lib }      from 'app_root/lib.jsx';
+import Util         from 'app_root/components/Util.jsx';
+import FormFetcher  from 'app_root/components/Forms/FormFetcher.jsx';
+import JSONSchemaFormContainer
+  from 'app_root/components/Forms/JSONSchemaFormContainer.jsx';
+
 
 let formIdMapper = {
   'request-showing-rent': 'form-rent-inquiry',

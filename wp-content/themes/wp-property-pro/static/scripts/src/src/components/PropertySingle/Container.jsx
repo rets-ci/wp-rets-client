@@ -1,33 +1,34 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import get from 'lodash/get';
 
 import {
   receivePropertySingleResult,
   receivePropertySingleFetchingError,
   requestPropertySingleResult
-} from '../../actions/index.jsx';
-import ErrorMessageModal from '../ErrorMessageModal.jsx';
-import HeaderPropertySingle from '../Headers/HeaderPropertySingle.jsx';
-import get from 'lodash/get';
-import Api from '../../containers/Api.jsx';
-import LoadingAccordion from '../LoadingAccordion.jsx';
-import {Lib} from '../../lib.jsx';
-import Single from './Single.jsx';
+} from 'app_root/actions/index.jsx';
+import { Lib } from 'app_root/lib.jsx';
+import Api from 'app_root/containers/Api.jsx';
 
-import Util from 'app_root/components/Util.jsx';
+import ErrorMessageModal    from 'app_root/components/ErrorMessageModal.jsx';
+import HeaderPropertySingle from 'app_root/components/Headers/HeaderPropertySingle.jsx';
+import LoadingAccordion     from 'app_root/components/LoadingAccordion.jsx';
+import Single               from 'app_root/components/PropertySingle/PropertySingle.jsx';
+import Util                 from 'app_root/components/Util.jsx';
+
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    errorMessage: state.singleProperty.errorMessage,
+    property: state.singleProperty.property,
     isFetching: state.singleProperty.isFetching,
+    errorMessage: state.singleProperty.errorMessage,
+    propertySubTypes: state.singleProperty.propertySubTypes,
+    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
     propertiesModalOpen: get(state, 'propertiesModal.open'),
     propertiesModalResultCount: get(state, 'propertiesModal.resultCount'),
     propertiesModalResultCountErrorMessage: get(state, 'propertiesModal.errorMessage'),
     propertiesModalResultCountIsFetching: get(state, 'propertiesModal.isFetching'),
-    property: state.singleProperty.property,
-    propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
-    propertySubTypes: state.singleProperty.propertySubTypes,
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };

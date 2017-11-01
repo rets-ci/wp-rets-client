@@ -4,8 +4,8 @@ import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
 import { deselectPropertyOnMap } from 'app_root/actions/index.jsx';
+import Single from 'app_root/components/PropertySingle/PropertySingle.jsx';
 import Util from 'app_root/components/Util.jsx';
-import Single from 'app_root/components/properties/Single.jsx';
 
 class PropertyPanelOnMap extends Component {
 

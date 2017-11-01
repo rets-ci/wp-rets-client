@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Lightbox from 'react-images';
 import Swiper from 'react-id-swiper';
 
-import { Lib } from '../../../lib.jsx';
+import { Lib } from 'app_root/lib.jsx';
 
 
 class ImageMixer extends Component {

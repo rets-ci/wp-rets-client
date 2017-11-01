@@ -33,7 +33,7 @@ import throttle from 'lodash/throttle';
 import Page from './Page.jsx';
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
 import loadGuideArchive from 'bundle-loader?lazy&name=GuideArchive!./guide/Archive.jsx';
-import loadPropertySingle from 'bundle-loader?lazy&name=SingleProperties!./properties/SingleContainer.jsx';
+import loadPropertySingle from 'bundle-loader?lazy&name=SingleProperties!./PropertySingle/Container.jsx';
 import loadMapSearchResultsContainer from 'bundle-loader?lazy&name=MapSearchResultsContainer!./properties/MapSearchResultsContainer.jsx';
 
 require('nprogress-css');
