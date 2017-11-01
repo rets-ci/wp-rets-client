@@ -79,8 +79,7 @@ class Util extends React.Component {
 
   static customFormatToSearchObject(obj) {
     let keyMapper = {
-      'search_type': 'search',
-      'sale_type': 'sale'
+      'search_type': 'search'
     };
     let out = {};
     for (let key in obj) {
@@ -124,12 +123,20 @@ class Util extends React.Component {
 
     if (sale_type && !isEqual(sale_type.sort(), ['Rent', 'Sale'])) {
       params.push({
-        key: 'sale',
+        key: 'sale_type',
         values: [sale_type]
       })
     }
 
     return params;
+  }
+
+  static enricSearchParamshWithDefaults(params, defaults) {
+    let enrichedObject = Object.assign({}, params);
+    enrichedObject.sale_type = enrichedObject.sale_type || defaults['sale_type'];
+    enrichedObject.property_subtype = (enrichedObject.property_subtype && enrichedObject.property_subtype.map(d => d.slug)) || defaults['property_subtype'];
+    enrichedObject.property_type = enrichedObject.property_type || defaults['property_type'];
+    return enrichedObject;
   }
 
   static formatPriceValue(price) {

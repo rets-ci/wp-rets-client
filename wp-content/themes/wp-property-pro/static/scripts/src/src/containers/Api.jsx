@@ -379,7 +379,7 @@ class Api {
     });
   }
 
-  static createESSearchQuery(params, queryDefaults) {
+  static createESSearchQuery(params) {
     let query = {
       "bool": {
         "must": []
@@ -411,29 +411,33 @@ class Api {
       );
     }
     let saleTypeShouldArray = [];
-    let saleType = params.sale_type || queryDefaults['sale_type'];
-    saleType.forEach(saleType => {
-      saleTypeShouldArray.push({
-        "term": {
-          "terms.wpp_listing_status.slug": 'for-' + saleType.toLowerCase()
-        }
-      })
-    });
+    let saleType = params.sale_type;
+    if (saleType) {
+      saleType.forEach(saleType => {
+        saleTypeShouldArray.push({
+          "term": {
+            "terms.wpp_listing_status.slug": 'for-' + saleType.toLowerCase()
+          }
+        })
+      });
+    }
     query.bool.must.push({
       "bool": {
         "should": saleTypeShouldArray
       }
     });
 
-    query.bool.must.push({
-      "terms": {
-        "tax_input.wpp_listing_subtype.listing_sub_type.slug": (params.property_subtype && params.property_subtype.map(d => d.slug)) || queryDefaults['property_subtype']
-      }
-    });
+    if (params.property_subtype) {
+      query.bool.must.push({
+        "terms": {
+          "tax_input.wpp_listing_subtype.listing_sub_type.slug": params.property_subtype
+        }
+      });
+    }
 
     query.bool.must.push({
       "terms": {
-        "tax_input.wpp_listing_type.listing_type.slug": [(params.property_type) || queryDefaults['property_type']]
+        "tax_input.wpp_listing_type.listing_type.slug": [params.property_type]
       }
     });
 
@@ -582,13 +586,13 @@ class Api {
     }, callback);
   }
 
-  static makeStandardPropertySearch(params, queryDefaults, callback) {
+  static makeStandardPropertySearch(params, callback) {
     let searchParams = {
       ...params,
       size: Lib.PROPERTY_PER_PAGE
     };
     
-    let query = this.createESSearchQuery(searchParams, queryDefaults);
+    let query = this.createESSearchQuery(searchParams);
     let url = this.getPropertySearchRequestURL();
     this.search(url, query, (err, response) => {
       callback(err, query, response);
