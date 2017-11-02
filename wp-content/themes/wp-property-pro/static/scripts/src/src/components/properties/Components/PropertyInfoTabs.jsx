@@ -41,10 +41,15 @@ let getAllTabData = (propertyData, colNumbers) => {
 };
 
 class PropertyInfoTabs extends Component {
+
+	static propTypes = {
+		propertyDataStructure: PropTypes.array.isRequired
+	}
+
   constructor(props) {
 		super(props);
 		this.state = {
-			selectedTab: 'All'
+			selectedTab: 'Rooms'
 		}
   }
   
@@ -63,20 +68,23 @@ class PropertyInfoTabs extends Component {
 			selectedTab
     } = this.state;
     
-    let propertyDataStructureModified = Object.assign({}, propertyDataStructure);
-		propertyDataStructureModified['All'] = getAllTabData(Object.assign({}, propertyDataStructure), 3);
+    // let propertyDataStructureModified = Object.assign({}, propertyDataStructure);
+		// propertyDataStructureModified['All'] = getAllTabData(Object.assign({}, propertyDataStructure), 3);
+		// console.log('property info tabs: ', propertyDataStructureModified);
+		let tabs = propertyDataStructure.map(p => p.name);
+		let content = propertyDataStructure.filter(d => d.name === selectedTab).length ? propertyDataStructure.filter(d => d.name === selectedTab)[0] : null;
     return (
 			<div id={`${Lib.THEME_CLASSES_PREFIX}property-details`}>
 				<div className="card text-center mb-4">
 					<div className="card-header">
 						<ul className="nav nav-tabs card-header-tabs">
-							{Object.keys(propertyDataStructureModified).map((p, i) =>
-								<li className="nav-item" key={p}>
+							{tabs.map((tab) =>
+								<li className="nav-item" key={tab}>
 									<a
-										className={`nav-link ${selectedTab === p ? 'active' : ''}`}
+										className={`nav-link ${selectedTab === tab ? 'active' : ''}`}
 										href="#"
-										onClick={(event) => { event.preventDefault(); this.selectTab(p); }}
-									>{p}</a>
+										onClick={(event) => { event.preventDefault(); this.selectTab(tab); }}
+									>{tab}</a>
 								</li>
 							)}
 						</ul>
@@ -84,7 +92,7 @@ class PropertyInfoTabs extends Component {
 					<div className="card-block">
 						<div>
 							<PropertySingleTabContent
-								tab={propertyDataStructureModified[selectedTab]}
+								content={content}
 								data={data}
 							/>
 						</div>

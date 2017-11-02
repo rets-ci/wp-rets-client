@@ -1892,6 +1892,10 @@ ul.card-header-tabs {
     flex-wrap: wrap;
 }
 
+#propertypro-property-details .card-block {
+    padding-top: 0;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*  Property Single Data Div
 /*-----------------------------------------------------------------------------------*/
@@ -1934,6 +1938,14 @@ ul.propertypro-details-list li:last-child {
 
 ul.propertypro-details-list li span.propertypro-item-name {
     color: #8b8c8d;
+}
+
+.propertypro-property-single-div-30 {
+    width: 30%;
+}
+
+.propertypro-property-single-div-50 {
+    width: 45%;
 }
 
 /*-----------------------------------------------------------------------------------*/

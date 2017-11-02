@@ -4,34 +4,32 @@ import React, { Component } from 'react';
 
 import get from 'lodash/get';
 
-function showContentValue(data, esReference, booleanField) {
-  if (!esReference || (!get(data, esReference, null) && !booleanField )) { return 'N/A'; }
-  let v = get(data, esReference);
-  let value;
-  if (v instanceof Array) {
-    value = v.map(d => d.name).join(', ');
+const Masonry = require('react-masonry-component');
 
-    if (booleanField) {
-      value = value.includes('No') || value.includes('no') || !value ? 'No' : 'Yes';
-    }
-  } else if (typeof v !== 'string') {
-    console.log('return value in property single is an object, most likely a path referencing issue: ', value);
-    value = 'N/A';
+function showContentValue(data, dataReference) {
+  if (typeof dataReference !== 'function') {
+    console.log(dataReference + ' is not a function');
+    // TODO: TEMP solution until everything is changed to function
+    return "old style value";
   } else {
-    value = v;
-    if (booleanField) {
-      value = value.includes('no') || !value ? 'No' : 'Yes';
+    let value = dataReference(data);
+    if (typeof value === 'object') {
+      // this should never happen
+      console.log(dataReference + ' needs to be fixed');
+      return 'Obj';
+    } else if (!value) {
+      return 'N/A';
+    } else {
+      return value;
     }
   }
-  return value;
 }
 
-
-function getContent(content, data) {
-  let contentElements = content.map(c => {
-    return ['N/A', '0'].indexOf(showContentValue(data, c.esReference, c.booleanField)) < 0 ?
+function getContent(items, data) {
+  let contentElements = items.sort((a, b) => a.order - b.order).map((c, i) => {
+    return ['N/A', '0'].indexOf(showContentValue(data, c.value)) < 0 ?
       <li key={JSON.stringify(c)}>
-        <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>{c.name}:</span> {showContentValue(data, c.esReference, c.booleanField)}
+        <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>{c.name}:</span> {showContentValue(data, c.value)}
       </li>
       : null;
   });
@@ -40,46 +38,45 @@ function getContent(content, data) {
 
 class PropertySingleTabContent extends Component {
   static propTypes = {
-    tab: PropTypes.array,
+    content: PropTypes.object.isRequired,
     data: PropTypes.object
   }
 
   render() {
     let {
-      tab,
-      data,
+      content,
+      data
     } = this.props;
     let elements = [];
     let visibleTabs = {};
 
-    tab.forEach(colsObject => {
-      Object.keys(colsObject).forEach((col, i) => {
-        let colVisible = !!colsObject[col].map(c => showContentValue(data, c.esReference, c.booleanField) !== 'N/A').filter(d => d).length;
-        visibleTabs[col] = colVisible;
-      });
-    });
-  
+    let masonryOptions = {
+      horizontalOrder: true,
+      itemSelector: `.${Lib.THEME_CLASSES_PREFIX}property-single-div`,
+      percentPosition: true,
+      // columnWidth: 200,
+      gutter: 10,
+      transitionDuration: 0
+    };
+    let itemClasses = [`${Lib.THEME_CLASSES_PREFIX}property-single-div`];
+    itemClasses.push((content.children.length % 2 === 0) ? `${Lib.THEME_CLASSES_PREFIX}property-single-div-50` : `${Lib.THEME_CLASSES_PREFIX}property-single-div-30`)
     return (
-      <div className="d-flex">
-        {tab.map((p, i) =>
-          <div className={Object.keys(p).some(d => visibleTabs[d]) ? "col" : null} key={i}>
-            {Object.keys(p).some(d => visibleTabs[d]) ?
-              <div key={JSON.stringify(p)}>
-                {Object.keys(p).map((head, i) =>
-                  <div key={head + i}>
-                    <div className={`${Lib.THEME_CLASSES_PREFIX}property-single-div`} key={head + JSON.stringify(p[head])}>
-                      <h3>{head}</h3>
-                      <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-                        {getContent(p[head], data)}
-                      </ul>
-                    </div>
-                  </div>
-                )}
-              </div>
-            : null}
-          </div>
-        )}
-      </div>
+      <Masonry
+        className={'my-masonry-div'}
+        elementType={'div'}
+        options={masonryOptions}
+        disableImagesLoaded={false}
+        updateOnEachImageLoad={false}
+      >
+      {content.children.sort((a, b) => a.order - b.order).map(c =>
+        <div className={itemClasses.join(' ')} key={`key-${c.name}`}>
+          <h3>{c.name}</h3>
+          <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
+            {getContent(c.items, data)}
+          </ul>
+        </div>
+      )}
+      </Masonry>
     );
   }
 }
