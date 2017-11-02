@@ -753,6 +753,8 @@ class Util extends React.Component {
     const start = container.scrollTop;
     const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
 
+    var prevPos = null
+
     var scroll = () => {
       const now = 'now' in window.performance ? performance.now() : new Date().getTime();
       const time = Math.min(1, ((now - startTime) / duration));
@@ -760,9 +762,11 @@ class Util extends React.Component {
 
       container.scrollTop =  Math.ceil((timeFunction * (topPos - start)) + start);
 
-      if (container.scrollTop === topPos) {
+      if (container.scrollTop >= topPos || container.scrollTop === prevPos) {
         return;
       }
+
+      prevPos = container.scrollTop
 
       requestAnimationFrame(scroll);
     }
