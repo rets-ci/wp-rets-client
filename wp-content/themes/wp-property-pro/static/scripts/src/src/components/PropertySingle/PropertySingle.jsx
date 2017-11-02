@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import renderHTML from 'react-render-html';
-import Waypoint from 'react-waypoint';
+import { Sticky, StickyContainer } from 'react-sticky';
 import scrollToElement from 'scroll-to-element';
 import moment from 'moment';
 import get from 'lodash/get';
@@ -247,7 +247,15 @@ class Single extends Component {
 
         <ImageMixer images={images || []}/>
 
-
+        <StickyContainer>
+          <Sticky>
+            {
+              ({ isSticky, wasSticky, style, distanceFromTop, distanceFromBottom, calculatedHeight }) => {
+                return <h1 style={style}>Sticky Content</h1>
+              }
+            }
+            
+          </Sticky>
         <div className="container">
 
           <div className="row mb-5">
@@ -256,14 +264,6 @@ class Single extends Component {
               <h6
                 className="mb-3 text-muted">{city}, {state} {rets_postal_code}</h6>
               <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box ${Lib.THEME_CLASSES_PREFIX}listing-info-box-wrap`}>{renderHTML(info_box)}</ul>
-              <Waypoint
-                onEnter={() => {
-                  console.log('On ENTER')
-                }}
-                onLeave={() => {
-                  console.log('On LEAVE')
-                }}
-              />
               <button
                 className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button`}
                 onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-showing-' + saleType)}}
@@ -410,29 +410,22 @@ class Single extends Component {
             </div>
           </div>
         </div>
+          </StickyContainer>
 
-        <Waypoint
-          onEnter={() => {
-            console.log('On ENTER Agent Card')
-          }}
-          onLeave={() => {
-            console.log('On LEAVE Agent Card')
-          }}
-        />
-        <div id="agentCardContainer" className="mb-5" ref={(r) => this.agentCardContainer = r}>
-          <AgentCardForms
-            address={address[0]}
-            correctScenario={correctScenario}
-            agent={agent}
-            listingOffice={correctScenario.includes('sale') ? "Red Door Company" : Util.decodeHtml(this.props.listing_office)}
-            mlsId={mlsId}
-            rdcListing={rdcListing}
-            officePhoneNumber={officePhoneNumber}
-            setAgentCardTab={this.props.setAgentCardTab}
-            selectedTab={this.props.selectedAgentCardTab}
-            saleType={listing_status_sale.replace('for-', '')}
-          />
-        </div>
+          <div id="agentCardContainer" className="mb-5" ref={(r) => this.agentCardContainer = r}>
+            <AgentCardForms
+              address={address[0]}
+              correctScenario={correctScenario}
+              agent={agent}
+              listingOffice={correctScenario.includes('sale') ? "Red Door Company" : Util.decodeHtml(this.props.listing_office)}
+              mlsId={mlsId}
+              rdcListing={rdcListing}
+              officePhoneNumber={officePhoneNumber}
+              setAgentCardTab={this.props.setAgentCardTab}
+              selectedTab={this.props.selectedAgentCardTab}
+              saleType={listing_status_sale.replace('for-', '')}
+            />
+          </div>
       </div>
     );
   }
