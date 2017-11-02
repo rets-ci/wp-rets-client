@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import renderHTML from 'react-render-html';
+import Waypoint from 'react-waypoint';
 import scrollToElement from 'scroll-to-element';
 import moment from 'moment';
 import get from 'lodash/get';
@@ -18,6 +19,7 @@ import PropertyInfoTabs   from 'app_root/components/PropertySingle/components/Pr
 import ImageMixer         from 'app_root/components/PropertySingle/components/ImageMixer.jsx';
 
 import propertyDataStructure from '../../../static_data/property-data-structure.json';
+
 
 let getAgentImage = (agentObject) => get(agentObject, 'data.images[0][0]', null);
 let getAgentName = (agentObject) => get(agentObject, 'data.display_name', null);
@@ -86,13 +88,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 class Single extends Component {
-  static propTypes = {
-    selectedAgentCardTab: PropTypes.string,
-    setAgentCardTab: PropTypes.func
-  }
 
   constructor(props) {
     super(props);
+
     this.state = {
       agent: {}
     };
@@ -245,47 +244,54 @@ class Single extends Component {
     }
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
+
         <ImageMixer images={images || []}/>
-        <div className="jumbotron py-5 mb-5">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]} {address_unit}</h4>
-                <h6
-                  className="mb-3 text-muted">{city}, {state} {rets_postal_code}</h6>
-                <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box ${Lib.THEME_CLASSES_PREFIX}listing-info-box-wrap`}>{renderHTML(info_box)}</ul>
-                <button
-                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button`}
-                  onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-showing-' + saleType)}}
-                  type="button"
-                >
-                  Request Showing
-                </button>
-                {['rentNOTRdc', 'saleRDC', 'saleNotRdc'].indexOf(correctScenario) >= 0 &&
-                  <button
-                    className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button ml-md-3`}
-                    onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-information-' + saleType)}}
-                    type="button"
-                  >
-                    Request Information
-                  </button> 
-                }
-                {correctScenario === 'rentRDC' &&
-                  <button
-                    className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button ml-md-3`}
-                    onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-application')}}
-                    type="button"
-                  >
-                    Request Application
-                  </button>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
 
 
         <div className="container">
+
+          <div className="row mb-5">
+            <div className="col-md-12">
+              <h4 className={`${Lib.THEME_CLASSES_PREFIX}info-title`}>{address[0]} {address_unit}</h4>
+              <h6
+                className="mb-3 text-muted">{city}, {state} {rets_postal_code}</h6>
+              <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box ${Lib.THEME_CLASSES_PREFIX}listing-info-box-wrap`}>{renderHTML(info_box)}</ul>
+              <Waypoint
+                onEnter={() => {
+                  console.log('On ENTER')
+                }}
+                onLeave={() => {
+                  console.log('On LEAVE')
+                }}
+              />
+              <button
+                className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button`}
+                onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-showing-' + saleType)}}
+                type="button"
+              >
+                Request Showing
+              </button>
+              {['rentNOTRdc', 'saleRDC', 'saleNotRdc'].indexOf(correctScenario) >= 0 &&
+                <button
+                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button ml-md-3`}
+                  onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-information-' + saleType)}}
+                  type="button"
+                >
+                  Request Information
+                </button> 
+              }
+              {correctScenario === 'rentRDC' &&
+                <button
+                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button ml-md-3`}
+                  onClick={(event) => { event.preventDefault(); this.requestButtonClicked('request-application')}}
+                  type="button"
+                >
+                  Request Application
+                </button>
+              }
+            </div>
+          </div>
+
           <div className="row">
             <div className="col-md-12 mb-5">
               <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description`}>{(saleType === 'rent' && listing_type === 'residential' && datesAvailable.isValid() ? "Available " + datesAvailable.format('MMMM D, YYYY') + '. ' : '') + renderHTML(post_content)}</p>
@@ -350,22 +356,6 @@ class Single extends Component {
             </div>
           }
 
-          <div id="agentCardContainer" className="mb-5" ref={(r) => this.agentCardContainer = r}>
-            <AgentCardForms
-              address={address[0]}
-              correctScenario={correctScenario}
-              agent={agent}
-              listingOffice={correctScenario.includes('sale') ? "Red Door Company" : Util.decodeHtml(this.props.listing_office)}
-              mlsId={mlsId}
-              rdcListing={rdcListing}
-              officePhoneNumber={officePhoneNumber}
-              setAgentCardTab={this.props.setAgentCardTab}
-              selectedTab={this.props.selectedAgentCardTab}
-              saleType={listing_status_sale.replace('for-', '')}
-            />
-          </div>
-
-
           <div className="row">
             <div className="col-md-12 mt-3 mb-3">
               <h5 className={`${Lib.THEME_CLASSES_PREFIX}info-section-header`}>Listing Provider for {address[0]} {address_unit}</h5>
@@ -378,6 +368,7 @@ class Single extends Component {
               </p>
             </div>
           </div>
+
           <div className="row mb-5">
             <div className={`col-md-6`}>
               <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
@@ -419,9 +410,38 @@ class Single extends Component {
             </div>
           </div>
         </div>
+
+        <Waypoint
+          onEnter={() => {
+            console.log('On ENTER Agent Card')
+          }}
+          onLeave={() => {
+            console.log('On LEAVE Agent Card')
+          }}
+        />
+        <div id="agentCardContainer" className="mb-5" ref={(r) => this.agentCardContainer = r}>
+          <AgentCardForms
+            address={address[0]}
+            correctScenario={correctScenario}
+            agent={agent}
+            listingOffice={correctScenario.includes('sale') ? "Red Door Company" : Util.decodeHtml(this.props.listing_office)}
+            mlsId={mlsId}
+            rdcListing={rdcListing}
+            officePhoneNumber={officePhoneNumber}
+            setAgentCardTab={this.props.setAgentCardTab}
+            selectedTab={this.props.selectedAgentCardTab}
+            saleType={listing_status_sale.replace('for-', '')}
+          />
+        </div>
       </div>
     );
   }
+}
+
+
+Single.propTypes = {
+  selectedAgentCardTab: PropTypes.string,
+  setAgentCardTab: PropTypes.func,
 }
 
 export default connect(
