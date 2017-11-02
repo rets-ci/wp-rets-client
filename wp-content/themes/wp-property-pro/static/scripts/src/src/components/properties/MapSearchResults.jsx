@@ -418,8 +418,13 @@ class MapSearchResults extends Component {
               <SearchFilterDescriptionText
                 bathrooms={searchFilters.bathrooms}
                 bedrooms={searchFilters.bedrooms}
+                terms={searchFilters.term}
+                type={searchFilters.property_type}
+                subtypes={searchFilters.property_subtype}
                 price={searchFilters.price}
                 saleType={searchFilters.sale_type}
+                sqft={searchFilters.sqft}
+                acres={searchFilters.acres}
                 total={this.props.resultsTotal}
               />
 
