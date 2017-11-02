@@ -6,7 +6,7 @@ import {Lib} from '../../lib.jsx';
 import moment from 'moment';
 import PropertyHighlights from './Components/PropertyHighlights.jsx';
 import PropertyInfoTabs from './Components/PropertyInfoTabs.jsx';
-import propertyDataStructure from '../../../static_data/property-data-structure.json';
+import propertyDataStructure from '../../../static_data/property-data-structure/index.js';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -131,6 +131,18 @@ class Single extends Component {
     return scenario;
   }
 
+  getListingTypeJSONFileName = (saleType, listing_type) => {
+    if (saleType === 'rent' && listing_type === 'residential') {
+      return 'residential_rent_RT_6';
+    } else if (saleType === 'sale' && listing_type === 'residential') {
+      return 'residential_sale_RE_1';
+    } else if (saleType === 'sale' && listing_type === 'commercial') {
+      return 'residential_sale_RE_1';
+    } else if (saleType === 'sale' && listing_type === 'land') {
+      return 'land';
+    }
+  }
+
   requestButtonClicked = tab => {
     if (this.props.fromMapView) {
       const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
@@ -240,6 +252,12 @@ class Single extends Component {
           info_box += `<li>${Util.formatAcresValue(rets_lot_size_area)} Acres</li>`;
         }
     }
+
+    let listingTypeJSONFileName = this.getListingTypeJSONFileName(saleType, listing_type);
+    if (!listingTypeJSONFileName) {
+      console.log('listing type was not found, property data will not be shown');
+    }
+
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []}/>
@@ -339,10 +357,12 @@ class Single extends Component {
                   priced at $1,100 a month.</p>
               </div>
               <div className="col-md-12 mb-5">
-                <PropertyInfoTabs
-                  data={all}
-                  propertyDataStructure={propertyDataStructure}
-                />
+                {listingTypeJSONFileName &&
+                  <PropertyInfoTabs
+                    data={all}
+                    propertyDataStructure={propertyDataStructure[listingTypeJSONFileName]}
+                  />
+                }
               </div>
             </div>
           }
