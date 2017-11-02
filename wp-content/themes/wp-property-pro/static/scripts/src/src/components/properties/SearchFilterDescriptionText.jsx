@@ -128,19 +128,11 @@ class SearchFilterDescription extends Component {
       }
 
       // Build sqft part
-      let _sqft = '';
-      if (sqft && !(sqft.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && sqft.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
-        if (_bedrooms || _bathrooms) {
-          _sqft = ',';
-        }
-        if (sqft.to === Lib.RANGE_SLIDER_NO_MAX_TEXT) {
-          _sqft += ` at least ${Util.formatSQFTValue(sqft.start)} SQFT`;
-        } else if (sqft.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-          _sqft += ` at most ${Util.formatSQFTValue(sqft.to)} SQFT`;
-        } else {
-          _sqft += ` between ${Util.formatSQFTValue(sqft.start)} and ${Util.formatSQFTValue(sqft.to)} SQFT`;
-        }
+      let position = 'start';
+      if (_bedrooms || _bathrooms) {
+        position = 'middle';
       }
+      let _sqft = this.determineSqftPart(sqft, position);
 
       // Build acres part
       let _acres = '';
@@ -158,11 +150,15 @@ class SearchFilterDescription extends Component {
       }
 
       // Use an "and" after the last comma.
-      if(!acres){
+      if(!_acres){
         if(_sqft){
-          _sqft = _sqft.replace(',', ', and')
+          position = 'end';
+          if(!_bathrooms && !_bedrooms){
+            position = 'start';
+          }
+          _sqft = this.determineSqftPart(sqft, position);
         }else if(_bathrooms){
-          _bathrooms = _bathrooms.replace(',', ', and')
+          _bathrooms = _bathrooms.replace(',', ', and');
         }
       }
 
@@ -174,6 +170,26 @@ class SearchFilterDescription extends Component {
       title: title,
       description: description,
     };
+  }
+
+  determineSqftPart(sqft, position){
+    let _sqft = '';
+    if (sqft && !(sqft.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && sqft.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
+      if(position === 'end'){
+        _sqft = ', and';
+      }else if (position === 'middle') {
+        _sqft = ',';
+      }
+      if (sqft.to === Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+        _sqft += ` at least ${Util.formatSQFTValue(sqft.start)} SQFT`;
+      } else if (sqft.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        _sqft += ` at most ${Util.formatSQFTValue(sqft.to)} SQFT`;
+      } else {
+        _sqft += ` between ${Util.formatSQFTValue(sqft.start)} and ${Util.formatSQFTValue(sqft.to)} SQFT`;
+      }
+    }
+
+    return _sqft;
   }
 
   render() {
