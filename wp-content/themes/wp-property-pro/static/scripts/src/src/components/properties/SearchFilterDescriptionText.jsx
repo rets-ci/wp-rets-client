@@ -81,34 +81,95 @@ class SearchFilterDescription extends Component {
 
     let title = [locations, types, saleType].join(' ');
 
+    // Define needed props for description
     let {
+      acres,
       bathrooms,
       bedrooms,
       total,
-      price
+      price,
+      sqft
     } = props;
+
     let description = '';
-    if (total && saleTypes) {
-      description += `There are ${total} homes for ${saleTypes.join(' and ')} in this area`;
-    }
-    if (price && !(price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
-      description += ` that are priced`;
-      if (price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT) {
-        description += ` more than ${Util.formatPriceValue(price.start)} `;
-      } else if (price.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-        description += ` less than ${Util.formatPriceValue(price.to)} `;
-      } else {
-        description += ` between ${Util.formatPriceValue(price.start)} and ${Util.formatPriceValue(price.to)}`;
+
+    // Build description just in case when founded something
+    if (total) {
+
+      // Build total count part
+      let _count = `We found ${total}`;
+
+      // Build price part
+      let _price = '';
+      if (price && !(price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && price.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
+        _price += ` priced`;
+        if (price.to === Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+          _price += ` no less than ${Util.formatPriceValue(price.start)} `;
+        } else if (price.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+          _price += ` no more than ${Util.formatPriceValue(price.to)} `;
+        } else {
+          _price += ` between ${Util.formatPriceValue(price.start)} and ${Util.formatPriceValue(price.to)}`;
+        }
       }
+
+      // Build bedrooms part
+      let _bedrooms = '';
+      if (bedrooms) {
+        _bedrooms += ` at least ${bedrooms} ${bedrooms === '1' ? 'bedroom' : 'bedrooms'}`;
+      }
+
+      // Build bathrooms part
+      let _bathrooms = '';
+      if (bathrooms) {
+        if (_bedrooms) {
+          _bathrooms += ',';
+        }
+        _bathrooms += ` at least  ${bathrooms} ${bathrooms === '1' ? 'bathroom' : 'bathrooms'}`;
+      }
+
+      // Build sqft part
+      let _sqft = '';
+      if (sqft && !(sqft.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && sqft.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
+        if (_bedrooms || _bathrooms) {
+          _sqft = ',';
+        }
+        if (sqft.to === Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+          _sqft += ` at least ${Util.formatSQFTValue(sqft.start)} SQFT`;
+        } else if (sqft.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+          _sqft += ` at most ${Util.formatSQFTValue(sqft.to)} SQFT`;
+        } else {
+          _sqft += ` between ${Util.formatSQFTValue(sqft.start)} and ${Util.formatSQFTValue(sqft.to)} SQFT`;
+        }
+      }
+
+      // Build acres part
+      let _acres = '';
+      if (acres && !(acres.to === Lib.RANGE_SLIDER_NO_MAX_TEXT && acres.start === Lib.RANGE_SLIDER_NO_MIN_TEXT)) {
+        if (_bedrooms || _bathrooms || _sqft) {
+          _acres = ', and';
+        }
+        if (acres.to === Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+          _acres += ` at least ${Util.formatAcresValue(acres.start)} acres`;
+        } else if (acres.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+          _acres += ` at most ${Util.formatAcresValue(acres.to)} acres`;
+        } else {
+          _acres += ` between ${Util.formatAcresValue(acres.start)} and ${Util.formatAcresValue(acres.to)} acres`;
+        }
+      }
+
+      // Use an "and" after the last comma.
+      if(!acres){
+        if(_sqft){
+          _sqft = _sqft.replace(',', ', and')
+        }else if(_bathrooms){
+          _bathrooms = _bathrooms.replace(',', ', and')
+        }
+      }
+
+      description = _count + (types ? ' ' + types.toLowerCase() : '') + (saleType ? ' ' + saleType.toLowerCase() : '') + (locations ? ' in ' + locations : '') + _price + ((_bedrooms || _bathrooms) ? ' that have' + _bedrooms + _bathrooms : '') + _sqft + _acres + '.';
     }
 
-    if (bedrooms) {
-      description += ` with ${bedrooms} or more bedrooms`
-    }
-    if (bathrooms) {
-      let prefix = bedrooms ? ' and' : ' with';
-      description += `${prefix} ${bathrooms} or more bathrooms`;
-    }
+
     return {
       title: title,
       description: description,
