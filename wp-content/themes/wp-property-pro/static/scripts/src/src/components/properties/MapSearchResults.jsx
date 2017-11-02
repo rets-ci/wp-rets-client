@@ -2,6 +2,7 @@ import ErrorMessageModal from '../ErrorMessageModal.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import capitalize from 'lodash/capitalize';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import omit from 'lodash/omit';
@@ -46,7 +47,11 @@ const mapStateToProps = (state, ownProps) => {
   let propertySubTypes = ownProps.propertySubtypes;
   let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
   let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
-  let searchType = Util.determineSearchType(propertyTypeOptions, searchQueryObject.property_type[0], searchQueryObject.sale);
+  let saleType = null;
+  if (searchQueryObject.sale_type) {
+    saleType = searchQueryObject.sale_type.map(d => capitalize(d));
+  }
+  let searchType = Util.determineSearchType(propertyTypeOptions, searchQueryObject.property_type[0], saleType);
   let termDetails = get(ownProps, 'termDetails');
   if (searchType instanceof Error) {
     //TODO: handle not determining searchQueryObject
