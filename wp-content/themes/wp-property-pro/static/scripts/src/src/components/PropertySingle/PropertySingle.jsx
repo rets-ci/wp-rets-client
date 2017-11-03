@@ -33,8 +33,9 @@ class Single extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous_mlsId = this.props.curatedPropertyInfo.mlsId;
-    var next_mlsId = nextProps.curatedPropertyInfo.mlsId;
+    var previous_mlsId = get(this.props, 'curatedPropertyInfo.mlsId');
+    var next_mlsId = get(nextProps, 'curatedPropertyInfo.mlsId');
+
     if (previous_mlsId !== next_mlsId) {
       // on map view, when new property card is selected, scroll to top on panel
       const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);

@@ -79,18 +79,17 @@ function getContactFormData(property, agents) {
   };
 
   const saleTypeWithRDC = getSaleTypeWithRDC(property);
+  const listingOffice = saleTypeWithRDC.includes('sale') ? 'Red Door Company' : listing_office;
 
   let agent;
   if (RETSAgent.id && agents && agents.length) {
     agent = pickProperAgent(RETSAgent, agents, saleTypeWithRDC);
   }
 
-  const listingOffice = saleTypeWithRDC.includes('sale') ? 'Red Door Company' : listing_office;
-
   return {
     agent,
-    saleTypeWithRDC,
     listingOffice,
+    saleTypeWithRDC,
   }
 }
 

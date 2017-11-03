@@ -31,6 +31,7 @@ function scrollToElement(container, target, duration = 500, easing = 'easeInQuad
   const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
 
   var prevPos = null
+  var direction = (start - topPos) >= 0;
 
   var scroll = () => {
     const now = 'now' in window.performance ? performance.now() : new Date().getTime();
@@ -39,7 +40,7 @@ function scrollToElement(container, target, duration = 500, easing = 'easeInQuad
 
     container.scrollTop =  Math.ceil((timeFunction * (topPos - start)) + start);
 
-    if (container.scrollTop >= topPos || container.scrollTop === prevPos) {
+    if (direction * (container.scrollTop - topPos) <= 0 || container.scrollTop === prevPos) {
       return;
     }
 

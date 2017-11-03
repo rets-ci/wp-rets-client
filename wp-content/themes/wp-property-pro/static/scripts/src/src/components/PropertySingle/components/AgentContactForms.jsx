@@ -92,15 +92,15 @@ class AgentContactForms extends Component {
       case 'rentRDC': {
         formContent = (
           <div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-tabs d-flex`}>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-rent' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.selectTab('request-showing-rent')}}>Request Showing</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-showing-rent')}}>Request Showing</a>
               </div>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-application' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.selectTab('request-application')}}>Request an Application</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-application')}}>Request an Application</a>
               </div>
             </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-content`}>
               <FormFetcher formId={formIdMapper[selectedTab]}>
                 <JSONSchemaFormContainer formData={getInitialFormData(selectedTab)} jsonSchemaForm={this.props.jsonSchemaForm} showConfirmation={true} />
               </FormFetcher>
@@ -111,8 +111,8 @@ class AgentContactForms extends Component {
       }
       case 'rentNOTRdc': {
         formContent = (
-          <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
-            <p className={`${Lib.THEME_CLASSES_PREFIX}agent-card-description`}>Please contact {agent.name} at {listingOffice} direct by phone at {agent.phone}. You may also reach {listingOffice} by phone at {officePhoneNumber}. </p>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-content`}>
+            <p className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-description`}>Please contact {agent.name} at {listingOffice} direct by phone at {agent.phone}. You may also reach {listingOffice} by phone at {officePhoneNumber}. </p>
           </div>
         )
         break;
@@ -120,7 +120,7 @@ class AgentContactForms extends Component {
       case 'saleRDC': {
         formContent = (
           <div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-tabs d-flex`}>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
                 <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-showing-sale')}}>Request Showing</a>
               </div>
@@ -128,7 +128,7 @@ class AgentContactForms extends Component {
                 <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-information-sale')}}>Request Information</a>
               </div>
             </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-content`}>
               <FormFetcher formId={formIdMapper[selectedTab]}>
                 <JSONSchemaFormContainer formData={getInitialFormData(selectedTab)} showConfirmation={true} jsonSchemaForm={this.props.jsonSchemaForm} />
               </FormFetcher>
@@ -140,7 +140,7 @@ class AgentContactForms extends Component {
       case 'saleNotRdc': {
         formContent = (
           <div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-tabs d-flex`}>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
                 <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-showing-sale')}}>Request Showing</a>
               </div>
@@ -148,7 +148,7 @@ class AgentContactForms extends Component {
                 <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-information-sale')}}>Request Information</a>
               </div>
             </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-content`}>
               <FormFetcher formId={formIdMapper['request-showing-sale']}>
                 <JSONSchemaFormContainer formData={getInitialFormData(selectedTab)} showConfirmation={true}  />
               </FormFetcher>
@@ -163,21 +163,21 @@ class AgentContactForms extends Component {
       <div className="container"><div className="row"><div className="col-md-12">
         <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form`}>
 
-          <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-head`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card`}>
             <div className="media">
-              <img className={`d-flex align-self-start mr-3 ${Lib.THEME_CLASSES_PREFIX}agent-photo`}
+              <img className={`d-flex align-self-start mr-4 ${Lib.THEME_CLASSES_PREFIX}agent-photo`}
                 src={ agent.image }
                 alt="Agent photo"
                 width="100"
               />
-              <div className={`media-body ${Lib.THEME_CLASSES_PREFIX}media-body`}>
-                <h5 className="mt-0">
+              <div className={`media-body ${Lib.THEME_CLASSES_PREFIX}agent-card-content`}>
+                <h5>
                   { agent.name }
                 </h5>
-                <p className={`${Lib.THEME_CLASSES_PREFIX}primary-color ${Lib.THEME_CLASSES_PREFIX}secondary-text`}>
+                <p>
                   { listingOffice }
                 </p>
-                <div className={`${Lib.THEME_CLASSES_PREFIX}phone-number`}>
+                <div>
                   { agent.phone }
                 </div>
               </div>

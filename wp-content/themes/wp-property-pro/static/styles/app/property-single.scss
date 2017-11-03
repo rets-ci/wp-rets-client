@@ -22,8 +22,6 @@
   }
 }
 
-
-
 .propertypro-top-information-card-container {
   background-color: #e8eef2;
 }
@@ -158,22 +156,43 @@ ul.propertypro-details-list li:last-child {
   border: 1px solid #e1e5e6;
   border-radius: 0.3125rem;
 
-  .propertypro-agent-card-head {
+  .propertypro-agent-card {
     background-color: #f3f6f8;
     padding: 2.375rem 2rem 2rem 2rem;
     border-top-right-radius: 0.3125rem;
     border-top-left-radius: 0.3125rem;
   }
 
-  .propertypro-agent-card-body {
-    padding: 2.375rem 2rem 2rem 2rem;
+  .propertypro-agent-photo {
+    clip-path: circle(50px at center);
   }
 
-  .propertypro-secondary-text {
-    font-size: 0.875rem;
+  .propertypro-agent-card-content {
+    h5 {
+      font-weight: bold;
+    }
+
+    p {
+      font-weight: bold;
+      font-size: 0.875rem;
+      color: $propertypro-primary-color;
+    }
+
+    div {
+      background-color: #ffffff;
+      border: 0.0625rem solid #d2dae0;
+      border-radius: 0.3125rem;
+      display: inline-block;
+      padding: 0.625rem 0.9375rem;
+      min-width: 11.875rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
-  .propertypro-agent-card-tabs {
+  .propertypro-agent-contact-form-tabs {
     border-top: 0.0625rem solid #e1e5e6;
 
     .propertypro-tab {
@@ -206,24 +225,11 @@ ul.propertypro-details-list li:last-child {
     }
   }
 
-  .propertypro-phone-number {
-    background-color: #ffffff;
-    border: 0.0625rem solid #d2dae0;
-    border-radius: 0.3125rem;
-    display: inline-block;
-    padding: 0.625rem 0.9375rem;
-    min-width: 11.875rem;
-
-    &:hover {
-      cursor: pointer;
-    }
+  .propertypro-agent-contact-form-content {
+    padding: 2.375rem 2rem 2rem 2rem;
   }
 
-  .propertypro-agent-photo {
-    clip-path: circle(50px at center);
-  }
-
-  .propertypro-agent-card-description {
+  .propertypro-agent-contact-form-description {
     color: #8b8c8d;
     font-size: 1rem;
   }

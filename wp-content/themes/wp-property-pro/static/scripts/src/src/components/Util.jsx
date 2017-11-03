@@ -2,7 +2,6 @@ import React from 'react';
 import numeral from 'numeral';
 import URI from 'urijs';
 import qs from 'qs';
-import moment from 'moment';
 
 import get from 'lodash/get';
 import map from 'lodash/map';
