@@ -237,6 +237,17 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     let filters = nextProps.searchQueryParams;
+
+    // Update url without selected property for re-rendering listings list if listing was unselected
+    if(get(this.props, 'panelOnMapShown', false) && !get(nextProps, 'panelOnMapShown', false)){
+      delete(filters['selected_property']);
+
+      filters = Util.customFormatToSearchObject(filters);
+      let searchCollection = Util.searchObjectToCollection(filters);
+      let searchURL = Util.createSearchURL('/search', searchCollection);
+      this.props.history.push(searchURL);
+    }
+
     let anyFilterChange = !isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']));
     let anyDefaultQueryChange = !isEqual(nextProps.queryDefaults, this.props.queryDefaults);
     if (anyFilterChange || anyDefaultQueryChange) {
