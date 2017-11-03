@@ -73,9 +73,9 @@ class SearchFilterDescription extends Component {
     } else if (saleTypes.length === 1) {
       // Case when displayed particular sale type with listing subtype
       if (subtypes.length > 0 && subtypes.length <= 2) {
-        saleType = [['For', first(saleTypes)].join(' ')].join(' ');
+        saleType = [['for', first(saleTypes)].join(' ')].join(' ');
       } else { //Case when displayed particular sale type without subtypes
-        saleType = [shortSaleType, ['For', first(saleTypes)].join(' ')].join(' ')
+        saleType = [shortSaleType, ['for', first(saleTypes)].join(' ')].join(' ')
       }
     }
 
