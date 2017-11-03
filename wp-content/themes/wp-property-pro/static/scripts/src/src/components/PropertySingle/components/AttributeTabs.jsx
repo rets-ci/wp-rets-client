@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import merge from 'lodash/merge';
 
-import { Lib } from 'app_root/lib.jsx';
-import AttributeTabSingle
-  from 'app_root/components/PropertySingle/components/AttributeTabSingle.jsx';
+import { Lib }            from 'app_root/lib.jsx';
+import propertyHelper     from 'app_root/helpers/propertyHelper';
+import AttributeTabSingle from 'app_root/components/PropertySingle/components/AttributeTabSingle.jsx';
+
+import esSchema from 'app_root/static_data/property-data-structure/index.js';
+
 
 const LISTING_TYPES_TO_HIDE = [ 'commercial', 'land' ];
 const descriptionBoilerplate = '847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.';
@@ -45,9 +48,10 @@ const getAllTabData = (propertyData, colNumbers) => {
 class AttributeTabs extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      selectedTab: 'All'
-    }
+      selectedTab: 'Rooms'
+    };
   }
 
   selectTab = (tab) => {
@@ -57,21 +61,28 @@ class AttributeTabs extends Component {
   }
 
   render() {
-    let { selectedTab } = this.state;
-    let {
-      esSchema,
-      esProperty,
-      curatedPropertyInfo: {
-        listing_type, address, address_unit
-      }
-    } = this.props;
+    const { selectedTab } = this.state;
+    const { esProperty, curatedPropertyInfo } = this.props;
+    const { listing_type, address, address_unit } = curatedPropertyInfo;
 
     if (!listing_type || LISTING_TYPES_TO_HIDE.indexOf(listing_type) >= 0) {
       return null;
     }
 
-    let schemaModified = Object.assign({}, esSchema);
-    schemaModified['All'] = getAllTabData(schemaModified, 2);
+    let listingTypeJSONFileName = propertyHelper.getListingTypeJSONFileName(curatedPropertyInfo);
+
+    if (!listingTypeJSONFileName) {
+      return null;
+    }
+
+    let propertyDataStructure = esSchema[listingTypeJSONFileName];
+
+    // let schemaModified = Object.assign({}, esSchema);
+    // schemaModified['All'] = getAllTabData(schemaModified, 2);
+    // console.log('property info tabs: ', schemaModified);
+
+    let tabs = propertyDataStructure.map(p => p.name);
+    let content = propertyDataStructure.find(d => d.name === selectedTab);
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attr-tabs pt-5` }>
@@ -86,13 +97,13 @@ class AttributeTabs extends Component {
         <div className="card text-center mb-4">
           <div className="card-header">
             <ul className="nav nav-tabs card-header-tabs">
-              {Object.keys(schemaModified).map((p, i) =>
-                <li className="nav-item" key={p}>
+              {tabs.map((tab, i) =>
+                <li className="nav-item" key={tab}>
                   <a
-                    className={`nav-link ${selectedTab === p ? 'active' : ''}`}
+                    className={`nav-link ${selectedTab === tab ? 'active' : ''}`}
                     href="#"
-                    onClick={(event) => { event.preventDefault(); this.selectTab(p); }}
-                  >{p}</a>
+                    onClick={(event) => { event.preventDefault(); this.selectTab(tab); }}
+                  >{tab}</a>
                 </li>
               )}
             </ul>
@@ -100,7 +111,7 @@ class AttributeTabs extends Component {
           <div className="card-block">
             <div>
               <AttributeTabSingle
-                tab={ schemaModified[selectedTab] }
+                content={ content }
                 esProperty={ esProperty }
               />
             </div>
@@ -109,6 +120,11 @@ class AttributeTabs extends Component {
       </div>
     );
   }
+};
+
+AttributeTabs.propTypes = {
+  esProperty: PropTypes.object.isRequired,
+  curatedPropertyInfo: PropTypes.object.isRequired,
 };
 
 export default AttributeTabs;

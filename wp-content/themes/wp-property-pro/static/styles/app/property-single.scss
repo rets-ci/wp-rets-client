@@ -58,6 +58,10 @@ ul.card-header-tabs {
   flex-wrap: wrap;
 }
 
+#propertypro-property-details .card-block {
+    padding-top: 0;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*  Property Images Carousel
 /*-----------------------------------------------------------------------------------*/
@@ -147,6 +151,14 @@ ul.propertypro-details-list li:first-child {
 
 ul.propertypro-details-list li:last-child {
   border-bottom: none;
+}
+
+.propertypro-property-single-div-30 {
+    width: 30%;
+}
+
+.propertypro-property-single-div-50 {
+    width: 45%;
 }
 
 /*-----------------------------------------------------------------------------------*/

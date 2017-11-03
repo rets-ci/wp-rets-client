@@ -10,6 +10,7 @@ const helper = {
   daysPassedSincePostedDate,
 
   getContactFormData,
+  getListingTypeJSONFileName,
 };
 
 export default helper;
@@ -91,6 +92,29 @@ function getContactFormData(property, agents) {
     listingOffice,
     saleTypeWithRDC,
   }
+}
+
+function getListingTypeJSONFileName(property) {
+  const saleType = get(property, 'listing_status_sale', '').replace('for-', '');
+  const listingType = get(property, 'listing_type', '');
+
+  let fileName;
+
+  if (saleType === 'rent' && listingType === 'residential') {
+    fileName = 'residential_rent_RT_6';
+  } else if (saleType === 'sale' && listingType === 'residential') {
+    fileName =  'residential_sale_RE_1';
+  } else if (saleType === 'sale' && listingType === 'commercial') {
+    fileName =  'residential_sale_RE_1';
+  } else if (saleType === 'sale' && listingType === 'land') {
+    fileName =  'land';
+  }
+
+  if (!fileName) {
+    console.log('listing type was not found, property data will not be shown');
+  }
+
+  return fileName;
 }
 
 /************************************

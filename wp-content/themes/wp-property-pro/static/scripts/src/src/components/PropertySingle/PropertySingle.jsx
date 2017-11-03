@@ -18,8 +18,6 @@ import ListingProvider    from 'app_root/components/PropertySingle/components/Li
 import AgentContactForms  from 'app_root/components/PropertySingle/components/AgentContactForms.jsx';
 import StickyCard         from 'app_root/components/PropertySingle/components/StickyCard.jsx';
 
-import esSchema from '../../../static_data/property-data-structure.json';
-
 
 class Single extends Component {
 
@@ -106,7 +104,6 @@ class Single extends Component {
             <AttributeTabs
               curatedPropertyInfo={ curatedPropertyInfo }
               esProperty={ elasticSearchSource }
-              esSchema={ esSchema }
             />
 
             <ListingProvider
