@@ -31,7 +31,7 @@ function scrollToElement(container, target, duration = 500, easing = 'easeInQuad
   const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
 
   var prevPos = null
-  var direction = (start - topPos) >= 0;
+  var direction = (start - topPos) >= 0 ? 1: -1;
 
   var scroll = () => {
     const now = 'now' in window.performance ? performance.now() : new Date().getTime();

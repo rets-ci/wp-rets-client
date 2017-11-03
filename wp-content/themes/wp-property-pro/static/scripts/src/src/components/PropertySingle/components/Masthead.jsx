@@ -73,7 +73,7 @@ class Masthead extends Component {
             {city}, {state} {rets_postal_code}
           </h6>
 
-          <ul className={ `${Lib.THEME_CLASSES_PREFIX}listing-info-box flex-wrap` }>
+          <ul className={ `${Lib.THEME_CLASSES_PREFIX}listing-info-box flex-wrap m-0` }>
             {
               attributes.map((attr, index) =>
                 <li key={index}>{ attr }</li>

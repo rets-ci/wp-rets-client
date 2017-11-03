@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import scrollToElement from 'scroll-to-element';
 import get from 'lodash/get';
 
@@ -44,14 +43,14 @@ class Single extends Component {
     }
   }
 
-  requestButtonClicked = tab => {
+  handleRequestBtnClick = tab => {
     // scroll-to-element library doesn't work well on map view
     if (this.props.fromMapView) {
       const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
-      const node = document.getElementById(this.contactFormContainer.id);
+      const node = document.getElementById('agentCardContainer');
       htmlHelper.scrollToElement(container, node, 500);
     } else {
-      scrollToElement('#' + this.contactFormContainer.id, { duration: 500 });
+      scrollToElement('#agentCardContainer', { duration: 500 });
     }
 
     this.setState({ contactFormTab: tab });
@@ -69,6 +68,8 @@ class Single extends Component {
 
     const dataForContactForm = propertyHelper.getContactFormData(curatedPropertyInfo, agents);
 
+    const saleType = get(curatedPropertyInfo, 'listing_status_sale', '').replace('for-', '');
+
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-container` }>
 
@@ -84,8 +85,11 @@ class Single extends Component {
 
           <StickyCard
             fromMapView={ fromMapView }
-            agent={ dataForContactForm.agent }
-            listingOffice={ dataForContactForm.listingOffice }
+            onClickRequestBtn={ this.handleRequestBtnClick }
+            saleType={ saleType }
+            {
+              ...dataForContactForm
+            }
           />
 
           <div className="container py-5"><div className="row"><div className={ gridWidth }>
