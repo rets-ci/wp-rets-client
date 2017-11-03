@@ -125,6 +125,8 @@ class PageLayout extends Component {
     } = this.props;
     let url = location.pathname + location.search;
     this.fetchData(url);
+
+    this.handleWindowSizeChange();
   }
 
   componentWillReceiveProps(nextProps) {
