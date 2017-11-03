@@ -20,6 +20,8 @@ class SearchFilterDescription extends Component {
     // Count of items which can be displayed at title
     let items_limit = 2;
 
+    let residential_sale_type_label = 'Real Estate';
+
     // Build locations array
     let terms = get(props, 'terms', []).map(term => (term.text));
     let locations = '';
@@ -50,7 +52,7 @@ class SearchFilterDescription extends Component {
     let shortSaleType;
     switch (props.type) {
       case 'residential':
-        shortSaleType = saleType = 'Real Estate';
+        shortSaleType = saleType = residential_sale_type_label;
         break;
       case 'commercial':
         shortSaleType = saleType = 'Commercial Real Estate';
@@ -159,6 +161,29 @@ class SearchFilterDescription extends Component {
           _sqft = this.determineSqftPart(sqft, position);
         }else if(_bathrooms){
           _bathrooms = _bathrooms.replace(',', ', and');
+        }
+      }
+
+      // For residential filter without subtypes sale type is 'homes'
+      if(shortSaleType === residential_sale_type_label && !subtypes.length){
+        saleType = saleType.replace(residential_sale_type_label, 'homes');
+      }
+
+      // Added 'listings' to sale type or property type/subtype for commercial and land listings
+      if(['land', 'commercial'].indexOf(props.type) !== -1){
+        if(types){
+          types += ' listings';
+        }else {
+          if (saleTypes.length === 1) {
+            // Case when displayed particular sale type with listing subtype
+            if (subtypes.length > 0 && subtypes.length <= 2) {
+              saleType = [['listings', 'for', first(saleTypes)].join(' ')].join(' ');
+            } else { //Case when displayed particular sale type without subtypes
+              saleType = [shortSaleType, 'listings', ['for', first(saleTypes)].join(' ')].join(' ');
+            }
+          }else{
+            saleType += ' listings';
+          }
         }
       }
 
