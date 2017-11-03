@@ -15,17 +15,17 @@ let formIdMapper = {
 };
 
 
-let initialFormDataGetter = (address, mlsId) => {
+let initialFormDataGetter = (post_title, mlsId) => {
   return (selectedTab) => {
     let obj = {
       'request-information-sale': {
-        'powf_b62d13821a12e61180e4fc15b428cd78': `I'm interested in ${address} (MLS ${mlsId})`
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'm interested in ${post_title} (MLS ${mlsId})`
       },
       'request-showing-sale': {
-        'powf_b62d13821a12e61180e4fc15b428cd78': `I'd like to schedule a showing for ${address} (MLS ${mlsId})`
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
       },
       'request-showing-rent': {
-        'powf_7e1aec73bc16e61180e9c4346bace2d4': `I'd like to schedule a showing for ${address} (MLS ${mlsId})`
+        'powf_7e1aec73bc16e61180e9c4346bace2d4': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
       }
     };
     return obj[selectedTab] || {};
@@ -77,14 +77,14 @@ class AgentContactForms extends Component {
       saleTypeWithRDC,
       curatedPropertyInfo: {
         mlsId,
-        address,
+        post_title,
         officePhoneNumber,
       },
     } = this.props;
 
     const { selectedTab } = this.state;
 
-    const getInitialFormData = initialFormDataGetter(address, mlsId);
+    const getInitialFormData = initialFormDataGetter(post_title, mlsId);
 
     let formContent;
 
