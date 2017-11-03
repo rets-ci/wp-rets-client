@@ -14,7 +14,7 @@ import Api from 'app_root/containers/Api.jsx';
 import ErrorMessageModal    from 'app_root/components/ErrorMessageModal.jsx';
 import HeaderPropertySingle from 'app_root/components/Headers/HeaderPropertySingle.jsx';
 import LoadingAccordion     from 'app_root/components/LoadingAccordion.jsx';
-import Single               from 'app_root/components/PropertySingle/PropertySingle.jsx';
+import PropertySingle       from 'app_root/components/PropertySingle/PropertySingle.jsx';
 import Util                 from 'app_root/components/Util.jsx';
 
 
@@ -157,10 +157,10 @@ class SingleContainer extends Component {
             :
             <p>Request property id {id} could not be found</p>)
             ):
-            <Single
+            <PropertySingle
               agents={agents}
-              {...propertyMeta}
-              all={property}
+              curatedPropertyInfo={propertyMeta}
+              elasticSearchSource={property}
               saleType={sale}
               searchType={searchType}
             />

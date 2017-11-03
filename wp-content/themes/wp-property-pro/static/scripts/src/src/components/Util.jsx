@@ -1,8 +1,8 @@
-import numeral from 'numeral';
 import React from 'react';
+import numeral from 'numeral';
 import URI from 'urijs';
 import qs from 'qs';
-import {Lib} from '../lib.jsx';
+import moment from 'moment';
 
 import get from 'lodash/get';
 import map from 'lodash/map';
@@ -13,6 +13,10 @@ import last from 'lodash/last';
 import replace from 'lodash/replace';
 import join from 'lodash/join';
 import split from 'lodash/split';
+
+
+import { Lib } from 'app_root/lib.jsx';
+
 
 let minMaxDefaultValues = {0: 'No Min', 1: 'No Max'};
 
@@ -87,12 +91,6 @@ class Util extends React.Component {
       out[newKey] = obj[key];
     }
     return out;
-  }
-
-  static decodeHtml(html) {
-    let txt = document.createElement('textarea');
-    txt.innerHTML = html;
-    return txt.value;
   }
 
   static determineSearchType(options, property_type, sale) {
@@ -693,86 +691,6 @@ class Util extends React.Component {
       wpp_import_time,
       ...data
     }
-  }
-
-  static easingTimeGetters = {
-    linear(t) {
-      return t;
-    },
-    easeInQuad(t) {
-      return t * t;
-    },
-    easeOutQuad(t) {
-      return t * (2 - t);
-    },
-    easeInOutQuad(t) {
-      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    },
-    easeInCubic(t) {
-      return t * t * t;
-    },
-    easeOutCubic(t) {
-      return (--t) * t * t + 1;
-    },
-    easeInOutCubic(t) {
-      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-    },
-    easeInQuart(t) {
-      return t * t * t * t;
-    },
-    easeOutQuart(t) {
-      return 1 - (--t) * t * t * t;
-    },
-    easeInOutQuart(t) {
-      return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
-    },
-    easeInQuint(t) {
-      return t * t * t * t * t;
-    },
-    easeOutQuint(t) {
-      return 1 + (--t) * t * t * t * t;
-    },
-    easeInOutQuint(t) {
-      return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
-    }
-  }
-
-  static scrollToElement(container, target, duration = 500, easing = 'easeInQuad') {
-    let topPos = 0;
-    let parent = target;
-    while (parent !== container && !!parent) {
-      topPos += parent.offsetTop;
-      parent = parent.offsetParent;
-    }
-
-    if ('requestAnimationFrame' in window === false) {
-      container.scrollTop = topPos;
-      return;
-    }
-
-    const start = container.scrollTop;
-    const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
-
-    var prevPos = null
-
-    var scroll = () => {
-      const now = 'now' in window.performance ? performance.now() : new Date().getTime();
-      const time = Math.min(1, ((now - startTime) / duration));
-      const timeFunction = this.easingTimeGetters[easing](time);
-
-      container.scrollTop =  Math.ceil((timeFunction * (topPos - start)) + start);
-
-      if (container.scrollTop >= topPos || container.scrollTop === prevPos) {
-        return;
-      }
-
-      prevPos = container.scrollTop
-
-      requestAnimationFrame(scroll);
-    }
-
-    scroll();
-    return false;
   }
 }
 

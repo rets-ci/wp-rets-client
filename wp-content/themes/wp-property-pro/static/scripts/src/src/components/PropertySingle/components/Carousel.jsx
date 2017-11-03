@@ -6,7 +6,7 @@ import Swiper from 'react-id-swiper';
 import { Lib } from 'app_root/lib.jsx';
 
 
-class ImageMixer extends Component {
+class Carousel extends Component {
   static propTypes = {
     images: PropTypes.array
   }
@@ -47,9 +47,7 @@ class ImageMixer extends Component {
   }
 
   render() {
-    let {
-      images
-    } = this.props;
+    let { images } = this.props;
 
     let LightboxImages = images.map(i => ({
       src: i
@@ -182,4 +180,4 @@ class ImageMixer extends Component {
   }
 }
 
-export default ImageMixer;
+export default Carousel;

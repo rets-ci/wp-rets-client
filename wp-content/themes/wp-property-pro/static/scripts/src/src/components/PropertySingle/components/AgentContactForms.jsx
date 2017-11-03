@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Lib }      from 'app_root/lib.jsx';
-import Util         from 'app_root/components/Util.jsx';
 import FormFetcher  from 'app_root/components/Forms/FormFetcher.jsx';
 import JSONSchemaFormContainer
   from 'app_root/components/Forms/JSONSchemaFormContainer.jsx';
 
 
 let formIdMapper = {
-  'request-showing-rent': 'form-rent-inquiry',
-  'request-showing-sale': 'form-buy-inquiry-listing',
+  'request-showing-rent'    : 'form-rent-inquiry',
+  'request-showing-sale'    : 'form-buy-inquiry-listing',
   'request-information-sale': 'form-buy-inquiry-listing',
-  'request-application': 'form-rent-application',
+  'request-application'     : 'form-rent-application',
 };
 
 
-let initialFormData = (address, mlsId) => {
+let initialFormDataGetter = (address, mlsId) => {
   return (selectedTab) => {
     let obj = {
       'request-information-sale': {
@@ -33,26 +32,20 @@ let initialFormData = (address, mlsId) => {
   }
 };
 
-class AgentCardForms extends Component {
-  static propTypes = {
-    agent: PropTypes.object,
-    address: PropTypes.string,
-    correctScenario: PropTypes.string.isRequired,
-    officePhoneNumber: PropTypes.string.isRequired,
-    listingOffice: PropTypes.string,
-    mlsId: PropTypes.string,
-    rdcListing: PropTypes.bool.isRequired,
-    saleType: PropTypes.string.isRequired
-  }
+class AgentContactForms extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      selectedTab: null
+    };
   }
 
   componentDidMount() {
     let initialTab;
-    switch (this.props.correctScenario) {
+
+    switch (this.props.saleTypeWithRDC) {
       case 'rentRDC':
         initialTab = 'request-showing-rent';
         break;
@@ -63,42 +56,53 @@ class AgentCardForms extends Component {
         initialTab = 'request-showing-sale';
         break;
     }
-    this.setTab(initialTab);
+
+    this.selectTab(initialTab);
   }
 
-  setTab = name => {
-    this.props.setAgentCardTab(name);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tabActive !== null) {
+      this.selectTab(nextProps.tabActive);
+    }
+  }
+
+  selectTab = name => {
+    this.setState({ selectedTab: name });
   }
 
   render() {
     let {
-      address,
       agent,
-      correctScenario,
-      officePhoneNumber,
       listingOffice,
-      mlsId,
-      selectedTab,
-      setAgentCardTab
+      saleTypeWithRDC,
+      curatedPropertyInfo: {
+        mlsId,
+        address,
+        officePhoneNumber,
+      },
     } = this.props;
-    let defaultAgentImage = `${bundle.static_images_url}user-placeholder-image.png`;
-    let contactElement;
-    switch(correctScenario) {
+
+    const { selectedTab } = this.state;
+
+    const getInitialFormData = initialFormDataGetter(address, mlsId);
+
+    let formContent;
+
+    switch (saleTypeWithRDC) {
       case 'rentRDC': {
-        let formData = initialFormData(address, mlsId);
-        contactElement = (
+        formContent = (
           <div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-rent' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-showing-rent')}}>Request Showing</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.props.selectTab('request-showing-rent')}}>Request Showing</a>
               </div>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-application' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-application')}}>Request an Application</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.props.selectTab('request-application')}}>Request an Application</a>
               </div>
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
               <FormFetcher formId={formIdMapper[selectedTab]}>
-                <JSONSchemaFormContainer formData={formData(selectedTab)} jsonSchemaForm={this.props.jsonSchemaForm} showConfirmation={true} />
+                <JSONSchemaFormContainer formData={getInitialFormData(selectedTab)} jsonSchemaForm={this.props.jsonSchemaForm} showConfirmation={true} />
               </FormFetcher>
             </div>
           </div>
@@ -106,7 +110,7 @@ class AgentCardForms extends Component {
         break;
       }
       case 'rentNOTRdc': {
-        contactElement = (
+        formContent = (
           <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
             <p className={`${Lib.THEME_CLASSES_PREFIX}agent-card-description`}>Please contact {agent.name} at {listingOffice} direct by phone at {agent.phone}. You may also reach {listingOffice} by phone at {officePhoneNumber}. </p>
           </div>
@@ -114,20 +118,19 @@ class AgentCardForms extends Component {
         break;
       }
       case 'saleRDC': {
-        let formData = initialFormData(address, mlsId);
-        contactElement = (
+        formContent = (
           <div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-showing-sale')}}>Request Showing</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-showing-sale')}}>Request Showing</a>
               </div>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-information-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-information-sale')}}>Request Information</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-information-sale')}}>Request Information</a>
               </div>
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
               <FormFetcher formId={formIdMapper[selectedTab]}>
-                <JSONSchemaFormContainer formData={formData(selectedTab)} showConfirmation={true} jsonSchemaForm={this.props.jsonSchemaForm} />
+                <JSONSchemaFormContainer formData={getInitialFormData(selectedTab)} showConfirmation={true} jsonSchemaForm={this.props.jsonSchemaForm} />
               </FormFetcher>
             </div>
           </div>
@@ -135,47 +138,66 @@ class AgentCardForms extends Component {
         break;
       }
       case 'saleNotRdc': {
-        let formData = initialFormData(address, mlsId);
-        contactElement = (
+        formContent = (
           <div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-showing-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-showing-sale')}}>Request Showing</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-showing-sale')}}>Request Showing</a>
               </div>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-information-sale' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.props.setAgentCardTab('request-information-sale')}}>Request Information</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-information-sale')}}>Request Information</a>
               </div>
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-body`}>
               <FormFetcher formId={formIdMapper['request-showing-sale']}>
-                <JSONSchemaFormContainer formData={formData(selectedTab)} showConfirmation={true}  />
+                <JSONSchemaFormContainer formData={getInitialFormData(selectedTab)} showConfirmation={true}  />
               </FormFetcher>
             </div>
           </div>
         );
       }
       default:
-        
     }
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card`}>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-head`}>
-          <div className="media">
-            <img className={`d-flex align-self-start mr-3 ${Lib.THEME_CLASSES_PREFIX}agent-photo`} src={agent.image || defaultAgentImage} alt="Agent photo" width="100" />
+      <div className="container"><div className="row"><div className="col-md-12">
+        <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form`}>
+
+          <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-head`}>
+            <div className="media">
+              <img className={`d-flex align-self-start mr-3 ${Lib.THEME_CLASSES_PREFIX}agent-photo`}
+                src={ agent.image }
+                alt="Agent photo"
+                width="100"
+              />
               <div className={`media-body ${Lib.THEME_CLASSES_PREFIX}media-body`}>
-                <h5 className="mt-0">{agent.name}</h5>
-                <p className={`${Lib.THEME_CLASSES_PREFIX}primary-color ${Lib.THEME_CLASSES_PREFIX}secondary-text`}>{listingOffice}</p>
+                <h5 className="mt-0">
+                  { agent.name }
+                </h5>
+                <p className={`${Lib.THEME_CLASSES_PREFIX}primary-color ${Lib.THEME_CLASSES_PREFIX}secondary-text`}>
+                  { listingOffice }
+                </p>
                 <div className={`${Lib.THEME_CLASSES_PREFIX}phone-number`}>
-                  {this.props.agent.phone}
+                  { agent.phone }
                 </div>
               </div>
+            </div>
           </div>
+
+          {
+            formContent
+          }
         </div>
-        {contactElement}
-      </div>
+      </div></div></div>
     );
   }
 }
 
-export default AgentCardForms;
+AgentContactForms.propTypes = {
+  agent: PropTypes.object,
+  saleTypeWithRDC: PropTypes.string,
+  listingOffice: PropTypes.string,
+  tabActive: PropTypes.string,
+};
+
+export default AgentContactForms;

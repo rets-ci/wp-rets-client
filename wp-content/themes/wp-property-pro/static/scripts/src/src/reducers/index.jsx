@@ -1,4 +1,3 @@
-import agentCardState from './agentCardState.jsx';
 import availablePropertySubTypesForSearch from './availablePropertySubTypesForSearch.jsx';
 import blogPostsState from './blogPosts.jsx';
 import filterTermsState from './filterTerms.jsx';
@@ -19,7 +18,6 @@ import wordpressContentFetching from './wordpressContentFetching.jsx';
 import viewport from './viewport.jsx';
 
 const propertyProApp = combineReducers({
-    agentCardState,
     availablePropertySubTypesForSearch,
     formModal,
     loginModal,

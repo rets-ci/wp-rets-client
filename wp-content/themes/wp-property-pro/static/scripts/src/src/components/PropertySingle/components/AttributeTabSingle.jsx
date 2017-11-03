@@ -32,30 +32,30 @@ function getContent(content, data) {
   let contentElements = content.map(c => {
     return ['N/A', '0'].indexOf(showContentValue(data, c.esReference, c.booleanField)) < 0 ?
       <li key={JSON.stringify(c)}>
-        <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>{c.name}:</span> {showContentValue(data, c.esReference, c.booleanField)}
+        <span>{c.name}:</span> {showContentValue(data, c.esReference, c.booleanField)}
       </li>
       : null;
   });
   return contentElements;
 }
 
-class PropertySingleTabContent extends Component {
+class AttributeTabSingle extends Component {
   static propTypes = {
     tab: PropTypes.array,
-    data: PropTypes.object
+    esProperty: PropTypes.object
   }
 
   render() {
     let {
       tab,
-      data,
+      esProperty,
     } = this.props;
     let elements = [];
     let visibleTabs = {};
 
     tab.forEach(colsObject => {
       Object.keys(colsObject).forEach((col, i) => {
-        let colVisible = !!colsObject[col].map(c => showContentValue(data, c.esReference, c.booleanField) !== 'N/A').filter(d => d).length;
+        let colVisible = !!colsObject[col].map(c => showContentValue(esProperty, c.esReference, c.booleanField) !== 'N/A').filter(d => d).length;
         visibleTabs[col] = colVisible;
       });
     });
@@ -71,7 +71,7 @@ class PropertySingleTabContent extends Component {
                     <div className={`${Lib.THEME_CLASSES_PREFIX}property-single-div`} key={head + JSON.stringify(p[head])}>
                       <h3>{head}</h3>
                       <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-                        {getContent(p[head], data)}
+                        {getContent(p[head], esProperty)}
                       </ul>
                     </div>
                   </div>
@@ -85,4 +85,4 @@ class PropertySingleTabContent extends Component {
   }
 }
 
-export default PropertySingleTabContent;
+export default AttributeTabSingle;

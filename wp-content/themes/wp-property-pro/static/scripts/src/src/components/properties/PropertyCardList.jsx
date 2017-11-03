@@ -7,16 +7,17 @@ import get from 'lodash/get';
 import map from 'lodash/map';
 import find from 'lodash/find';
 
-import PropertyCard from 'app_root/components/PropertyCard.jsx';
-import Api from 'app_root/containers/Api.jsx';
 import {
   receivePropertySingleResult,
   receivePropertySingleFetchingError,
   requestPropertySingleResult,
   selectPropertyOnMap,
 } from 'app_root/actions/index.jsx';
-import { Lib } from 'app_root/lib.jsx';
-import Util from 'app_root/components/Util.jsx';
+import { Lib }      from 'app_root/lib.jsx';
+import htmlHelper   from 'app_root/helpers/htmlHelper';
+import Api          from 'app_root/containers/Api.jsx';
+import PropertyCard from 'app_root/components/PropertyCard.jsx';
+
 
 const mapStateToProps = (state) => {
   return {};
@@ -82,7 +83,7 @@ class PropertyCardList extends Component {
       // it's listing container (not body) which is scrollable
       const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}listing-sidebar`);
       const node = findDOMNode(this.propertiesDOM[propertyId]);
-      Util.scrollToElement(container, node, 500);
+      htmlHelper.scrollToElement(container, node, 500);
     }
   }
 
