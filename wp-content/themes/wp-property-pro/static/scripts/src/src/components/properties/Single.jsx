@@ -91,8 +91,33 @@ class Single extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      agent: {}
+      agent: {},
+      RETSAgent: {}
     };
+  }
+
+  componentDidMount() {
+    let agent;
+    let RETSAgent = {
+      id: this.props.agentId,
+      name: this.props.agentName,
+      phone: this.props.agentPhoneNumber,
+    };
+    let rdcListing = this.props.listing_office === 'Red Door Company';
+    let saleType = this.props.listing_status_sale.replace('for-', '');
+    let correctScenario = this.correctScenario(saleType, rdcListing);
+    if (RETSAgent.id && this.props.agents && this.props.agents.length) {
+      agent = this.correctAgent(
+        RETSAgent,
+        this.props.agents,
+        correctScenario
+      );
+    }
+    this.setState({
+      agent,
+      RETSAgent
+    });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -193,24 +218,15 @@ class Single extends Component {
       officePhoneNumber,
       wpp_import_time
     } = this.props;
-    let agent;
 
-    let RETSAgent = {
-      id: this.props.agentId,
-      name: this.props.agentName,
-      phone: this.props.agentPhoneNumber,
-    };
+    let {
+      agent,
+      RETSAgent
+    } = this.state
+
     let saleType = listing_status_sale.replace('for-', '');
     let rdcListing = listing_office === 'Red Door Company';
     let correctScenario = this.correctScenario(saleType, rdcListing);
-
-    if (RETSAgent.id && agents && agents.length) {
-      agent = this.correctAgent(
-        RETSAgent,
-        agents,
-        correctScenario
-      );
-    }
     let daysOnWebsite = daysPassedSincePostedDate(post_date, Lib.COMMON_DATE_FORMAT_1);
     let datesAvailable = moment.utc(rets_date_available, 'YYYY-MM-DD');
     let lastUpdated = getLastUpdatedMoment(post_date, Lib.COMMON_DATE_FORMAT_1);
@@ -257,7 +273,6 @@ class Single extends Component {
     if (!listingTypeJSONFileName) {
       console.log('listing type was not found, property data will not be shown');
     }
-
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []}/>
@@ -376,6 +391,7 @@ class Single extends Component {
               mlsId={mlsId}
               rdcListing={rdcListing}
               officePhoneNumber={officePhoneNumber}
+              post_title={post_title}
               setAgentCardTab={this.props.setAgentCardTab}
               selectedTab={this.props.selectedAgentCardTab}
               saleType={listing_status_sale.replace('for-', '')}
