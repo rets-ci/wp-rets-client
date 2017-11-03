@@ -167,6 +167,9 @@ function pickProperAgent(RETSAgent, agents, saleTypeWithRDC) {
     agent = findAgentById(agents, RETSAgent.id);
   } else if (saleTypeWithRDC === 'rentNOTRdc') {
     agent = RETSAgent;
+    if (!RETSAgent.image) {
+      agent.image = defaultAgentImage;
+    }
   } else if (saleTypeWithRDC === 'saleNotRdc') {
     agent = findRandomAgentBySaleType(agents, 'Buy');
   }
