@@ -2,6 +2,7 @@ import ErrorMessageModal from '../ErrorMessageModal.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import capitalize from 'lodash/capitalize';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import omit from 'lodash/omit';
@@ -46,7 +47,11 @@ const mapStateToProps = (state, ownProps) => {
   let propertySubTypes = ownProps.propertySubtypes;
   let searchQueryParamsCollection = Util.URLSearchParse('search', window.location.href);
   let searchQueryObject = Util.searchCollectionToObject(searchQueryParamsCollection);
-  let searchType = Util.determineSearchType(propertyTypeOptions, searchQueryObject.property_type[0], searchQueryObject.sale);
+  let saleType = null;
+  if (searchQueryObject.sale_type) {
+    saleType = searchQueryObject.sale_type.map(d => capitalize(d));
+  }
+  let searchType = Util.determineSearchType(propertyTypeOptions, searchQueryObject.property_type[0], saleType);
   let termDetails = get(ownProps, 'termDetails');
   if (searchType instanceof Error) {
     //TODO: handle not determining searchQueryObject
@@ -232,6 +237,17 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     let filters = nextProps.searchQueryParams;
+
+    // Update url without selected property for re-rendering listings list if listing was unselected
+    if(get(this.props, 'panelOnMapShown', false) && !get(nextProps, 'panelOnMapShown', false)){
+      delete(filters['selected_property']);
+
+      filters = Util.customFormatToSearchObject(filters);
+      let searchCollection = Util.searchObjectToCollection(filters);
+      let searchURL = Util.createSearchURL('/search', searchCollection);
+      this.props.history.push(searchURL);
+    }
+
     let anyFilterChange = !isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']));
     let anyDefaultQueryChange = !isEqual(nextProps.queryDefaults, this.props.queryDefaults);
     if (anyFilterChange || anyDefaultQueryChange) {
@@ -418,8 +434,13 @@ class MapSearchResults extends Component {
               <SearchFilterDescriptionText
                 bathrooms={searchFilters.bathrooms}
                 bedrooms={searchFilters.bedrooms}
+                terms={searchFilters.term}
+                type={searchFilters.property_type}
+                subtypes={searchFilters.property_subtype}
                 price={searchFilters.price}
                 saleType={searchFilters.sale_type}
+                sqft={searchFilters.sqft}
+                acres={searchFilters.acres}
                 total={this.props.resultsTotal}
               />
 

@@ -285,6 +285,13 @@ namespace UsabilityDynamics {
       $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
       $params['colors']['secondary_color'] = get_theme_mod('property_pro_secondary_color');
 
+      /** Plural values for listing types titles */
+      $listing_subtypes_plural_values_filename = WP_CONTENT_DIR . '/static/json/listing_subtypes_plural_values.json';
+      if(file_exists($listing_subtypes_plural_values_filename)){
+        $listing_subtypes_plural_values = file_get_contents($listing_subtypes_plural_values_filename);
+        $params['listing_subtypes_plural_values'] = json_decode($listing_subtypes_plural_values, true);
+      }
+
       return $params;
 
     }

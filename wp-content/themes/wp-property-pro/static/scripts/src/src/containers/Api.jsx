@@ -385,6 +385,14 @@ class Api {
         "must": []
       }
     };
+    // this is to ignore any listing that doesn't have geo coordinates on MLS
+    query.bool.must.push(
+      {
+        "exists": {
+          "field": "post_meta.wpp_location_pin"
+        }
+      }
+    )
     if (params.geoCoordinates) {
       query.bool.must.push(
         {

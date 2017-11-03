@@ -13,8 +13,7 @@ var exec = require('child_process').exec;
  * - updates terms counts
  */
 new CronJob({
-  //cronTime: '0 */6 * * *', // run every 6 hours
-  cronTime: '*/5 * * * *',
+  cronTime: '0 */6 * * *', // run every 6 hours
   start: true,
   timeZone: 'America/New_York',
   onTick: function() {
