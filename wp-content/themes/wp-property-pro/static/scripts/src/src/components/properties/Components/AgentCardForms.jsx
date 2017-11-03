@@ -12,17 +12,17 @@ let formIdMapper = {
 };
 
 
-let initialFormData = (address, mlsId) => {
+let initialFormData = (post_title, mlsId) => {
   return (selectedTab) => {
     let obj = {
       'request-information-sale': {
-        'powf_b62d13821a12e61180e4fc15b428cd78': `I'm interested in ${address} (MLS ${mlsId})`
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'm interested in ${post_title} (MLS ${mlsId})`
       },
       'request-showing-sale': {
-        'powf_b62d13821a12e61180e4fc15b428cd78': `I'd like to schedule a showing for ${address} (MLS ${mlsId})`
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
       },
       'request-showing-rent': {
-        'powf_7e1aec73bc16e61180e9c4346bace2d4': `I'd like to schedule a showing for ${address} (MLS ${mlsId})`
+        'powf_7e1aec73bc16e61180e9c4346bace2d4': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
       }
     };
     return obj[selectedTab] || {};
@@ -47,19 +47,31 @@ class AgentCardForms extends Component {
   }
 
   componentDidMount() {
-    let initialTab;
-    switch (this.props.correctScenario) {
+    let initialTab = this.getInitialTab(this.props.correctScenario);
+    this.setTab(initialTab);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.correctScenario !== this.props.correctScenario) {
+      let initialTab = this.getInitialTab(nextProps.correctScenario);
+      this.setTab(initialTab);
+    }
+  }
+
+  getInitialTab(correctScenario) {
+    let tab;
+    switch (correctScenario) {
       case 'rentRDC':
-        initialTab = 'request-showing-rent';
+        tab = 'request-showing-rent';
         break;
       case 'saleRDC':
-        initialTab = 'request-showing-sale';
+        tab = 'request-showing-sale';
         break;
       case 'saleNotRdc':
-        initialTab = 'request-showing-sale';
+        tab = 'request-showing-sale';
         break;
     }
-    this.setTab(initialTab);
+    return tab;
   }
 
   setTab = name => {
@@ -73,6 +85,7 @@ class AgentCardForms extends Component {
       correctScenario,
       officePhoneNumber,
       listingOffice,
+      post_title,
       mlsId,
       selectedTab,
       setAgentCardTab
@@ -81,7 +94,7 @@ class AgentCardForms extends Component {
     let contactElement;
     switch(correctScenario) {
       case 'rentRDC': {
-        let formData = initialFormData(address, mlsId);
+        let formData = initialFormData(post_title, mlsId);
         contactElement = (
           <div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
@@ -110,7 +123,7 @@ class AgentCardForms extends Component {
         break;
       }
       case 'saleRDC': {
-        let formData = initialFormData(address, mlsId);
+        let formData = initialFormData(post_title, mlsId);
         contactElement = (
           <div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
@@ -131,7 +144,7 @@ class AgentCardForms extends Component {
         break;
       }
       case 'saleNotRdc': {
-        let formData = initialFormData(address, mlsId);
+        let formData = initialFormData(post_title, mlsId);
         contactElement = (
           <div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-tabs d-flex`}>
