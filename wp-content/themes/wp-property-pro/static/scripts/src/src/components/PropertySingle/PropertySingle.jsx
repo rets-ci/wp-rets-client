@@ -25,34 +25,70 @@ class Single extends Component {
   constructor(props) {
     super(props);
 
+    const {
+      agents,
+      curatedPropertyInfo,
+    } = this.props;
+
+    const contactFormData = propertyHelper.getContactFormData(curatedPropertyInfo, agents);
+
+    console.debug('RDC agents:', agents);
+    console.debug('[PropertySingle agent picked] constructor', contactFormData.agent);
+    console.debug('Sale Types:', curatedPropertyInfo.sale_types);
+    console.debug('Listing Office:', curatedPropertyInfo.listing_office);
+    
+
     this.state = {
-      contactFormTab: null
+      contactFormTab: null,
+      contactFormData,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous_mlsId = get(this.props, 'curatedPropertyInfo.mlsId');
-    var next_mlsId = get(nextProps, 'curatedPropertyInfo.mlsId');
+    const previous_mlsId = get(this.props, 'curatedPropertyInfo.mlsId');
+    const next_mlsId = get(nextProps, 'curatedPropertyInfo.mlsId');
+    const isNewProperty = previous_mlsId !== next_mlsId;
 
-    if (previous_mlsId !== next_mlsId) {
-      // on map view, when new property card is selected, scroll to top on panel
-      const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
-      const node = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}image-mixer`);
-      htmlHelper.scrollToElement(container, node, 500);
+    // @event: new property is coming in...
+    if (isNewProperty) {
+      // on map view, scroll to top on panel
+      this.scrollToTop();
+
+      // update contact form data (focused to update agent matching)
+      this.setContactFormData(nextProps);
     }
+  }
+
+  setContactFormData = (props) => {
+    const contactFormData = propertyHelper.getContactFormData(props.curatedPropertyInfo, props.agents);
+    this.setState({
+      contactFormTab: null,
+      contactFormData
+    });
+    console.debug('[PropertySingle agent picked] for new property', contactFormData.agent);
   }
 
   handleRequestBtnClick = tab => {
     // scroll-to-element library doesn't work well on map view
     if (this.props.fromMapView) {
-      const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
-      const node = document.getElementById('agentCardContainer');
-      htmlHelper.scrollToElement(container, node, 500);
+      this.scrollToContactForm();
     } else {
-      scrollToElement('#agentCardContainer', { duration: 500 });
+      scrollToElement('#agent-contact-form', { duration: 500 });
     }
 
     this.setState({ contactFormTab: tab });
+  }
+
+  scrollToTop = () => {
+    const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
+    const node = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}image-mixer`);
+    htmlHelper.scrollToElement(container, node, 500);
+  }
+
+  scrollToContactForm = () => {
+    const container = document.querySelector(`.${Lib.THEME_CLASSES_PREFIX}single-container`);
+    const node = document.getElementById('agent-contact-form');
+    htmlHelper.scrollToElement(container, node, 500);
   }
 
   render() {
@@ -64,9 +100,10 @@ class Single extends Component {
       windowWidth,
     } = this.props;
 
+    const { contactFormTab, contactFormData } = this.state;
+
     const gridWidth = fromMapView ? 'col-12' : 'col-12 col-lg-8';
 
-    const dataForContactForm = propertyHelper.getContactFormData(curatedPropertyInfo, agents);
     const isAgentHiddenOnSticky = fromMapView || (windowWidth <= Lib.SINGLE_PAGE_STICKY_THRESHOLD);
     const isAgentShownOnSticky = !isAgentHiddenOnSticky;
 
@@ -98,7 +135,7 @@ class Single extends Component {
       <StickyCard
         isAgentShown={ isAgentShownOnSticky }
         onClickRequestBtn={ this.handleRequestBtnClick }
-        { ...dataForContactForm }
+        { ...contactFormData }
       />
     )
 
@@ -133,11 +170,11 @@ class Single extends Component {
           }
         </section>
 
-        <div id="agentCardContainer" className="mb-5" ref={(r) => this.contactFormContainer = r}>
+        <div id="agent-contact-form" className="mb-5">
           <AgentContactForms
-            tabActive={ this.state.contactFormTab }
+            tabActive={ contactFormTab }
             curatedPropertyInfo={ curatedPropertyInfo }
-            { ...dataForContactForm }
+            { ...contactFormData }
           />
         </div>
       </div>

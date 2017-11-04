@@ -10,6 +10,7 @@ const helper = {
   daysPassedSincePostedDate,
 
   getContactFormData,
+  getContactFormTabFeeder,
   getListingTypeJSONFileName,
 };
 
@@ -70,8 +71,9 @@ function getContactFormData(property, agents) {
     agentId,
     agentName,
     agentPhoneNumber,
+    mlsId,
     listing_office,
-    listing_status_sale,
+    sale_type,
   } = property;
 
   const RETSAgent = {
@@ -80,7 +82,6 @@ function getContactFormData(property, agents) {
     phone: agentPhoneNumber,
   };
 
-  const saleType = listing_status_sale.replace('for-', '');
   const saleTypeWithRDC = getSaleTypeWithRDC(property);
   const listingOffice = saleTypeWithRDC.includes('sale') ? 'Red Door Company' : listing_office;
 
@@ -91,25 +92,23 @@ function getContactFormData(property, agents) {
 
   return {
     agent,
+    mlsId,
     listingOffice,
-    saleType,
+    saleType: sale_type,
     saleTypeWithRDC,
   }
 }
 
-function getListingTypeJSONFileName(property) {
-  const saleType = get(property, 'listing_status_sale', '').replace('for-', '');
-  const listingType = get(property, 'listing_type', '');
-
+function getListingTypeJSONFileName({ sale_type, listing_type}) {
   let fileName;
 
-  if (saleType === 'rent' && listingType === 'residential') {
+  if (sale_type === 'rent' && listing_type === 'residential') {
     fileName = 'residential_rent_RT_6';
-  } else if (saleType === 'sale' && listingType === 'residential') {
+  } else if (sale_type === 'sale' && listing_type === 'residential') {
     fileName =  'residential_sale_RE_1';
-  } else if (saleType === 'sale' && listingType === 'commercial') {
+  } else if (sale_type === 'sale' && listing_type === 'commercial') {
     fileName =  'residential_sale_RE_1';
-  } else if (saleType === 'sale' && listingType === 'land') {
+  } else if (sale_type === 'sale' && listing_type === 'land') {
     fileName =  'land';
   }
 
@@ -118,6 +117,23 @@ function getListingTypeJSONFileName(property) {
   }
 
   return fileName;
+}
+
+function getContactFormTabFeeder(post_title, mlsId) {
+  return (selectedTab) => {
+    let obj = {
+      'request-information-sale': {
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'm interested in ${post_title} (MLS ${mlsId})`
+      },
+      'request-showing-sale': {
+        'powf_b62d13821a12e61180e4fc15b428cd78': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
+      },
+      'request-showing-rent': {
+        'powf_7e1aec73bc16e61180e9c4346bace2d4': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
+      }
+    };
+    return obj[selectedTab] || {};
+  }
 }
 
 /************************************
@@ -181,19 +197,17 @@ function pickProperAgent(RETSAgent, agents, saleTypeWithRDC) {
 }
 
 
-function getSaleTypeWithRDC({ listing_status_sale, listing_office }) {
-  const saleType = listing_status_sale.replace('for-', '');
+function getSaleTypeWithRDC({ sale_type, sale_types, listing_office }) {
+  let saleTypeWithRDC;
   const isRDCListing = listing_office === 'Red Door Company';
 
-  let saleTypeWithRDC;
-
-  if (saleType === 'rent' && isRDCListing) {
+  if (sale_type === 'rent' && isRDCListing) {
     saleTypeWithRDC = 'rentRDC';
-  } else if (saleType === 'rent' && !isRDCListing) {
+  } else if (sale_type === 'rent' && !isRDCListing) {
     saleTypeWithRDC = 'rentNOTRdc';
-  } else if (saleType === 'sale' && isRDCListing) {
+  } else if (sale_type === 'sale' && isRDCListing) {
     saleTypeWithRDC = 'saleRDC';
-  } else if (saleType === 'sale' && !isRDCListing) {
+  } else if (sale_type === 'sale' && !isRDCListing) {
     saleTypeWithRDC = 'saleNotRdc';
   }
 

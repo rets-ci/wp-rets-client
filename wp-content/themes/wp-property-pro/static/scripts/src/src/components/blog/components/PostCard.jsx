@@ -6,12 +6,6 @@ import {Lib} from '../../../lib.jsx';
 import isEmpty from 'lodash/isEmpty';
 
 class PostCard extends Component {
-  static propTypes = {
-    data: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
-  };
 
   render() {
     let {
@@ -50,5 +44,12 @@ class PostCard extends Component {
     );
   }
 }
+
+PostCard.propTypes = {
+  data: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
 
 export default withRouter(PostCard);

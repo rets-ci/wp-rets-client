@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 
 import { Lib }      from 'app_root/lib.jsx';
+import propertyHelper       from 'app_root/helpers/propertyHelper';
 import FormFetcher  from 'app_root/components/Forms/FormFetcher.jsx';
 import JSONSchemaFormContainer
   from 'app_root/components/Forms/JSONSchemaFormContainer.jsx';
-
 
 let formIdMapper = {
   'request-showing-rent'    : 'form-rent-inquiry',
@@ -14,23 +15,6 @@ let formIdMapper = {
   'request-application'     : 'form-rent-application',
 };
 
-
-let initialFormDataGetter = (post_title, mlsId) => {
-  return (selectedTab) => {
-    let obj = {
-      'request-information-sale': {
-        'powf_b62d13821a12e61180e4fc15b428cd78': `I'm interested in ${post_title} (MLS ${mlsId})`
-      },
-      'request-showing-sale': {
-        'powf_b62d13821a12e61180e4fc15b428cd78': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
-      },
-      'request-showing-rent': {
-        'powf_7e1aec73bc16e61180e9c4346bace2d4': `I'd like to schedule a showing for ${post_title} (MLS ${mlsId})`
-      }
-    };
-    return obj[selectedTab] || {};
-  }
-};
 
 class AgentContactForms extends Component {
 
@@ -43,27 +27,42 @@ class AgentContactForms extends Component {
   }
 
   componentDidMount() {
-    let initialTab;
-
-    switch (this.props.saleTypeWithRDC) {
-      case 'rentRDC':
-        initialTab = 'request-showing-rent';
-        break;
-      case 'saleRDC':
-        initialTab = 'request-showing-sale';
-        break;
-      case 'saleNotRdc':
-        initialTab = 'request-showing-sale';
-        break;
-    }
-
+    let initialTab = this.getInitialTab(this.props.saleTypeWithRDC);
     this.selectTab(initialTab);
+    console.debug('[AgentContactForms tab] componentDidMount', initialTab);
   }
 
   componentWillReceiveProps(nextProps) {
+    const previous_mlsId = get(this.props, 'curatedPropertyInfo.mlsId');
+    const next_mlsId = get(nextProps, 'curatedPropertyInfo.mlsId');
+    const isNewProperty = previous_mlsId !== next_mlsId;
+
     if (nextProps.tabActive !== null) {
       this.selectTab(nextProps.tabActive);
+      console.debug('[AgentContactForms tab] from buttons', nextProps.tabActive);
     }
+
+    if (isNewProperty) {
+      let initialTab = this.getInitialTab(nextProps.saleTypeWithRDC);
+      this.selectTab(initialTab);
+      console.debug('[AgentContactForms tab] for new property', initialTab);
+    }
+  }
+
+  getInitialTab = (saleTypeWithRDC) => {
+    let tab;
+    switch (saleTypeWithRDC) {
+      case 'rentRDC':
+        tab = 'request-showing-rent';
+        break;
+      case 'saleRDC':
+        tab = 'request-showing-sale';
+        break;
+      case 'saleNotRdc':
+        tab = 'request-showing-sale';
+        break;
+    }
+    return tab;
   }
 
   selectTab = name => {
@@ -84,7 +83,7 @@ class AgentContactForms extends Component {
 
     const { selectedTab } = this.state;
 
-    const getInitialFormData = initialFormDataGetter(post_title, mlsId);
+    const getInitialFormData = propertyHelper.getContactFormTabFeeder(post_title, mlsId);
 
     let formContent;
 

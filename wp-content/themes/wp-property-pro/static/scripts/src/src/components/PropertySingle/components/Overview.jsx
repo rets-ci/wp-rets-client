@@ -14,12 +14,11 @@ class Overview extends Component {
       curatedPropertyInfo: {
         post_content,
         listing_type,
-        listing_status_sale,
         rets_date_available,
+        sale_type: saleType,
       }
     } = this.props;
 
-    let saleType = listing_status_sale.replace('for-', '');
     let availableDate = moment.utc(rets_date_available, 'YYYY-MM-DD');
     let daysOnWebsite = propertyHelper.daysPassedSincePostedDate(this.props.curatedPropertyInfo);
     let lastUpdatedMoment = propertyHelper.getLastUpdatedMoment(this.props.curatedPropertyInfo);
