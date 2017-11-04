@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import scrollToElement from 'scroll-to-element';
 import get from 'lodash/get';
 
@@ -60,13 +61,46 @@ class Single extends Component {
       elasticSearchSource,
       curatedPropertyInfo,
       fromMapView,
+      windowWidth,
     } = this.props;
 
-    const gridWidth = fromMapView ? 'col-12' : 'col-lg-8';
+    const gridWidth = fromMapView ? 'col-12' : 'col-12 col-lg-8';
 
     const dataForContactForm = propertyHelper.getContactFormData(curatedPropertyInfo, agents);
+    const isAgentHiddenOnSticky = fromMapView || (windowWidth <= Lib.SINGLE_PAGE_STICKY_THRESHOLD);
+    const isAgentShownOnSticky = !isAgentHiddenOnSticky;
 
-    const saleType = get(curatedPropertyInfo, 'listing_status_sale', '').replace('for-', '');
+    let scrollingContent = (
+      <div className={ gridWidth }>
+        <PropertyOverview
+          curatedPropertyInfo={ curatedPropertyInfo }
+          fromMapView={ fromMapView }
+        />
+
+        <PropertyHighlights
+          curatedPropertyInfo={ curatedPropertyInfo }
+          fromMapView={ fromMapView }
+        />
+
+        <AttributeTabs
+          curatedPropertyInfo={ curatedPropertyInfo }
+          esProperty={ elasticSearchSource }
+        />
+
+        <ListingProvider
+          curatedPropertyInfo={ curatedPropertyInfo }
+          fromMapView={ fromMapView }
+        />
+      </div>
+    );
+
+    let stickyContent = (
+      <StickyCard
+        isAgentShown={ isAgentShownOnSticky }
+        onClickRequestBtn={ this.handleRequestBtnClick }
+        { ...dataForContactForm }
+      />
+    )
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-container` }>
@@ -75,51 +109,35 @@ class Single extends Component {
           images={ curatedPropertyInfo.images || [] }
         />
 
-        <section className={ `${Lib.THEME_CLASSES_PREFIX}single-sticky-container` }>
-          <PropertyMasthead
-            curatedPropertyInfo={ curatedPropertyInfo }
-            gridWidth={ gridWidth }
-          />
+        <PropertyMasthead
+          curatedPropertyInfo={ curatedPropertyInfo }
+          gridWidth={ gridWidth }
+        />
 
-          <StickyCard
-            fromMapView={ fromMapView }
-            onClickRequestBtn={ this.handleRequestBtnClick }
-            saleType={ saleType }
-            {
-              ...dataForContactForm
-            }
-          />
-
-          <div className="container py-5"><div className="row"><div className={ gridWidth }>
-            <PropertyOverview
-              curatedPropertyInfo={ curatedPropertyInfo }
-              fromMapView={ fromMapView }
-            />
-
-            <PropertyHighlights
-              curatedPropertyInfo={ curatedPropertyInfo }
-              fromMapView={ fromMapView }
-            />
-
-            <AttributeTabs
-              curatedPropertyInfo={ curatedPropertyInfo }
-              esProperty={ elasticSearchSource }
-            />
-
-            <ListingProvider
-              curatedPropertyInfo={ curatedPropertyInfo }
-              fromMapView={ fromMapView }
-            />
-          </div></div></div>
+        <section className={ `${Lib.THEME_CLASSES_PREFIX}single-scrolling-container` }>
+          { isAgentShownOnSticky &&
+            <div className="container py-5">
+              <div className="row">
+                { scrollingContent }
+                <div className="col-lg-4">
+                  { stickyContent }
+                </div>
+              </div>
+            </div>
+          }
+          { isAgentHiddenOnSticky && stickyContent }
+          { isAgentHiddenOnSticky &&
+            <div className="container py-5"><div className="row">
+              { scrollingContent }
+            </div></div>
+          }
         </section>
 
         <div id="agentCardContainer" className="mb-5" ref={(r) => this.contactFormContainer = r}>
           <AgentContactForms
             tabActive={ this.state.contactFormTab }
             curatedPropertyInfo={ curatedPropertyInfo }
-            {
-              ...dataForContactForm
-            }
+            { ...dataForContactForm }
           />
         </div>
       </div>
@@ -130,8 +148,15 @@ class Single extends Component {
 Single.propTypes = {
   agents: PropTypes.array,
   fromMapView: PropTypes.bool,
+  windowWidth: PropTypes.number,
   elasticSearchSource: PropTypes.object,
   curatedPropertyInfo: PropTypes.object,
 };
 
-export default Single;
+const mapStateToProps = (state) => {
+  return {
+    windowWidth: state.viewport.width,
+  }
+};
+
+export default connect(mapStateToProps)(Single);

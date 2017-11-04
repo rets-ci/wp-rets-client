@@ -74,4 +74,5 @@ export const Lib = {
   IS_MOBILE_VIEW: window.innerWidth < 768,
   WINDOW_RESIZE: 'WINDOW_RESIZE',
   MOBILE_THRESHOLD: 768,
+  SINGLE_PAGE_STICKY_THRESHOLD: 992,
 };

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Sticky from 'react-sticky-state';
 
 import { Lib } from 'app_root/lib.jsx';
@@ -10,33 +9,30 @@ class StickyCard extends Component {
 
   render() {
     const {
-      isMobile,
-      fromMapView,
       agent,
       listingOffice,
+      isAgentShown,
     } = this.props;
 
-    const isFullWidth = fromMapView || isMobile;
-
     let containerClass = `sticky sticky-at-top ${Lib.THEME_CLASSES_PREFIX}sticky-container`;
-    if (isFullWidth) {
-      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}full-width`;
+
+    if (!isAgentShown) {
+      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}agent-hidden`;
     }
 
     return (
       <Sticky>
         <div className={ containerClass }>
-        {isFullWidth &&
-          <div className="container">
-            <RequestButtons
-              saleTypeWithRDC={ this.props.saleTypeWithRDC}
-              saleType={ this.props.saleType }
-              onClick={ this.props.onClickRequestBtn }
-            />
-          </div>
-        }
-        {!isFullWidth &&
-          <div className="container"><div className="row"><div className="col-lg-4 offset-lg-8">
+          { !isAgentShown &&
+            <div className="container">
+              <RequestButtons
+                saleTypeWithRDC={ this.props.saleTypeWithRDC}
+                saleType={ this.props.saleType }
+                onClick={ this.props.onClickRequestBtn }
+              />
+            </div>
+          }
+          { isAgentShown &&
             <div className={ `${Lib.THEME_CLASSES_PREFIX}agent-card d-flex flex-column align-items-center` }>
               <div
                 className={ `${Lib.THEME_CLASSES_PREFIX}agent-avatar` }
@@ -57,8 +53,7 @@ class StickyCard extends Component {
                 onClick={ this.props.onClickRequestBtn }
               />
             </div>
-          </div></div></div>
-        }
+          }
         </div>
       </Sticky>
     );
@@ -66,8 +61,7 @@ class StickyCard extends Component {
 }
 
 StickyCard.propTypes = {
-  isMobile: PropTypes.bool,
-  fromMapView: PropTypes.bool,
+  isAgentShown: PropTypes.bool,
   agent: PropTypes.object,
   listingOffice: PropTypes.string,
   saleType: PropTypes.string,
@@ -75,10 +69,4 @@ StickyCard.propTypes = {
   onClickRequestBtn: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isMobile: state.viewport.isMobile,
-  }
-};
-
-export default connect(mapStateToProps)(StickyCard);
+export default StickyCard;

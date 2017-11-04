@@ -70,7 +70,8 @@ function getContactFormData(property, agents) {
     agentId,
     agentName,
     agentPhoneNumber,
-    listing_office
+    listing_office,
+    listing_status_sale,
   } = property;
 
   const RETSAgent = {
@@ -79,6 +80,7 @@ function getContactFormData(property, agents) {
     phone: agentPhoneNumber,
   };
 
+  const saleType = listing_status_sale.replace('for-', '');
   const saleTypeWithRDC = getSaleTypeWithRDC(property);
   const listingOffice = saleTypeWithRDC.includes('sale') ? 'Red Door Company' : listing_office;
 
@@ -90,6 +92,7 @@ function getContactFormData(property, agents) {
   return {
     agent,
     listingOffice,
+    saleType,
     saleTypeWithRDC,
   }
 }
