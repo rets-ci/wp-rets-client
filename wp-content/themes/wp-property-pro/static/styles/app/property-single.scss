@@ -4,6 +4,322 @@
   }
 }
 
+/*-----------------------------------------------------------------------------------*/
+/*  Property Single
+/*-----------------------------------------------------------------------------------*/
+
 .propertypro-single-container {
   position: relative;
+  color: #000000;
+}
+
+.propertypro-single-masthead {
+  background-color: rgba(232, 238, 242, 0.5);
+
+  h4 {
+    color: #414141;
+    font-weight: 700;
+  }
+}
+
+.propertypro-top-information-card-container {
+  background-color: #e8eef2;
+}
+
+.propertypro-single-container .propertypro-top-information-card {
+  border: none;
+}
+
+.propertypro-info-section-header {
+  color: #414141;
+  font-weight: 700;
+  line-height: 1.5rem;
+}
+
+.propertypro-info-description {
+  line-height: 1.85rem;
+}
+
+.propertypro-small-info-box {
+  margin-bottom: 2rem;
+
+  p {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  p + p {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+}
+
+ul.card-header-tabs {
+  flex-wrap: wrap;
+}
+
+#propertypro-property-details .card-block {
+    padding-top: 0;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  Property Images Carousel
+/*-----------------------------------------------------------------------------------*/
+.propertypro-large-img-container {
+  float: left;
+}
+
+.propertypro-image-mixer {
+  background: #eceeef;
+  min-height: 37.5rem;
+}
+
+.propertypro-image-mixer .swiper-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.propertypro-image-mixer .swiper-slide {
+  width: auto;
+}
+
+.propertypro-image-mixer .img-sm, .propertypro-image-mixer .img-lg, .propertypro-image-mixer .img-mobile {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.propertypro-image-mixer .img-sm {
+  width: 18.625rem;
+  height: 18.625rem;
+}
+
+.propertypro-image-mixer .img-sm:first-child {
+  margin-bottom: 0.25rem;
+}
+
+.propertypro-image-mixer .img-lg {
+  width: 37.5rem;
+  height: 37.5rem;
+}
+
+.propertypro-image-mixer .img-mobile {
+  width: 100%;
+  padding-bottom: 100%;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  Property Single Data Div
+/*-----------------------------------------------------------------------------------*/
+
+.propertypro-property-single-div {
+  text-align: left;
+}
+
+.propertypro-property-single-div h3 {
+  color: #414141;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  padding-top: 2.25rem;
+}
+
+ul.propertypro-details-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 0.4375rem;
+}
+
+ul.propertypro-details-list li {
+  border-bottom: 1px solid #e1e5e6;
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+
+  span {
+    color: #8b8c8d;
+  }
+}
+
+ul.propertypro-details-list li:first-child {
+  padding-top: 0;
+}
+
+ul.propertypro-details-list li:last-child {
+  border-bottom: none;
+}
+
+.propertypro-property-single-div-30 {
+    width: 30%;
+}
+
+.propertypro-property-single-div-50 {
+    width: 45%;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  Agent Contact Form
+/*-----------------------------------------------------------------------------------*/
+.propertypro-agent-contact-form {
+  border: 1px solid #e1e5e6;
+  border-radius: 0.3125rem;
+
+  .propertypro-agent-card {
+    background-color: #f3f6f8;
+    padding: 2.375rem 2rem 2rem 2rem;
+    border-top-right-radius: 0.3125rem;
+    border-top-left-radius: 0.3125rem;
+  }
+
+  .propertypro-agent-photo {
+    clip-path: circle(50px at center);
+  }
+
+  .propertypro-agent-card-content {
+    h5 {
+      font-weight: bold;
+    }
+
+    p {
+      font-weight: bold;
+      font-size: 0.875rem;
+      color: $propertypro-primary-color;
+    }
+
+    div {
+      background-color: #ffffff;
+      border: 0.0625rem solid #d2dae0;
+      border-radius: 0.3125rem;
+      display: inline-block;
+      padding: 0.625rem 0.9375rem;
+      min-width: 11.875rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .propertypro-agent-contact-form-tabs {
+    border-top: 0.0625rem solid #e1e5e6;
+
+    .propertypro-tab {
+      background-color: #f3f6f8;
+      text-align: center;
+
+      &:first-child {
+        border-right: 0.0625rem solid #e1e5e6;
+      }
+
+      a {
+        color: #8b8c8d;
+        display: block;
+        padding: 1.375rem;
+        margin: 0;
+
+        &:hover {
+          color: #414141;
+        }
+      }
+    }
+
+    .propertypro-tab-selected {
+      border-bottom: 0.1875rem solid #d33320;
+      font-weight: 700;
+
+      a {
+        color: #414141;
+      }
+    }
+  }
+
+  .propertypro-agent-contact-form-content {
+    padding: 2.375rem 2rem 2rem 2rem;
+  }
+
+  .propertypro-agent-contact-form-description {
+    color: #8b8c8d;
+    font-size: 1rem;
+  }
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  Sticky Agent Card
+/*-----------------------------------------------------------------------------------*/
+.propertypro-single-container .propertypro-sticky-container {
+
+  &.propertypro-agent-hidden {
+    background-color: rgba(232, 238, 242, 0.5);
+
+    .propertypro-request-buttons {
+      padding-bottom: 3rem;
+
+      button {
+        margin-right: 1.25rem;
+      }
+      button + button {
+        margin-right: 0rem;
+      }
+    }
+
+    &.is-sticky {
+      padding: 1.25rem 0;
+      background-color: white;
+      box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+
+      .propertypro-request-buttons {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .propertypro-agent-card {
+    border: 1px solid #d2dae0;
+    border-radius: 0.25rem;
+    background-color: white;
+    padding: 2rem;
+    margin-top: -8rem;
+
+    .propertypro-agent-avatar {
+      width: 7.5rem;
+      height: 7.5rem;
+      border-radius: 50%;
+      background-size: contain;
+      background-position: center center;
+      margin-bottom: 2.375rem;
+    }
+
+    .propertypro-agent-name {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #414141;
+      margin-bottom: 0.75px;
+    }
+
+    .propertypro-agent-company {
+      font-size: 0.75rem;
+      color: #d33320;
+      margin-bottom: 1.25rem;
+    }
+
+    .propertypro-agent-phone {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #414141;
+      margin-bottom: 2rem;
+    }
+
+    .propertypro-request-buttons {
+      display: flex;
+      flex-direction: column;
+
+      button + button {
+        margin-top: 0.75rem;
+      }
+    }
+  }
 }

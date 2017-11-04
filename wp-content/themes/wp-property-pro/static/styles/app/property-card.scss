@@ -112,16 +112,25 @@
 /** Responsive attribute labels on property cards **/
 .propertypro-card .propertypro-listing-info-box {
     li.attr-bd::after {
-        content: "Bed";
+        content: "Bedrooms";
     }
     li.attr-ba::after {
-        content: "Bath";
+        content: "Bathrooms";
     }
     li.attr-sf::after {
         content: "SQFT";
     }
     li.attr-ac::after {
         content: "Acres";
+    }
+
+    @media (max-width: 410px), (min-width: 576px) and (max-width: 617px), (min-width: 711px) and (max-width: 910px), (min-width: 1380px) and (max-width: 1780px) {
+        li.attr-bd::after {
+            content: "Bed";
+        }
+        li.attr-ba::after {
+            content: "Bath";
+        }
     }
 
     @media (min-width: 618px) and (max-width: 710px), (min-width: 1200px) and (max-width: 1380px) {
@@ -134,12 +143,9 @@
         li.attr-ba+li.attr-sf::after {
             content: "SF";
         }
-        /*li.attr-ac::after {
-            content: "AC";
-        }*/
     }
 
-    @media (min-width: 576px) and (max-width: 618px) {
+    @media (min-width: 576px) and (max-width: 617px) {
         li.attr-ba+li.attr-sf {
             display: none;
         }

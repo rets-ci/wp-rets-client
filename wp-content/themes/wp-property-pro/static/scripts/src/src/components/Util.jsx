@@ -1,8 +1,7 @@
-import numeral from 'numeral';
 import React from 'react';
+import numeral from 'numeral';
 import URI from 'urijs';
 import qs from 'qs';
-import {Lib} from '../lib.jsx';
 
 import get from 'lodash/get';
 import map from 'lodash/map';
@@ -13,6 +12,10 @@ import last from 'lodash/last';
 import replace from 'lodash/replace';
 import join from 'lodash/join';
 import split from 'lodash/split';
+
+
+import { Lib } from 'app_root/lib.jsx';
+
 
 let minMaxDefaultValues = {0: 'No Min', 1: 'No Max'};
 
@@ -87,12 +90,6 @@ class Util extends React.Component {
       out[newKey] = obj[key];
     }
     return out;
-  }
-
-  static decodeHtml(html) {
-    let txt = document.createElement('textarea');
-    txt.innerHTML = html;
-    return txt.value;
   }
 
   static determineSearchType(options, property_type, sale) {
@@ -643,7 +640,9 @@ class Util extends React.Component {
     let sqft = get(post_meta, 'sqft', null);
     let mlsId = get(post_meta, 'rets_mls_number[0]');
     let listing_office = get(tax_input, 'wpp_office.listing_office[0].name', null);
-    let listing_status_sale = get(tax_input, 'wpp_listing_status.listing_status_sale[0].slug', null);
+    let listing_status_sale = get(tax_input, 'wpp_listing_status.listing_status_sale[0].slug', '');
+    let sale_type = listing_status_sale.replace('for-', '');
+    let sale_types = get(tax_input, 'wpp_listing_status.listing_status_sale', []).map(e => e.slug.replace('for-', ''));
     let listing_sub_types = map(get(tax_input, 'wpp_listing_subtype.listing_sub_type', []), 'name');
     let listing_type = get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
     let officePhoneNumber = get(post_meta, 'rets_lo1_office_phone1_number[0]');
@@ -651,6 +650,12 @@ class Util extends React.Component {
     let wpp_location_subdivision = get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
     let wpp_location_city = get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
     let wpp_import_time = get(post_meta, 'wpp_import_time[0]', null);
+
+    // @TODO: improve later
+    // put 'sale' to sale_type instead of 'rent' in case of sale_types ['rent', 'sale']
+    if (sale_types.includes('rent') && sale_types.includes('sale') && sale_types.length > 1) {
+      sale_type = 'sale';
+    }
 
     return {
       address,
@@ -688,87 +693,13 @@ class Util extends React.Component {
       wpp_location_city: get(wpp_location_city, '[0].name'),
       listing_office,
       listing_status_sale,
+      sale_type,
+      sale_types,
       listing_type,
       listing_sub_types,
       wpp_import_time,
       ...data
     }
-  }
-
-  static easingTimeGetters = {
-    linear(t) {
-      return t;
-    },
-    easeInQuad(t) {
-      return t * t;
-    },
-    easeOutQuad(t) {
-      return t * (2 - t);
-    },
-    easeInOutQuad(t) {
-      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    },
-    easeInCubic(t) {
-      return t * t * t;
-    },
-    easeOutCubic(t) {
-      return (--t) * t * t + 1;
-    },
-    easeInOutCubic(t) {
-      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-    },
-    easeInQuart(t) {
-      return t * t * t * t;
-    },
-    easeOutQuart(t) {
-      return 1 - (--t) * t * t * t;
-    },
-    easeInOutQuart(t) {
-      return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
-    },
-    easeInQuint(t) {
-      return t * t * t * t * t;
-    },
-    easeOutQuint(t) {
-      return 1 + (--t) * t * t * t * t;
-    },
-    easeInOutQuint(t) {
-      return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
-    }
-  }
-
-  static scrollToElement(container, target, duration = 500, easing = 'easeInQuad') {
-    let topPos = 0;
-    let parent = target;
-    while (parent !== container && !!parent) {
-      topPos += parent.offsetTop;
-      parent = parent.offsetParent;
-    }
-
-    if ('requestAnimationFrame' in window === false) {
-      container.scrollTop = topPos;
-      return;
-    }
-
-    const start = container.scrollTop;
-    const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
-
-    var scroll = () => {
-      const now = 'now' in window.performance ? performance.now() : new Date().getTime();
-      const time = Math.min(1, ((now - startTime) / duration));
-      const timeFunction = this.easingTimeGetters[easing](time);
-
-      container.scrollTop =  Math.ceil((timeFunction * (topPos - start)) + start);
-
-      if (container.scrollTop === topPos) {
-        return;
-      }
-
-      requestAnimationFrame(scroll);
-    }
-
-    scroll();
-    return false;
   }
 }
 

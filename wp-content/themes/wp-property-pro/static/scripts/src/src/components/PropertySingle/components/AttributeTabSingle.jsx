@@ -1,10 +1,11 @@
-import {Lib} from '../../../lib.jsx';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
+import { Lib } from 'app_root/lib.jsx';
+
 const Masonry = require('react-masonry-component');
+
 
 function showContentValue(data, dataReference) {
   if (typeof dataReference !== 'function') {
@@ -29,24 +30,18 @@ function getContent(items, data) {
   let contentElements = items.sort((a, b) => a.order - b.order).map((c, i) => {
     return ['N/A', '0'].indexOf(showContentValue(data, c.value)) < 0 ?
       <li key={JSON.stringify(c)}>
-        <span className={`${Lib.THEME_CLASSES_PREFIX}item-name`}>{c.name}:</span> {showContentValue(data, c.value)}
+        <span>{c.name}:</span> {showContentValue(data, c.value)}
       </li>
       : null;
   });
   return contentElements;
 }
 
-class PropertySingleTabContent extends Component {
-  static propTypes = {
-    content: PropTypes.object.isRequired,
-    data: PropTypes.object
-  }
+
+class AttributeTabSingle extends Component {
 
   render() {
-    let {
-      content,
-      data
-    } = this.props;
+    let { content, esProperty } = this.props;
     let elements = [];
     let visibleTabs = {};
 
@@ -72,7 +67,7 @@ class PropertySingleTabContent extends Component {
         <div className={itemClasses.join(' ')} key={`key-${c.name}`}>
           <h3>{c.name}</h3>
           <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-            {getContent(c.items, data)}
+            {getContent(c.items, esProperty)}
           </ul>
         </div>
       )}
@@ -81,4 +76,9 @@ class PropertySingleTabContent extends Component {
   }
 }
 
-export default PropertySingleTabContent;
+AttributeTabSingle.propTypes = {
+  content: PropTypes.object.isRequired,
+  esProperty: PropTypes.object
+};
+
+export default AttributeTabSingle;
