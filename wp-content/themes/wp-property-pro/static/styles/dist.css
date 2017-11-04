@@ -2035,29 +2035,27 @@ ul.propertypro-details-list li:last-child {
 /*-----------------------------------------------------------------------------------*/
 /*  Sticky Agent Card
 /*-----------------------------------------------------------------------------------*/
-.propertypro-single-container .propertypro-sticky-container.propertypro-full-width {
+.propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden {
   background-color: rgba(232, 238, 242, 0.5); }
-  .propertypro-single-container .propertypro-sticky-container.propertypro-full-width .propertypro-request-buttons {
+  .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons {
     padding-bottom: 3rem; }
-    .propertypro-single-container .propertypro-sticky-container.propertypro-full-width .propertypro-request-buttons button + button {
-      margin-left: 1.25rem; }
-  .propertypro-single-container .propertypro-sticky-container.propertypro-full-width.is-sticky {
+    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button {
+      margin-right: 1.25rem; }
+    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button + button {
+      margin-right: 0rem; }
+  .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky {
     padding: 1.25rem 0;
     background-color: white;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15); }
-    .propertypro-single-container .propertypro-sticky-container.propertypro-full-width.is-sticky .propertypro-request-buttons {
+    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky .propertypro-request-buttons {
       padding-bottom: 0; }
-
-.propertypro-single-container .propertypro-sticky-container.is-sticky .propertypro-agent-card {
-  margin-top: 2rem; }
 
 .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card {
   border: 1px solid #d2dae0;
   border-radius: 0.25rem;
   background-color: white;
   padding: 2rem;
-  margin-top: -5rem;
-  margin-bottom: 2rem; }
+  margin-top: -8rem; }
   .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-avatar {
     width: 7.5rem;
     height: 7.5rem;
