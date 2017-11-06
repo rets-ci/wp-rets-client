@@ -225,7 +225,7 @@ class SearchFilterDescription extends Component {
       description = _count + (types ? ' ' + types.toLowerCase() : '') + (saleType ? ' ' + saleType.toLowerCase() : '') + (locations ? ' in ' + locations : '') + _price + ((_bedrooms || _bathrooms) ? ' that have' + _bedrooms + _bathrooms : '') + _sqft + _acres + '.';
 
     } else {
-      clearFiltersBtn = <a href="#" onClick={event => { event.preventDefault(); this.clearFilters(filters, props.saleType, historyPush)}}>Clear filters</a>;
+      clearFiltersBtn = <a href="#" onClick={event => { event.preventDefault(); this.clearFilters(filters, props.saleType, historyPush)}}>Remove Filters</a>;
     }
 
     return {

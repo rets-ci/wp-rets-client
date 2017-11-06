@@ -122,7 +122,7 @@ class HeaderPropertySingle extends Component {
       }]
     };
     if (this.props.sale) {
-      propertySingleStaticFilters['sale_type'] = this.props.sale;
+      propertySingleStaticFilters['sale_type'] = this.props.sale.map((saleItem) => saleItem.toLowerCase());
     }
     let containerClass = `${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single`;
     if (this.props.saleTypesPanelOpen) {
