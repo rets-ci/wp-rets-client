@@ -114,7 +114,7 @@ class LocationModal extends Component {
 
     // @TODO should be fixed and should contain term lable like `city`,
     // for now get needed value from typeType `wpp_location_city`
-    let shortTermTypeValue = termType.replace('wpp_location_', '');
+    let shortTermTypeValue = Util.reddoorConvertTermTypeToSearchURLPrefix(termType);
 
     for(let i in currentTerms){
       let termItem = currentTerms[i];
