@@ -16,87 +16,122 @@ class SearchFilterDescription extends Component {
     type: PropTypes.string
   };
 
+  clearFilters = (termFilters, sale_type, historyPush) => {
+
+    let params = [];
+
+    let property_search_options = get(bundle, 'property_search_options', []);
+
+    // Get current search array
+    let current_search = first(property_search_options.filter(function (option) {
+      return option.search === termFilters.search_type;
+    }));
+
+    // Get default listing statuses for current search type
+    let searchTypeArrayParams = Util.createSearchTypeArrayParams(get(termFilters, 'property_type', ''), get(current_search, 'listing_statuses'));
+    params = params.concat(searchTypeArrayParams);
+
+    // Get terms from filters
+    let terms = get(termFilters, 'term', []);
+    if (terms) {
+      params = params.concat(terms.map(d => ({key: d.term, values: [d.slug]})));
+    }
+
+    // Create search url and go to it
+    let searchURL = Util.createSearchURL('/search', params);
+    historyPush(searchURL);
+  };
+
   getTitleAndDescription(props) {
-    // Count of items which can be displayed at title
-    let items_limit = 2;
-
-    let residential_sale_type_label = 'Real Estate';
-
-    // Build locations array
-    let terms = get(props, 'terms', []).map(term => (term.text));
-    let locations = '';
-    if (terms && terms.length <= items_limit) {
-      locations = sortBy(terms).join(' and ');
-    }
-
-    // Get listing subtypes array with plural values
-    let subtypes = get(props, 'subtypes', []).map(subtype => (get(bundle, ['listing_subtypes_plural_values', props.type, subtype.slug].join('.'))));
-
-    // Checking if using 'other' subtype
-    let exist_other_values = get(props, 'subtypes', []).map(subtype => (subtype.slug)).indexOf('other') !== -1;
-
-    // If there is no selected subtypes or one of selected is 'other' then just display listing type
-    let types = capitalize(props.type);
-    if (subtypes && subtypes.length <= items_limit && !exist_other_values) {
-      types = sortBy(subtypes).join(' and ');
-    }
-
-    // Checking selected sale types
-    let saleTypes = (props.saleType && props.saleType.map(d => capitalize(d))) || ['Rent', 'Sale'];
-    if (!isArray(saleTypes)) {
-      saleTypes = [saleTypes];
-    }
-
-    // Define sale type title's part
-    let saleType;
-    let shortSaleType;
-    switch (props.type) {
-      case 'residential':
-        shortSaleType = saleType = residential_sale_type_label;
-        break;
-      case 'commercial':
-        shortSaleType = saleType = 'Commercial Real Estate';
-        if (exist_other_values) {
-          types = saleType;
-        }
-        break;
-      case 'land':
-        saleType = 'Land Real Estate';
-        shortSaleType = 'Land';
-        if (exist_other_values) {
-          types = saleType;
-        }
-        break;
-    }
-
-    // If display all sale type, then drop it
-    if (saleTypes.length === 2 && subtypes.length > 0) {
-      saleType = '';
-    } else if (saleTypes.length === 1) {
-      // Case when displayed particular sale type with listing subtype
-      if (subtypes.length > 0 && subtypes.length <= 2) {
-        saleType = [['for', first(saleTypes)].join(' ')].join(' ');
-      } else { //Case when displayed particular sale type without subtypes
-        saleType = [shortSaleType, ['for', first(saleTypes)].join(' ')].join(' ')
-      }
-    }
-
-    let title = [locations, types, saleType].join(' ');
 
     // Define needed props for description
     let {
       acres,
       bathrooms,
       bedrooms,
+      filters,
+      historyPush,
       total,
       price,
       sqft
     } = props;
 
-    let description = '';
+    // Default values
+    let title = 'No Results';
+    let description = 'Your search does not match any listings. Try zooming out or removing your filters.';
+    let clearFiltersBtn = null;
 
-    // Build description just in case when founded something
-    if (total) {
+    if(total){
+
+      // TITLE
+
+      // Count of items which can be displayed at title
+      let items_limit = 2;
+
+      let residential_sale_type_label = 'Real Estate';
+
+      // Build locations array
+      let terms = get(props, 'terms', []).map(term => (term.text));
+      let locations = '';
+      if (terms && terms.length <= items_limit) {
+        locations = sortBy(terms).join(' and ');
+      }
+
+      // Get listing subtypes array with plural values
+      let subtypes = get(props, 'subtypes', []).map(subtype => (get(bundle, ['listing_subtypes_plural_values', props.type, subtype.slug].join('.'))));
+
+      // Checking if using 'other' subtype
+      let exist_other_values = get(props, 'subtypes', []).map(subtype => (subtype.slug)).indexOf('other') !== -1;
+
+      // If there is no selected subtypes or one of selected is 'other' then just display listing type
+      let types = capitalize(props.type);
+      if (subtypes && subtypes.length <= items_limit && !exist_other_values) {
+        types = sortBy(subtypes).join(' and ');
+      }
+
+      // Checking selected sale types
+      let saleTypes = (props.saleType && props.saleType.map(d => capitalize(d))) || ['Rent', 'Sale'];
+      if (!isArray(saleTypes)) {
+        saleTypes = [saleTypes];
+      }
+
+      // Define sale type title's part
+      let saleType;
+      let shortSaleType;
+      switch (props.type) {
+        case 'residential':
+          shortSaleType = saleType = residential_sale_type_label;
+          break;
+        case 'commercial':
+          shortSaleType = saleType = 'Commercial Real Estate';
+          if (exist_other_values) {
+            types = saleType;
+          }
+          break;
+        case 'land':
+          saleType = 'Land Real Estate';
+          shortSaleType = 'Land';
+          if (exist_other_values) {
+            types = saleType;
+          }
+          break;
+      }
+
+      // If display all sale type, then drop it
+      if (saleTypes.length === 2 && subtypes.length > 0) {
+        saleType = '';
+      } else if (saleTypes.length === 1) {
+        // Case when displayed particular sale type with listing subtype
+        if (subtypes.length > 0 && subtypes.length <= 2) {
+          saleType = [['for', first(saleTypes)].join(' ')].join(' ');
+        } else { //Case when displayed particular sale type without subtypes
+          saleType = [shortSaleType, ['for', first(saleTypes)].join(' ')].join(' ')
+        }
+      }
+
+      title = [locations, types, saleType].join(' ');
+
+      // DESCRIPTION
 
       // Build total count part
       let _count = `We found ${total}`;
@@ -188,12 +223,15 @@ class SearchFilterDescription extends Component {
       }
 
       description = _count + (types ? ' ' + types.toLowerCase() : '') + (saleType ? ' ' + saleType.toLowerCase() : '') + (locations ? ' in ' + locations : '') + _price + ((_bedrooms || _bathrooms) ? ' that have' + _bedrooms + _bathrooms : '') + _sqft + _acres + '.';
-    }
 
+    } else {
+      clearFiltersBtn = <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(filters, props.saleType, historyPush)}}>Clear filters</a>;
+    }
 
     return {
       title: title,
       description: description,
+      clearFiltersBtn: clearFiltersBtn
     };
   }
 
@@ -224,6 +262,7 @@ class SearchFilterDescription extends Component {
       <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
         <h1>{data.title}</h1>
         <p>{data.description}</p>
+        {data.clearFiltersBtn}
       </div>
     );
   }

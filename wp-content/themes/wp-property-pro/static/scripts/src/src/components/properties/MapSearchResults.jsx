@@ -432,16 +432,18 @@ class MapSearchResults extends Component {
           { (!isMobile || !this.state.mapDisplay) &&
             <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
               <SearchFilterDescriptionText
+                acres={searchFilters.acres}
                 bathrooms={searchFilters.bathrooms}
                 bedrooms={searchFilters.bedrooms}
-                terms={searchFilters.term}
-                type={searchFilters.property_type}
-                subtypes={searchFilters.property_subtype}
+                filters={searchFilters}
+                historyPush={history.push}
                 price={searchFilters.price}
                 saleType={searchFilters.sale_type}
                 sqft={searchFilters.sqft}
-                acres={searchFilters.acres}
+                subtypes={searchFilters.property_subtype}
+                terms={searchFilters.term}
                 total={this.props.resultsTotal}
+                type={searchFilters.property_type}
               />
 
               { this.props.displayedResults.length > 0
