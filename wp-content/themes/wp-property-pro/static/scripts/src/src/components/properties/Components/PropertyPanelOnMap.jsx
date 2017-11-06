@@ -4,8 +4,9 @@ import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
 import { deselectPropertyOnMap } from 'app_root/actions/index.jsx';
+import PropertySingle from 'app_root/components/PropertySingle/PropertySingle.jsx';
 import Util from 'app_root/components/Util.jsx';
-import Single from 'app_root/components/properties/Single.jsx';
+
 
 class PropertyPanelOnMap extends Component {
 
@@ -39,10 +40,10 @@ class PropertyPanelOnMap extends Component {
     return (
       <div className={containerClass}>
       { property
-        ? <Single
+        ? <PropertySingle
             agents={agents}
-            {...propertyMeta}
-            all={property}
+            curatedPropertyInfo={propertyMeta}
+            elasticSearchSource={property}
             fromMapView={true}
           />
         : <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}></div>

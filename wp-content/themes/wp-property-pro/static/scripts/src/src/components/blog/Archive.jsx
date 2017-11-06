@@ -39,10 +39,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 class ArchiveContent extends Component {
-  static propTypes = {
-    post: PropTypes.object.isRequired
-  };
-
   componentDidMount() {
     let content = get(this.props.post, 'blog_content', {});
 
@@ -76,6 +72,9 @@ class ArchiveContent extends Component {
   }
 }
 
+ArchiveContent.propTypes = {
+  post: PropTypes.object.isRequired
+};
 
 const Archive = connect(
   mapStateToProps,
