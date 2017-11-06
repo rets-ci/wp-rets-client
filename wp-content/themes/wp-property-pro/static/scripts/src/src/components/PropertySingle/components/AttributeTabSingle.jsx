@@ -6,20 +6,18 @@ import { Lib } from 'app_root/lib.jsx';
 
 const Masonry = require('react-masonry-component');
 
-
 function showContentValue(data, dataReference) {
   if (typeof dataReference !== 'function') {
     console.log(dataReference + ' is not a function');
     // TODO: TEMP solution until everything is changed to function
     return "old style value";
   } else {
-    let value = dataReference(data);
-    if (typeof value === 'object') {
-      // this should never happen
-      console.log(dataReference + ' needs to be fixed');
-      return 'Obj';
-    } else if (!value) {
-      return 'N/A';
+    let value;
+    if (value === null) {
+      console.log(dataReference + ' is null');
+      return null;
+    } else if (value === false) {
+      return "No";
     } else {
       return value;
     }
@@ -28,7 +26,11 @@ function showContentValue(data, dataReference) {
 
 function getContent(items, data) {
   let contentElements = items.sort((a, b) => a.order - b.order).map((c, i) => {
-    return ['N/A', '0'].indexOf(showContentValue(data, c.value)) < 0 ?
+    //TODO: Remove these console.logs before going live, these are meant for development only
+    console.log('name: ', c.name);
+    console.log('value: ', showContentValue(data, c.value));
+    console.log('-------------------');
+    return [null].indexOf(showContentValue(data, c.value)) < 0 ?
       <li key={JSON.stringify(c)}>
         <span>{c.name}:</span> {showContentValue(data, c.value)}
       </li>
@@ -44,7 +46,6 @@ class AttributeTabSingle extends Component {
     let { content, esProperty } = this.props;
     let elements = [];
     let visibleTabs = {};
-
     let masonryOptions = {
       horizontalOrder: true,
       itemSelector: `.${Lib.THEME_CLASSES_PREFIX}property-single-div`,
@@ -53,8 +54,21 @@ class AttributeTabSingle extends Component {
       gutter: 10,
       transitionDuration: 0
     };
+    
+    let items = [];
+    content.children.sort((a, b) => a.order - b.order).forEach(d => {
+      let item = {};
+      item['category'] = d.name;
+      let insideContent = getContent(d.items, esProperty);
+      item['insideContent'] = insideContent;
+      // check to see at least some of the items are not null
+      if (insideContent.some(d => d !== null)) {
+        items.push(item);
+      }
+    });
+
     let itemClasses = [`${Lib.THEME_CLASSES_PREFIX}property-single-div`];
-    itemClasses.push((content.children.length % 2 === 0) ? `${Lib.THEME_CLASSES_PREFIX}property-single-div-50` : `${Lib.THEME_CLASSES_PREFIX}property-single-div-30`)
+    itemClasses.push((items.length % 2 === 0) ? `${Lib.THEME_CLASSES_PREFIX}property-single-div-50` : `${Lib.THEME_CLASSES_PREFIX}property-single-div-30`)
     return (
       <Masonry
         className={'my-masonry-div'}
@@ -63,11 +77,11 @@ class AttributeTabSingle extends Component {
         disableImagesLoaded={false}
         updateOnEachImageLoad={false}
       >
-      {content.children.sort((a, b) => a.order - b.order).map(c =>
-        <div className={itemClasses.join(' ')} key={`key-${c.name}`}>
-          <h3>{c.name}</h3>
+      {items.map(c =>
+        <div className={itemClasses.join(' ')} key={`key-${c.category}`}>
+          <h3>{c.category}</h3>
           <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-            {getContent(c.items, esProperty)}
+            {c.insideContent}
           </ul>
         </div>
       )}
