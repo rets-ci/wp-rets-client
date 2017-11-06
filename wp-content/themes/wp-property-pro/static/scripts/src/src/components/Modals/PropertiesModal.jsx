@@ -158,14 +158,14 @@ class PropertiesModal extends Component {
   handleDeleteSubPropertyTypeFilter = slug => {
     let filters = Object.assign({}, this.state.filters);
     filters['property_subtype'] = filters['property_subtype'].filter(d => d.slug !== slug);
-    
+
     // remove property_subtype if none exists
     if (!filters['property_subtype'].length) {
       delete filters['property_subtype'];
     }
     this.setState({filters: filters});
   }
-  
+
 
   handlePriceSelect = (start, to) => {
     let filter = {
@@ -224,7 +224,7 @@ class PropertiesModal extends Component {
         filters: filters
       });
     }
-    
+
     this.props.closeLocationModal();
   }
 
@@ -255,9 +255,9 @@ class PropertiesModal extends Component {
     } else {
       delete filters.property_subtype;
     }
-    
+
     this.setState({filters: filters});
-    
+
   }
 
   handleSaleTypeToggle = filter => {
@@ -288,14 +288,14 @@ class PropertiesModal extends Component {
       filters: filters
     });
   }
-  
+
   handleLastTermRemove = filter => {
     this.handleTermFilterRemove(filter);
     // this is for when the last filter is deleted and the location modal, which would be opened as a result, is also closed without choosing another term filter
     this.lastTermFilter = filter;
     this.props.openLocationModal();
   }
-  
+
   handleTermSelection = filter => {
     let filters = Object.assign({}, this.state.filters);
     // if the term filter is new and it's not one that we already had, then set it
@@ -591,6 +591,7 @@ class PropertiesModal extends Component {
     return (
       <div>
         <LocationModal
+          terms={get(this, 'state.filters.term', [])}
           onTermSelect={this.handleTermSelection}
           closeModal={this.handleLocationModalClose}
         />
@@ -677,7 +678,7 @@ class PropertiesModal extends Component {
                 </div>
                 <div className={Lib.THEME_CLASSES_PREFIX + "search-modal-box"}>
                   <div className="container">
-                  { open && 
+                  { open &&
                       <GroupTransition fromFilterModal>
                       { modalBody }
                       </GroupTransition>
@@ -708,7 +709,7 @@ class PropertiesModal extends Component {
         </div>
       </div>
     );
-    
+
   }
 };
 

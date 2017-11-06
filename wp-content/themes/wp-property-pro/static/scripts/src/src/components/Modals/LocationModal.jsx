@@ -74,8 +74,9 @@ class LocationModal extends Component {
     propertiesModalMode: PropTypes.bool.isRequired,
     propertyTypeOptions: PropTypes.array.isRequired,
     searchHandler: PropTypes.func.isRequired,
+    terms: PropTypes.array,
     topQuery: PropTypes.func.isRequired
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -108,6 +109,22 @@ class LocationModal extends Component {
   handleResultClick = (result) => {
     const { taxonomy: tax, term, termType, text, url } = result;
     const { searchType, modifyType, history } = this.props;
+
+    let currentTerms = get(this.props, 'terms', []);
+
+    // @TODO should be fixed and should contain term lable like `city`,
+    // for now get needed value from typeType `wpp_location_city`
+    let shortTermTypeValue = termType.replace('wpp_location_', '');
+
+    for(let i in currentTerms){
+      let termItem = currentTerms[i];
+      if(get(termItem, 'term') === shortTermTypeValue && get(termItem, 'text') === text){
+        console.log('Location modal', 'Skipping adding term, because it is already added');
+        this.props.closeModal();
+        return;
+      }
+    }
+
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
     if (searchOptions.error) {
       console.log('%c ' + searchOptions.msg, 'color: #ff0000');
@@ -134,7 +151,7 @@ class LocationModal extends Component {
               values: [term]
             }
           ];
-          
+
           let searchTypeArrayParams = Util.createSearchTypeArrayParams(property_type, sale_type);
 
           params = params.concat(searchTypeArrayParams);
@@ -251,7 +268,7 @@ class LocationModal extends Component {
                 </div>
               </div>
             </div>
-            
+
             <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
               <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
               {
