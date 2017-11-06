@@ -178,7 +178,16 @@ export default [
         {"name": "High School", "value": (data) => { return get(data, 'tax_input.wpp_schools.high_school', []).map(d => d.name).join(', ') || null; }, "order": 3}
       ], "order": 3},
       {"name": "Address", "items": [
-        {"name": "Inside City", "value": (data) => { return YesOrNoFields(data, 'tax_input.rets_inside_city.rets_inside_city[0].name'); }, "order": 1},
+        {"name": "Inside City", "value": (data) => {
+          let t = YesOrNoFields(data, 'tax_input.rets_inside_city.rets_inside_city[0].name');
+          if (t === 'Yes') {
+            let city = get(data, 'tax_input.wpp_location.wpp_location_city', []);
+            return t + (city.length ? '' + city.join(', ') : '');
+          } else {
+            return t;
+          }
+          return ;
+        }, "order": 1},
         {"name": "Street Number", "value": (data) => { return get(data, 'post_meta.rets_street_number[0]', null); }, "order": 2},
         {"name": "Street Directional", "value": (data) => { return get(data, 'post_meta.rets_street_dir_prefix[0]', null); }, "order": 3},
         {"name": "Street", "value": (data) => { return get(data, 'post_meta.rets_street_name[0]', null); }, "order": 4},

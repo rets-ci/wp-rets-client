@@ -12,7 +12,7 @@ function showContentValue(data, dataReference) {
     // TODO: TEMP solution until everything is changed to function
     return "old style value";
   } else {
-    let value;
+    let value = dataReference(data);
     if (value === null) {
       console.log(dataReference + ' is null');
       return null;
