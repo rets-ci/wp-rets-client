@@ -250,9 +250,11 @@ ul.propertypro-details-list li:last-child {
 
   &.propertypro-agent-hidden {
     background-color: rgba(232, 238, 242, 0.5);
+    padding-bottom: 3rem;
 
     .propertypro-request-buttons {
-      padding-bottom: 3rem;
+      overflow: hidden;
+      height: 3rem;
 
       button {
         margin-right: 1.25rem;
