@@ -6,10 +6,14 @@ import {get, first, isArray, capitalize, sortBy} from 'lodash';
 
 class SearchFilterDescription extends Component {
   static propTypes = {
+    acres: PropTypes.string,
     bathrooms: PropTypes.string,
     bedrooms: PropTypes.string,
+    filters: PropTypes.object,
+    historyPush: PropTypes.func,
     price: PropTypes.object,
     saleType: PropTypes.array,
+    sqft: PropTypes.string,
     subtypes: PropTypes.array,
     terms: PropTypes.array,
     total: PropTypes.number,
