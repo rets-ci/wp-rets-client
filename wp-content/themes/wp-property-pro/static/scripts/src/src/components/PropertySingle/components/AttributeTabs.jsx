@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import Swiper from 'react-id-swiper';
 import merge from 'lodash/merge';
+import get from 'lodash/get';
 
 import { Lib }            from 'app_root/lib.jsx';
 import { getListingTypeJSONFileName }     from 'app_root/helpers/propertyHelper';
@@ -30,6 +32,7 @@ class AttributeTabs extends Component {
   constructor(props) {
     super(props);
 
+    console.log('******* AttributeTabs constructor');
     this.state = {
       selectedTab: 'All'
     };
@@ -41,9 +44,15 @@ class AttributeTabs extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    const previous_mlsId = get(this.props, 'curatedPropertyInfo.mlsId');
+    const next_mlsId = get(nextProps, 'curatedPropertyInfo.mlsId');
+    console.log('============ AttributeTabs nextProps', nextProps, previous_mlsId, next_mlsId);
+  }
+
   render() {
     const { selectedTab } = this.state;
-    const { esProperty, curatedPropertyInfo } = this.props;
+    const { esProperty, curatedPropertyInfo, isOneColumn } = this.props;
     const { listing_type, address, address_unit } = curatedPropertyInfo;
 
     if (!listing_type || LISTING_TYPES_TO_HIDE.indexOf(listing_type) >= 0) {
@@ -62,8 +71,19 @@ class AttributeTabs extends Component {
     let tabs = propertyDataStructure.map(p => p.name);
     let content = propertyDataStructure.find(d => d.name === selectedTab);
 
+    const swiperParams = {
+      containerClass: `${Lib.THEME_CLASSES_PREFIX}attr-tabs-scroll`,
+      freeMode: true,
+      slidesPerView: 'auto',
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      onInit: (swiper) => {
+        this.swiper = swiper;
+      }
+    };
+
     return (
-      <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attr-tabs pt-5` }>
+      <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attrs-section pt-5` }>
         <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
           Property Details for {address[0]} {address_unit}
         </h5>
@@ -72,25 +92,30 @@ class AttributeTabs extends Component {
           {descriptionBoilerplate}
         </p>
 
-        <div className="card text-center mb-4">
-          <div className="card-header">
-            <ul className="nav nav-tabs card-header-tabs">
+        <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tabs-header d-flex` }>
+          {tabs.length &&
+            <Swiper {...swiperParams}>
               {tabs.map((tab, i) =>
-                <li className="nav-item" key={tab}>
-                  <a
-                    className={`nav-link ${selectedTab === tab ? 'active' : ''}`}
-                    href="#"
-                    onClick={(event) => { event.preventDefault(); this.selectTab(tab); }}
-                  >{tab}</a>
-                </li>
+                <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tab` }
+                  key={tab} style={{ paddingLeft: 50, paddingRight: 50 }}>
+                  {tab}
+                </div>
               )}
-            </ul>
+            </Swiper>
+          }
+          <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tab-fixed` }>
+            All
           </div>
+        </div>
+
+        <div className="card text-center mb-4">
+
           <div className="card-block">
             <div>
               <AttributeTabSingle
                 content={ content }
                 esProperty={ esProperty }
+                isOneColumn={ isOneColumn }
               />
             </div>
           </div>
@@ -103,6 +128,7 @@ class AttributeTabs extends Component {
 AttributeTabs.propTypes = {
   esProperty: PropTypes.object.isRequired,
   curatedPropertyInfo: PropTypes.object.isRequired,
+  isOneColumn: PropTypes.bool.isRequired,
 };
 
 export default AttributeTabs;

@@ -153,10 +153,6 @@ ul.propertypro-details-list li:last-child {
   border-bottom: none;
 }
 
-.propertypro-property-single-div-30 {
-    width: 30%;
-}
-
 .propertypro-property-single-div-50 {
     width: 45%;
 }
@@ -322,4 +318,24 @@ ul.propertypro-details-list li:last-child {
       }
     }
   }
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  Attribute Tabs
+/*-----------------------------------------------------------------------------------*/
+.propertypro-attr-tabs-header {
+  position: relative;
+}
+
+.propertypro-attr-tabs-scroll {
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  .swiper-slide {
+    width: auto;
+  }
+}
+
+.propertypro-attr-tab-fixed {
+  width: 3rem;
 }

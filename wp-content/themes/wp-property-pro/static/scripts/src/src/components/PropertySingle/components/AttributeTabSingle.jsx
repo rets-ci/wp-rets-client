@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Masonry from 'react-masonry-component';
 import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
 
-const Masonry = require('react-masonry-component');
 
 function showContentValue(data, dataReference) {
   if (typeof dataReference !== 'function') {
@@ -43,7 +43,7 @@ function getContent(items, data) {
 class AttributeTabSingle extends Component {
 
   render() {
-    let { content, esProperty } = this.props;
+    let { content, esProperty, isOneColumn } = this.props;
     let elements = [];
     let visibleTabs = {};
     let masonryOptions = {
@@ -68,7 +68,10 @@ class AttributeTabSingle extends Component {
     });
 
     let itemClasses = [`${Lib.THEME_CLASSES_PREFIX}property-single-div`];
-    itemClasses.push((items.length % 2 === 0) ? `${Lib.THEME_CLASSES_PREFIX}property-single-div-50` : `${Lib.THEME_CLASSES_PREFIX}property-single-div-30`)
+    if (!isOneColumn) {
+      itemClasses.push(`${Lib.THEME_CLASSES_PREFIX}property-single-div-50`);
+    }
+
     return (
       <Masonry
         className={'my-masonry-div'}
@@ -92,7 +95,8 @@ class AttributeTabSingle extends Component {
 
 AttributeTabSingle.propTypes = {
   content: PropTypes.object.isRequired,
-  esProperty: PropTypes.object
+  esProperty: PropTypes.object,
+  isOneColumn: PropTypes.bool.isRequired,
 };
 
 export default AttributeTabSingle;
