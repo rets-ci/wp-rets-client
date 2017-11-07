@@ -240,9 +240,21 @@ class MapSearchResults extends Component {
 
     // Update url without selected property for re-rendering listings list if listing was unselected
     if(get(this.props, 'panelOnMapShown', false) && !get(nextProps, 'panelOnMapShown', false)){
+
+      if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX]) {
+        filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
+        filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
+      }
+      if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {
+        filters['property_subtype'] = filters['property_subtype'].map(d => d.slug);
+      }
+
       delete(filters['selected_property']);
 
       filters = Util.customFormatToSearchObject(filters);
+      if(get(filters, 'search', null)){
+        delete(filters['search']);
+      }
       let searchCollection = Util.searchObjectToCollection(filters);
       let searchURL = Util.createSearchURL('/search', searchCollection);
       this.props.history.push(searchURL);
