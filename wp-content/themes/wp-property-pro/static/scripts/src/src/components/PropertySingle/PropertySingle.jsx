@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 import { Lib }              from 'app_root/lib.jsx';
 import htmlHelper           from 'app_root/helpers/htmlHelper';
-import propertyHelper       from 'app_root/helpers/propertyHelper';
+import { getContactFormData }       from 'app_root/helpers/propertyHelper';
 import FormFetcher          from 'app_root/components/Forms/FormFetcher.jsx';
 import PropertiesModal      from 'app_root/components/Modals/PropertiesModal.jsx';
 
@@ -30,7 +30,7 @@ class Single extends Component {
       curatedPropertyInfo,
     } = this.props;
 
-    const contactFormData = propertyHelper.getContactFormData(curatedPropertyInfo, agents);
+    const contactFormData = getContactFormData(curatedPropertyInfo, agents);
 
     console.debug('RDC agents:', agents);
     console.debug('[PropertySingle agent picked] constructor', contactFormData.agent);
@@ -60,7 +60,7 @@ class Single extends Component {
   }
 
   setContactFormData = (props) => {
-    const contactFormData = propertyHelper.getContactFormData(props.curatedPropertyInfo, props.agents);
+    const contactFormData = getContactFormData(props.curatedPropertyInfo, props.agents);
     this.setState({
       contactFormTab: null,
       contactFormData

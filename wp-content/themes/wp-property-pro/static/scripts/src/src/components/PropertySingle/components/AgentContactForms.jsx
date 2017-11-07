@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
 import { Lib }      from 'app_root/lib.jsx';
-import propertyHelper       from 'app_root/helpers/propertyHelper';
+import { getContactFormTabFeeder }       from 'app_root/helpers/propertyHelper';
 import FormFetcher  from 'app_root/components/Forms/FormFetcher.jsx';
 import JSONSchemaFormContainer
   from 'app_root/components/Forms/JSONSchemaFormContainer.jsx';
@@ -83,7 +83,7 @@ class AgentContactForms extends Component {
 
     const { selectedTab } = this.state;
 
-    const getInitialFormData = propertyHelper.getContactFormTabFeeder(post_title, mlsId);
+    const getInitialFormData = getContactFormTabFeeder(post_title, mlsId);
 
     let formContent;
 

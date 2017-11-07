@@ -4,7 +4,7 @@ import renderHTML from 'react-render-html';
 import moment from 'moment';
 
 import { Lib } from 'app_root/lib.jsx';
-import propertyHelper from 'app_root/helpers/propertyHelper';
+import { daysPassedSincePostedDate, getLastCheckedMoment, getLastUpdatedMoment } from 'app_root/helpers/propertyHelper';
 
 
 class Overview extends Component {
@@ -20,9 +20,9 @@ class Overview extends Component {
     } = this.props;
 
     let availableDate = moment.utc(rets_date_available, 'YYYY-MM-DD');
-    let daysOnWebsite = propertyHelper.daysPassedSincePostedDate(this.props.curatedPropertyInfo);
-    let lastUpdatedMoment = propertyHelper.getLastUpdatedMoment(this.props.curatedPropertyInfo);
-    let lastCheckedMoment = propertyHelper.getLastCheckedMoment(this.props.curatedPropertyInfo);
+    let daysOnWebsite = daysPassedSincePostedDate(this.props.curatedPropertyInfo);
+    let lastUpdatedMoment = getLastUpdatedMoment(this.props.curatedPropertyInfo);
+    let lastCheckedMoment = getLastCheckedMoment(this.props.curatedPropertyInfo);
 
     let availabilityOpening = null;
     if (saleType === 'rent' && listing_type === 'residential' && availableDate.isValid()) {

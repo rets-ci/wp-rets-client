@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import merge from 'lodash/merge';
 
 import { Lib }            from 'app_root/lib.jsx';
-import propertyHelper     from 'app_root/helpers/propertyHelper';
+import { getListingTypeJSONFileName }     from 'app_root/helpers/propertyHelper';
 import AttributeTabSingle from 'app_root/components/PropertySingle/components/AttributeTabSingle.jsx';
 
 import esSchema from 'app_root/static_data/property-data-structure/index.js';
@@ -69,7 +69,7 @@ class AttributeTabs extends Component {
       return null;
     }
 
-    let listingTypeJSONFileName = propertyHelper.getListingTypeJSONFileName(curatedPropertyInfo);
+    let listingTypeJSONFileName = getListingTypeJSONFileName(curatedPropertyInfo);
 
     if (!listingTypeJSONFileName) {
       return null;

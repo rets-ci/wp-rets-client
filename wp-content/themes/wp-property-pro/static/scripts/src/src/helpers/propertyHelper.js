@@ -1,20 +1,19 @@
 import moment from 'moment';
+import numeral from 'numeral';
 import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
 
-
-const helper = {
+export {
   getLastUpdatedMoment,
   getLastCheckedMoment,
   daysPassedSincePostedDate,
-
   getContactFormData,
   getContactFormTabFeeder,
   getListingTypeJSONFileName,
+  formatYesOrNoFields,
+  moneyFormat
 };
-
-export default helper;
 
 /************************************
 * public functions
@@ -135,6 +134,16 @@ function getContactFormTabFeeder(post_title, mlsId) {
     return obj[selectedTab] || {};
   }
 }
+
+function formatYesOrNoFields(data, ESReference) {
+  let t = get(data, ESReference, false);
+  return t ?
+    t.includes('No') ? "No" : "Yes" : false;
+};
+
+function moneyFormat(data) {
+  return data !== null && data !== 0 && '$' + numeral(data).format('0,0');
+};
 
 /************************************
 * private functions
