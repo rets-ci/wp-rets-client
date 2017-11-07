@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Swiper from 'react-id-swiper';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
+import remove from 'lodash/remove';
 
 import { Lib }            from 'app_root/lib.jsx';
 import { getListingTypeJSONFileName }     from 'app_root/helpers/propertyHelper';
@@ -28,11 +29,20 @@ const getAllTabData = (propertyDataStructure) => {
   return AllTab;
 };
 
+const getTabClass = (tab, selectedTab) => {
+  if (tab === selectedTab) {
+    return `${Lib.THEME_CLASSES_PREFIX}attr-tab ${Lib.THEME_CLASSES_PREFIX}attr-tab-active`;
+  } else {
+    return `${Lib.THEME_CLASSES_PREFIX}attr-tab`; 
+  }
+};
+
+
 class AttributeTabs extends Component {
   constructor(props) {
     super(props);
 
-    console.log('******* AttributeTabs constructor');
+    console.log('[AttributeTabs] constructor');
     this.state = {
       selectedTab: 'All'
     };
@@ -47,7 +57,7 @@ class AttributeTabs extends Component {
   componentWillReceiveProps(nextProps) {
     const previous_mlsId = get(this.props, 'curatedPropertyInfo.mlsId');
     const next_mlsId = get(nextProps, 'curatedPropertyInfo.mlsId');
-    console.log('============ AttributeTabs nextProps', nextProps, previous_mlsId, next_mlsId);
+    console.log('[AttributeTabs] nextProps', nextProps, previous_mlsId, next_mlsId);
   }
 
   render() {
@@ -68,19 +78,38 @@ class AttributeTabs extends Component {
     let propertyDataStructure = esSchema[listingTypeJSONFileName].slice(0);
     let allTab = getAllTabData(propertyDataStructure);
     propertyDataStructure.push(allTab);
+
     let tabs = propertyDataStructure.map(p => p.name);
     let content = propertyDataStructure.find(d => d.name === selectedTab);
+    remove(tabs, e => e === 'All');
+
 
     const swiperParams = {
       containerClass: `${Lib.THEME_CLASSES_PREFIX}attr-tabs-scroll`,
       freeMode: true,
       slidesPerView: 'auto',
-      nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev',
-      onInit: (swiper) => {
-        this.swiper = swiper;
-      }
+      nextButton: '.swiper-button-next-custom',
+      prevButton: '.swiper-button-prev-custom',
+      nextButtonCustomizedClass: 'fa fa-angle-right',
+      prevButtonCustomizedClass: 'fa fa-angle-left',
     };
+
+
+    let scrollingTabs = null
+    if (tabs.length) {
+      scrollingTabs = (
+        <Swiper {...swiperParams}>
+          {tabs.map((tab) => {
+            return (
+              <div className={ getTabClass(tab, selectedTab) } key={ tab } onClick={ this.selectTab.bind(this, tab) }>
+                { tab }
+              </div>
+            );
+          })}
+        </Swiper>
+      )
+    }
+
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attrs-section pt-5` }>
@@ -93,32 +122,18 @@ class AttributeTabs extends Component {
         </p>
 
         <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tabs-header d-flex` }>
-          {tabs.length &&
-            <Swiper {...swiperParams}>
-              {tabs.map((tab, i) =>
-                <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tab` }
-                  key={tab} style={{ paddingLeft: 50, paddingRight: 50 }}>
-                  {tab}
-                </div>
-              )}
-            </Swiper>
-          }
-          <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tab-fixed` }>
+          <div className={ getTabClass('All', selectedTab) } onClick={ this.selectTab.bind(this, 'All') }>
             All
           </div>
+          { scrollingTabs }
         </div>
 
-        <div className="card text-center mb-4">
-
-          <div className="card-block">
-            <div>
-              <AttributeTabSingle
-                content={ content }
-                esProperty={ esProperty }
-                isOneColumn={ isOneColumn }
-              />
-            </div>
-          </div>
+        <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tabs-content` }>
+          <AttributeTabSingle
+            content={ content }
+            esProperty={ esProperty }
+            isOneColumn={ isOneColumn }
+          />
         </div>
       </div>
     );

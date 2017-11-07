@@ -20,7 +20,7 @@ const ListingProvider = ({ curatedPropertyInfo, fromMapView }) => {
     agentPhoneNumber,
   } = curatedPropertyInfo;
 
-  let gridClass = fromMapView ? 'col-12' : 'col-xl-6';
+  let gridClass = fromMapView ? 'col-12' : 'col-lg-6';
 
   let daysOnWebsite = daysPassedSincePostedDate(curatedPropertyInfo);
   let lastUpdatedMoment = getLastUpdatedMoment(curatedPropertyInfo);
@@ -39,42 +39,51 @@ const ListingProvider = ({ curatedPropertyInfo, fromMapView }) => {
 
         <div className="row">
           <div className={ gridClass }>
-            <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-              <li>
-                <span>Agent:</span> {agentName}
-              </li>
-              <li>
-                <span>Agent Phone Number:</span> {agentPhoneNumber}
-              </li>
-              <li>
-                <span>Office:</span> {htmlHelper.decodeHtml(listing_office)}
-              </li>
-              <li>
-                <span>Office Phone Number:</span> {officePhoneNumber}
-              </li>
-              <li>
-                <span>MLS ID:</span> {mlsId}
-              </li>
-            </ul>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}attr-group-content`}>
+              <div>
+                <span>Agent: </span>
+                <span>{agentName}</span>
+              </div>
+              <div>
+                <span>Agent Phone Number: </span>
+                <span>{agentPhoneNumber}</span>
+              </div>
+              <div>
+                <span>Office: </span>
+                <span>{htmlHelper.decodeHtml(listing_office)}</span>
+              </div>
+              <div>
+                <span>Office Phone Number: </span>
+                <span>{officePhoneNumber}</span>
+              </div>
+              <div>
+                <span>MLS ID: </span>
+                <span>{mlsId}</span>
+              </div>
+            </div>
           </div>
           <div className={ gridClass }>
-            <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-              <li>
-                <span>Data Source: </span>  Triangle MLS Inc.
-              </li>
-              <li>
-                <span>Last Checked: </span> {lastCheckedMoment.isValid() ? lastCheckedMoment.format('LLL') + ' UTC' : ''}
-              </li>
-              <li>
-                <span>Last Updated: </span> {lastUpdatedMoment.isValid() ? lastUpdatedMoment.format('LLL') + ' UTC' : ''}
-              </li>
-              <li>
-                <span>Days on Site: </span> {daysOnWebsite}
-              </li>
-              <li>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}attr-group-content`}>
+              <div>
+                <span>Data Source: </span>
+                <span>Triangle MLS Inc.</span>
+              </div>
+              <div>
+                <span>Last Checked: </span>
+                <span>{lastCheckedMoment.isValid() ? lastCheckedMoment.format('LLL') + ' UTC' : ''}</span>
+              </div>
+              <div>
+                <span>Last Updated: </span>
+                <span>{lastUpdatedMoment.isValid() ? lastUpdatedMoment.format('LLL') + ' UTC' : ''}</span>
+              </div>
+              <div>
+                <span>Days on Site: </span>
+                <span>{daysOnWebsite}</span>
+              </div>
+              <div>
                 <img src={bundle.static_images_url + "triangle-mls-logo-large.gif"} alt="Buy"/>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div></div></div>
