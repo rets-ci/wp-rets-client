@@ -97,6 +97,7 @@ class Single extends Component {
       elasticSearchSource,
       curatedPropertyInfo,
       fromMapView,
+      isMobile,
       windowWidth,
     } = this.props;
 
@@ -106,6 +107,7 @@ class Single extends Component {
 
     const isAgentHiddenOnSticky = fromMapView || (windowWidth <= Lib.SINGLE_PAGE_STICKY_THRESHOLD);
     const isAgentShownOnSticky = !isAgentHiddenOnSticky;
+    const isNarrowAttrTabs = fromMapView || isMobile;
 
     let scrollingContent = (
       <div className={ gridWidth }>
@@ -122,11 +124,7 @@ class Single extends Component {
         <AttributeTabs
           curatedPropertyInfo={ curatedPropertyInfo }
           esProperty={ elasticSearchSource }
-        />
-
-        <ListingProvider
-          curatedPropertyInfo={ curatedPropertyInfo }
-          fromMapView={ fromMapView }
+          isOneColumn={ isNarrowAttrTabs }
         />
       </div>
     );
@@ -170,13 +168,18 @@ class Single extends Component {
           }
         </section>
 
-        <div id="agent-contact-form" className="mb-5">
+        <div id="agent-contact-form">
           <AgentContactForms
             tabActive={ contactFormTab }
             curatedPropertyInfo={ curatedPropertyInfo }
             { ...contactFormData }
           />
         </div>
+
+        <ListingProvider
+          curatedPropertyInfo={ curatedPropertyInfo }
+          fromMapView={ fromMapView }
+        />
       </div>
     );
   }
@@ -185,6 +188,7 @@ class Single extends Component {
 Single.propTypes = {
   agents: PropTypes.array,
   fromMapView: PropTypes.bool,
+  isMobile:   PropTypes.bool,
   windowWidth: PropTypes.number,
   elasticSearchSource: PropTypes.object,
   curatedPropertyInfo: PropTypes.object,
@@ -192,6 +196,7 @@ Single.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    isMobile: state.viewport.isMobile,
     windowWidth: state.viewport.width,
   }
 };

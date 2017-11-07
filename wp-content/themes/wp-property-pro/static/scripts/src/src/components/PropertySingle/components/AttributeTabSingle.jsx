@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Masonry from 'react-masonry-component';
 import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
 
-const Masonry = require('react-masonry-component');
 
 function showContentValue(data, dataReference) {
   if (typeof dataReference !== 'function') {
@@ -31,9 +31,10 @@ function getContent(items, data) {
     // console.log('value: ', showContentValue(data, c.value));
     // console.log('-------------------');
     return [null].indexOf(showContentValue(data, c.value)) < 0 ?
-      <li key={JSON.stringify(c)}>
-        <span>{c.name}:</span> {showContentValue(data, c.value)}
-      </li>
+      <div key={JSON.stringify(c)}>
+        <span>{c.name}: </span>
+        <span>{showContentValue(data, c.value)}</span>
+      </div>
       : null;
   });
   return contentElements;
@@ -43,15 +44,14 @@ function getContent(items, data) {
 class AttributeTabSingle extends Component {
 
   render() {
-    let { content, esProperty } = this.props;
+    let { content, esProperty, isOneColumn } = this.props;
     let elements = [];
     let visibleTabs = {};
     let masonryOptions = {
       horizontalOrder: true,
-      itemSelector: `.${Lib.THEME_CLASSES_PREFIX}property-single-div`,
+      itemSelector: `.${Lib.THEME_CLASSES_PREFIX}attr-group`,
       percentPosition: true,
-      // columnWidth: 200,
-      gutter: 10,
+      gutter: 0,
       transitionDuration: 0
     };
     
@@ -67,8 +67,11 @@ class AttributeTabSingle extends Component {
       }
     });
 
-    let itemClasses = [`${Lib.THEME_CLASSES_PREFIX}property-single-div`];
-    itemClasses.push((items.length % 2 === 0) ? `${Lib.THEME_CLASSES_PREFIX}property-single-div-50` : `${Lib.THEME_CLASSES_PREFIX}property-single-div-30`)
+    let itemClasses = [`${Lib.THEME_CLASSES_PREFIX}attr-group`];
+    if (!isOneColumn) {
+      itemClasses.push(`${Lib.THEME_CLASSES_PREFIX}attr-group-50`);
+    }
+
     return (
       <Masonry
         className={'my-masonry-div'}
@@ -79,10 +82,10 @@ class AttributeTabSingle extends Component {
       >
       {items.map(c =>
         <div className={itemClasses.join(' ')} key={`key-${c.category}`}>
-          <h3>{c.category}</h3>
-          <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-            {c.insideContent}
-          </ul>
+          <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-group-title` }>{ c.category }</div>
+          <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-group-content` }>
+            { c.insideContent }
+          </div>
         </div>
       )}
       </Masonry>
@@ -92,7 +95,8 @@ class AttributeTabSingle extends Component {
 
 AttributeTabSingle.propTypes = {
   content: PropTypes.object.isRequired,
-  esProperty: PropTypes.object
+  esProperty: PropTypes.object,
+  isOneColumn: PropTypes.bool.isRequired,
 };
 
 export default AttributeTabSingle;

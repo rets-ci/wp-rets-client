@@ -58,10 +58,6 @@ ul.card-header-tabs {
   flex-wrap: wrap;
 }
 
-#propertypro-property-details .card-block {
-    padding-top: 0;
-}
-
 /*-----------------------------------------------------------------------------------*/
 /*  Property Images Carousel
 /*-----------------------------------------------------------------------------------*/
@@ -107,58 +103,6 @@ ul.card-header-tabs {
 .propertypro-image-mixer .img-mobile {
   width: 100%;
   padding-bottom: 100%;
-}
-
-/*-----------------------------------------------------------------------------------*/
-/*  Property Single Data Div
-/*-----------------------------------------------------------------------------------*/
-
-.propertypro-property-single-div {
-  text-align: left;
-}
-
-.propertypro-property-single-div h3 {
-  color: #414141;
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 500;
-  padding-top: 2.25rem;
-}
-
-ul.propertypro-details-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  padding-top: 0.4375rem;
-}
-
-ul.propertypro-details-list li {
-  border-bottom: 1px solid #e1e5e6;
-  font-size: 0.875rem;
-  margin: 0;
-  padding: 0;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-
-  span {
-    color: #8b8c8d;
-  }
-}
-
-ul.propertypro-details-list li:first-child {
-  padding-top: 0;
-}
-
-ul.propertypro-details-list li:last-child {
-  border-bottom: none;
-}
-
-.propertypro-property-single-div-30 {
-    width: 30%;
-}
-
-.propertypro-property-single-div-50 {
-    width: 45%;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -254,9 +198,11 @@ ul.propertypro-details-list li:last-child {
 
   &.propertypro-agent-hidden {
     background-color: rgba(232, 238, 242, 0.5);
+    padding-bottom: 3rem;
 
     .propertypro-request-buttons {
-      padding-bottom: 3rem;
+      overflow: hidden;
+      height: 3rem;
 
       button {
         margin-right: 1.25rem;
@@ -273,6 +219,22 @@ ul.propertypro-details-list li:last-child {
 
       .propertypro-request-buttons {
         padding-bottom: 0;
+      }
+    }
+  }
+
+
+
+  &.is-sticky {
+    .propertypro-agent-card {
+      margin-top: 0;
+    }
+
+    &.propertypro-agent-shown {
+      &:before {
+        content: '';
+        display: block;
+        height: 2rem;
       }
     }
   }
@@ -320,6 +282,124 @@ ul.propertypro-details-list li:last-child {
       button + button {
         margin-top: 0.75rem;
       }
+    }
+  }
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  Attribute Tabs
+/*-----------------------------------------------------------------------------------*/
+.propertypro-attr-tabs-header {
+
+  .propertypro-attr-tabs-scroll {
+    position: relative;
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    .swiper-slide {
+      box-sizing: border-box;
+      width: auto;
+    }
+  }
+
+  .propertypro-attr-tab {
+    background-color: #F9F9F9;
+    color: #9D9D9D;
+    border: 0.5px solid #E9E9E9;
+    min-width: 10rem;
+    padding: 1.25rem 2rem;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #FFF;
+    }
+
+    &.propertypro-attr-tab-active {
+      background-color: #FFF;
+      color: #333;
+      border-bottom: 0;
+    }
+  }
+
+  .swiper-button-next-custom, .swiper-button-prev-custom {
+    position: absolute;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    top: 0;
+    width: 1.5rem;
+    height: 4rem;
+    border: 1px solid #E9E9E9;
+    background-color: #F9F9F9;
+    color: #9D9D9D;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: #FFF;
+    }
+  }
+  .swiper-button-next-custom {
+    right: 0;
+    left: auto;
+    box-shadow: -1px 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .swiper-button-prev-custom {
+    left: 0;
+    right: auto;
+    box-shadow: -1px 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .swiper-button-disabled {
+    display: none;
+  }
+}
+
+.propertypro-attr-tabs-content {
+  border: 1px solid #E9E9E9;
+  padding: 1rem 2.5rem 2rem;
+  margin-top: -1px;
+}
+
+
+.propertypro-attr-group {
+  width: 100%;
+  padding-top: 2rem;
+
+  &.propertypro-attr-group-50 {
+    width: 50%;
+    padding-right: 2rem;
+  }
+
+  .propertypro-attr-group-title {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 600;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #D9D9D9;
+  }
+}
+
+.propertypro-attr-group-content {
+  & > div {
+    border-bottom: 1px solid #EAEAEA;
+    font-size: 1rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    /*white-space: nowrap;
+    overflow: auto;*/
+
+    span {
+      color: #8b8c8d;
+    }
+    span + span {
+      color: #333;
+    }
+
+    &:last-child {
+      border-bottom: none;
     }
   }
 }

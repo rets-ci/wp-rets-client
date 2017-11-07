@@ -16,7 +16,9 @@ class StickyCard extends Component {
 
     let containerClass = `sticky sticky-at-top ${Lib.THEME_CLASSES_PREFIX}sticky-container`;
 
-    if (!isAgentShown) {
+    if (isAgentShown) {
+      containerClass += ` ${Lib.THEME_CLASSES_PREFIX}agent-shown`;
+    } else {
       containerClass += ` ${Lib.THEME_CLASSES_PREFIX}agent-hidden`;
     }
 
