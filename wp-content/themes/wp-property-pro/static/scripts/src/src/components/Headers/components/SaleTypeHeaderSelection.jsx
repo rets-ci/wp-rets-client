@@ -1,11 +1,25 @@
 import {Lib} from '../../../lib.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import qs from 'qs';
 import URI from 'urijs';
 import Util from '../../Util.jsx';
 import get from 'lodash/get';
 import pickBy from 'lodash/pickBy';
+import {setSearchType} from 'app_root/actions/index.jsx';
+
+const mapStateToProps = (state, ownProps) => {
+  return {}
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    changeSearchType: (searchType) => {
+      dispatch(setSearchType(searchType));
+    }
+  };
+};
 
 class SaleTypeHeaderSelection extends Component {
   static propTypes = {
@@ -43,6 +57,9 @@ class SaleTypeHeaderSelection extends Component {
     let searchURL = Util.createSearchURL('/search', params);
     historyPush(searchURL);
     this.props.closePanel();
+
+    this.props.changeSearchType(searchType);
+
   }
 
   render() {
@@ -62,25 +79,37 @@ class SaleTypeHeaderSelection extends Component {
       <div className={containerClasses}>
         <div className="container d-flex justify-content-center">
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Buy', propertyTypeOptions, historyPush)}}>
+            <a href="#" onClick={event => {
+              event.preventDefault();
+              this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Buy', propertyTypeOptions, historyPush)
+            }}>
               <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
               <span>Buy</span>
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Rent', propertyTypeOptions, historyPush) }}>
+            <a href="#" onClick={event => {
+              event.preventDefault();
+              this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Rent', propertyTypeOptions, historyPush)
+            }}>
               <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
               <span>Rent</span>
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Commercial', propertyTypeOptions, historyPush); }}>
+            <a href="#" onClick={event => {
+              event.preventDefault();
+              this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Commercial', propertyTypeOptions, historyPush);
+            }}>
               <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
               <span>Commercial</span>
             </a>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}selection-container`}>
-            <a href="#" onClick={event => { event.preventDefault(); this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Land', propertyTypeOptions, historyPush); }}>
+            <a href="#" onClick={event => {
+              event.preventDefault();
+              this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Land', propertyTypeOptions, historyPush);
+            }}>
               <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
               <span>Land</span>
             </a>
@@ -91,4 +120,7 @@ class SaleTypeHeaderSelection extends Component {
   }
 }
 
-export default SaleTypeHeaderSelection;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SaleTypeHeaderSelection);
