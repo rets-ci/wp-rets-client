@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { Lib } from 'app_root/lib.jsx';
 import htmlHelper from 'app_root/helpers/htmlHelper';
-import propertyHelper from 'app_root/helpers/propertyHelper';
+import { daysPassedSincePostedDate, getLastCheckedMoment, getLastUpdatedMoment } from 'app_root/helpers/propertyHelper';
 
 const DISCLAIMER_TEXT = 'Information Not Guaranteed. © Triangle MLS Inc. All rights reserved. Listings marked with a TMLSidx icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.';
 
@@ -22,9 +22,9 @@ const ListingProvider = ({ curatedPropertyInfo, fromMapView }) => {
 
   let gridClass = fromMapView ? 'col-12' : 'col-xl-6';
 
-  let daysOnWebsite = propertyHelper.daysPassedSincePostedDate(curatedPropertyInfo);
-  let lastUpdatedMoment = propertyHelper.getLastUpdatedMoment(curatedPropertyInfo);
-  let lastCheckedMoment = propertyHelper.getLastCheckedMoment(curatedPropertyInfo);
+  let daysOnWebsite = daysPassedSincePostedDate(curatedPropertyInfo);
+  let lastUpdatedMoment = getLastUpdatedMoment(curatedPropertyInfo);
+  let lastCheckedMoment = getLastCheckedMoment(curatedPropertyInfo);
 
   return (
     <div className={ `${Lib.THEME_CLASSES_PREFIX}single-listing-provider pt-5` }>

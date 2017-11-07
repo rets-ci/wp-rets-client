@@ -1,10 +1,5 @@
 import get from 'lodash/get';
-
-let YesOrNoFields = (data, ESReference) => {
-  let t = get(data, ESReference, false);
-  return t ?
-    t.includes('No') ? "No" : "Yes" : false;
-}
+import { formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
 
 export default [
   {"name": "Rooms", "children": [
@@ -12,7 +7,7 @@ export default [
       {"name": "Bedrooms", "value": (data) => { return get(data, 'post_meta.rets_beds[0]', false); }, "order": 1},
       {"name": "Bedrooms on 1st Floor", "value": (data) => { return !!get(data, 'tax_input.rets_bedrooms_1st_floor.rets_bedrooms_1st_floor', false); }, "order": 2},
       {"name": "Master Bedroom Dimensions", "value": (data) => { return get(data, 'post_meta.rets_master_bedroom_dimensions[0]', false); }, "order": 3},
-      {"name": "Master Bedroom on First Floor", "value": (data) => { return YesOrNoFields(data, 'tax_input.rets_master_bedroom_1st_floor.rets_master_bedroom_1st_floor[0].name'); }, "order": 3},
+      {"name": "Master Bedroom on First Floor", "value": (data) => { return formatYesOrNoFields(data, 'tax_input.rets_master_bedroom_1st_floor.rets_master_bedroom_1st_floor[0].name'); }, "order": 3},
       {"name": "Master Bedroom Floor", "value": (data) => { return get(data, 'tax_input.rets_master_bedroom_floor.rets_master_bedroom_floor[0].name', false); }, "order": 4},
       {"name": "Bedroom 2 Dimensions", "value": (data) => { return get(data, 'post_meta.rets_bedroom_2_dimensions[0]', false); }, "order": 5},
       {"name": "Bedroom 2 Floor", "value": (data) => { return get(data, 'tax_input.rets_bedroom_2_floor.rets_bedroom_2_floor[0].name', false); }, "order": 6},
@@ -72,7 +67,7 @@ export default [
       {"name": "Number of Rooms", "value": (data) => { return get(data, 'post_meta.rets_number_of_rooms[0]', false); }, "order": 1},
       {"name": "Other Rooms", "value": (data) => { return get(data, 'tax_input.rets_other_rooms.rets_other_rooms', []).map(d => d.name).join(', ') || null }, "order": 2},
       {"name": "Attic", "value": (data) => { return get(data, 'tax_input.rets_attic_description.rets_attic_description[0].name', false); }, "order": 3},
-      {"name": "Basement", "value": (data) => { return YesOrNoFields(data, 'tax_input.rets_basement.rets_basement[0].name'); }, "order": 4}
+      {"name": "Basement", "value": (data) => { return formatYesOrNoFields(data, 'tax_input.rets_basement.rets_basement[0].name'); }, "order": 4}
     ], "order": 5}
   ]
 },
@@ -121,14 +116,15 @@ export default [
   },
   {"name": "Property", "children": [
     {"name": "Building", "items": [
-      {"name": "New Construction", "value": (data) => { return YesOrNoFields(data, 'tax_input.rets_new_construction.rets_new_construction[0].name');  }, "order": 1},
-      {"name": "Construction Completion", "value": (data) => { return get(data, 'post_meta.rets_est_fin_year[0]', null); }, "order": 2},
-      {"name": "Year Built", "value": (data) => { return get(data, 'post_meta.rets_year_built[0]', null); }, "order": 3},
-      {"name": "Builder", "value": (data) => { return get(data, 'post_meta.rets_builder_name[0]', null); }, "order": 4},
-      {"name": "Type", "value": (data) => { return get(data, 'post_meta.property_type', []).join(', ') || null; }, "order": 5},
-      {"name": "Design", "value": (data) => { return get(data, 'tax_input.rets_design.rets_design', []).map(d => d.name).join(', ') || null; }, "order": 6},
-      {"name": "Architectural Style", "value": (data) => { return get(data, 'tax_input.rets_style.rets_style', []).map(d => d.name).join(', ') || null; }, "order": 7},
-      {"name": "Foundation", "value": (data) => { return get(data, 'tax_input.rets_foundation.rets_foundation', []).map(d => d.name).join(', ') || null; }, "order": 8},
+      {"name": "Type", "value": (data) => { return get(data, 'tax_input.wpp_listing_type.listing_type', []).map(d => d.name).join(', ') || null; }, "order": 1},
+      {"name": "New Construction", "value": (data) => { return formatYesOrNoFields(data, 'tax_input.rets_new_construction.rets_new_construction[0].name');  }, "order": 2},
+      {"name": "Construction Completion", "value": (data) => { return null; }, "order": 3},
+      {"name": "Year Built", "value": (data) => { return get(data, 'post_meta.rets_year_built[0]', null); }, "order": 4},
+      {"name": "Builder", "value": (data) => { return get(data, 'post_meta.rets_builder_name[0]', null); }, "order": 5},
+      {"name": "Type", "value": (data) => { return get(data, 'post_meta.property_type', []).join(', ') || null; }, "order": 6},
+      {"name": "Design", "value": (data) => { return get(data, 'tax_input.rets_design.rets_design', []).map(d => d.name).join(', ') || null; }, "order": 7},
+      {"name": "Architectural Style", "value": (data) => { return get(data, 'tax_input.rets_style.rets_style', []).map(d => d.name).join(', ') || null; }, "order": 8},
+      {"name": "Foundation", "value": (data) => { return get(data, 'tax_input.rets_foundation.rets_foundation', []).map(d => d.name).join(', ') || null; }, "order": 9},
       {"name": "Accessibility", "value": (data) => { return null; }, "order": 10},
       {"name": "Sustainability", "value": (data) => { return null; }, "order": 11},
       {"name": "Sustainability", "value": (data) => { return null; }, "order": 12},
@@ -146,7 +142,7 @@ export default [
       {"name": "Acres", "value": (data) => { return get(data, 'tax_input.rets_acres.rets_acres', []).map(d => d.name).join(', ') || null; }, "order": 3},
       {"name": "SQFT", "value": (data) => { return get(data, 'post_meta.rets_approx_lot_sq_ft[0]', null); }, "order": 4},
       {"name": "Zoning", "value": (data) => { return get(data, 'post_meta.rets_zoning[0]', null); }, "order": 5},
-      {"name": "Restrictive Covenants", "value": (data) => { return YesOrNoFields(data, 'tax_input.rets_restrictive_covenants.rets_restrictive_covenants[0].name'); }, "order": 6}
+      {"name": "Restrictive Covenants", "value": (data) => { return formatYesOrNoFields(data, 'tax_input.rets_restrictive_covenants.rets_restrictive_covenants[0].name'); }, "order": 6}
     ]}
   ]},
   {
@@ -164,11 +160,11 @@ export default [
         {"name": "HOA Office", "value": (data) => { return get(data, 'post_meta.rets_hoa_1_mgmt[0]', null); }, "order": 1},
         {"name": "HOA Office Phone", "value": (data) => { return get(data, 'post_meta.rets_hoa_phone[0]', null); }, "order": 2},
         {"name": "HOA Fees Requirement", "value": (data) => { return get(data, 'tax_input.rets_hoa_1_fees_required.rets_hoa_1_fees_required[0].name', null); }, "order": 3},
-        {"name": "HOA Fees", "value": (data) => { return get(data, 'post_meta.rets_hoa_1_fees[0]', null); }, "order": 4},
+        {"name": "HOA Fees", "value": (data) => { return moneyFormat(get(data, 'post_meta.rets_hoa_1_fees[0]', null)); }, "order": 4},
         {"name": "HOA Fees", "value": (data) => { return get(data, 'tax_input.rets_hoa_1_fee_payment.rets_hoa_1_fee_payment', []).map(d => d.name).join(', ') || null; }, "order": 5},
         {"name": "HOA Office", "value": (data) => { return get(data, 'post_meta.rets_hoa_2_mgmt[0]', []).map(d => d.name).join(', ') || null; }, "order": 6},
         {"name": "HOA 2 Fees Requirement", "value": (data) => { return get(data, 'tax_input.rets_hoa_2_fees_required.rets_hoa_2_fees_required', []).map(d => d.name).join(', ') || null; }, "order": 7},
-        {"name": "HOA 2 Fees", "value": (data) => { return get(data, 'post_meta.rets_hoa_2_fees[0]', null); }, "order": 8},
+        {"name": "HOA 2 Fees", "value": (data) => { return moneyFormat(get(data, 'post_meta.rets_hoa_2_fees[0]', null)); }, "order": 8},
         {"name": "HOA 2 Fees", "value": (data) => { return get(data, 'tax_input.rets_hoa_2_fee_payment.rets_hoa_2_fee_payment', []).map(d => d.name).join(', ') || null; }, "order": 9},
         {"name": "HOA Fees Include", "value": (data) => { return get(data, 'tax_input.rets_ho_fees_include.rets_ho_fees_include', []).map(d => d.name).join(', ') || null; }, "order": 10}
       ], "order": 2},
@@ -179,10 +175,10 @@ export default [
       ], "order": 3},
       {"name": "Address", "items": [
         {"name": "Inside City", "value": (data) => {
-          let t = YesOrNoFields(data, 'tax_input.rets_inside_city.rets_inside_city[0].name');
+          let t = formatYesOrNoFields(data, 'tax_input.rets_inside_city.rets_inside_city[0].name');
           if (t === 'Yes') {
-            let city = get(data, 'tax_input.wpp_location.wpp_location_city', []);
-            return t + (city.length ? '' + city.join(', ') : '');
+            let city = get(data, 'tax_input.wpp_location.wpp_location_city', []).map(d => d.name);
+            return t + (city.length ? ', ' + city.join(', ') : '');
           } else {
             return t;
           }
@@ -204,8 +200,9 @@ export default [
   },
   {"name": "Listing", "children": [
     {"name": "Pricing", "items": [
-      {"name": "Price", "value": (data) => { return get(data, 'post_meta.rets_list_price[0]', null); }, "order": 1},
-      {"name": "Price Per SQFT", "value": (data) => { return get(data, 'post_meta.rets_price_per_sqft[0]', null); }, "order": 2},
+      {"name": "Type", "value": (data) => { return 'Sale'; }, "order": 1},
+      {"name": "Price", "value": (data) => { return moneyFormat(get(data, 'post_meta.rets_list_price[0]', null)); }, "order": 2},
+      {"name": "Price Per SQFT", "value": (data) => { return moneyFormat(get(data, 'post_meta.rets_price_per_sqft[0]', null)); }, "order": 3},
     ], "order": 1},
     {"name": "Status", "items": [
       {"name": "MLS ID", "value": (data) => { return get(data, 'post_meta.rets_mls_number[0]', null); }, "order": 1},
