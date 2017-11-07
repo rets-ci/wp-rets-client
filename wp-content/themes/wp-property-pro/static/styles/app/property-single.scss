@@ -275,12 +275,18 @@ ul.propertypro-details-list li:last-child {
     }
   }
 
+  &.is-sticky {
+    .propertypro-agent-card {
+      margin-top: 0;
+    }
+  }
+
   .propertypro-agent-card {
     border: 1px solid #d2dae0;
     border-radius: 0.25rem;
     background-color: white;
     padding: 2rem;
-    margin-top: -8rem;
+    margin-top: -10rem;
 
     .propertypro-agent-avatar {
       width: 7.5rem;

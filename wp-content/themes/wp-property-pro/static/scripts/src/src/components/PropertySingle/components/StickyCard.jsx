@@ -33,6 +33,9 @@ class StickyCard extends Component {
             </div>
           }
           { isAgentShown &&
+            <div style={{ height: '2rem'}} />
+          }
+          { isAgentShown &&
             <div className={ `${Lib.THEME_CLASSES_PREFIX}agent-card d-flex flex-column align-items-center` }>
               <div
                 className={ `${Lib.THEME_CLASSES_PREFIX}agent-avatar` }
