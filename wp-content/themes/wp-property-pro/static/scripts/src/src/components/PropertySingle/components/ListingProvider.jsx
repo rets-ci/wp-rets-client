@@ -27,56 +27,58 @@ const ListingProvider = ({ curatedPropertyInfo, fromMapView }) => {
   let lastCheckedMoment = getLastCheckedMoment(curatedPropertyInfo);
 
   return (
-    <div className={ `${Lib.THEME_CLASSES_PREFIX}single-listing-provider pt-5` }>
-      <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
-        Listing Provider for {address[0]} {address_unit}
-      </h5>
+    <section className={ `${Lib.THEME_CLASSES_PREFIX}single-listing-provider py-5` }>
+      <div className="container"><div className="row"><div className="col-12">
+        <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
+          Listing Provider for {address[0]} {address_unit}
+        </h5>
 
-      <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description text-muted py-3`}>
-        {DISCLAIMER_TEXT}
-      </p>
+        <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description text-muted py-3`}>
+          {DISCLAIMER_TEXT}
+        </p>
 
-      <div className="row">
-        <div className={ gridClass }>
-          <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-            <li>
-              <span>Agent:</span> {agentName}
-            </li>
-            <li>
-              <span>Agent Phone Number:</span> {agentPhoneNumber}
-            </li>
-            <li>
-              <span>Office:</span> {htmlHelper.decodeHtml(listing_office)}
-            </li>
-            <li>
-              <span>Office Phone Number:</span> {officePhoneNumber}
-            </li>
-            <li>
-              <span>MLS ID:</span> {mlsId}
-            </li>
-          </ul>
+        <div className="row">
+          <div className={ gridClass }>
+            <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
+              <li>
+                <span>Agent:</span> {agentName}
+              </li>
+              <li>
+                <span>Agent Phone Number:</span> {agentPhoneNumber}
+              </li>
+              <li>
+                <span>Office:</span> {htmlHelper.decodeHtml(listing_office)}
+              </li>
+              <li>
+                <span>Office Phone Number:</span> {officePhoneNumber}
+              </li>
+              <li>
+                <span>MLS ID:</span> {mlsId}
+              </li>
+            </ul>
+          </div>
+          <div className={ gridClass }>
+            <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
+              <li>
+                <span>Data Source: </span>  Triangle MLS Inc.
+              </li>
+              <li>
+                <span>Last Checked: </span> {lastCheckedMoment.isValid() ? lastCheckedMoment.format('LLL') + ' UTC' : ''}
+              </li>
+              <li>
+                <span>Last Updated: </span> {lastUpdatedMoment.isValid() ? lastUpdatedMoment.format('LLL') + ' UTC' : ''}
+              </li>
+              <li>
+                <span>Days on Site: </span> {daysOnWebsite}
+              </li>
+              <li>
+                <img src={bundle.static_images_url + "triangle-mls-logo-large.gif"} alt="Buy"/>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className={ gridClass }>
-          <ul className={`${Lib.THEME_CLASSES_PREFIX}details-list`}>
-            <li>
-              <span>Data Source: </span>  Triangle MLS Inc.
-            </li>
-            <li>
-              <span>Last Checked: </span> {lastCheckedMoment.isValid() ? lastCheckedMoment.format('LLL') + ' UTC' : ''}
-            </li>
-            <li>
-              <span>Last Updated: </span> {lastUpdatedMoment.isValid() ? lastUpdatedMoment.format('LLL') + ' UTC' : ''}
-            </li>
-            <li>
-              <span>Days on Site: </span> {daysOnWebsite}
-            </li>
-            <li>
-              <img src={bundle.static_images_url + "triangle-mls-logo-large.gif"} alt="Buy"/>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+      </div></div></div>
+    </section>
   );
 };
 

@@ -126,11 +126,6 @@ class Single extends Component {
           esProperty={ elasticSearchSource }
           isOneColumn={ isNarrowAttrTabs }
         />
-
-        <ListingProvider
-          curatedPropertyInfo={ curatedPropertyInfo }
-          fromMapView={ fromMapView }
-        />
       </div>
     );
 
@@ -173,13 +168,18 @@ class Single extends Component {
           }
         </section>
 
-        <div id="agent-contact-form" className="mb-5">
+        <div id="agent-contact-form">
           <AgentContactForms
             tabActive={ contactFormTab }
             curatedPropertyInfo={ curatedPropertyInfo }
             { ...contactFormData }
           />
         </div>
+
+        <ListingProvider
+          curatedPropertyInfo={ curatedPropertyInfo }
+          fromMapView={ fromMapView }
+        />
       </div>
     );
   }

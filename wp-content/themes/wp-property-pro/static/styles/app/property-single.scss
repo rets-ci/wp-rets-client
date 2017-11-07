@@ -275,9 +275,19 @@ ul.propertypro-details-list li:last-child {
     }
   }
 
+
+
   &.is-sticky {
     .propertypro-agent-card {
       margin-top: 0;
+    }
+
+    &.propertypro-agent-shown {
+      &:before {
+        content: '';
+        display: block;
+        height: 2rem;
+      }
     }
   }
 
@@ -286,7 +296,7 @@ ul.propertypro-details-list li:last-child {
     border-radius: 0.25rem;
     background-color: white;
     padding: 2rem;
-    margin-top: -10rem;
+    margin-top: -8rem;
 
     .propertypro-agent-avatar {
       width: 7.5rem;
