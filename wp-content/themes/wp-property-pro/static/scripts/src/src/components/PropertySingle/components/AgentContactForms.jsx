@@ -96,7 +96,7 @@ class AgentContactForms extends Component {
                 <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-showing-rent')}}>Request Showing</a>
               </div>
               <div className={`col-6 ${Lib.THEME_CLASSES_PREFIX}tab ${selectedTab === 'request-application' ? Lib.THEME_CLASSES_PREFIX + 'tab-selected' : null}`}>
-                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-application')}}>Request an Application</a>
+                <a href="#" onClick={(event) => { event.preventDefault(); this.selectTab('request-application')}}>Request Application</a>
               </div>
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form-content`}>
