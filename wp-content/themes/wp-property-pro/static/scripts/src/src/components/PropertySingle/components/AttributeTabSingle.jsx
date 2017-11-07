@@ -8,13 +8,13 @@ const Masonry = require('react-masonry-component');
 
 function showContentValue(data, dataReference) {
   if (typeof dataReference !== 'function') {
-    console.log(dataReference + ' is not a function');
+    // console.log(dataReference + ' is not a function');
     // TODO: TEMP solution until everything is changed to function
     return "old style value";
   } else {
     let value = dataReference(data);
     if (value === null) {
-      console.log(dataReference + ' is null');
+      // console.log(dataReference + ' is null');
       return null;
     } else if (value === false) {
       return "No";
@@ -27,9 +27,9 @@ function showContentValue(data, dataReference) {
 function getContent(items, data) {
   let contentElements = items.sort((a, b) => a.order - b.order).map((c, i) => {
     //TODO: Remove these console.logs before going live, these are meant for development only
-    console.log('name: ', c.name);
-    console.log('value: ', showContentValue(data, c.value));
-    console.log('-------------------');
+    // console.log('name: ', c.name);
+    // console.log('value: ', showContentValue(data, c.value));
+    // console.log('-------------------');
     return [null].indexOf(showContentValue(data, c.value)) < 0 ?
       <li key={JSON.stringify(c)}>
         <span>{c.name}:</span> {showContentValue(data, c.value)}

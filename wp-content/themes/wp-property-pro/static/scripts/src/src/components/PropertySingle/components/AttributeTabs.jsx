@@ -56,10 +56,9 @@ class AttributeTabs extends Component {
       return null;
     }
 
-    let propertyDataStructure = esSchema[listingTypeJSONFileName];
-    let allTab = getAllTabData(propertyDataStructure.slice(0));
+    let propertyDataStructure = esSchema[listingTypeJSONFileName].slice(0);
+    let allTab = getAllTabData(propertyDataStructure);
     propertyDataStructure.push(allTab);
-
     let tabs = propertyDataStructure.map(p => p.name);
     let content = propertyDataStructure.find(d => d.name === selectedTab);
 
