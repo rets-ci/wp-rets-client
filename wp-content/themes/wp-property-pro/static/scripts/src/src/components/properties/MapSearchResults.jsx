@@ -254,7 +254,6 @@ class MapSearchResults extends Component {
       filters = Util.customFormatToSearchObject(filters);
       if(get(filters, 'search', null)){
         delete(filters['search']);
-        console.log(filters);
       }
       let searchCollection = Util.searchObjectToCollection(filters);
       let searchURL = Util.createSearchURL('/search', searchCollection);
