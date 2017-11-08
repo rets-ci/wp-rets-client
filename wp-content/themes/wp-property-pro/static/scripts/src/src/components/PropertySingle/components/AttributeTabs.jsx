@@ -129,7 +129,6 @@ class AttributeTabs extends Component {
       )
     }
 
-
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attrs-section pt-5` }>
         <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
