@@ -141,7 +141,7 @@ function getExteriorFinish(data) {
 }
 
 function getFireplaces(data) {
-  return !!get(data, 'tax_input.rets_fireplace.rets_fireplace[0].name', null);
+  return formatYesOrNoFields(data, 'tax_input.rets_fireplace.rets_fireplace[0].name', null);
 }
 
 function getFireplacesDescription(data) {

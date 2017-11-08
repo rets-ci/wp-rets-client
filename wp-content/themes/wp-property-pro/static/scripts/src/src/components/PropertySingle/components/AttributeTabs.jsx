@@ -25,6 +25,10 @@ const getAllTabData = (propertyDataStructure) => {
   }).reduce((a, b) => {
     return a.concat(b);
   });
+  combinedChildren = combinedChildren.map((d, i) => {
+      d.order = i + 1;
+      return d;
+  });
   AllTab['children'] = combinedChildren;
   return AllTab;
 };
