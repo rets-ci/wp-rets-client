@@ -61,48 +61,73 @@ ul.card-header-tabs {
 /*-----------------------------------------------------------------------------------*/
 /*  Property Images Carousel
 /*-----------------------------------------------------------------------------------*/
-.propertypro-large-img-container {
-  float: left;
-}
-
-.propertypro-image-mixer {
-  background: #eceeef;
-  min-height: 37.5rem;
-}
-
-.propertypro-image-mixer .swiper-container {
+.propertypro-property-single-carousel {
   position: relative;
-  width: 100%;
-  height: 100%;
-}
+  background: #eceeef;
 
-.propertypro-image-mixer .swiper-slide {
-  width: auto;
-}
+  .swiper-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 
-.propertypro-image-mixer .img-sm, .propertypro-image-mixer .img-lg, .propertypro-image-mixer .img-mobile {
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
+  .swiper-slide {
+    width: auto;
+  }
 
-.propertypro-image-mixer .img-sm {
-  width: 18.625rem;
-  height: 18.625rem;
-}
+  .img-main, .img-sub, .img-mobile {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
 
-.propertypro-image-mixer .img-sm:first-child {
-  margin-bottom: 0.25rem;
-}
+  .img-mobile {
+    width: 100%;
+    padding-bottom: 100%;
+  }
 
-.propertypro-image-mixer .img-lg {
-  width: 37.5rem;
-  height: 37.5rem;
-}
 
-.propertypro-image-mixer .img-mobile {
-  width: 100%;
-  padding-bottom: 100%;
+  &:not(.propertypro-viewport-short) {
+    min-height: 37.5rem;
+
+    .img-main {
+      width: 37.5rem;
+      height: 37.5rem;
+    }
+
+    .img-sub {
+      width: 18.625rem;
+      height: 18.625rem;
+
+      &:first-child {
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+
+  &.propertypro-viewport-short {
+    min-height: 25rem;
+
+    .img-main {
+      width: 25rem;
+      height: 25rem;
+    }
+
+    .img-sub {
+      width: 12.375rem;
+      height: 12.375rem;
+
+      &:first-child {
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+
+
+  .propertypro-direction-nav .propertypro-nav-prev,
+  .propertypro-direction-nav .propertypro-nav-next {
+      opacity: 1;
+  }
 }
 
 /*-----------------------------------------------------------------------------------*/

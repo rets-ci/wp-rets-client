@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Lightbox from 'react-images';
 import Swiper from 'react-id-swiper';
 
@@ -47,7 +48,7 @@ class Carousel extends Component {
   }
 
   render() {
-    let { images } = this.props;
+    const { images } = this.props;
 
     let LightboxImages = images.map(i => ({
       src: i
@@ -89,60 +90,66 @@ class Carousel extends Component {
       },
     };
 
-    const desktopSwiper = Lib.IS_MOBILE_VIEW === false && (
-      <Swiper {...desktopSwiperParams}>
-        <div className="swiper-slide" key={0} onClick={this.imageMixerClicked.bind(this, 0)}>
-          <div
-            className="swiper-lazy img-lg"
-            style={{ backgroundImage : `url(${images[0]})` }}
-          ></div>
-        </div>
-        { smImagesSet.map((subset, index) => (
-            <div className="swiper-slide" key={index + 1}>
-              <div
-                className="swiper-lazy img-sm"
-                style={{ backgroundImage : `url(${subset[0]})` }}
-                onClick={this.imageMixerClicked.bind(this, index * 2 + 1)}
-              />
-              {
-                subset[1]
-                ?  <div
-                      className="swiper-lazy img-sm"
-                      style={{backgroundImage: `url(${subset[1]})`}}
-                      onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
-                  />
-                : null
-              }
-            </div>
-          ))
-        }
-      </Swiper>
-    );
+    let desktopSwiper = null;
+    let mobileSwiper = null;
 
-    const mobileSwiper = Lib.IS_MOBILE_VIEW === true && (
-      <Swiper {...mobileSwiperParams}>
-        { images.length && images.map((img, index) => (
-            <div className="swiper-slide" key={index} onClick={this.imageMixerClicked.bind(this, index)}>
-              <div
-                className="swiper-lazy img-mobile"
-                data-background={ img }
-              >
-                <div className="swiper-lazy-preloader"></div>
+    if (this.props.viewport.isMobile) {
+      mobileSwiper = (
+        <Swiper {...mobileSwiperParams}>
+          { images.length && images.map((img, index) => (
+              <div className="swiper-slide" key={index} onClick={this.imageMixerClicked.bind(this, index)}>
+                <div
+                  className="swiper-lazy img-mobile"
+                  data-background={ img }
+                >
+                  <div className="swiper-lazy-preloader"></div>
+                </div>
               </div>
-            </div>
-          ))
-        }
-      </Swiper>
-    );
+            ))
+          }
+        </Swiper>
+      );
+    } else {
+      desktopSwiper = (
+        <Swiper {...desktopSwiperParams}>
+          <div className="swiper-slide" key={0} onClick={this.imageMixerClicked.bind(this, 0)}>
+            <div
+              className="swiper-lazy img-main"
+              style={{ backgroundImage : `url(${images[0]})` }}
+            ></div>
+          </div>
+          { smImagesSet.map((subset, index) => (
+              <div className="swiper-slide" key={index + 1}>
+                <div
+                  className="swiper-lazy img-sub"
+                  style={{ backgroundImage : `url(${subset[0]})` }}
+                  onClick={this.imageMixerClicked.bind(this, index * 2 + 1)}
+                />
+                {
+                  subset[1]
+                  ?  <div
+                        className="swiper-lazy img-sub"
+                        style={{backgroundImage: `url(${subset[1]})`}}
+                        onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
+                    />
+                  : null
+                }
+              </div>
+            ))
+          }
+        </Swiper>
+      );
+    }
 
+    const containerClass = classNames(
+      `${Lib.THEME_CLASSES_PREFIX}property-single-carousel`,
+      (this.props.viewport.isShort || this.props.fromMapView) ? `${Lib.THEME_CLASSES_PREFIX}viewport-short`: '',
+    )
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}image-mixer ${Lib.THEME_CLASSES_PREFIX}card-img`}>
-        {
-          Lib.IS_MOBILE_VIEW
-            ? mobileSwiper
-            : desktopSwiper
-        }
+      <div className={ containerClass }>
+        { mobileSwiper }
+        { desktopSwiper }
 
         <div className={`${Lib.THEME_CLASSES_PREFIX}direction-nav-container`}>
           <ul className={`${Lib.THEME_CLASSES_PREFIX}direction-nav nav text-center`}>
@@ -179,5 +186,11 @@ class Carousel extends Component {
     )
   }
 }
+
+Carousel.propTypes = {
+  images: PropTypes.array.isRequired,
+  viewport: PropTypes.object.isRequired,
+  fromMapView: PropTypes.bool.isRequired,
+};
 
 export default Carousel;
