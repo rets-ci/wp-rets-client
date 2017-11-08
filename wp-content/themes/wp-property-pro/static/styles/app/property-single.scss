@@ -359,7 +359,7 @@ ul.card-header-tabs {
 
 .propertypro-attr-tabs-content {
   border: 1px solid #E9E9E9;
-  padding: 1rem 2.5rem 2rem;
+  padding: 0 2.5rem 2rem;
   margin-top: -1px;
 }
 
@@ -369,8 +369,7 @@ ul.card-header-tabs {
   padding-top: 2rem;
 
   &.propertypro-attr-group-50 {
-    width: 50%;
-    padding-right: 2rem;
+    width: 45%;
   }
 
   .propertypro-attr-group-title {
@@ -386,8 +385,7 @@ ul.card-header-tabs {
   & > div {
     border-bottom: 1px solid #EAEAEA;
     font-size: 1rem;
-    padding-bottom: 1rem;
-    padding-top: 1rem;
+    padding: 1rem 0;
     /*white-space: nowrap;
     overflow: auto;*/
 
