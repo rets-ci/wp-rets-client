@@ -97,17 +97,16 @@ class Single extends Component {
       elasticSearchSource,
       curatedPropertyInfo,
       fromMapView,
-      isMobile,
-      windowWidth,
+      viewport,
     } = this.props;
 
     const { contactFormTab, contactFormData } = this.state;
 
     const gridWidth = fromMapView ? 'col-12' : 'col-12 col-lg-8';
 
-    const isAgentHiddenOnSticky = fromMapView || (windowWidth <= Lib.SINGLE_PAGE_STICKY_THRESHOLD);
+    const isAgentHiddenOnSticky = fromMapView || (viewport.windowWidth <= Lib.SINGLE_PAGE_STICKY_THRESHOLD);
     const isAgentShownOnSticky = !isAgentHiddenOnSticky;
-    const isNarrowAttrTabs = fromMapView || isMobile;
+    const isNarrowAttrTabs = fromMapView || viewport.isMobile;
 
     let scrollingContent = (
       <div className={ gridWidth }>
@@ -142,6 +141,8 @@ class Single extends Component {
 
         <PropertyCarousel
           images={ curatedPropertyInfo.images || [] }
+          viewport={ viewport }
+          fromMapView={ fromMapView }
         />
 
         <PropertyMasthead
@@ -188,16 +189,14 @@ class Single extends Component {
 Single.propTypes = {
   agents: PropTypes.array,
   fromMapView: PropTypes.bool,
-  isMobile:   PropTypes.bool,
-  windowWidth: PropTypes.number,
+  viewport:   PropTypes.object,
   elasticSearchSource: PropTypes.object,
   curatedPropertyInfo: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
-    isMobile: state.viewport.isMobile,
-    windowWidth: state.viewport.width,
+    viewport: state.viewport,
   }
 };
 

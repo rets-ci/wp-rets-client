@@ -185,7 +185,8 @@ class PageLayout extends Component {
   handleWindowSizeChange = () => {
     this.props.updateWindowStats({
       width: window.innerWidth,
-    })
+      height: window.innerHeight,
+    });
   }
 
   routeUpdate = () => {
