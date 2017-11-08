@@ -44,45 +44,64 @@ class AttributeTabs extends Component {
 
     console.log('[AttributeTabs] constructor');
     this.state = {
-      selectedTab: 'All'
+      selectedTab: 'All',
+      attributesData: null,
+      tabs: [],
     };
   }
 
-  selectTab = (tab) => {
-    this.setState({
-      selectedTab: tab
-    });
+  componentDidMount() {
+    this.calculateAttrData();
   }
 
   componentWillReceiveProps(nextProps) {
     const previous_mlsId = get(this.props, 'curatedPropertyInfo.mlsId');
     const next_mlsId = get(nextProps, 'curatedPropertyInfo.mlsId');
-    console.log('[AttributeTabs] nextProps', nextProps, previous_mlsId, next_mlsId);
+
+    if (previous_mlsId !== next_mlsId) {
+      this.calculateAttrData();
+    }
+  }
+
+  selectTab = (tab) => {
+    if (this.state.selectedTab !== tab) {
+      this.setState({
+        selectedTab: tab
+      });
+    }
+  }
+
+  calculateAttrData = () => {
+    const listingTypeJSONFileName = getListingTypeJSONFileName(this.props.curatedPropertyInfo);
+
+    let propertyDataStructure = null;
+    let tabs = [];
+
+    if (listingTypeJSONFileName) {
+      propertyDataStructure = esSchema[listingTypeJSONFileName].slice(0);
+      tabs = propertyDataStructure.map(t => t.name);
+
+      propertyDataStructure.push(
+        getAllTabData(propertyDataStructure)
+      );
+    }
+
+    this.setState({
+      attributesData: propertyDataStructure,
+      tabs,
+    });
   }
 
   render() {
-    const { selectedTab } = this.state;
+    const { selectedTab, attributesData, tabs } = this.state;
     const { esProperty, curatedPropertyInfo, isOneColumn } = this.props;
     const { listing_type, address, address_unit } = curatedPropertyInfo;
 
-    if (!listing_type || LISTING_TYPES_TO_HIDE.indexOf(listing_type) >= 0) {
+    if (!listing_type || LISTING_TYPES_TO_HIDE.indexOf(listing_type) >= 0 || !attributesData) {
       return null;
     }
 
-    let listingTypeJSONFileName = getListingTypeJSONFileName(curatedPropertyInfo);
-
-    if (!listingTypeJSONFileName) {
-      return null;
-    }
-
-    let propertyDataStructure = esSchema[listingTypeJSONFileName].slice(0);
-    let allTab = getAllTabData(propertyDataStructure);
-    propertyDataStructure.push(allTab);
-
-    let tabs = propertyDataStructure.map(p => p.name);
-    let content = propertyDataStructure.find(d => d.name === selectedTab);
-    remove(tabs, e => e === 'All');
-
+    let content = attributesData.find(t => t.name === selectedTab);
 
     const swiperParams = {
       containerClass: `${Lib.THEME_CLASSES_PREFIX}attr-tabs-scroll`,

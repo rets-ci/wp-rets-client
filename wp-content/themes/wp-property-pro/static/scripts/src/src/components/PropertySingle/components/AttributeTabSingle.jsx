@@ -51,10 +51,10 @@ class AttributeTabSingle extends Component {
       horizontalOrder: true,
       itemSelector: `.${Lib.THEME_CLASSES_PREFIX}attr-group`,
       percentPosition: true,
-      gutter: 0,
+      gutter: 48,
       transitionDuration: 0
     };
-    
+
     let items = [];
     content.children.sort((a, b) => a.order - b.order).forEach(d => {
       let item = {};
