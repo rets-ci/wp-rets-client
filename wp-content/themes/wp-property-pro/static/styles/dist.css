@@ -1900,40 +1900,45 @@ ul.card-header-tabs {
 /*-----------------------------------------------------------------------------------*/
 /*  Property Images Carousel
 /*-----------------------------------------------------------------------------------*/
-.propertypro-large-img-container {
-  float: left; }
-
-.propertypro-image-mixer {
-  background: #eceeef;
-  min-height: 37.5rem; }
-
-.propertypro-image-mixer .swiper-container {
+.propertypro-property-single-carousel {
   position: relative;
-  width: 100%;
-  height: 100%; }
-
-.propertypro-image-mixer .swiper-slide {
-  width: auto; }
-
-.propertypro-image-mixer .img-sm, .propertypro-image-mixer .img-lg, .propertypro-image-mixer .img-mobile {
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat; }
-
-.propertypro-image-mixer .img-sm {
-  width: 18.625rem;
-  height: 18.625rem; }
-
-.propertypro-image-mixer .img-sm:first-child {
-  margin-bottom: 0.25rem; }
-
-.propertypro-image-mixer .img-lg {
-  width: 37.5rem;
-  height: 37.5rem; }
-
-.propertypro-image-mixer .img-mobile {
-  width: 100%;
-  padding-bottom: 100%; }
+  background: #eceeef; }
+  .propertypro-property-single-carousel .swiper-container {
+    position: relative;
+    width: 100%;
+    height: 100%; }
+  .propertypro-property-single-carousel .swiper-slide {
+    width: auto; }
+  .propertypro-property-single-carousel .img-main, .propertypro-property-single-carousel .img-sub, .propertypro-property-single-carousel .img-mobile {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat; }
+  .propertypro-property-single-carousel .img-mobile {
+    width: 100%;
+    padding-bottom: 100%; }
+  .propertypro-property-single-carousel:not(.propertypro-viewport-short) {
+    min-height: 37.5rem; }
+    .propertypro-property-single-carousel:not(.propertypro-viewport-short) .img-main {
+      width: 37.5rem;
+      height: 37.5rem; }
+    .propertypro-property-single-carousel:not(.propertypro-viewport-short) .img-sub {
+      width: 18.625rem;
+      height: 18.625rem; }
+      .propertypro-property-single-carousel:not(.propertypro-viewport-short) .img-sub:first-child {
+        margin-bottom: 0.25rem; }
+  .propertypro-property-single-carousel.propertypro-viewport-short {
+    min-height: 25rem; }
+    .propertypro-property-single-carousel.propertypro-viewport-short .img-main {
+      width: 25rem;
+      height: 25rem; }
+    .propertypro-property-single-carousel.propertypro-viewport-short .img-sub {
+      width: 12.375rem;
+      height: 12.375rem; }
+      .propertypro-property-single-carousel.propertypro-viewport-short .img-sub:first-child {
+        margin-bottom: 0.25rem; }
+  .propertypro-property-single-carousel .propertypro-direction-nav .propertypro-nav-prev,
+  .propertypro-property-single-carousel .propertypro-direction-nav .propertypro-nav-next {
+    opacity: 1; }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Agent Contact Form
@@ -2600,10 +2605,6 @@ ul.propertypro-listing-info-box li:first-child {
 
 .propertypro-card:hover .propertypro-direction-nav .propertypro-nav-prev,
 .propertypro-card:hover .propertypro-direction-nav .propertypro-nav-next {
-  opacity: 1; }
-
-.propertypro-image-mixer .propertypro-direction-nav .propertypro-nav-prev,
-.propertypro-image-mixer .propertypro-direction-nav .propertypro-nav-next {
   opacity: 1; }
 
 /** User Panel */
