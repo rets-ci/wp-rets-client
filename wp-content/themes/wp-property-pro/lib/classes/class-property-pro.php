@@ -165,6 +165,8 @@ namespace UsabilityDynamics {
           $property_single_url = array_pop($property_single_url_array);
       }
 
+      $sidebar_menu = wp_get_nav_menu_object( 'Sitewide Panel Navigation' );
+      $sidebar_menu_term_id = $sidebar_menu ? $sidebar_menu->term_id : 0;
 
       $params = [
         'site_url' => site_url(),
@@ -186,7 +188,10 @@ namespace UsabilityDynamics {
           }, (isset($user->meta['agent_images']) ? $user->meta['agent_images'] : []));
 
           return $user;
-        }, get_users(['role' => 'agent']))
+        }, get_users(['role' => 'agent'])),
+        'sidebar_menu_items' => $sidebar_menu_term_id ? array_map( function ( $item ) {
+          return [ 'ID' => $item->ID, 'title' => $item->title, 'url' => $item->url, 'relative_url' => str_replace( home_url(), "", $item->url ), 'classes' => $item->classes ];
+        }, wp_get_nav_menu_items( $sidebar_menu_term_id ) ) : []
       ];
 
       /** Custom elastic press index */
@@ -275,7 +280,8 @@ namespace UsabilityDynamics {
               'ID' => $item->ID,
               'title' => $item->title,
               'url' => $item->url,
-              'relative_url' => str_replace(home_url(), "", $item->url)
+              'relative_url' => str_replace(home_url(), "", $item->url),
+              'classes' => $item->classes
             ];
           }, wp_get_nav_menu_items($menu_id));
         }
