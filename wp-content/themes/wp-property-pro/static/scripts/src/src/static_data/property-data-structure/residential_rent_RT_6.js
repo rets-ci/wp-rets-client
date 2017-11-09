@@ -54,6 +54,7 @@ import {
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getSubArea,
   getSubdivision,
   getHalfBathrooms,
   getTotalBathrooms,
@@ -151,7 +152,7 @@ export default [
         {"name": "Neighborhood", "value": (data) => { return getNeighborhood(data); }, "order": 2},
         {"name": "County", "value": (data) => { return getCounty(data); }, "order": 3},
         {"name": "Area", "value": (data) => { return getArea(data); }, "order": 4},
-        {"name": "Sub Area", "value": (data) => { return get(data, 'tax_input.rets_sub_area.rets_sub_area', []).map(d => d.name).join(', ') || null; }, "order": 5},
+        {"name": "Sub Area", "value": (data) => { return getSubArea(data); }, "order": 5},
         {"name": "Active Adult Community", "value": (data) => { return null; }, 'order': 6},
         {"name": "Active Adult Community", "value": (data) => { return getActiveAdultCommunity(data); }, "order": 7}
       ], "order": 1},
