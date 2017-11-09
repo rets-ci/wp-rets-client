@@ -13,6 +13,7 @@ export {
   getCity,
   getCooling,
   getCounty,
+  getCrossStreet,
   getDesign,
   getDiningRoom,
   getDirections,
@@ -22,6 +23,7 @@ export {
   getFireplaces,
   getFireplacesDescription,
   getFlooring,
+  getFoundation,
   getFullBathrooms,
   getGarageCapacity,
   getHalfBathrooms,
@@ -51,11 +53,14 @@ export {
   getPricePerSQFT,
   getPropertyType,
   getPublishedDate,
+  getRoof,
+  getSQFT,
   getState,
   getStatus,
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getSubArea,
   getSubdivision,
   getTotalBathrooms,
   getTotalLivingAreaSQFT,
@@ -116,6 +121,10 @@ function getCounty(data) {
   return get(data, 'tax_input.wpp_location.wpp_location_county', []).map(d => d.name).join(', ') || null;
 }
 
+function getCrossStreet(data) {
+  return get(data, 'post_meta.rets_cross_street[0]', null);
+}
+
 function getDesign(data) {
   return get(data, 'tax_input.rets_design.rets_design', []).map(d => d.name).join(', ') || null;
 }
@@ -141,7 +150,7 @@ function getExteriorFinish(data) {
 }
 
 function getFireplaces(data) {
-  return !!get(data, 'tax_input.rets_fireplace.rets_fireplace[0].name', null);
+  return formatYesOrNoFields(data, 'tax_input.rets_fireplace.rets_fireplace[0].name', null);
 }
 
 function getFireplacesDescription(data) {
@@ -150,6 +159,10 @@ function getFireplacesDescription(data) {
 
 function getFlooring(data) {
   return get(data, 'tax_input.rets_flooring.rets_flooring', []).map(d => d.name).join(', ') || null;
+}
+
+function getFoundation(data) {
+  return get(data, 'tax_input.rets_foundation.rets_foundation', []).map(d => d.name).join(', ') || null;
 }
 
 function getFullBathrooms(data) {
@@ -274,6 +287,14 @@ function getPublishedDate(data) {
   return get(data, 'post_meta.rets_list_date[0]', null);
 }
 
+function getRoof(data) {
+  return get(data,'tax_input.rets_roof.rets_roof', []).map(d => d.name).join(', ') || null;
+}
+
+function getSQFT(data) {
+  return get(data, 'post_meta.rets_approx_lot_sq_ft[0]', null);
+}
+
 function getState(data) {
   return get(data, 'tax_input.wpp_location.wpp_location_state', []).map(d => d.name).join(', ') || null;
 }
@@ -292,6 +313,10 @@ function getStreetDirectional(data) {
 
 function getStreetNumber(data) {
   return get(data, 'post_meta.rets_street_number[0]', null);
+}
+
+function getSubArea(data) {
+  return get(data, 'tax_input.rets_sub_area.rets_sub_area', []).map(d => d.name).join(', ') || null;
 }
 
 function getSubdivision(data) {

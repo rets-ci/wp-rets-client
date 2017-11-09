@@ -12,7 +12,6 @@ import AttributeTabSingle from 'app_root/components/PropertySingle/components/At
 import esSchema from 'app_root/static_data/property-data-structure/index.js';
 
 
-const LISTING_TYPES_TO_HIDE = [ 'commercial', 'land' ];
 const descriptionBoilerplate = '847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.';
 
 const getAllTabData = (propertyDataStructure) => {
@@ -24,6 +23,10 @@ const getAllTabData = (propertyDataStructure) => {
     return d.children;
   }).reduce((a, b) => {
     return a.concat(b);
+  });
+  combinedChildren = combinedChildren.map((d, i) => {
+      d.order = i + 1;
+      return d;
   });
   AllTab['children'] = combinedChildren;
   return AllTab;
@@ -73,7 +76,6 @@ class AttributeTabs extends Component {
 
   calculateAttrData = () => {
     const listingTypeJSONFileName = getListingTypeJSONFileName(this.props.curatedPropertyInfo);
-
     let propertyDataStructure = null;
     let tabs = [];
 
@@ -97,10 +99,9 @@ class AttributeTabs extends Component {
     const { esProperty, curatedPropertyInfo, isOneColumn } = this.props;
     const { listing_type, address, address_unit } = curatedPropertyInfo;
 
-    if (!listing_type || LISTING_TYPES_TO_HIDE.indexOf(listing_type) >= 0 || !attributesData) {
+    if (!listing_type || !attributesData) {
       return null;
     }
-
     let content = attributesData.find(t => t.name === selectedTab);
 
     const swiperParams = {
@@ -128,7 +129,6 @@ class AttributeTabs extends Component {
         </Swiper>
       )
     }
-
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attrs-section pt-5` }>
         <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>

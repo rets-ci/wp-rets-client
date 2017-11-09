@@ -198,7 +198,6 @@ class SiteOrigin_Widget_Slider_Widget extends SiteOrigin_Widget_Base_Slider {
 				$link_atts = array();
 				if ( ! empty( $frame['new_window'] ) ) {
 					$link_atts['target'] = '_blank';
-					$link_atts['rel'] = 'noopener noreferrer';
 				}
 				$frame['link_attributes'] = $link_atts;
 			}
@@ -265,7 +264,7 @@ class SiteOrigin_Widget_Slider_Widget extends SiteOrigin_Widget_Base_Slider {
 
 		return sprintf(
 			__( 'Add a Lightbox to your image slides with %sSiteOrigin Premium%s', 'so-widgets-bundle' ),
-			'<a href="https://siteorigin.com/downloads/premium/?featured_addon=plugin/lightbox" target="_blank" rel="noopener noreferrer">',
+			'<a href="https://siteorigin.com/downloads/premium/?featured_addon=plugin/lightbox" target="_blank">',
 			'</a>'
 		);
 	}

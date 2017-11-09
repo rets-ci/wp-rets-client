@@ -17,22 +17,22 @@ class WPSEO_Extensions {
 		),
 		'News SEO'              => array(
 			'slug'       => 'news-seo',
-			'identifier' => 'wpseo-news',
+			'identifier' => 'wordpress-seo-news',
 			'classname'  => 'WPSEO_News',
 		),
 		'Yoast WooCommerce SEO' => array(
 			'slug'       => 'woocommerce-yoast-seo',
-			'identifier' => 'wpseo-woocommerce',
+			'identifier' => 'yoast-woo-seo',
 			'classname'  => 'Yoast_WooCommerce_SEO',
 		),
 		'Video SEO'             => array(
 			'slug'       => 'video-seo-for-wordpress',
-			'identifier' => 'wpseo-video',
+			'identifier' => 'yoast-video-seo',
 			'classname'  => 'WPSEO_Video_Sitemap',
 		),
 		'Local SEO'             => array(
 			'slug'       => 'local-seo-for-wordpress',
-			'identifier' => 'wpseo-local',
+			'identifier' => 'yoast-local-seo',
 			'classname'  => 'WPSEO_Local_Core',
 		),
 	);
@@ -64,17 +64,7 @@ class WPSEO_Extensions {
 	 * @param string $extension The extension to invalidate.
 	 */
 	public function invalidate( $extension ) {
-		/*
-		 * Make sure we clear the current site and multisite options.
-		 *
-		 * Because plugins can be site-activated or multi-site activated we need to clear
-		 * all possible options.
-		 *
-		 * If we knew here that the extension in question was network activated
-		 * we could do this a lot more easily.
-		 */
 		delete_option( $this->get_option_name( $extension ) );
-		delete_site_option( $this->get_option_name( $extension ) );
 	}
 
 	/**

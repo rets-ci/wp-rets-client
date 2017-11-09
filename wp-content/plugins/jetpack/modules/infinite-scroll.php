@@ -220,7 +220,7 @@ class Jetpack_Infinite_Scroll_Extras {
 		// Fire the post_gallery action early so Carousel scripts are present.
 		if ( Jetpack::is_module_active( 'carousel' ) ) {
 			/** This filter is already documented in core/wp-includes/media.php */
-			do_action( 'post_gallery', '', '', 0 );
+			do_action( 'post_gallery', '', '' );
 		}
 
 		// Always enqueue Tiled Gallery scripts when both IS and Tiled Galleries are enabled

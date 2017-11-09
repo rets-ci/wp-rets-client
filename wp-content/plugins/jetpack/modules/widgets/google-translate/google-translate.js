@@ -14,7 +14,7 @@ function googleTranslateElementInit() {
 	}
 	new google.translate.TranslateElement( {
 		pageLanguage: lang,
-		layout: _wp_google_translate_widget.layout,
+		layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
 		autoDisplay: false
 	}, 'google_translate_element' );
 }

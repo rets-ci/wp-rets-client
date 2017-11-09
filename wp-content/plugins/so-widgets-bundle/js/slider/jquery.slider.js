@@ -84,11 +84,10 @@ jQuery( function($){
 					$slide.click(function(event) {
 
 						event.preventDefault();
-						var sliderWindow = window.open(
+						window.open(
 							urlData.url,
 							urlData.hasOwnProperty( 'new_window' ) && urlData.new_window ? '_blank' : '_self'
 						);
-						sliderWindow.opener = null;
 					} );
 					$slide.find( 'a' ).click( function ( event ) {
 						event.stopPropagation();
@@ -99,13 +98,13 @@ jQuery( function($){
 			var setupSlider = function() {
 
 				// If we're inside a fittext wrapper, wait for it to complete, before setting up the slider.
-				var fitTextWrapper = $$.closest('.so-widget-fittext-wrapper');
-				if ( fitTextWrapper.length > 0 && ! fitTextWrapper.data('fitTextDone') ) {
-				fitTextWrapper.on('fitTextDone', function () {
-					setupSlider();
-				});
-				return;
-				}
+                var fitTextWrapper = $$.closest('.so-widget-fittext-wrapper');
+                if ( fitTextWrapper.length > 0 && ! fitTextWrapper.data('fitTextDone') ) {
+                    fitTextWrapper.on('fitTextDone', function () {
+                        setupSlider();
+                    });
+                    return;
+                }
 
 				// Show everything for this slider
 				$base.show();

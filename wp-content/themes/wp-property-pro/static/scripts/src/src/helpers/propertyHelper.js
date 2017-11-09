@@ -106,7 +106,9 @@ function getListingTypeJSONFileName({ sale_type, listing_type}) {
   } else if (sale_type === 'sale' && listing_type === 'residential') {
     fileName =  'residential_sale_RE_1';
   } else if (sale_type === 'sale' && listing_type === 'commercial') {
-    fileName =  'residential_sale_RE_1';
+    fileName =  'commercial_CI_4';
+  } else if (sale_type === 'rent' && listing_type === 'commercial')  {
+    fileName =  'commercial_CI_4';
   } else if (sale_type === 'sale' && listing_type === 'land') {
     fileName =  'land';
   }

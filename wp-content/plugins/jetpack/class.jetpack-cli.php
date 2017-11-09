@@ -241,7 +241,7 @@ class Jetpack_CLI extends WP_CLI_Command {
 
 		switch ( $action ) {
 			case 'options':
-				$options_to_reset = Jetpack_Options::get_options_for_reset();
+				$options_to_reset = Jetpack::get_jetpack_options_for_reset();
 
 				// Reset the Jetpack options
 				_e( "Resetting Jetpack Options...\n", "jetpack" );
@@ -522,7 +522,7 @@ class Jetpack_CLI extends WP_CLI_Command {
 	 */
 	public function options( $args, $assoc_args ) {
 		$action = isset( $args[0] ) ? $args[0] : 'list';
-		$safe_to_modify = Jetpack_Options::get_options_for_reset();
+		$safe_to_modify = Jetpack::get_jetpack_options_for_reset();
 
 		// Jumpstart is special
 		array_push( $safe_to_modify, 'jumpstart' );
@@ -831,10 +831,10 @@ class Jetpack_CLI extends WP_CLI_Command {
 			$this->partner_provision_error( new WP_Error( 'missing_access_token', __( 'Missing or invalid access token', 'jetpack' ) ) );
 		}
 
-		$site_identifier = Jetpack_Options::get_option( 'id' );
+		$blog_id    = Jetpack_Options::get_option( 'id' );
 
-		if ( ! $site_identifier ) {
-			$site_identifier = Jetpack::build_raw_urls( get_home_url() );
+		if ( ! $blog_id ) {
+			$this->partner_provision_error( new WP_Error( 'site_not_registered',  __( 'This site is not connected to Jetpack', 'jetpack' ) ) );
 		}
 
 		$request = array(
@@ -844,9 +844,10 @@ class Jetpack_CLI extends WP_CLI_Command {
 			),
 			'timeout' => 60,
 			'method'  => 'POST',
+			'body'    => json_encode( array( 'site_id' => $blog_id ) )
 		);
 
-		$url = sprintf( 'https://%s/rest/v1.3/jpphp/%s/partner-cancel', $this->get_api_host(), $site_identifier );
+		$url = sprintf( 'https://%s/rest/v1.3/jpphp/%d/partner-cancel', $this->get_api_host(), $blog_id );
 
 		$result = Jetpack_Client::_wp_remote_request( $url, $request );
 
@@ -856,7 +857,7 @@ class Jetpack_CLI extends WP_CLI_Command {
 			$this->partner_provision_error( $result );
 		}
 
-		WP_CLI::log( wp_remote_retrieve_body( $result ) );
+		WP_CLI::log( json_encode( $result ) );
 	}
 
 	/**
@@ -932,10 +933,8 @@ class Jetpack_CLI extends WP_CLI_Command {
 			? get_site_icon_url()
 			: false;
 
-		$auto_enable_sso = ( ! Jetpack::is_active() || Jetpack::is_module_active( 'sso' ) );
-
 		/** This filter is documented in class.jetpack-cli.php */
-		if ( apply_filters( 'jetpack_start_enable_sso', $auto_enable_sso ) ) {
+		if ( apply_filters( 'jetpack_start_enable_sso', true ) ) {
 			$redirect_uri = add_query_arg(
 				array( 'action' => 'jetpack-sso', 'redirect_to' => urlencode( admin_url() ) ),
 				wp_login_url() // TODO: come back to Jetpack dashboard?
@@ -944,7 +943,7 @@ class Jetpack_CLI extends WP_CLI_Command {
 			$redirect_uri = admin_url();
 		}
 
-		$request_body = array(
+		$request_body = array( 
 			'jp_version'    => JETPACK__VERSION,
 			'redirect_uri'  => $redirect_uri
 		);
@@ -1014,8 +1013,8 @@ class Jetpack_CLI extends WP_CLI_Command {
 
 		if ( is_wp_error( $result ) ) {
 			$this->partner_provision_error( $result );
-		}
-
+		} 
+		
 		$response_code = wp_remote_retrieve_response_code( $result );
 		$body_json     = json_decode( wp_remote_retrieve_body( $result ) );
 
@@ -1023,13 +1022,20 @@ class Jetpack_CLI extends WP_CLI_Command {
 			if ( isset( $body_json->error ) ) {
 				$this->partner_provision_error( new WP_Error( $body_json->error, $body_json->message ) );
 			} else {
-				$this->partner_provision_error( new WP_Error( 'server_error', sprintf( __( "Request failed with code %s", 'jetpack' ), $response_code ) ) );
+				$this->partner_provision_error( new WP_Error( 'server_error', sprintf( __( "Request failed with code %s" ), $response_code ) ) );
 			}
 		}
 
 		if ( isset( $body_json->access_token ) ) {
 			// authorize user and enable SSO
 			Jetpack::update_user_token( $user->ID, sprintf( '%s.%d', $body_json->access_token, $user->ID ), true );
+
+			if ( $active_modules = Jetpack_Options::get_option( 'active_modules' ) ) {
+				Jetpack::delete_active_modules();
+				Jetpack::activate_default_modules( 999, 1, $active_modules, false );
+			} else {
+				Jetpack::activate_default_modules( false, false, array(), false );
+			}
 
 			/**
 			 * Auto-enable SSO module for new Jetpack Start connections
@@ -1038,15 +1044,8 @@ class Jetpack_CLI extends WP_CLI_Command {
 			 *
 			 * @param bool $enable_sso Whether to enable the SSO module. Default to true.
 			 */
-			$other_modules = apply_filters( 'jetpack_start_enable_sso', true )
-				? array( 'sso' )
-				: array();
-
-			if ( $active_modules = Jetpack_Options::get_option( 'active_modules' ) ) {
-				Jetpack::delete_active_modules();
-				Jetpack::activate_default_modules( 999, 1, array_merge( $active_modules, $other_modules ), false );
-			} else {
-				Jetpack::activate_default_modules( false, false, $other_modules, false );
+			if ( apply_filters( 'jetpack_start_enable_sso', true ) ) {
+				Jetpack::activate_module( 'sso', false, false );
 			}
 		}
 

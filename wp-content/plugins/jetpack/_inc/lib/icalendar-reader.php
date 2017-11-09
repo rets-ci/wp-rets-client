@@ -93,7 +93,6 @@ class iCalendarReader {
 		$timezone_name = get_option( 'timezone_string' );
 		if ( $timezone_name ) {
 			$timezone = new DateTimeZone( $timezone_name );
-			$timezone_offset_interval = false;
 		} else {
 			// If the timezone isn't set then the GMT offset must be set.
 			// generate a DateInterval object from the timezone offset
@@ -835,9 +834,9 @@ class iCalendarReader {
 		}
 		$single_day = $end ? ( $end - $start ) <= DAY_IN_SECONDS : true;
 
-		/* translators: Date and time */
+		/* Translators: Date and time */
 		$date_with_time = __( '%1$s at %2$s' , 'jetpack' );
-		/* translators: Two dates with a separator */
+		/* Translators: Two dates with a separator */
 		$two_dates = __( '%1$s &ndash; %2$s' , 'jetpack' );
 
 		// we'll always have the start date. Maybe with time

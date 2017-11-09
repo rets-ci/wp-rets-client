@@ -10,7 +10,6 @@
 @heading_title_font_family: default;
 @heading_title_font_weight: default;
 @heading_title_font_size: default;
-@heading_title_text_transform: default;
 @heading_border_color: default;
 @heading_border_hover_color: default;
 @has_heading_border_width: default;
@@ -21,8 +20,6 @@
 @open_close_location: right;
 
 @panels_background_color: default;
-@panels_font_family: default;
-@panels_font_size: default;
 @panels_font_color: default;
 @panels_border_color: default;
 @has_panels_border_width: default;
@@ -43,7 +40,6 @@
 			font-family: @heading_title_font_family;
 			font-weight: @heading_title_font_weight;
 			font-size: @heading_title_font_size;
-			text-transform: @heading_title_text_transform;
 
 			& when( @has_heading_border_width = true ) {
 				border-style: solid;
@@ -94,8 +90,6 @@
 				}
 				padding: @panels_padding;
 				color: @panels_font_color;
-				font-family: @panels_font_family;
-				font-size: @panels_font_size;
 			}
 		}
 		margin-bottom: @panels_margin_bottom;

@@ -53,10 +53,6 @@ class QM_Backtrace {
 		'get_sidebar'                => 1,
 		'get_footer'                 => 1,
 		'class_exists'               => 2,
-		'current_user_can'           => 3,
-		'user_can'                   => 4,
-		'current_user_can_for_blog'  => 4,
-		'author_can'                 => 4,
 	);
 	protected static $filtered = false;
 	protected $trace           = null;
@@ -252,11 +248,7 @@ class QM_Backtrace {
 					$args = array();
 					for ( $i = 0; $i < $show; $i++ ) {
 						if ( isset( $trace['args'][$i] ) ) {
-							if ( is_string( $trace['args'][$i] ) ) {
-								$args[] = '\'' . $trace['args'][$i] . '\'';
-							} else {
-								$args[] = QM_Util::display_variable( $trace['args'][$i] );
-							}
+							$args[] = '\'' . $trace['args'][$i] . '\'';
 						}
 					}
 					$return['id']      = $trace['function'] . '()';

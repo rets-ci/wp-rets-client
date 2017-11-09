@@ -194,12 +194,17 @@ abstract class Jetpack_Admin_Page {
 
 		self::$plan_checked = true;
 		$previous = get_option( 'jetpack_active_plan', '' );
-		$current = Jetpack_Core_Json_Api_Endpoints::site_data();
-		if ( ! $current || is_wp_error( $current ) ) {
+		$response = rest_do_request( new WP_REST_Request( 'GET', '/jetpack/v4/site' ) );
+
+		if ( ! is_object( $response ) || $response->is_error() ) {
+
 			// If we can't get information about the current plan we don't do anything
 			self::$plan_checked = true;
 			return;
 		}
+
+		$current = $response->get_data();
+		$current = json_decode( $current['data'] );
 
 		$to_deactivate = array();
 		if ( isset( $current->plan->product_slug ) ) {
