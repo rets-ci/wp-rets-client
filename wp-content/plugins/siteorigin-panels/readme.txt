@@ -2,8 +2,8 @@
 Tags: page builder, responsive, widget, widgets, builder, page, admin, gallery, content, cms, pages, post, css, layout, grid
 Requires at least: 4.4
 Tested up to: 4.8.1
-Stable tag: 2.5.13
-Build time: 2017-09-29T20:40:18+02:00
+Stable tag: 2.5.14
+Build time: 2017-11-06T10:24:07+02:00
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -95,6 +95,12 @@ Page Builder is actively developed and updated, so generally I'd recommend that 
 We've tried to ensure that Page Builder is compatible with most plugin widgets. It's best to just download Page Builder and test for yourself.
 
 == Changelog ==
+
+= 2.5.14 - 6 November 2017 =
+* Content Cache: Add Enqueue hook to allow 3rd parties to enqueue cache friendly assets.
+* Added raw_panels_data flag for layout imports.
+* Save ratio and ratio_direction as row attributes.
+* Add rel="noopener noreferrer" for all 3rd party/unknown links.
 
 = 2.5.13 - 29 September 2017 =
 * Always enqueue parallax when in cache mode.

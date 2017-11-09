@@ -919,7 +919,13 @@ module.exports = panels.view.dialog.extend({
 
 		if (!_.isUndefined(this.model)) {
 			// Set the initial value of the
-			this.$('input.so-row-field').val(this.model.get('cells').length);
+			this.$( 'input[name="cells"].so-row-field' ).val( this.model.get( 'cells' ).length );
+			if ( this.model.has( 'ratio' ) ) {
+				this.$( 'select[name="ratio"].so-row-field' ).val( this.model.get( 'ratio' ) );
+			}
+			if ( this.model.has( 'ratio_direction' ) ) {
+				this.$( 'select[name="ratio_direction"].so-row-field' ).val( this.model.get( 'ratio_direction' ) );
+			}
 		}
 
 		this.$('input.so-row-field').keyup(function () {
@@ -944,11 +950,19 @@ module.exports = panels.view.dialog.extend({
 		// Set the rows to be a copy of the model
 		this.row = {
 			cells: this.model.get('cells').clone(),
-			style: {}
+			style: {},
+			ratio: this.model.get('ratio'),
+			ratio_direction: this.model.get('ratio_direction'),
 		};
 
 		// Set the initial value of the cell field.
-		this.$('input.so-row-field').val(this.model.get('cells').length);
+		this.$( 'input[name="cells"].so-row-field' ).val( this.model.get( 'cells' ).length );
+		if ( this.model.has( 'ratio' ) ) {
+			this.$( 'select[name="ratio"].so-row-field' ).val( this.model.get( 'ratio' ) );
+		}
+		if ( this.model.has( 'ratio_direction' ) ) {
+			this.$( 'select[name="ratio_direction"].so-row-field' ).val( this.model.get( 'ratio_direction' ) );
+		}
 
 		this.clearCellStylesCache();
 
@@ -1340,7 +1354,7 @@ module.exports = panels.view.dialog.extend({
 				this.$('.row-set-form input[name="cells"]').val(f.cells);
 			}
 
-			this.$('.row-set-form input[name="ratio"]').val(f.ratio);
+			this.$('.row-set-form select[name="ratio"]').val(f.ratio);
 
 			var cells = [];
 			var cellCountChanged = (
@@ -1384,6 +1398,9 @@ module.exports = panels.view.dialog.extend({
 					cell.set('weight', cellWeight);
 				}
 			}.bind(this));
+			
+			this.row.ratio = f.ratio;
+			this.row.ratio_direction = f.direction;
 
 			if (cellCountChanged) {
 				this.regenerateRowPreview();
@@ -1436,7 +1453,9 @@ module.exports = panels.view.dialog.extend({
 
 		// Set the cells
 		if (!_.isEmpty(this.model)) {
-			this.model.setCells(this.row.cells);
+			this.model.setCells( this.row.cells );
+			this.model.set( 'ratio', this.row.ratio );
+			this.model.set( 'ratio_direction', this.row.ratio_direction );
 		}
 
 		// Update the row styles if they've loaded
@@ -2664,6 +2683,14 @@ module.exports = Backbone.Model.extend({
 					rowAttrs.style = data.grids[i].style;
 				}
 
+				if ( ! _.isUndefined( data.grids[i].ratio) ) {
+					rowAttrs.ratio = data.grids[i].ratio;
+				}
+
+				if ( ! _.isUndefined( data.grids[i].ratio_direction) ) {
+					rowAttrs.ratio_direction = data.grids[i].ratio_direction
+				}
+
 				if ( ! _.isUndefined( data.grids[i].color_label) ) {
 					rowAttrs.color_label = data.grids[i].color_label;
 				}
@@ -2835,6 +2862,8 @@ module.exports = Backbone.Model.extend({
 			data.grids.push( {
 				cells: row.get('cells').length,
 				style: row.get( 'style' ),
+				ratio: row.get('ratio'),
+				ratio_direction: row.get('ratio_direction'),
 				color_label: row.get( 'color_label' ),
 				label: row.get( 'label' ),
 			} );
@@ -2959,6 +2988,8 @@ module.exports = Backbone.Model.extend({
 				panels_data.grids.push( {
 					cells: $cells.length,
 					style: $row.data( 'style' ),
+					ratio: $row.data( 'ratio' ),
+					ratio_direction: $row.data( 'ratio-direction' ),
 					color_label: $row.data( 'color-label' ),
 					label: $row.data( 'label' ),
 				} );
