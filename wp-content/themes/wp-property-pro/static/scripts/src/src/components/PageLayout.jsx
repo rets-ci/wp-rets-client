@@ -176,7 +176,8 @@ class PageLayout extends Component {
         self.setState({
           agents: get(data, 'agents'),
           search_options: get(data, 'search_options'),
-          post: data.post
+          post: data.post,
+          sidebar_menu_items: get(data, 'sidebar_menu_items', [])
         });
       }
     });
@@ -228,6 +229,7 @@ class PageLayout extends Component {
           historyPush={history.push}
           location={location}
           panelOpen={userPanelOpen}
+          menu_items={get(this.state, 'sidebar_menu_items', [])}
         />
         <LoginModal />
         <Switch>

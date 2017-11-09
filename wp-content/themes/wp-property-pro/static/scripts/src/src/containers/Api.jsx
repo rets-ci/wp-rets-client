@@ -160,6 +160,22 @@ class Api {
       type_status_array.push(params.propertyType + '-for-' + saleType.toLowerCase());
     }
 
+    let source = [
+          "ID",
+          "post_title",
+          "post_name",
+          "taxonomy",
+          "slug",
+          "name",
+          "parent",
+          "term_type",
+          "url_path",
+          "post_meta.address_unit",
+          "post_meta.rets_address",
+          "post_meta.rets_postal_code",
+          "tax_input.wpp_location"
+        ];
+
     let suggest = {
       "post-suggest": {
         "text": params.term,
@@ -189,6 +205,7 @@ class Api {
 
     let body = {
       data: JSON.stringify({
+        _source: source,
         suggest: suggest
       })
     };

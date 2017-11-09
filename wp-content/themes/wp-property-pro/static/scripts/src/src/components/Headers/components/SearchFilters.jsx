@@ -25,8 +25,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(openPropertiesModal(open));
     },
 
-    openLocationModal: () => {
-      dispatch(openLocationModal(true));
+    openLocationModal: (terms) => {
+      dispatch(openLocationModal(true, terms));
     }
   }
 };
@@ -236,7 +236,7 @@ class searchFilters extends Component {
     }
     if (termFilters && termFilters.length) {
       if (termFilters.length === 1) {
-        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={this.props.openLocationModal} display={termFilters[0].text || 'loading...'} value={termFilters[0].text || 'loading...'} />;
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.props.openLocationModal(termFilter)} display={termFilters[0].text || 'loading...'} value={termFilters[0].text || 'loading...'} />;
       } else {
         termFilterElement = termFilters.map((t, i) =>
           <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove(t)} display={t.text || 'loading...'} value={t.text || 'loading...'} />

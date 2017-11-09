@@ -15,10 +15,11 @@ export const openFormModal = (id, open) => {
   }
 };
 
-export const openLocationModal = open => {
+export const openLocationModal = (open, currentTerms = []) => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
-    open: open
+    open: open,
+    currentTerms: currentTerms
   }
 };
 
