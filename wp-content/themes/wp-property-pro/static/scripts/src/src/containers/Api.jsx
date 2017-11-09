@@ -29,7 +29,7 @@ class Api {
         "old_key": "location-city",
         "taxonomy": "wpp_location"
       },
-      "wpp_location_zip": {
+      "wpp_location_zipcode": {
         "slug": "zip",
         "title": "Zip",
         "field": "_system.addressDetail.zipcode",
