@@ -19,11 +19,11 @@ export {
 * public functions
 ************************************/
 function getLastUpdatedMoment(property) {
-  const { post_date } = property;
+  const { post_modified } = property;
 
-  let parsed = moment.utc(post_date, Lib.COMMON_DATE_FORMAT_1);
+  let parsed = moment.utc(post_modified, Lib.COMMON_DATE_FORMAT_1);
   if (!parsed.isValid()) {
-    console.warn(`date ${post_date} could not be parsed`);
+    console.warn(`date ${post_modified} could not be parsed`);
     return false;
   } else {
     return parsed;
@@ -39,7 +39,7 @@ function daysPassedSincePostedDate(property) {
     return false;
   } else {
     let now = moment.utc();
-    return now.diff(parsed, 'days') !== 0 ? now.diff(parsed, 'days') : 'Today';
+    return now.diff(parsed, 'days') !== 0 ? now.diff(parsed, 'days') : 1;
   }
 }
 

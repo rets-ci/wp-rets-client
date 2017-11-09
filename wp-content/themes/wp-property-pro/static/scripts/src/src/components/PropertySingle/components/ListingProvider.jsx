@@ -24,7 +24,8 @@ const ListingProvider = ({ curatedPropertyInfo, fromMapView }) => {
 
   let daysOnWebsite = daysPassedSincePostedDate(curatedPropertyInfo);
   let lastUpdatedMoment = getLastUpdatedMoment(curatedPropertyInfo);
-  let lastCheckedMoment = getLastCheckedMoment(curatedPropertyInfo);
+  // let lastCheckedMoment = getLastCheckedMoment(curatedPropertyInfo);
+  let lastCheckedMoment = '1 minute ago';
 
   return (
     <section className={ `${Lib.THEME_CLASSES_PREFIX}single-listing-provider py-5` }>
@@ -70,7 +71,12 @@ const ListingProvider = ({ curatedPropertyInfo, fromMapView }) => {
               </div>
               <div>
                 <span>Last Checked: </span>
-                <span>{lastCheckedMoment.isValid() ? lastCheckedMoment.format('LLL') + ' UTC' : ''}</span>
+                <span>
+                  {
+                        //lastCheckedMoment.isValid() ? lastCheckedMoment.format('LLL') + ' UTC' : ''
+                      lastCheckedMoment
+                  }
+               </span>
               </div>
               <div>
                 <span>Last Updated: </span>

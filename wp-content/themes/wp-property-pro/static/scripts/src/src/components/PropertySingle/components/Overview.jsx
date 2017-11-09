@@ -22,7 +22,8 @@ class Overview extends Component {
     let availableDate = moment.utc(rets_date_available, 'YYYY-MM-DD');
     let daysOnWebsite = daysPassedSincePostedDate(this.props.curatedPropertyInfo);
     let lastUpdatedMoment = getLastUpdatedMoment(this.props.curatedPropertyInfo);
-    let lastCheckedMoment = getLastCheckedMoment(this.props.curatedPropertyInfo);
+    // let lastCheckedMoment = getLastCheckedMoment(this.props.curatedPropertyInfo);
+    let lastCheckedMoment = '1 minute ago';
 
     let availabilityOpening = null;
     if (saleType === 'rent' && listing_type === 'residential' && availableDate.isValid()) {
@@ -33,7 +34,7 @@ class Overview extends Component {
     if (this.props.fromMapView) {
       gridClass += 'col-6 col-xl-4'
     } else {
-      gridClass += 'col-4 col-md-3'
+      gridClass += 'col-4 col-md-4'
     }
 
     return (
@@ -46,7 +47,10 @@ class Overview extends Component {
         <div className="row">
           <div className={ `${gridClass}` }>
             <p className="text-muted">Last Checked</p>
-            <p>{lastCheckedMoment.fromNow()}</p>
+            <p>{
+              // lastCheckedMoment.fromNow()
+              lastCheckedMoment
+            }</p>
           </div>
           {lastUpdatedMoment &&
             <div className={ `${gridClass}` }>
