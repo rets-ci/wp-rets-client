@@ -16,6 +16,7 @@ import Api from '../../containers/Api.jsx';
 import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
@@ -26,7 +27,8 @@ const mapStateToProps = (state, ownProps) => {
     open: state.locationModal ? state.locationModal.open : false,
     propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
     searchResults: get(state, 'locationModal.items', []),
-    searchType: get(state, 'searchType.searchType', '')
+    searchType: get(state, 'searchType.searchType', ''),
+    currentTerms: get(state, 'locationModal.currentTerms', null)
   }
 };
 
@@ -110,7 +112,7 @@ class LocationModal extends Component {
     const { taxonomy: tax, term, termType, text, url } = result;
     const { searchType, modifyType, history } = this.props;
 
-    let currentTerms = get(this.props, 'terms', []);
+    let currentTerms = !isEmpty(get(this.props, 'currentTerms', [])) ? get(this.props, 'currentTerms') : get(this.props, 'terms', []);
 
     // @TODO should be fixed and should contain term lable like `city`,
     // for now get needed value from typeType `wpp_location_city`
