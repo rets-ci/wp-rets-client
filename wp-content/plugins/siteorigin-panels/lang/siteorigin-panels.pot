@@ -1133,11 +1133,11 @@ msgstr ""
 msgid "Read More"
 msgstr ""
 
-#: tmp/siteorigin-panels.php:432
+#: tmp/siteorigin-panels.php:433
 msgid "Edit Home Page"
 msgstr ""
 
-#: tmp/siteorigin-panels.php:452, tmp/tpl/js-templates.php:34, tmp/tpl/js-templates.php:36
+#: tmp/siteorigin-panels.php:453, tmp/tpl/js-templates.php:34, tmp/tpl/js-templates.php:36
 msgid "Live Editor"
 msgstr ""
 
