@@ -629,6 +629,7 @@ class Util extends React.Component {
     let rets_city = get(tax_input, 'rets_city', null);
     let rets_date_available = get(post_meta, 'rets_date_available[0]', null);
     let rets_high_school = get(tax_input, 'rets_high_school', null);
+    let rets_list_date = get(post_meta, 'rets_list_date', null);
     let rets_list_price = get(post_meta, 'rets_list_price', null);
     let rets_living_area = get(post_meta, 'rets_living_area', null);
     let rets_lot_size_area = get(post_meta, 'rets_lot_size_area', null);
@@ -680,6 +681,7 @@ class Util extends React.Component {
       formatted_address_simple,
       listingTypes,
       rets_date_available,
+      rets_list_date,
       rets_list_price,
       rets_living_area,
       rets_lot_size_area,

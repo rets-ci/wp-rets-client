@@ -31,11 +31,12 @@ function getLastUpdatedMoment(property) {
 }
 
 function daysPassedSincePostedDate(property) {
-  const { post_date } = property;
+  const { rets_list_date } = property;
+  console.log(property);
 
-  let parsed = moment.utc(post_date, Lib.COMMON_DATE_FORMAT_1);
+  let parsed = moment.utc(rets_list_date, Lib.COMMON_DATE_FORMAT_1);
   if (!parsed.isValid()) {
-    console.warn(`date ${post_date} could not be parsed`);
+    console.warn(`date ${rets_list_date} could not be parsed`);
     return false;
   } else {
     let now = moment.utc();
