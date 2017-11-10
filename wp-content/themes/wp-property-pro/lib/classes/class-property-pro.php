@@ -401,6 +401,9 @@ namespace UsabilityDynamics {
           $params['post']['is_blog_single'] = true;
           $params['post']['content'] = apply_filters('the_content', $post->post_content);
           if ($categories = get_the_category($post->ID)) {
+            $categories = array_map(function($cat){
+              return $cat->parent;
+            }, $categories);
             $params['post']['category_title'] = $categories['0']->cat_name;
             $args = [
               'category' => $categories[0]->cat_ID,

@@ -1,6 +1,7 @@
 import HeaderDefault from '../Headers/HeaderDefault.jsx';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import LoadingCircle from 'app_root/components/LoadingCircle.jsx';
 import Masthead from '../widgets/masthead/Masthead.jsx';
 import Subnavigation from '../widgets/subnavigation/Subnavigation.jsx';
 import Posts from './components/Posts.jsx';
@@ -10,13 +11,15 @@ import {Lib} from '../../lib.jsx';
 import get from 'lodash/get';
 
 const mapStateToProps = (state) => {
-  return {}
+  return {
+    posts: get(state, 'blogPostsState.posts', []),
+    allowPagination: get(state, 'blogPostsState.allowPagination', false)
+  }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getPosts: (from, categoryId) => {
-
+    getPosts: (from, categoryId, existing_posts, callback) => {
       jQuery.ajax({
         url: get(bundle, 'admin_ajax_url', ''),
         type: 'get',
@@ -27,8 +30,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         dataType: 'json',
         success: function (data) {
-          if (get(data, 'posts', null))
-            dispatch(setBlogPosts(get(data, 'posts', []), get(data, 'allowPagination', false)));
+          if (get(data, 'posts', null)){
+            let posts = get(data, 'posts', []);
+
+            if(from && existing_posts){
+              posts = existing_posts.concat(posts);
+            }
+
+            if(typeof callback !== 'undefined'){
+              callback();
+            }
+
+            dispatch(setBlogPosts(posts, get(data, 'allowPagination', false)));
+          }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log(textStatus, errorThrown);
@@ -39,11 +53,23 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 class ArchiveContent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {loading: true};
+  }
+
   componentDidMount() {
     let content = get(this.props.post, 'blog_content', {});
 
+    let self = this;
+
     // Initial get posts
-    this.props.getPosts(0, get(content, 'category_id', 0));
+    this.props.getPosts(0, get(content, 'category_id', 0), this.props.posts, () => {
+      self.setState({
+        loading: false
+      });
+    });
   }
 
   render() {
@@ -64,7 +90,12 @@ class ArchiveContent extends Component {
             <Masthead widget_cell={get(content, 'masthead')}/>
             <Subnavigation widget_cell={get(content, 'subnavigation')}
                           currentUrl={get(this.props.post, 'post_url', '')}/>
-            <Posts seeMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
+            {
+              !this.state.loading
+              ? <Posts posts={this.props.posts} allowPagination={this.props.allowPagination} seeMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
+                : <div className="m-auto"> <LoadingCircle /></div>
+            }
+
           </div>
         </div>
       </div>
