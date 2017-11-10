@@ -37,6 +37,8 @@ export {
   getLivingAreaAboveGradeSQFT,
   getLivingAreaBelowGradeSQFT,
   getLongitude,
+  getLotDescription,
+  getLotNumber,
   getMasterBedroomOnFirstFloor,
   getMiddleSchool,
   getMLSId,
@@ -50,9 +52,11 @@ export {
   getParking,
   getPool,
   getPrice,
+  getPricePerAcre,
   getPricePerSQFT,
   getPropertyType,
   getPublishedDate,
+  getRestrictiveCovenants,
   getRoof,
   getSQFT,
   getState,
@@ -223,6 +227,14 @@ function getLongitude(data) {
   return get(data, 'post_meta.rets_longitude[0]', null);
 }
 
+function getLotDescription(data) {
+  return get(data, 'tax_input.rets_lot_description.rets_lot_description', []).map(d => d.name).join(', ') || null;
+}
+
+function getLotNumber(data) {
+  return get(data, 'post_meta.rets_lot_number[0]', null);
+}
+
 function getMasterBedroomOnFirstFloor(data) {
   return get(data, 'post_meta.rets_master_bedroom_dimensions[0]', false);
 }
@@ -275,6 +287,10 @@ function getPrice(data) {
   return moneyFormat(get(data, 'post_meta.rets_list_price[0]', null));
 }
 
+function getPricePerAcre(data) {
+  return moneyFormat(get(data, 'post_meta.rets_price_per_acre[0]', null));
+}
+
 function getPricePerSQFT(data) {
   return moneyFormat(get(data, 'post_meta.rets_price_per_sqft[0]', null));
 }
@@ -285,6 +301,10 @@ function getPropertyType(data) {
 
 function getPublishedDate(data) {
   return get(data, 'post_meta.rets_list_date[0]', null);
+}
+
+function getRestrictiveCovenants(data) {
+  return formatYesOrNoFields(data, 'tax_input.rets_restrictive_covenants.rets_restrictive_covenants[0].name');
 }
 
 function getRoof(data) {

@@ -32,6 +32,8 @@ import {
   getLatitude,
   getListingType,
   getLongitude,
+  getLotDescription,
+  getLotNumber,
   getLivingAreaAboveGradeSQFT,
   getLivingAreaBelowGradeSQFT,
   getMasterBedroomOnFirstFloor,
@@ -50,6 +52,7 @@ import {
   getPricePerSQFT,
   getPropertyType,
   getPublishedDate,
+  getRestrictiveCovenants,
   getRoof,
   getState,
   getStatus,
@@ -208,12 +211,12 @@ export default [
       {"Name": "Detached Living Area Aqft", "value": (data) => { return get(data, 'post_meta.rets_detached_living_area_sq_ft[0]', null); }, "order": 19}
     ]},
     {"name": "Lot", "items": [
-      {"name": "Number", "value": (data) => { return get(data, 'post_meta.rets_lot_number[0]', null); }, "order": 1},
-      {"name": "Description", "value": (data) => { return get(data, 'tax_input.rets_lot_description.rets_lot_description', []).map(d => d.name).join(', ') || null; }, "order": 2},
+      {"name": "Number", "value": (data) => { return getLotNumber(data); }, "order": 1},
+      {"name": "Description", "value": (data) => { return getLotDescription(data); }, "order": 2},
       {"name": "Acres", "value": (data) => { return getAcres(data); }, "order": 3},
       {"name": "SQFT", "value": (data) => { return getSQFT(data); }, "order": 4},
       {"name": "Zoning", "value": (data) => { return getZoning(data); }, "order": 5},
-      {"name": "Restrictive Covenants", "value": (data) => { return formatYesOrNoFields(data, 'tax_input.rets_restrictive_covenants.rets_restrictive_covenants[0].name'); }, "order": 6}
+      {"name": "Restrictive Covenants", "value": (data) => { return getRestrictiveCovenants(data); }, "order": 6}
     ]}
   ]},
   {
