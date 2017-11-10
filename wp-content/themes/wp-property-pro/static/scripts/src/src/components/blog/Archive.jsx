@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             let posts = get(data, 'posts', []);
 
             if(from && existing_posts){
-              posts = posts.concat(existing_posts);
+              posts = existing_posts.concat(posts);
             }
 
             if(typeof callback !== 'undefined'){
