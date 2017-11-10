@@ -163,6 +163,7 @@ class SingleContainer extends Component {
               elasticSearchSource={property}
               saleType={sale}
               searchType={searchType}
+              fromMapView={false}
             />
         }
       </div>
