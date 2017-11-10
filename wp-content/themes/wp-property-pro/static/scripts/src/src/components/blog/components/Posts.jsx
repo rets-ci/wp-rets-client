@@ -1,18 +1,10 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import LoadingCircle from '../../LoadingCircle.jsx';
 import PostCard from './PostCard.jsx';
 import {Lib} from '../../../lib.jsx';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-
-const mapStateToProps = (state) => {
-  return {
-    posts: get(state, 'blogPostsState.posts', []),
-    allowPagination: get(state, 'blogPostsState.allowPagination', false)
-  }
-};
 
 class Posts extends Component {
   static propTypes = {
@@ -35,7 +27,7 @@ class Posts extends Component {
     e.preventDefault();
 
     this.setState({loading: true});
-    this.props.seeMoreHandler(this.props.posts.length, categoryId);
+    this.props.seeMoreHandler(this.props.posts.length, categoryId, this.props.posts);
   }
 
   render() {
@@ -46,10 +38,11 @@ class Posts extends Component {
 
     if (posts) {
       let postsGroup = [];
-      posts.map((post) => {
+      let postsCount = posts.length;
+      posts.map((post, key) => {
         postsGroup.push(post);
 
-        if (postsGroup.length === Lib.BLOG_POSTS_PER_ROW) {
+        if (postsGroup.length === Lib.BLOG_POSTS_PER_ROW || key + 1 === postsCount) {
           groups.push(postsGroup);
           postsGroup = [];
         }
@@ -59,7 +52,6 @@ class Posts extends Component {
     return (
       <section className={Lib.THEME_CLASSES_PREFIX + "blog-posts"}>
         <div className="container">
-          <div className="row">
             {!this.state.loading || groups ?
               groups.map((g, group_index) => {
 
@@ -71,18 +63,16 @@ class Posts extends Component {
                       image_title: get(p, 'image_title', ''),
                       image_alt: get(p, 'image_alt', ''),
                       url: get(p, 'url', ''),
-                      relative_url: get(p, 'relative_url', ''),
-
-                    }} key={i}/>
+                      relative_url: get(p, 'relative_url', '')
+                    }} key={get(p, 'title', '')} />
                   );
 
-                  return (<div className={`card-deck ${Lib.THEME_CLASSES_PREFIX}blog-posts-row`}
+                  return (<div className={`row ${Lib.THEME_CLASSES_PREFIX}blog-posts-row`}
                                key={group_index}>{groupPosts}</div>);
                 }
               )
               : <LoadingCircle />
             }
-          </div>
           {this.props.allowPagination ?
             <div className="row">
               <div className={`${Lib.THEME_CLASSES_PREFIX}load-more mx-auto`}>
@@ -101,6 +91,4 @@ class Posts extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps
-)(Posts);
+export default Posts;
