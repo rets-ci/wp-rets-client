@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
+import { commonDateFormat, formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
 
 export {
   getAcres,
@@ -248,7 +248,8 @@ function getMLSId(data) {
 }
 
 function getModifiedDate(data) {
-  return get(data, 'post_modified', null);
+  let date = get(data, 'post_modified', null);
+  return commonDateFormat(date, 'YYYY-MM-DD');
 }
 
 function getNeighborhood(data) {
@@ -300,7 +301,8 @@ function getPropertyType(data) {
 }
 
 function getPublishedDate(data) {
-  return get(data, 'post_meta.rets_list_date[0]', null);
+  let date = get(data, 'post_meta.rets_list_date[0]', null);
+  return commonDateFormat(date, 'YYYY-MM-DD');
 }
 
 function getRestrictiveCovenants(data) {

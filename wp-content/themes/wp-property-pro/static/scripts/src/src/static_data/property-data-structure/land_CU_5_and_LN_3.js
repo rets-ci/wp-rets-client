@@ -115,10 +115,17 @@ export default [
       {"name": "Type", "value": (data) => { return get(data, 'tax_input.wpp_listing_status.listing_status_sale', []).map(d => d.name.replace('For ', '')).join(', '); }, 'order': 1},
       {"name": "Price", "value": (data) => { return getPrice(data); }, "order": 2},
       {"name": "Price Per Acre", "value": (data) => { return getPricePerAcre(data); }, "order": 3},
-      {"name": "Price Per SQFT", "value": (data) => { return getPricePerSQFT(data); }, 'order': 4}
+      {"name": "Price Per SQFT", "value": (data) => { return getPricePerSQFT(data); }, 'order': 4},
+      {"name": "Sale Price", "value": (data) => { return getPrice(data); }, 'order': 5},
+      {"name": "Minimum Sale Price Per Acre", "value": (data) => { return moneyFormat(get(data, 'post_meta.rets_minimum_sq_ft_available[0]', null)); }, 'order': 6},
+      {"name": "Rent Price", "value": (data) => { let leasePrice = get(data, 'post_meta.rets_lease_price[0]', null); return +leasePrice !== 0 ? leasePrice : null; }, 'order': 7},
+      {"name": "Minimum Rent Price Per Acre", "value": (data) => { let mnimumLeasePrice = get(data, 'post_meta.rets_minimum_lease_price_acre[0]', null); return +mnimumLeasePrice !== 0 ? mnimumLeasePrice : null; }, 'order': 8},
+      {"name": "Acres Available", "value": (data) => { return get(data, 'post_meta.rets_available_acres[0]', null); }, 'order': 9},
+      {"name": "Minimum Acres Available", "value": (data) => { return get(data, 'post_meta.rets_minimum_acres_avail[0]', null); }, 'order': 10}
     ], "order": 1},
     {"name": "Terms", "items": [
-      {"name": "Special Conditions", "value": (data) => { return null; }, "order": 1}
+      {"name": "Special Conditions", "value": (data) => { return null; }, "order": 1},
+      {"name": "Terms", "value": (data) => { return null; }, "order": 2}
     ], "order": 2},
     {"name": "Status", "items": [
       {"name": "MLS ID", "value": (data) => { return getMLSId(data); }, "order": 1},
