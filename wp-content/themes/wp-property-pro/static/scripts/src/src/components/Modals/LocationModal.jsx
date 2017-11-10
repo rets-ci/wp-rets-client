@@ -114,16 +114,18 @@ class LocationModal extends Component {
 
     let currentTerms = !isEmpty(get(this.props, 'currentTerms', [])) ? get(this.props, 'currentTerms') : get(this.props, 'terms', []);
 
-    // @TODO should be fixed and should contain term lable like `city`,
+    // @TODO should be fixed and should contain term label like `city`,
     // for now get needed value from typeType `wpp_location_city`
-    let shortTermTypeValue = Util.reddoorConvertTermTypeToSearchURLPrefix(termType);
+    if(termType){
+      let shortTermTypeValue = Util.reddoorConvertTermTypeToSearchURLPrefix(termType);
 
-    for(let i in currentTerms){
-      let termItem = currentTerms[i];
-      if(get(termItem, 'term') === shortTermTypeValue && get(termItem, 'text') === text){
-        console.log('Location modal', 'Skipping adding term, because it is already added');
-        this.props.closeModal();
-        return;
+      for(let i in currentTerms){
+        let termItem = currentTerms[i];
+        if(get(termItem, 'term') === shortTermTypeValue && get(termItem, 'text') === text){
+          console.log('Location modal', 'Skipping adding term, because it is already added');
+          this.props.closeModal();
+          return;
+        }
       }
     }
 
