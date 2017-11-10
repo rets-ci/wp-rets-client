@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { Lib } from 'app_root/lib.jsx';
 
 export {
+  commonDateFormat,
   getLastUpdatedMoment,
   getLastCheckedMoment,
   daysPassedSincePostedDate,
@@ -18,6 +19,11 @@ export {
 /************************************
 * public functions
 ************************************/
+function commonDateFormat(val, formatting) {
+  let formattedDate = moment(val, formatting);
+  return val && formattedDate.isValid() ? formattedDate.format('MMM D, YYYY') : null;
+}
+
 function getLastUpdatedMoment(property) {
   const { post_modified } = property;
 

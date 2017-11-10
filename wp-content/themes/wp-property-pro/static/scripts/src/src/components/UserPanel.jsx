@@ -7,7 +7,7 @@ const UserPanel = ({closeUserPanel, historyPush, panelOpen, menu_items}) => {
 
   let items = menu_items.map((item) => {
     return (
-      <li>
+      <li key={item.title}>
         <Link
           to={item.relative_url}
           className={Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link" + (item.classes.length && item.classes.join(' ') ? " " + item.classes.join(' ') : "")}
