@@ -52,7 +52,7 @@ class Page extends Component {
       rows
     } = this.props;
     if (get(this.props, 'post.is_blog_single', null)) {
-      return <Single post={get(this.props, 'post', {})}/>
+      return <Single history={history} openUserPanel={openUserPanel} openLoginModal={openLoginModal} post={get(this.props, 'post', {})}/>
     }
 
     if (get(this.props, 'post.is_guide_single', null)) {
