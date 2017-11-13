@@ -4227,6 +4227,11 @@ p.propertypro-gentle-error {
   z-index: 9;
   opacity: .9; }
 
+/** Not found page */
+.propertypro-page-not-found h1,
+.propertypro-page-not-found h3 {
+  color: #000000; }
+
 /*-----------------------------------------------------------------------------------*/
 /*  Responsive (Media queries)
 /*-----------------------------------------------------------------------------------*/

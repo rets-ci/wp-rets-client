@@ -180,6 +180,13 @@ class PageLayout extends Component {
           sidebar_menu_items: get(data, 'sidebar_menu_items', [])
         });
       }
+      if(get(data, 'pageNotFound', null)){
+        self.setState({
+          post: {
+            pageNotFound: true
+          }
+        });
+      }
     });
   }
 
