@@ -898,6 +898,11 @@ namespace UsabilityDynamics\WPRETSC {
         //  ep_sync_post( $post_data[ 'ID' ] );
         //}
 
+        /**
+         * Do something after property is published
+         */
+        do_action( 'wrc_property_published', $post_data[ 'ID' ], $post_data );
+
         ud_get_wp_rets_client()->flush_cache( $post_data[ 'ID' ] );
 
         return array(
