@@ -38,7 +38,6 @@ function getLastUpdatedMoment(property) {
 
 function daysPassedSincePostedDate(property) {
   const { rets_list_date } = property;
-  console.log(property);
 
   let parsed = moment.utc(rets_list_date, Lib.COMMON_DATE_FORMAT_1);
   if (!parsed.isValid()) {
