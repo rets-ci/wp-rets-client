@@ -14,6 +14,8 @@ import {
   getLongitude,
   getLotDescription,
   getLotNumber,
+  getLotSizeArea,
+  getLotSizeDim,
   getMiddleSchool,
   getMLSId,
   getModifiedDate,
@@ -23,6 +25,7 @@ import {
   getPropertyType,
   getPublishedDate,
   getRestrictiveCovenants,
+  getRoadFrontage,
   getState,
   getStatus,
   getStreet,
@@ -51,9 +54,9 @@ export default [
       {"name": "Lot", "items": [
         {"name": "Number", "value": (data) => { return getLotNumber(data); }, "order": 1},
         {"name": "Description", "value": (data) => { return getLotDescription(data); }, "order": 2},
-        {"name": "Acres", "value": (data) => { return getAcres(data); }, "order": 3},
+        {"name": "Acres", "value": (data) => { return getLotSizeArea(data); }, "order": 3},
         {"name": "SQFT", "value": (data) => { return getSQFT(data); }, "order": 4},
-        {"name": "Dimensions", "value": (data) => { return get(data, 'post_meta.rets_lot_size_dim[0]', null); }, "order": 5},
+        {"name": "Dimensions", "value": (data) => { return getLotSizeDim(data); }, "order": 5},
         {"name": "Buildings", "value": (data) => { return get(data, 'post_meta.rets_number_of_buildings[0]', null); }, "order": 6},
         {"name": "Equipment", "value": (data) => { return null; }, "order": 7},
         {"name": "Sewer", "value": (data) => { return null; }, "order": 8},
@@ -63,6 +66,7 @@ export default [
         {"name": "Restrictive Covenants", "value": (data) => { return getRestrictiveCovenants(data); }, "order": 12},
         {"name": "Easements", "value": (data) => { return null; }, "order": 13},
         {"name": "Road Frontage", "value": (data) => { return null; }, "order": 14},
+        {"name": "Road Frontage Length", "value": (data) => { getRoadFrontage(data); }, "order": 14},
         {"name": "Road Description", "value": (data) => { return null; }, "order": 15},
         {"name": "Improvements", "value": (data) => { return null; }, "order": 16},
         {"name": "Utilities", "value": (data) => { return null; }, "order": 17},
@@ -73,16 +77,20 @@ export default [
         {"name": "Rail Service", "value": (data) => { return null }, "order": 22}
       ], "order": 2},
       {"name": "Utility", "items": [
-        {"name": "Utilities", "value": (data) => { return get(data, 'post_meta.rets_number_of_rentals[0]', null); }, "order": 1}
+        {"name": "Utilities", "value": (data) => { return get(data, 'post_meta.rets_number_of_rentals[0]', null); }, "order": 1},
+        {"name": "Water & Sewer", "value": (data) => { return get(data, 'post_meta.rets_water_sewer_fee[0]', null); }, "order": 2}
       ], "order": 3}
     ]
   },
   {
     "name": "Location", "children": [
       {"name": "Community", "items": [
-        {"name": "County", "value": (data) => { return getCounty(data); }, "order": 1},
-        {"name": "Area", "value": (data) => { return getArea(data); }, "order": 2},
-        {"name": "Sub Area", "value": (data) => { return getSubArea(data); }, "order": 3},
+        {"name": "Subdivision", "value": (data) => { return getSubdivision(data); }, "order": 1},
+        {"name": "Neighborhood", "value": (data) => { return getNeighborhood(data); }, "order": 2},
+        {"name": "County", "value": (data) => { return getCounty(data); }, "order": 3},
+        {"name": "Area", "value": (data) => { return getArea(data); }, "order": 4},
+        {"name": "Sub Area", "value": (data) => { return getSubArea(data); }, "order": 5},
+        {"name": "Transit", "value": (data) => { return null; }, "order": 6}
       ], "order": 1},
       {"name": "Homeowners Association", "items": [
         {"name": "HOA Fees", "value": (data) => { return get(data, 'post_meta.rets_association_fee[0]', null); }, "order": 1},

@@ -6,6 +6,7 @@ import {
   getAppliances,
   getArea,
   getBasement,
+  getBasementDescription,
   getBathFeatures,
   getBedrooms,
   getBedroomsOnFirstFloor,
@@ -33,6 +34,7 @@ import {
   getLivingAreaAboveGradeSQFT,
   getLivingAreaBelowGradeSQFT,
   getLongitude,
+  getLotSizeArea,
   getMasterBedroomOnFirstFloor,
   getMiddleSchool,
   getMLSId,
@@ -79,7 +81,7 @@ export default [
       {"name": "Full Bathrooms", "value": (data) => { return getFullBathrooms(data); }, "order": 1},
       {"name": "Half Bathrooms", "value": (data) => { return getHalfBathrooms(data); }, "order": 2},
       {"name": "Total Bathrooms", "value": (data) => { return getTotalBathrooms(data); }, "order": 3},
-      {"name": "Bath Features", "value": (data) => { return getBathFeatures(data) }, "order": 4}
+      {"name": "Bathroom Features", "value": (data) => { return getBathFeatures(data) }, "order": 4}
     ], "order": 2},
     {"name": "Kitchen & Dining", "items": [
       {"name": "Dining Room", "value": (data) => { return getDiningRoom(data); }, "order": 1}
@@ -88,7 +90,8 @@ export default [
       {"name": "Number of Rooms", "value": (data) => { return getNumberOfRooms(data); }, "order": 1},
       {"name": "Other Rooms", "value": (data) => { return getOtherRooms(data); }, "order": 2},
       {"name": "Attic", "value": (data) => { return null; }, "order": 3},
-      {"name": "Basement", "value": (data) => { return getBasement(data); }, "order": 4}
+      {"name": "Basement", "value": (data) => { return getBasement(data); }, "order": 4},
+      {"name": "Basement Description", "value": (data) => { return getBasementDescription(data); }, "order": 5},
     ], "order": 5}
   ]
 },
@@ -141,8 +144,10 @@ export default [
       {"Name": "Detached Living Area Aqft", "value": (data) => { return get(data, 'post_meta.rets_detached_living_area_sq_ft[0]', null); }, "order": 16}
     ], "order": 1},
     {"name": "Lot", "items": [
-      {"name": "Acres", "value": (data) => { return getAcres(data); }, "order": 1},
-      {"name": "Zoning", "value": (data) => { return getZoning(data); }, "order": 2}
+      {"name": "Acres", "value": (data) => { return getLotSizeArea(data); }, "order": 1},
+      {"name": "Zoning", "value": (data) => { return getZoning(data); }, "order": 2},
+      {"name": "Waterfront", "value": (data) => { return null; }, "order": 3},
+      {"name": "Waterfront Type", "value": (data) => { return null; }, "order": 4}
     ], "order": 2}
   ]},
   {
