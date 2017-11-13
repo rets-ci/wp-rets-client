@@ -7,6 +7,7 @@ export {
   getAppliances,
   getArea,
   getBasement,
+  getBasementDescription,
   getBathFeatures,
   getBedrooms,
   getBedroomsOnFirstFloor,
@@ -39,6 +40,8 @@ export {
   getLongitude,
   getLotDescription,
   getLotNumber,
+  getLotSizeArea,
+  getLotSizeDim,
   getMasterBedroomOnFirstFloor,
   getMiddleSchool,
   getMLSId,
@@ -57,6 +60,7 @@ export {
   getPropertyType,
   getPublishedDate,
   getRestrictiveCovenants,
+  getRoadFrontage,
   getRoof,
   getSQFT,
   getState,
@@ -82,7 +86,7 @@ export {
 ************************************/
 
 function getAcres(data) {
-  return get(data, 'tax_input.rets_acres.rets_acres', []).map(d => d.name).join(', ') || null;
+  return get(data, 'post_meta.rets_acres.rets_acres', []).map(d => d.name).join(', ') || null;
 }
 
 function getActiveAdultCommunity(data) {
@@ -99,6 +103,10 @@ function getArea(data) {
 
 function getBasement(data) {
   return formatYesOrNoFields(data, 'tax_input.rets_basement.rets_basement[0].name');
+}
+
+function getBasementDescription(data) {
+  return get(data, 'tax_input.rets_basement.rets_basement', []).map(d => d.name).join(', ') || null;
 }
 
 function getBathFeatures(data) {
@@ -146,7 +154,7 @@ function getElementarySchool(data) {
 }
 
 function getExteriorFeatures(data) {
-  return get(data, 'tax_input.rets_exterior_features.rets_exterior_features', []).map(d => d.name).join(', ') || null
+  return get(data, 'tax_input.rets_exterior_features.rets_exterior_features', []).map(d => d.name).join(', ') || null;
 }
 
 function getExteriorFinish(data) {
@@ -235,6 +243,14 @@ function getLotNumber(data) {
   return get(data, 'post_meta.rets_lot_number[0]', null);
 }
 
+function getLotSizeArea(data) {
+  return get(data, 'post_meta.rets_lot_size_area[0]', null);
+}
+
+function getLotSizeDim(data) {
+  return get(data, 'post_meta.rets_lot_size_dim[0]', null);
+}
+
 function getMasterBedroomOnFirstFloor(data) {
   return get(data, 'post_meta.rets_master_bedroom_dimensions[0]', false);
 }
@@ -309,6 +325,10 @@ function getRestrictiveCovenants(data) {
   return formatYesOrNoFields(data, 'tax_input.rets_restrictive_covenants.rets_restrictive_covenants[0].name');
 }
 
+function getRoadFrontage(data) {
+  return get(data, 'post_meta.rets_road_frontage[0]', null);
+}
+
 function getRoof(data) {
   return get(data,'tax_input.rets_roof.rets_roof', []).map(d => d.name).join(', ') || null;
 }
@@ -374,7 +394,7 @@ function getYearBuilt(data) {
 }
 
 function getZip(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_zipcode', []).map(d => d.name).join(', ') || null;
+  return get(data, 'post_meta.rets_postal_code[0]', null);
 }
 
 function getZoning(data) {
