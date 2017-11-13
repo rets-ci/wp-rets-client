@@ -435,7 +435,7 @@ class MapSearchResults extends Component {
           propertyTypeOptions={propertyTypeOptions}
           resultCount={propertiesModalResultCount}
           resultCountButtonLoading={propertiesModalResultCountIsFetching}
-          searchFilters={omit(searchFilters, ['geoCoordinates'])}
+          searchFilters={omit(searchFilters, ['geoCoordinates', 'selected_property'])}
           turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
           turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}
         />
