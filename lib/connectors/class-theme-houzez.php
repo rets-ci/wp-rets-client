@@ -19,8 +19,9 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
       public function __construct() {
 
         add_action( 'wrc_property_published', array( $this, 'detect_the_agent' ), 100, 2 );
-        add_action( 'wrc_property_published', array( $this, 'update_property_gallery' ), 100, 2 );
         add_action( 'wrc_property_published', array( $this, 'update_video_thumbnail' ), 101, 2 );
+
+        add_action( 'wrc_iserted_media', array( $this, 'update_property_gallery' ), 100, 2 );
 
       }
 
@@ -29,9 +30,9 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
        * action: wrc_property_published
        *
        * @param $post_id
-       * @param $post_data
+       * @param $media_data
        */
-      public function update_property_gallery( $post_id, $post_data ) {
+      public function update_property_gallery( $post_id, $media_data ) {
         global $wpdb;
 
         delete_post_meta( $post_id, 'fave_property_images' );
