@@ -110,6 +110,14 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
           return;
         }
 
+        $agent = apply_filters( 'wrc_houses_theme_default_agent_id', null, $post_id, $post_data );
+
+        if( !empty( $agent ) && is_numeric($agent) ) {
+          update_post_meta( $post_id, 'fave_agents', $agent );
+          update_post_meta( $post_id, 'fave_agent_display_option', 'agent_info' );
+          return;
+        }
+
         update_post_meta( $post_id, 'fave_agent_display_option', 'none' );
 
       }
