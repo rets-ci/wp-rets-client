@@ -19,8 +19,9 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
       public function __construct() {
 
         add_action( 'wrc_property_published', array( $this, 'detect_the_agent' ), 100, 2 );
-        add_action( 'wrc_property_published', array( $this, 'update_property_gallery' ), 100, 2 );
         add_action( 'wrc_property_published', array( $this, 'update_video_thumbnail' ), 101, 2 );
+
+        add_action( 'wrc_iserted_media', array( $this, 'update_property_gallery' ), 100, 2 );
 
       }
 
@@ -29,9 +30,9 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
        * action: wrc_property_published
        *
        * @param $post_id
-       * @param $post_data
+       * @param $media_data
        */
-      public function update_property_gallery( $post_id, $post_data ) {
+      public function update_property_gallery( $post_id, $media_data ) {
         global $wpdb;
 
         delete_post_meta( $post_id, 'fave_property_images' );
@@ -106,6 +107,14 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
 
         if( !empty( $agents ) && count( $agents ) == 1 ) {
           update_post_meta( $post_id, 'fave_agents', $agents[0] );
+          update_post_meta( $post_id, 'fave_agent_display_option', 'agent_info' );
+          return;
+        }
+
+        $agent = apply_filters( 'wrc_houses_theme_default_agent_id', null, $post_id, $post_data );
+
+        if( !empty( $agent ) && is_numeric($agent) ) {
+          update_post_meta( $post_id, 'fave_agents', $agent );
           update_post_meta( $post_id, 'fave_agent_display_option', 'agent_info' );
           return;
         }

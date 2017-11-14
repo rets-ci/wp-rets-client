@@ -281,7 +281,7 @@ namespace UsabilityDynamics\WPRETSC {
             'mls_number' => array(
               'default' => null
             ),
-            'media' => array(
+            '_media' => array(
               'default' => null
             ),
           )
@@ -853,7 +853,7 @@ namespace UsabilityDynamics\WPRETSC {
           'createWPPTerms' => false
         ));
 
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.updateProperty] request.', 'debug' );
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.updateProperty] request.', 'info' );
 
         //if( !empty( $post_data[ 'ID' ] ) ) {}
 
@@ -897,6 +897,11 @@ namespace UsabilityDynamics\WPRETSC {
         //if( function_exists( 'ep_sync_post' ) ) {
         //  ep_sync_post( $post_data[ 'ID' ] );
         //}
+
+        /**
+         * Do something after property is published
+         */
+        do_action( 'wrc_property_published', $post_data[ 'ID' ], $post_data );
 
         ud_get_wp_rets_client()->flush_cache( $post_data[ 'ID' ] );
 
@@ -1377,18 +1382,26 @@ namespace UsabilityDynamics\WPRETSC {
 
         };
 
-        // try go get post_id by mls_number, if it spassed
-        if( !isset( $post_data['post_id' ]) ) {
-          $post_data['post_id' ] = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'mls_number' ] );
+        $post_id = null;
+
+        if( !empty( $post_data['post_id' ] ) ) {
+          $post_id = $post_data['post_id'];
+        } else if( !empty( $post_data['ID' ] ) ) {
+          $post_id = $post_data['ID' ];
         }
 
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.insertMedia] request for ['  . $post_data['post_id' ]. '].', 'debug' );
+        // try go get post_id by mls_number, if it spassed
+        if( !$post_id ) {
+          $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'mls_number' ] );
+        }
 
-        if( !isset( $post_data['post_id' ] ) || !$post_data['post_id' ]) {
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.insertMedia] request for ['  . $post_id . '].', 'info' );
+
+        if( !$post_id || empty( $post_data[ '_media' ] ) ) {
           return array( 'ok' => false );
         }
 
-        $_result = Utility::insert_media( $post_data['post_id' ], $post_data[ 'media' ] );
+        $_result = Utility::insert_media( $post_id, $post_data[ '_media' ] );
 
         return array(
           'ok' => true,

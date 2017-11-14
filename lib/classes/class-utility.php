@@ -385,6 +385,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         }
 
+        do_action( 'wrc_iserted_media', $_post_id, $_rets_media );
 
         ud_get_wp_rets_client()->write_log( "Inserted or updated [" .  count( $_rets_media['items'] ) . "] that are older than our new updated [" . ( isset( $_rets_media['updated'] ) ? $_rets_media['updated'] : '-' ) ."] timestamp.", 'debug' );
 
