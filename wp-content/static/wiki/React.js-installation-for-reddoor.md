@@ -1,1 +1,0 @@
-Go into ./wp-content/themes/wp-property-pro/static/scripts/src and run npm install
