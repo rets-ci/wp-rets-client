@@ -1,23 +1,30 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Lib} from '../../lib.jsx';
+import capitalize from 'lodash/capitalize';
+import first from 'lodash/first';
+import get from 'lodash/get';
+import isArray from 'lodash/isArray';
+import isEqual from 'lodash/isEqual';
+import sortBy from 'lodash/sortBy';
 import Util from '../Util.jsx';
-import {get, first, isArray, capitalize, sortBy} from 'lodash';
 
-class SearchFilterDescription extends Component {
+class SearchFilterDescriptionText extends Component {
   static propTypes = {
-    acres: PropTypes.object,
-    bathrooms: PropTypes.string,
-    bedrooms: PropTypes.string,
-    filters: PropTypes.object,
-    historyPush: PropTypes.func,
-    price: PropTypes.object,
-    saleType: PropTypes.array,
-    sqft: PropTypes.object,
-    subtypes: PropTypes.array,
-    terms: PropTypes.array,
-    total: PropTypes.number,
-    type: PropTypes.string
+    data: PropTypes.shape({
+      acres: PropTypes.object,
+      bathrooms: PropTypes.string,
+      bedrooms: PropTypes.string,
+      filters: PropTypes.object,
+      historyPush: PropTypes.func,
+      price: PropTypes.object,
+      saleType: PropTypes.array,
+      sqft: PropTypes.object,
+      subtypes: PropTypes.array,
+      terms: PropTypes.array,
+      total: PropTypes.number,
+      type: PropTypes.string
+    })
   };
 
   clearFilters = (termFilters, sale_type, historyPush) => {
@@ -46,7 +53,7 @@ class SearchFilterDescription extends Component {
     historyPush(searchURL);
   };
 
-  getTitleAndDescription(props) {
+  getTitleAndDescription(data) {
 
     // Define needed props for description
     let {
@@ -55,10 +62,11 @@ class SearchFilterDescription extends Component {
       bedrooms,
       filters,
       historyPush,
+      terms,
       total,
       price,
       sqft
-    } = props;
+    } = data;
 
     // Default values
     let title = 'No Results';
@@ -75,26 +83,26 @@ class SearchFilterDescription extends Component {
       let residential_sale_type_label = 'Real Estate';
 
       // Build locations array
-      let terms = get(props, 'terms', []).map(term => (term.text));
+      let terms = get(data, 'terms', []).map(term => (term.text));
       let locations = '';
       if (terms && terms.length <= items_limit) {
         locations = sortBy(terms).join(' and ');
       }
 
       // Get listing subtypes array with plural values
-      let subtypes = get(props, 'subtypes', []).map(subtype => (get(bundle, ['listing_subtypes_plural_values', props.type, subtype.slug].join('.'))));
+      let subtypes = get(data, 'subtypes', []).map(subtype => (get(bundle, ['listing_subtypes_plural_values', data.type, subtype.slug].join('.'))));
 
       // Checking if using 'other' subtype
-      let exist_other_values = get(props, 'subtypes', []).map(subtype => (subtype.slug)).indexOf('other') !== -1;
+      let exist_other_values = get(data, 'subtypes', []).map(subtype => (subtype.slug)).indexOf('other') !== -1;
 
       // If there is no selected subtypes or one of selected is 'other' then just display listing type
-      let types = capitalize(props.type);
+      let types = capitalize(data.type);
       if (subtypes && subtypes.length <= items_limit && !exist_other_values) {
         types = sortBy(subtypes).join(' and ');
       }
 
       // Checking selected sale types
-      let saleTypes = (props.saleType && props.saleType.map(d => capitalize(d))) || ['Rent', 'Sale'];
+      let saleTypes = (data.saleType && data.saleType.map(d => capitalize(d))) || ['Rent', 'Sale'];
       if (!isArray(saleTypes)) {
         saleTypes = [saleTypes];
       }
@@ -102,7 +110,7 @@ class SearchFilterDescription extends Component {
       // Define sale type title's part
       let saleType;
       let shortSaleType;
-      switch (props.type) {
+      switch (data.type) {
         case 'residential':
           shortSaleType = saleType = residential_sale_type_label;
           break;
@@ -209,7 +217,7 @@ class SearchFilterDescription extends Component {
       }
 
       // Added 'listings' to sale type or property type/subtype for commercial and land listings
-      if(['land', 'commercial'].indexOf(props.type) !== -1){
+      if(['land', 'commercial'].indexOf(data.type) !== -1){
         if(types){
           types += ' listings';
         }else {
@@ -229,7 +237,7 @@ class SearchFilterDescription extends Component {
       description = _count + (types ? ' ' + types.toLowerCase() : '') + (saleType ? ' ' + saleType.toLowerCase() : '') + (locations ? ' in ' + locations : '') + _price + ((_bedrooms || _bathrooms) ? ' that have' + _bedrooms + _bathrooms : '') + _sqft + _acres + '.';
 
     } else {
-      clearFiltersBtn = <a href="#" onClick={event => { event.preventDefault(); this.clearFilters(filters, props.saleType, historyPush)}}>Remove Filters</a>;
+      clearFiltersBtn = <a href="#" onClick={event => { event.preventDefault(); this.clearFilters(filters, data.saleType, historyPush)}}>Remove Filters</a>;
     }
 
     return {
@@ -259,9 +267,13 @@ class SearchFilterDescription extends Component {
     return _sqft;
   }
 
-  render() {
+  shouldComponentUpdate(nextProps) {
+    let shouldUpdate = !isEqual(nextProps.data, this.props.data);
+    return shouldUpdate;
+  }
 
-    let data = this.getTitleAndDescription(this.props)
+  render() {
+    let data = this.getTitleAndDescription(this.props.data)
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
         <h1>{data.title}</h1>
@@ -272,4 +284,4 @@ class SearchFilterDescription extends Component {
   }
 }
 
-export default SearchFilterDescription;
+export default SearchFilterDescriptionText;

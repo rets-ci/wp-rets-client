@@ -6,6 +6,7 @@ import Swiper from 'react-id-swiper';
 import {Link} from 'react-router-dom';
 import each from 'lodash/each';
 import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
@@ -17,8 +18,10 @@ class PropertyCard extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    highlighted: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
+    onClickCard: PropTypes.func.isRequired,
+    openPanelWhenClicked: PropTypes.bool.isRequired,
     propertiesDOM: PropTypes.object
   }
 
@@ -34,6 +37,16 @@ class PropertyCard extends Component {
   handleNextClick = (e) => {
     e.stopPropagation();
     this.swiper.slideNext();
+  }
+
+  shouldComponentUpdate(nextProps) {
+    let shouldUpdate = (
+      !isEqual(nextProps.data, this.props.data) ||
+      nextProps.highlighted !== this.props.highlighted ||
+      !isEqual(nextProps.propertiesDOM, this.props.propertiesDOM) ||
+      nextProps.openPanelWhenClicked !== this.props.openPanelWhenClicked
+    );
+    return shouldUpdate;
   }
 
   render() {

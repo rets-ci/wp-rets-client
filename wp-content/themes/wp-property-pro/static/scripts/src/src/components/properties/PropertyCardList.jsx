@@ -72,7 +72,7 @@ class PropertyCardList extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return difference(nextProps.properties, this.props.properties).length ||
+    return !!difference(nextProps.properties, this.props.properties).length ||
       nextProps.selectedProperty !== this.props.selectedProperty;
   }
 
@@ -136,7 +136,6 @@ class PropertyCardList extends Component {
               thumbnail: get(p, '_source.post_meta.rets_thumbnail_url', [''])[0],
               zip: get(p, '_source.post_meta.rets_postal_code[0]', '')
             };
-
             return (
               <div className={`col-12 col-xl-6`} key={item.id}>
                 <PropertyCard

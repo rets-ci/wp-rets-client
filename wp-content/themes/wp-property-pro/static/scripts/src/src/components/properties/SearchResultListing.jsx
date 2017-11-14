@@ -11,6 +11,7 @@ import { Lib } from '../../lib.jsx';
 class SearchResultListing extends Component {
   static propTypes = {
     allowPagination: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     properties: PropTypes.array.isRequired,
     seeMoreHandler: PropTypes.func.isRequired,
     total: PropTypes.number
@@ -23,13 +24,16 @@ class SearchResultListing extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps) {
-    let update = nextProps.allowPagination !== this.props.allowPagination || 
+  shouldComponentUpdate(nextProps, nextState) {
+    let shouldUpdate = (
+      nextProps.allowPagination !== this.props.allowPagination || 
       nextProps.isFetching !== this.props.isFetching ||
-      difference(nextProps.properties, this.props.properties).length ||
+      !!difference(nextProps.properties, this.props.properties).length ||
       nextProps.selectedProperty !== this.props.selectedProperty ||
-      nextProps.total !== this.props.total;
-    return update;
+      nextProps.total !== this.props.total ||
+      nextState.loading !== this.state.loading
+    );
+    return shouldUpdate;
   }
 
   componentWillReceiveProps(nextProps) {

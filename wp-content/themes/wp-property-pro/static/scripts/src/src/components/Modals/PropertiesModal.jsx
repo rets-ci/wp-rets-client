@@ -77,7 +77,6 @@ class PropertiesModal extends Component {
     super(props);
     this.state = {
       filters: {},
-      locationModalOpen: false,
       showAllFilters: false
     };
   }
@@ -334,6 +333,22 @@ class PropertiesModal extends Component {
     let searchURL = Util.createSearchURL('/search', collection.map(a => Object.assign({}, a)));
     this.props.closeModal();
     this.props.historyPush(searchURL);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let shouldUpdate = (
+      !isEqual(nextProps.availableSubTypes, this.props.availableSubTypes) ||
+      !isEqual(nextProps.errorMessage, this.props.errorMessage) ||
+      !isEqual(nextProps.open, this.props.open) ||
+      !isEqual(nextProps.resultCount, this.props.resultCount) ||
+      !isEqual(nextProps.resultCountButtonLoading, this.props.resultCountButtonLoading) ||
+      !isEqual(nextProps.propertySubTypes, this.props.propertySubTypes) ||
+      !isEqual(nextProps.propertyTypeOptions, this.props.propertyTypeOptions) ||
+      !isEqual(nextProps.searchFilters, this.props.searchFilters) ||
+      !isEqual(nextState.filters, this.state.filters) ||
+      !isEqual(nextState.showAllFilters, this.state.showAllFilters)
+    );
+    return shouldUpdate;
   }
 
   showFilterBasedOnSearchType(searchType, filter) {

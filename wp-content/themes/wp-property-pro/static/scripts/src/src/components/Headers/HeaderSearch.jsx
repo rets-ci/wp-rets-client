@@ -6,6 +6,7 @@ import {Lib} from '../../lib.jsx';
 import SaleTypeHeaderSelection from './components/SaleTypeHeaderSelection.jsx';
 import {openSaleTypesPanel} from '../../actions/index.jsx';
 import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 import NavigationIcons from './components/NavigationIcons.jsx';
 import UserPanelIcon from './components/UserPanelIcon.jsx';
 
@@ -30,8 +31,10 @@ class HeaderSearch extends Component {
   }
 
   static propTypes = {
+    doOpenSaleTypesPanel: PropTypes.func.isRequired,
     historyPush: PropTypes.func.isRequired,
     propertyTypeOptions: PropTypes.array.isRequired,
+    saleTypesPanelOpen: PropTypes.bool.isRequired,
     searchFilters: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
@@ -43,6 +46,15 @@ class HeaderSearch extends Component {
   handleSaleTypeClick = event => {
     event.preventDefault();
     this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    let shouldUpdate = (
+      !isEqual(nextProps.propertyTypeOptions, this.props.propertyTypeOptions) ||
+      !isEqual(nextProps.searchFilters, this.props.searchFilters) ||
+      nextProps.saleTypesPanelOpen !== this.props.saleTypesPanelOpen
+    );
+    return shouldUpdate;
   }
 
   render() {
