@@ -21,7 +21,7 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
         add_action( 'wrc_property_published', array( $this, 'detect_the_agent' ), 100, 2 );
         add_action( 'wrc_property_published', array( $this, 'update_video_thumbnail' ), 101, 2 );
 
-        add_action( 'wrc_iserted_media', array( $this, 'update_property_gallery' ), 100, 2 );
+        add_action( 'wrc_inserted_media', array( $this, 'update_property_gallery' ), 100, 2 );
 
       }
 
