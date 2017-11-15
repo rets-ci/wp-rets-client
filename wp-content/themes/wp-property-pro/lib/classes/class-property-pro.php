@@ -199,9 +199,12 @@ namespace UsabilityDynamics {
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
 
+      /** Front page post content for 404's page displaying search bar */
+      if(is_404()){
       $front_page_id = get_option('page_on_front');
-      if ($post_data = get_post_meta($front_page_id, 'panels_data', true) && !is_front_page()) {
-        $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+        if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
+          $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+        }
       }
 
       /** Build search options array for search type dropDown at search result page */
