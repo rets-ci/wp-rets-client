@@ -18,10 +18,10 @@ class PropertyCard extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    highlighted: PropTypes.bool.isRequired,
+    highlighted: PropTypes.bool,
     location: PropTypes.object.isRequired,
-    onClickCard: PropTypes.func.isRequired,
-    openPanelWhenClicked: PropTypes.bool.isRequired,
+    onClickCard: PropTypes.func,
+    openPanelWhenClicked: PropTypes.bool,
     propertiesDOM: PropTypes.object
   }
 
