@@ -165,6 +165,8 @@ namespace UsabilityDynamics {
           $property_single_url = array_pop($property_single_url_array);
       }
 
+      $sidebar_menu = wp_get_nav_menu_object( 'Sitewide Panel Navigation' );
+      $sidebar_menu_term_id = $sidebar_menu ? $sidebar_menu->term_id : 0;
 
       $params = [
         'site_url' => site_url(),
@@ -186,7 +188,10 @@ namespace UsabilityDynamics {
           }, (isset($user->meta['agent_images']) ? $user->meta['agent_images'] : []));
 
           return $user;
-        }, get_users(['role' => 'agent']))
+        }, get_users(['role' => 'agent'])),
+        'sidebar_menu_items' => $sidebar_menu_term_id ? array_map( function ( $item ) {
+          return [ 'ID' => $item->ID, 'title' => $item->title, 'url' => $item->url, 'relative_url' => str_replace( home_url(), "", $item->url ), 'classes' => $item->classes ];
+        }, wp_get_nav_menu_items( $sidebar_menu_term_id ) ) : []
       ];
 
       /** Custom elastic press index */
@@ -194,9 +199,12 @@ namespace UsabilityDynamics {
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
 
+      /** Front page post content for 404's page displaying search bar */
+      if(is_404()){
       $front_page_id = get_option('page_on_front');
-      if ($post_data = get_post_meta($front_page_id, 'panels_data', true) && !is_front_page()) {
-        $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+        if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
+          $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+        }
       }
 
       /** Build search options array for search type dropDown at search result page */
@@ -275,7 +283,8 @@ namespace UsabilityDynamics {
               'ID' => $item->ID,
               'title' => $item->title,
               'url' => $item->url,
-              'relative_url' => str_replace(home_url(), "", $item->url)
+              'relative_url' => str_replace(home_url(), "", $item->url),
+              'classes' => $item->classes
             ];
           }, wp_get_nav_menu_items($menu_id));
         }
@@ -395,6 +404,9 @@ namespace UsabilityDynamics {
           $params['post']['is_blog_single'] = true;
           $params['post']['content'] = apply_filters('the_content', $post->post_content);
           if ($categories = get_the_category($post->ID)) {
+            $categories = array_map(function($cat){
+              return $cat->parent;
+            }, $categories);
             $params['post']['category_title'] = $categories['0']->cat_name;
             $args = [
               'category' => $categories[0]->cat_ID,

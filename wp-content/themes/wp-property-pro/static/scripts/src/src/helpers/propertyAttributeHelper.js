@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
+import { commonDateFormat, formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
 
 export {
   getAcres,
@@ -7,12 +7,14 @@ export {
   getAppliances,
   getArea,
   getBasement,
+  getBasementDescription,
   getBathFeatures,
   getBedrooms,
   getBedroomsOnFirstFloor,
   getCity,
   getCooling,
   getCounty,
+  getCrossStreet,
   getDesign,
   getDiningRoom,
   getDirections,
@@ -22,6 +24,7 @@ export {
   getFireplaces,
   getFireplacesDescription,
   getFlooring,
+  getFoundation,
   getFullBathrooms,
   getGarageCapacity,
   getHalfBathrooms,
@@ -35,6 +38,10 @@ export {
   getLivingAreaAboveGradeSQFT,
   getLivingAreaBelowGradeSQFT,
   getLongitude,
+  getLotDescription,
+  getLotNumber,
+  getLotSizeArea,
+  getLotSizeDim,
   getMasterBedroomOnFirstFloor,
   getMiddleSchool,
   getMLSId,
@@ -48,15 +55,21 @@ export {
   getParking,
   getPool,
   getPrice,
+  getPricePerAcre,
   getPricePerSQFT,
   getPropertyType,
   getPublishedDate,
+  getRestrictiveCovenants,
+  getRoadFrontage,
+  getRoof,
+  getSQFT,
   getState,
   getStatus,
   getStreet,
   getStreetDirectional,
   getStreetNumber,
   getStyle,
+  getSubArea,
   getSubdivision,
   getSubTypes,
   getTotalBathrooms,
@@ -75,7 +88,7 @@ export {
 ************************************/
 
 function getAcres(data) {
-  return get(data, 'tax_input.rets_acres.rets_acres', []).map(d => d.name).join(', ') || null;
+  return get(data, 'post_meta.rets_acres.rets_acres', []).map(d => d.name).join(', ') || null;
 }
 
 function getActiveAdultCommunity(data) {
@@ -92,6 +105,10 @@ function getArea(data) {
 
 function getBasement(data) {
   return formatYesOrNoFields(data, 'tax_input.rets_basement.rets_basement[0].name');
+}
+
+function getBasementDescription(data) {
+  return get(data, 'tax_input.rets_basement.rets_basement', []).map(d => d.name).join(', ') || null;
 }
 
 function getBathFeatures(data) {
@@ -118,6 +135,10 @@ function getCounty(data) {
   return get(data, 'tax_input.wpp_location.wpp_location_county', []).map(d => d.name).join(', ') || null;
 }
 
+function getCrossStreet(data) {
+  return get(data, 'post_meta.rets_cross_street[0]', null);
+}
+
 function getDesign(data) {
   return get(data, 'tax_input.rets_design.rets_design', []).map(d => d.name).join(', ') || null;
 }
@@ -135,7 +156,7 @@ function getElementarySchool(data) {
 }
 
 function getExteriorFeatures(data) {
-  return get(data, 'tax_input.rets_exterior_features.rets_exterior_features', []).map(d => d.name).join(', ') || null
+  return get(data, 'tax_input.rets_exterior_features.rets_exterior_features', []).map(d => d.name).join(', ') || null;
 }
 
 function getExteriorFinish(data) {
@@ -143,7 +164,7 @@ function getExteriorFinish(data) {
 }
 
 function getFireplaces(data) {
-  return !!get(data, 'tax_input.rets_fireplace.rets_fireplace[0].name', null);
+  return formatYesOrNoFields(data, 'tax_input.rets_fireplace.rets_fireplace[0].name', null);
 }
 
 function getFireplacesDescription(data) {
@@ -152,6 +173,10 @@ function getFireplacesDescription(data) {
 
 function getFlooring(data) {
   return get(data, 'tax_input.rets_flooring.rets_flooring', []).map(d => d.name).join(', ') || null;
+}
+
+function getFoundation(data) {
+  return get(data, 'tax_input.rets_foundation.rets_foundation', []).map(d => d.name).join(', ') || null;
 }
 
 function getFullBathrooms(data) {
@@ -212,6 +237,22 @@ function getLongitude(data) {
   return get(data, 'post_meta.rets_longitude[0]', null);
 }
 
+function getLotDescription(data) {
+  return get(data, 'tax_input.rets_lot_description.rets_lot_description', []).map(d => d.name).join(', ') || null;
+}
+
+function getLotNumber(data) {
+  return get(data, 'post_meta.rets_lot_number[0]', null);
+}
+
+function getLotSizeArea(data) {
+  return get(data, 'post_meta.rets_lot_size_area[0]', null);
+}
+
+function getLotSizeDim(data) {
+  return get(data, 'post_meta.rets_lot_size_dim[0]', null);
+}
+
 function getMasterBedroomOnFirstFloor(data) {
   return get(data, 'post_meta.rets_master_bedroom_dimensions[0]', false);
 }
@@ -225,7 +266,8 @@ function getMLSId(data) {
 }
 
 function getModifiedDate(data) {
-  return get(data, 'post_modified', null);
+  let date = get(data, 'post_modified', null);
+  return commonDateFormat(date, 'YYYY-MM-DD');
 }
 
 function getNeighborhood(data) {
@@ -264,6 +306,10 @@ function getPrice(data) {
   return moneyFormat(get(data, 'post_meta.rets_list_price[0]', null));
 }
 
+function getPricePerAcre(data) {
+  return moneyFormat(get(data, 'post_meta.rets_price_per_acre[0]', null));
+}
+
 function getPricePerSQFT(data) {
   return moneyFormat(get(data, 'post_meta.rets_price_per_sqft[0]', null));
 }
@@ -273,7 +319,24 @@ function getPropertyType(data) {
 }
 
 function getPublishedDate(data) {
-  return get(data, 'post_meta.rets_list_date[0]', null);
+  let date = get(data, 'post_meta.rets_list_date[0]', null);
+  return commonDateFormat(date, 'YYYY-MM-DD');
+}
+
+function getRestrictiveCovenants(data) {
+  return formatYesOrNoFields(data, 'tax_input.rets_restrictive_covenants.rets_restrictive_covenants[0].name');
+}
+
+function getRoadFrontage(data) {
+  return get(data, 'post_meta.rets_road_frontage[0]', null);
+}
+
+function getRoof(data) {
+  return get(data,'tax_input.rets_roof.rets_roof', []).map(d => d.name).join(', ') || null;
+}
+
+function getSQFT(data) {
+  return get(data, 'post_meta.rets_approx_lot_sq_ft[0]', null);
 }
 
 function getState(data) {
@@ -298,6 +361,10 @@ function getStreetNumber(data) {
 
 function getStyle(data) {
   return get(data, 'tax_input.rets_style.rets_style', []).map(d => d.name).join(', ') || null;
+}
+
+function getSubArea(data) {
+  return get(data, 'tax_input.rets_sub_area.rets_sub_area', []).map(d => d.name).join(', ') || null;
 }
 
 function getSubdivision(data) {
@@ -337,7 +404,7 @@ function getYearBuilt(data) {
 }
 
 function getZip(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_zipcode', []).map(d => d.name).join(', ') || null;
+  return get(data, 'post_meta.rets_postal_code[0]', null);
 }
 
 function getZoning(data) {

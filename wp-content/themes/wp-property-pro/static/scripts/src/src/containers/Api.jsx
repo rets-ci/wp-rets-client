@@ -29,7 +29,7 @@ class Api {
         "old_key": "location-city",
         "taxonomy": "wpp_location"
       },
-      "wpp_location_zip": {
+      "wpp_location_zipcode": {
         "slug": "zip",
         "title": "Zip",
         "field": "_system.addressDetail.zipcode",
@@ -160,6 +160,22 @@ class Api {
       type_status_array.push(params.propertyType + '-for-' + saleType.toLowerCase());
     }
 
+    let source = [
+          "ID",
+          "post_title",
+          "post_name",
+          "taxonomy",
+          "slug",
+          "name",
+          "parent",
+          "term_type",
+          "url_path",
+          "post_meta.address_unit",
+          "post_meta.rets_address",
+          "post_meta.rets_postal_code",
+          "tax_input.wpp_location"
+        ];
+
     let suggest = {
       "post-suggest": {
         "text": params.term,
@@ -189,6 +205,7 @@ class Api {
 
     let body = {
       data: JSON.stringify({
+        _source: source,
         suggest: suggest
       })
     };
@@ -632,7 +649,7 @@ class Api {
         if (jqXHR.status === 0) {
           errorMsg = "Couldn't establish a connection.";
         } else if (jqXHR.status == 404) {
-          errorMsg = "Requested page not found. [404]";
+          return callback(null, {pageNotFound: true});
         } else if (jqXHR.status == 500) {
           errorMsg = "Internal Server Error [500].";
         } else if (textStatus === 'parsererror') {

@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { Lib } from 'app_root/lib.jsx';
 
 export {
+  commonDateFormat,
   getLastUpdatedMoment,
   getLastCheckedMoment,
   daysPassedSincePostedDate,
@@ -18,12 +19,17 @@ export {
 /************************************
 * public functions
 ************************************/
-function getLastUpdatedMoment(property) {
-  const { post_date } = property;
+function commonDateFormat(val, formatting) {
+  let formattedDate = moment(val, formatting);
+  return val && formattedDate.isValid() ? formattedDate.format('MMM D, YYYY') : null;
+}
 
-  let parsed = moment.utc(post_date, Lib.COMMON_DATE_FORMAT_1);
+function getLastUpdatedMoment(property) {
+  const { post_modified } = property;
+
+  let parsed = moment.utc(post_modified, Lib.COMMON_DATE_FORMAT_1);
   if (!parsed.isValid()) {
-    console.warn(`date ${post_date} could not be parsed`);
+    console.warn(`date ${post_modified} could not be parsed`);
     return false;
   } else {
     return parsed;
@@ -31,15 +37,15 @@ function getLastUpdatedMoment(property) {
 }
 
 function daysPassedSincePostedDate(property) {
-  const { post_date } = property;
+  const { rets_list_date } = property;
 
-  let parsed = moment.utc(post_date, Lib.COMMON_DATE_FORMAT_1);
+  let parsed = moment.utc(rets_list_date, Lib.COMMON_DATE_FORMAT_1);
   if (!parsed.isValid()) {
-    console.warn(`date ${post_date} could not be parsed`);
+    console.warn(`date ${rets_list_date} could not be parsed`);
     return false;
   } else {
     let now = moment.utc();
-    return now.diff(parsed, 'days') !== 0 ? now.diff(parsed, 'days') : 'Today';
+    return now.diff(parsed, 'days') !== 0 ? now.diff(parsed, 'days') : 1;
   }
 }
 
@@ -106,9 +112,13 @@ function getListingTypeJSONFileName({ sale_type, listing_type}) {
   } else if (sale_type === 'sale' && listing_type === 'residential') {
     fileName =  'residential_sale_RE_1';
   } else if (sale_type === 'sale' && listing_type === 'commercial') {
-    fileName =  'residential_sale_RE_1';
+    fileName =  'commercial_CI_4';
+  } else if (sale_type === 'rent' && listing_type === 'commercial')  {
+    fileName =  'commercial_CI_4';
   } else if (sale_type === 'sale' && listing_type === 'land') {
-    fileName =  'land';
+    fileName =  'land_CU_5_and_LN_3';
+  } else if (sale_type === 'rent' && listing_type === 'land') {
+    fileName =  'land_CU_5_and_LN_3';
   }
 
   if (!fileName) {

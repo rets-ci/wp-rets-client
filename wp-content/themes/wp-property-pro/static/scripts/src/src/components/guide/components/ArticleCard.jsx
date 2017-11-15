@@ -12,6 +12,10 @@ class ArticleCard extends Component {
 
   render() {
 
+    let {
+      historyPush
+    } = this.props;
+
     let sectionClasses = `${Lib.THEME_CLASSES_PREFIX}article-card ${Lib.THEME_CLASSES_PREFIX}guide-item`;
 
     if (this.props.last) {

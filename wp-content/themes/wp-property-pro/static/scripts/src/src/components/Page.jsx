@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Masthead from './widgets/masthead/Masthead.jsx';
 import Callout from './widgets/callout/Callout.jsx';
+import NotFound from 'app_root/components/NotFound.jsx';
 import Testimonials from './widgets/testimonials/Testimonials.jsx';
 import {Lib} from '../lib.jsx';
 import ListingCarousel from './widgets/listing_carousel/ListingCarousel.jsx';
@@ -51,8 +52,13 @@ class Page extends Component {
       post,
       rows
     } = this.props;
+
+    if (get(this.props, 'post.pageNotFound', null)) {
+      return <NotFound history={history} />
+    }
+
     if (get(this.props, 'post.is_blog_single', null)) {
-      return <Single post={get(this.props, 'post', {})}/>
+      return <Single history={history} openUserPanel={openUserPanel} openLoginModal={openLoginModal} post={get(this.props, 'post', {})}/>
     }
 
     if (get(this.props, 'post.is_guide_single', null)) {

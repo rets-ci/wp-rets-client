@@ -3604,12 +3604,6 @@ p.propertypro-gentle-error {
 .propertypro-blog-posts, .propertypro-related-posts {
   padding: 6rem 0 7.5rem; }
 
-.propertypro-blog-posts-row .propertypro-post-item:first-child {
-  margin-right: 3rem; }
-
-.propertypro-blog-posts-row .propertypro-post-item:last-child {
-  margin-left: 3rem; }
-
 .propertypro-related-posts .propertypro-post-item {
   margin-bottom: 5.625rem;
   display: block; }
@@ -4232,6 +4226,11 @@ p.propertypro-gentle-error {
   content: " ";
   z-index: 9;
   opacity: .9; }
+
+/** Not found page */
+.propertypro-page-not-found h1,
+.propertypro-page-not-found h3 {
+  color: #000000; }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Responsive (Media queries)

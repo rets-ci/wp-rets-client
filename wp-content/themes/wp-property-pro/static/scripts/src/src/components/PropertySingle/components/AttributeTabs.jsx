@@ -4,16 +4,13 @@ import Swiper from 'react-id-swiper';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
 import remove from 'lodash/remove';
+import Util from 'app_root/components/Util.jsx';
 
 import { Lib }            from 'app_root/lib.jsx';
-import { getListingTypeJSONFileName }     from 'app_root/helpers/propertyHelper';
+import { getListingTypeJSONFileName, daysPassedSincePostedDate }     from 'app_root/helpers/propertyHelper';
 import AttributeTabSingle from 'app_root/components/PropertySingle/components/AttributeTabSingle.jsx';
 
 import esSchema from 'app_root/static_data/property-data-structure/index.js';
-
-
-const LISTING_TYPES_TO_HIDE = [ 'commercial', 'land' ];
-const descriptionBoilerplate = '847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.';
 
 const getAllTabData = (propertyDataStructure) => {
   let AllTab = {
@@ -24,6 +21,10 @@ const getAllTabData = (propertyDataStructure) => {
     return d.children;
   }).reduce((a, b) => {
     return a.concat(b);
+  });
+  combinedChildren = combinedChildren.map((d, i) => {
+      d.order = i + 1;
+      return d;
   });
   AllTab['children'] = combinedChildren;
   return AllTab;
@@ -73,7 +74,6 @@ class AttributeTabs extends Component {
 
   calculateAttrData = () => {
     const listingTypeJSONFileName = getListingTypeJSONFileName(this.props.curatedPropertyInfo);
-
     let propertyDataStructure = null;
     let tabs = [];
 
@@ -92,15 +92,53 @@ class AttributeTabs extends Component {
     });
   }
 
+  generateDescription(property){
+    // @TODO Default static hardcode while not ready template for dynamic description
+    let description = '847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.';
+
+    let listing_type = get(property, 'tax_input.wpp_listing_type.listing_type[0].slug');
+    let listing_subtype = get(property, 'tax_input.wpp_listing_subtype.listing_sub_type[0].slug');
+
+    switch(listing_type){
+      case 'residential':
+
+        let sale_type = get(property, 'tax_input.wpp_listing_status.listing_status_sale[0].slug');
+
+        // Street information
+        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
+
+        // Subtype and sale type
+        description += [' is a', listing_subtype, sale_type.toLowerCase().replace('-', ' ')].join(' ');
+
+        // Location
+        description += ` in ${get(property, 'tax_input.wpp_location.wpp_location_city[0].name')}, ` + [get(property, 'tax_input.wpp_location.wpp_location_state[0].slug').toUpperCase(), get(property, 'tax_input.wpp_location.wpp_location_zipcode[0].name')].join(' ') + '.';
+
+        // Attributes
+        description += [' This', Util.formatSQFTValue(get(property, 'post_meta.sqft[0]', 0)), 'SQFT', listing_subtype, 'sits', 'on a', Util.formatAcresValue(get(property, 'post_meta.rets_lot_size_area[0]', 0)), 'acre lot and features', get(property, 'post_meta.rets_beds[0]', 0), 'bedrooms and', get(property, 'post_meta.rets_total_baths[0]', 0), 'bathrooms.'].join(' ');
+
+        // Additional info
+        description += [' Built in', get(property, 'post_meta.rets_year_built[0]', 0) + ',', 'this ', listing_subtype, 'has been on the market for a total of', daysPassedSincePostedDate({rets_list_date: get(property, 'post_meta.rets_list_date[0]')}), 'days and is currently priced at', Util.formatPriceValue(get(property, 'post_meta.rets_list_price[0]', 0))].join(' ');
+
+        if(sale_type.indexOf('rent') !== -1){
+          description += ' a month.';
+        }else{
+          description += '.';
+        }
+
+        break;
+    }
+
+    return description;
+  }
+
   render() {
     const { selectedTab, attributesData, tabs } = this.state;
     const { esProperty, curatedPropertyInfo, isOneColumn } = this.props;
     const { listing_type, address, address_unit } = curatedPropertyInfo;
 
-    if (!listing_type || LISTING_TYPES_TO_HIDE.indexOf(listing_type) >= 0 || !attributesData) {
+    if (!listing_type || !attributesData) {
       return null;
     }
-
     let content = attributesData.find(t => t.name === selectedTab);
 
     const swiperParams = {
@@ -129,6 +167,8 @@ class AttributeTabs extends Component {
       )
     }
 
+    let description = this.generateDescription(this.props.esProperty);
+
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attrs-section pt-5` }>
         <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
@@ -136,7 +176,7 @@ class AttributeTabs extends Component {
         </h5>
 
         <p className={ `${Lib.THEME_CLASSES_PREFIX}info-description text-muted py-3` }>
-          {descriptionBoilerplate}
+          {description}
         </p>
 
         <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-tabs-header d-flex` }>

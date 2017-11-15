@@ -16,7 +16,8 @@ const locationModal = (state = defaultState, action) => {
     case Lib.TOGGLE_LOCATION_MODAL_ACTION:
       return Object.assign({}, state, {
         open: action.open,
-        modifyType: action.modifyType
+        modifyType: action.modifyType,
+        currentTerms: action.currentTerms
       });
     case Lib.REQUEST_LOCATION_MODAL_POSTS_ACTION:
       return Object.assign({}, state, {

@@ -6,6 +6,7 @@ import {
   getAppliances,
   getArea,
   getBasement,
+  getBasementDescription,
   getBathFeatures,
   getBedrooms,
   getBedroomsOnFirstFloor,
@@ -21,6 +22,7 @@ import {
   getFireplaces,
   getFireplacesDescription,
   getFlooring,
+  getFoundation,
   getFullBathrooms,
   getGarageCapacity,
   getHeating,
@@ -31,6 +33,10 @@ import {
   getLatitude,
   getListingType,
   getLongitude,
+  getLotDescription,
+  getLotNumber,
+  getLotSizeArea,
+  getLotSizeDim,
   getLivingAreaAboveGradeSQFT,
   getLivingAreaBelowGradeSQFT,
   getMasterBedroomOnFirstFloor,
@@ -49,12 +55,16 @@ import {
   getPricePerSQFT,
   getPropertyType,
   getPublishedDate,
+  getRestrictiveCovenants,
+  getRoof,
   getState,
   getStatus,
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getSubArea,
   getSubdivision,
+  getSQFT,
   getHalfBathrooms,
   getTotalAreaAboveGradeSQFT,
   getTotalBathrooms,
@@ -89,7 +99,7 @@ export default [
       {"name": "Full Bathrooms", "value": (data) => { return getFullBathrooms(data); }, "order": 1},
       {"name": "Half Bathrooms", "value": (data) => { return getHalfBathrooms(data); }, "order": 2},
       {"name": "Total Bathrooms", "value": (data) => { return getTotalBathrooms(data); }, "order": 3},
-      {"name": "Bath Features", "value": (data) => { return getBathFeatures(data) }, "order": 4}
+      {"name": "Bathroom Features", "value": (data) => { return getBathFeatures(data) }, "order": 4}
     ], "order": 2},
     {"name": "Living Area", "items": [
       {"name": "Living Room Floor", "value": (data) => { return get(data, 'tax_input.rets_living_room_floor.rets_living_room_floor[0].name', false); }, "order": 1},
@@ -112,8 +122,15 @@ export default [
       {"name": "Breakfast Room Dimensions", "value": (data) => { return get(data, 'post_meta.rets_breakfast_room_dimensions[0]', false); }, "order": 6},
       {"name": "Breakfast Room Floor", "value": (data) => { return get(data, 'tax_input.rets_breakfast_room_floor.rets_breakfast_room_floor[0].name', false); }, "order": 7},
     ], "order": 4},
+    {"name": "Other Rooms", "items": [
+      {"name": "Number of Rooms", "value": (data) => { return getNumberOfRooms(data); }, "order": 1},
+      {"name": "Other Rooms", "value": (data) => { return getOtherRooms(data); }, "order": 2},
+      {"name": "Attic", "value": (data) => { return get(data, 'tax_input.rets_attic_description.rets_attic_description[0].name', false); }, "order": 3},
+      {"name": "Basement", "value": (data) => { return getBasement(data); }, "order": 4},
+      {"name": "Basement Description", "value": (data) => { return getBasementDescription(data); }, "order": 5}
+    ], "order": 5},
     {"name": "Other", "items": [
-      {"name": "Bonus Room Dimensions", "value": (data) => { return getSubdivision(data); }, "order": 1},
+      {"name": "Bonus Room Dimensions", "value": (data) => { return get(data, 'post_meta.rets_bonus_room_dimensions[0]', null); }, "order": 1},
       {"name": "Bonus Room Floor", "value": (data) => { return get(data, 'tax_input.rets_bonus_room_floor.rets_bonus_room_floor[0].name', false); }, "order": 2},
       {"name": "Entrance Hall Dimensions", "value": (data) => { return get(data, 'post_meta.rets_entrance_hall_dimensions[0]', false); }, "order": 3},
       {"name": "Entrance Hall Floor", "value": (data) => { return get(data, 'tax_input.rets_entrance_hall_floor.rets_entrance_hall_floor[0].name', false); }, "order": 4},
@@ -129,13 +146,7 @@ export default [
       {"name": "Other Room 4", "value": (data) => { return get(data, 'post_meta.rets_other_area_room_4_desc[0]', false); }, "order": 14},
       {"name": "Other Room 4 Dimensions", "value": (data) => { return get(data, 'post_meta.rets_other_area_room_4_dmns[0]', false); }, "order": 15},
       {"name": "Other Room 4 Level", "value": (data) => { return get(data, 'tax_input.rets_other_area_room_4_lvl.rets_other_area_room_4_lvl[0].name', false); }, "order": 15}
-    ]},
-    {"name": "Other Rooms", "items": [
-      {"name": "Number of Rooms", "value": (data) => { return getNumberOfRooms(data); }, "order": 1},
-      {"name": "Other Rooms", "value": (data) => { return getOtherRooms(data); }, "order": 2},
-      {"name": "Attic", "value": (data) => { return get(data, 'tax_input.rets_attic_description.rets_attic_description[0].name', false); }, "order": 3},
-      {"name": "Basement", "value": (data) => { return getBasement(data); }, "order": 4}
-    ], "order": 5}
+    ], "order": 6}
   ]
 },
   {
@@ -143,13 +154,13 @@ export default [
       {"name": "Interior", "items": [ 
         {"name": "Interior Features", "value": (data) => { return getInteriorFeatures(data); }, "order": 1},
         {"name": "Flooring", "value": (data) => { return getFlooring(data); }, "order": 2},
-        {"name": "Appliances", "value": (data) => { return getAppliances(data); }},
-        {"name": "Washer & Dryer Location", "value": (data) => { return get(data, 'tax_input.rets_washer_dryer_location.rets_washer_dryer_location', []).map(d => d.name).join(', ') || null; }}
+        {"name": "Appliances", "value": (data) => { return getAppliances(data); }, "order": 3},
+        {"name": "Washer & Dryer Location", "value": (data) => { return get(data, 'tax_input.rets_washer_dryer_location.rets_washer_dryer_location', []).map(d => d.name).join(', ') || null; }, "order": 4}
       ], "order": 1},
       {"name": "Exterior", "items": [
         {"name": "Exterior Features", "value": (data) => { return getExteriorFeatures(data); }, "order": 1},
         {"name": "Exterior Finish", "value": (data) => { return getExteriorFinish(data); }, "order": 2},
-        {"name": "Roof", "value": (data) => { return get(data,'tax_input.rets_roof.rets_roof', []).map(d => d.name).join(', ') || null; }, "order": 3},
+        {"name": "Roof", "value": (data) => { return getRoof(data); }, "order": 3},
         {"name": "Pool", "value": (data) => { return getPool(data); }, "order": 4},
         {"name": "Deck Dimensions", "value": (data) => { return get(data, 'post_meta.rets_deck_dimensions[0]', false); }, "order": 5},
         {"name": "Deck Floor", "value": (data) => { return get(data, 'tax_input.rets_deck_floor.rets_deck_floor', []).map(d => d.name).join(', ') || null; }, "order": 6},
@@ -158,7 +169,7 @@ export default [
         {"name": "Porch Dimensions", "value": (data) => { return get(data, 'post_meta.rets_porch_dimensions[0]', false); }, "order": 9},
         {"name": "Porch Floor", "value": (data) => { return get(data, 'tax_input.rets_porch_floor.rets_porch_floor', []).map(d => d.name).join(', ') || null; }, "order": 10},
         {"name": "Screened Porch Dimensions", "value": (data) => { return get(data, 'post_meta.rets_screened_porch_dimensions[0]', false); }, "order": 11},
-        {"name": "Screened Porch Floor", "value": (data) => { return get(data, 'tax_input.rets_screened_porch_floor.rets_screened_porch_floor', false); }, "order": 12},
+        {"name": "Screened Porch Floor", "value": (data) => { return get(data, 'tax_input.rets_screened_porch_floor.rets_screened_porch_floor', false); }, "order": 12}
       ], "order": 2},
       {"name": "Heating & Cooling", "items": [
         {"name": "Cooling", "value": (data) => { return getCooling(data); }, "order": 1},
@@ -191,7 +202,7 @@ export default [
       {"name": "Type", "value": (data) => { return getPropertyType(data); }, "order": 6},
       {"name": "Design", "value": (data) => { return getDesign(data); }, "order": 7},
       {"name": "Architectural Style", "value": (data) => { return get(data, 'tax_input.rets_style.rets_style', []).map(d => d.name).join(', ') || null; }, "order": 8},
-      {"name": "Foundation", "value": (data) => { return get(data, 'tax_input.rets_foundation.rets_foundation', []).map(d => d.name).join(', ') || null; }, "order": 9},
+      {"name": "Foundation", "value": (data) => { return getFoundation(data); }, "order": 9},
       {"name": "Accessibility", "value": (data) => { return null; }, "order": 10},
       {"name": "Sustainability", "value": (data) => { return null; }, "order": 11},
       {"name": "Sustainability", "value": (data) => { return null; }, "order": 12},
@@ -200,26 +211,31 @@ export default [
       {"name": "Living Area Below Grade SQFT", "value": (data) => { return getLivingAreaBelowGradeSQFT(data); }, "order": 15},
       {"name": "Total Other Area SQFT", "value": (data) => { return getTotalOtherAreaSQFT(data); }, "order": 16},
       {"name": "Other Area Above Grade SQFT", "value": (data) => { return getOtherAreaAboveGradeSQFT(data); }, "order": 17},
-      {"name": "Other Area Below Grade", "value": (data) => { return getOtherAreaBelowGrade(data); }, "order": 18},
+      {"name": "Other Area Below Grade SQFT", "value": (data) => { return getOtherAreaBelowGrade(data); }, "order": 18},
       {"Name": "Detached Living Area Aqft", "value": (data) => { return get(data, 'post_meta.rets_detached_living_area_sq_ft[0]', null); }, "order": 19}
-    ]},
+    ], "order": 1},
     {"name": "Lot", "items": [
-      {"name": "Number", "value": (data) => { return get(data, 'post_meta.rets_lot_number[0]', null); }, "order": 1},
-      {"name": "Description", "value": (data) => { return get(data, 'tax_input.rets_lot_description.rets_lot_description', []).map(d => d.name).join(', ') || null; }, "order": 2},
-      {"name": "Acres", "value": (data) => { return getAcres(data); }, "order": 3},
-      {"name": "SQFT", "value": (data) => { return get(data, 'post_meta.rets_approx_lot_sq_ft[0]', null); }, "order": 4},
-      {"name": "Zoning", "value": (data) => { return getZoning(data); }, "order": 5},
-      {"name": "Restrictive Covenants", "value": (data) => { return formatYesOrNoFields(data, 'tax_input.rets_restrictive_covenants.rets_restrictive_covenants[0].name'); }, "order": 6}
-    ]}
+      {"name": "Number", "value": (data) => { return getLotNumber(data); }, "order": 1},
+      {"name": "Description", "value": (data) => { return getLotDescription(data); }, "order": 2},
+      {"name": "Acres", "value": (data) => { return getLotSizeArea(data); }, "order": 3},
+      {"name": "Acrage", "value": (data) => { return getAcres(data); }, "order": 4},
+      {"name": "SQFT", "value": (data) => { return getSQFT(data); }, "order": 5},
+      {"name": "Dimensions", "value": (data) => { return getLotSizeDim(data); }, "order": 5},
+      {"name": "Zoning", "value": (data) => { return getZoning(data); }, "order": 6},
+      {"name": "Restrictive Covenants", "value": (data) => { return getRestrictiveCovenants(data); }, "order": 7},
+      {"name": "Waterfront" , "value": (data) => { return null }, "order": 8},
+      {"name": "Waterfront Features" , "value": (data) => { return null }, "order": 9},
+      {"name": "Waterfront Type" , "value": (data) => { return null }, "order": 10}
+    ], "order": 2}
   ]},
   {
     "name": "Location", "children": [
       {"name": "Community", "items": [
-        {"name": "Subdivision", "value": (data) => { return get(data, 'tax_input.wpp_location.wpp_location_subdivision', []).map(d => d.name).join(', ') || null; }, "order": 1},
+        {"name": "Subdivision", "value": (data) => { return getSubdivision(data); }, "order": 1},
         {"name": "Neighborhood", "value": (data) => { return getNeighborhood(data); }, "order": 2},
         {"name": "County", "value": (data) => { return getCounty(data); }, "order": 3},
         {"name": "Area", "value": (data) => { return getArea(data); }, "order": 4},
-        {"name": "Sub Area", "value": (data) => { return get(data, 'tax_input.rets_sub_area.rets_sub_area', []).map(d => d.name).join(', ') || null; }, "order": 5},
+        {"name": "Sub Area", "value": (data) => { return getSubArea(data); }, "order": 5},
         {"name": "Active Adult Community", "value": (data) => { return null; }, 'order': 6},
         {"name": "Active Adult Community", "value": (data) => { return getActiveAdultCommunity(data); }, "order": 7}
       ], "order": 1},
