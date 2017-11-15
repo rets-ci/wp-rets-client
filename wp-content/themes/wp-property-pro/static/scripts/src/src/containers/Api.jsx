@@ -649,7 +649,12 @@ class Api {
         if (jqXHR.status === 0) {
           errorMsg = "Couldn't establish a connection.";
         } else if (jqXHR.status == 404) {
-          return callback(null, {pageNotFound: true});
+          let responseJson = jqXHR.responseJSON || {};
+          let obj = {
+            pageNotFound: true,
+            ...responseJson
+          };
+          return callback(null, obj);
         } else if (jqXHR.status == 500) {
           errorMsg = "Internal Server Error [500].";
         } else if (textStatus === 'parsererror') {

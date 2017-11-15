@@ -167,12 +167,12 @@ class PageLayout extends Component {
         nprogress.done();
         return this.props.receiveWordpressContentFetchingErrorFunc(err);
       }
+      if (data.property_search_options) {
+        self.props.setPropertyTypeOptions(data.property_search_options);
+      }
       if (get(data, 'post', null)) {
         this.props.receiveWordpressContentFetchingFunc();
         document.title = get(data, 'page_title', '');
-        if (data.property_search_options) {
-          self.props.setPropertyTypeOptions(data.property_search_options);
-        }
         self.setState({
           agents: get(data, 'agents'),
           search_options: get(data, 'search_options'),
@@ -180,11 +180,19 @@ class PageLayout extends Component {
           sidebar_menu_items: get(data, 'sidebar_menu_items', [])
         });
       }
-      if(get(data, 'pageNotFound', null)){
+      if (get(data, 'pageNotFound', null)) {
+        let searchOptions = [];
+        let mastheadOptions = get(data, 'front_page_post_content[0].cells', []).filter(d => {
+          return get(d, 'widget.panels_info.class', '') === 'Property_Pro_Masthead_Widget'
+        });
+        if (mastheadOptions.length) {
+          searchOptions = get(mastheadOptions, '[0].widget.fields.search_options', null)
+        }
         self.setState({
           post: {
             pageNotFound: true
-          }
+          },
+          search_options: searchOptions
         });
       }
     });
