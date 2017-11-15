@@ -50,11 +50,11 @@ class Page extends Component {
       openLoginModal,
       openUserPanel,
       post,
-      rows
+      rows,
+      search_options
     } = this.props;
-
     if (get(this.props, 'post.pageNotFound', null)) {
-      return <NotFound history={history} />
+      return <NotFound closeLocationModal={closeLocationModal} history={history} openUserPanel={openUserPanel} openLoginModal={openLoginModal} searchOptions={search_options} />
     }
 
     if (get(this.props, 'post.is_blog_single', null)) {

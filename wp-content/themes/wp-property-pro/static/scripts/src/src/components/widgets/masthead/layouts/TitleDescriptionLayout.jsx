@@ -4,21 +4,21 @@ import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 
-const TitleDescriptionLayout = ({widget_cell}) => {
+const TitleDescriptionLayout = ({title, searchOptions, subtitle}) => {
   return (
     <div className={`${Lib.THEME_CLASSES_PREFIX}masthead-container mx-auto`}>
       {
-        get(widget_cell, 'widget.fields.title', '')
-          ? <h1 className={`${Lib.THEME_CLASSES_PREFIX}masthead-title`}>{widget_cell.widget.fields.title}</h1>
+        title
+          ? <h1 className={`${Lib.THEME_CLASSES_PREFIX}masthead-title`}>{title}</h1>
           : null
       }
       {
-        get(widget_cell, 'widget.fields.subtitle', '')
+        subtitle
           ? <p
-            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle hidden-sm-down`}>{widget_cell.widget.fields.subtitle}</p>
+            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle hidden-sm-down`}>{subtitle}</p>
           : null
       }
-      <Search options={get(widget_cell, 'widget.fields.search_options', null) ? (isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options) : {}}/>
+      <Search options={searchOptions ? (isEmpty(searchOptions) ? {} : searchOptions) : {}}/>
     </div>
   )
     ;
