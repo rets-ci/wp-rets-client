@@ -48,12 +48,17 @@ const Masthead = ({closeLocationModal, widget_cell, returnToArchiveHandler, next
       break;
     case 'title_description_layout':
     default:
-      container = <TitleDescriptionLayout widget_cell={widget_cell}/>;
+      container = (
+        <TitleDescriptionLayout
+          searchOptions={get(widget_cell, 'widget.fields.search_options', null)}
+          subtitle={get(widget_cell, 'widget.fields.subtitle', '')}
+          title={get(widget_cell, 'widget.fields.title', '')}
+        />);
       break;
   }
 
   return (
-    <section className={`jumbotron ${Lib.THEME_CLASSES_PREFIX}masthead text-center`} style={headerStyle}>
+    <section className={`jumbotron ${Lib.THEME_CLASSES_PREFIX}masthead ${Lib.THEME_CLASSES_PREFIX}masthead-shadow text-center`} style={headerStyle}>
       {modal}
       <div className="container">
         <div className="row">
