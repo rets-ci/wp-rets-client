@@ -117,7 +117,7 @@ class AttributeTabs extends Component {
         description += [' This', Util.formatSQFTValue(get(property, 'post_meta.sqft[0]', 0)), 'SQFT', listing_subtype, 'sits', 'on a', Util.formatAcresValue(get(property, 'post_meta.rets_lot_size_area[0]', 0)), 'acre lot and features', get(property, 'post_meta.rets_beds[0]', 0), 'bedrooms and', get(property, 'post_meta.rets_total_baths[0]', 0), 'bathrooms.'].join(' ');
 
         // Additional info
-        description += [' Built in', get(property, 'post_meta.rets_year_built[0]', 0) + ',', 'this ', 'has been on the market for a total of', daysPassedSincePostedDate({rets_list_date: get(property, 'post_meta.rets_list_date[0]')}), 'days and is currently priced at', Util.formatPriceValue(get(property, 'post_meta.rets_list_price[0]', 0))].join(' ');
+        description += [' Built in', get(property, 'post_meta.rets_year_built[0]', 0) + ',', 'this ', listing_subtype, 'has been on the market for a total of', daysPassedSincePostedDate({rets_list_date: get(property, 'post_meta.rets_list_date[0]')}), 'days and is currently priced at', Util.formatPriceValue(get(property, 'post_meta.rets_list_price[0]', 0))].join(' ');
 
         if(sale_type.indexOf('rent') !== -1){
           description += ' a month.';
