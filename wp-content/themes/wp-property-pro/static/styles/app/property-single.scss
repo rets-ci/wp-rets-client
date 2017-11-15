@@ -33,7 +33,7 @@
 .propertypro-info-section-header {
   color: #333;
   font-weight: 600;
-  line-height: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .propertypro-info-description {
@@ -61,9 +61,8 @@
   .propertypro-info-section-header {
     position: relative;
     z-index: 1;
-    margin-bottom: 0;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #FFF;
+    background-color: #FFF;
   }
 
   .propertypro-attr-box-container {
@@ -432,12 +431,12 @@ ul.card-header-tabs {
 .propertypro-attr-group-content {
   & > div {
     border-bottom: 1px solid #EAEAEA;
-    font-size: 1rem;
     padding: 1rem 0;
     /*white-space: nowrap;
     overflow: auto;*/
 
     span {
+      font-size: 0.875rem;
       color: #8b8c8d;
     }
     span + span {

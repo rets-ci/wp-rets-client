@@ -47,9 +47,9 @@ const Highlights = ({ elasticSearchSource, fromMapView }) => {
 
   return (
     <div className={ `${Lib.THEME_CLASSES_PREFIX}single-highlights pt-5` }>
-      <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header` }>
+      <div className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header` }>
         Property Highlights
-      </h5>
+      </div>
 
       <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-box-container row` }>
         <div className={ gridClass }><div className={ boxClass }>
