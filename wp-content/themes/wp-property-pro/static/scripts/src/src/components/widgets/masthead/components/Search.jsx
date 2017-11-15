@@ -68,10 +68,7 @@ class SearchContent extends Component {
       searchBtnClasses += " " + Lib.THEME_CLASSES_PREFIX + "short-padding";
     }
 
-    let placeholder = 'Address, City, Zip, or Neighborhood';
-    if (window.innerWidth < Lib.MOBILE_WIDTH) {
-      placeholder = 'Address, City, Zip';
-    }
+    let placeholder = 'Click to Open Search';
     let self = this;
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-box mx-auto`}>
