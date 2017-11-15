@@ -14,8 +14,8 @@ if( !defined( 'MEMCACHED_DISABLED' ) || !MEMCACHED_DISABLED ) {
   }
   
   if( class_exists( 'Memcached' )  ) {
-  require_once ( WP_CONTENT_DIR . '/object-cache-load.php' );
-}
+    require_once ( WP_CONTENT_DIR . '/object-cache-load.php' );
+  }
   
 } else {
   wp_using_ext_object_cache( false );

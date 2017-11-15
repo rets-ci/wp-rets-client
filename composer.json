@@ -20,6 +20,8 @@
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_develop-v3-maxim": {
+      "WP_PROPERTY_ELASTICSEARCH_SERVICE": false,
+      "MEMCACHED_DISABLED": true,
       "EP_INDEX_NAME": "rdc-develop-v3-maxim",
       "db_name": "develop-v3-maxim",
       "wp_debug_log": true,
@@ -101,7 +103,7 @@
       "WPP_FEATURE_FLAG_WPP_LISTING_STATUS": true,
       "WPP_FEATURE_FLAG_WPP_LISTING_TYPE": true,
       "WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY": false,
-      "WPP_FEATURE_FLAG_WPP_LISTING_LOCATION": true,
+      "WPP_FEATURE_FLAG_WPP_LISTING_LOCATION": false,
       "WP_PROPERTY_FLAG_WPP_LISTING_LABEL": true,
       "WPP_FEATURE_FLAG_WPP_SCHOOLS": true,
       "WPP_FEATURE_FLAG_WPP_LISTING_POLICY": true,
