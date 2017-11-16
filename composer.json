@@ -20,7 +20,7 @@
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_develop-v3-maxim": {
-      "WP_PROPERTY_ELASTICSEARCH_SERVICE": false,
+      "WP_PROPERTY_ELASTICSEARCH_SERVICE": true,
       "MEMCACHED_DISABLED": true,
       "EP_INDEX_NAME": "rdc-develop-v3-maxim",
       "db_name": "develop-v3-maxim",
