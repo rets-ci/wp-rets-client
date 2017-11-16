@@ -869,25 +869,13 @@ namespace UsabilityDynamics {
                     return $subtype->name;
                   }, $subtypes));
 
-                  $wpp_location_terms = get_the_terms($postId, 'wpp_location');
-
                   /** Get city  */
-                  $city_term = array_filter(array_map(function ($term) {
-                    $term->term_type = get_term_meta($term->term_id, '_type', true);
-                    return $term;
-                  }, $wpp_location_terms), function ($term) {
-                    return $term->term_type === 'wpp_location_city';
-                  });
-                  $formatted_post->city = $city_term ? array_shift($city_term)->name : '';
+                  $location_city = get_the_terms($postId, 'location_city');
+                  $formatted_post->city = !empty($location_city) && !is_wp_error($location_city) ? $location_city->name : '';
 
-                  /** Get city  */
-                  $state_term = array_filter(array_map(function ($term) {
-                    $term->term_type = get_term_meta($term->term_id, '_type', true);
-                    return $term;
-                  }, $wpp_location_terms), function ($term) {
-                    return $term->term_type === 'wpp_location_state';
-                  });
-                  $formatted_post->state = $state_term ? array_shift($state_term)->name : '';
+                  /** Get state  */
+                  $location_state = get_the_terms($postId, 'location_state');
+                  $formatted_post->state = !empty($location_state) && !is_wp_error($location_state) ? $location_state->name : '';
 
                   /** Get gallery images */
                   $formatted_post->gallery_images = [];
