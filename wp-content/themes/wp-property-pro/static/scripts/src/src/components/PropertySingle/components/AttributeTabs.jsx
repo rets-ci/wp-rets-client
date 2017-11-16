@@ -171,9 +171,9 @@ class AttributeTabs extends Component {
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attrs-section pt-5` }>
-        <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
+        <div className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
           Property Details for {address[0]} {address_unit}
-        </h5>
+        </div>
 
         <p className={ `${Lib.THEME_CLASSES_PREFIX}info-description text-muted py-3` }>
           {description}

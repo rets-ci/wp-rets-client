@@ -68,8 +68,10 @@ export {
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getStyle,
   getSubArea,
   getSubdivision,
+  getSubTypes,
   getTotalBathrooms,
   getTotalLivingAreaSQFT,
   getTotalOtherAreaSQFT,
@@ -357,12 +359,20 @@ function getStreetNumber(data) {
   return get(data, 'post_meta.rets_street_number[0]', null);
 }
 
+function getStyle(data) {
+  return get(data, 'tax_input.rets_style.rets_style', []).map(d => d.name).join(', ') || null;
+}
+
 function getSubArea(data) {
   return get(data, 'tax_input.rets_sub_area.rets_sub_area', []).map(d => d.name).join(', ') || null;
 }
 
 function getSubdivision(data) {
   return get(data, 'tax_input.wpp_location.wpp_location_subdivision', []).map(d => d.name).join(', ') || null;
+}
+
+function getSubTypes(data) {
+  return get(data, 'tax_input.wpp_listing_subtype.listing_sub_type', []).map(d => d.name).join(', ') || null;
 }
 
 function getTotalBathrooms(data) {

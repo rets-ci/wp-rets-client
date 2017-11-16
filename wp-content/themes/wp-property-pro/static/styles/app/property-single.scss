@@ -31,26 +31,48 @@
 }
 
 .propertypro-info-section-header {
-  color: #414141;
-  font-weight: 700;
-  line-height: 1.5rem;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.25rem;
 }
 
 .propertypro-info-description {
   line-height: 1.85rem;
 }
 
-.propertypro-small-info-box {
-  margin-bottom: 2rem;
+.propertypro-attr-box {
+  color: #333;
 
   p {
     font-size: 0.75rem;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
   }
 
   p + p {
     font-size: 0.875rem;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    opacity: 1;
+  }
+}
+
+.propertypro-single-highlights {
+  .propertypro-info-section-header {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 1rem;
+    background-color: #FFF;
+  }
+
+  .propertypro-attr-box-container {
+    margin-top: -1px;
+  }
+
+  .propertypro-attr-box {
+    padding: 1.25rem 0;
+    margin-right: 1rem;
+    border-top: 1px solid #EAEAEA;
   }
 }
 
@@ -409,12 +431,12 @@ ul.card-header-tabs {
 .propertypro-attr-group-content {
   & > div {
     border-bottom: 1px solid #EAEAEA;
-    font-size: 1rem;
     padding: 1rem 0;
     /*white-space: nowrap;
     overflow: auto;*/
 
     span {
+      font-size: 0.875rem;
       color: #8b8c8d;
     }
     span + span {

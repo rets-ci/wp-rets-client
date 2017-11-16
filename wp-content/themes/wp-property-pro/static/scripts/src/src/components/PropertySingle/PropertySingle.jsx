@@ -116,7 +116,7 @@ class Single extends Component {
         />
 
         <PropertyHighlights
-          curatedPropertyInfo={ curatedPropertyInfo }
+          elasticSearchSource={ elasticSearchSource }
           fromMapView={ fromMapView }
         />
 
