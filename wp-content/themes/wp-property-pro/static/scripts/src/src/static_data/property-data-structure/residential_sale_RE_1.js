@@ -169,7 +169,7 @@ export default [
         {"name": "Porch Dimensions", "value": (data) => { return get(data, 'post_meta.rets_porch_dimensions[0]', false); }, "order": 9},
         {"name": "Porch Floor", "value": (data) => { return get(data, 'tax_input.rets_porch_floor.rets_porch_floor', []).map(d => d.name).join(', ') || null; }, "order": 10},
         {"name": "Screened Porch Dimensions", "value": (data) => { return get(data, 'post_meta.rets_screened_porch_dimensions[0]', false); }, "order": 11},
-        {"name": "Screened Porch Floor", "value": (data) => { return get(data, 'tax_input.rets_screened_porch_floor.rets_screened_porch_floor', false); }, "order": 12}
+        {"name": "Screened Porch Floor", "value": (data) => { return get(data, 'tax_input.rets_screened_porch_floor.rets_screened_porch_floor', []).map(d => d.name).join(', ') || null; }, "order": 12}
       ], "order": 2},
       {"name": "Heating & Cooling", "items": [
         {"name": "Cooling", "value": (data) => { return getCooling(data); }, "order": 1},
