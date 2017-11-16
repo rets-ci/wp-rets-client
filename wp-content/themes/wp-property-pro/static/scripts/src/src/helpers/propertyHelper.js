@@ -147,8 +147,11 @@ function getContactFormTabFeeder(post_title, mlsId) {
 
 function formatYesOrNoFields(data, ESReference) {
   let t = get(data, ESReference, false);
-  return t ?
-    t.includes('No') ? "No" : "Yes" : false;
+  return t
+    ? t.includes('No')
+      ? "No"
+      : "Yes"
+    : false;
 };
 
 function moneyFormat(data) {
