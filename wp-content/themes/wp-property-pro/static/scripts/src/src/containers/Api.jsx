@@ -425,7 +425,7 @@ class Api {
       saleType.forEach(saleType => {
         saleTypeShouldArray.push({
           "term": {
-            "terms.wpp_listing_status.slug": 'for-' + saleType
+            "tax_input.wpp_sale_status.listing_status_sale.slug": 'for-' + saleType
           }
         })
       });

@@ -438,9 +438,7 @@ namespace UsabilityDynamics {
           $statuses = array_map(function($t){
             /** Cut off prefix 'For ' from name */
             return explode(' ', $t->name)[1];
-          }, array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
-            return $term->parent;
-          }));
+          }, wp_get_post_terms($post->ID, 'wpp_sale_status', ['hide_empty' => false]));
 
           if(count($statuses) === 1){
             $params['post']['wpp_listing_statuses'] = array_values($statuses);

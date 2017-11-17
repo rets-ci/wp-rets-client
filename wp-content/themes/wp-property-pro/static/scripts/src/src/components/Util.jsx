@@ -641,9 +641,9 @@ class Util extends React.Component {
     let sqft = get(post_meta, 'sqft', null);
     let mlsId = get(post_meta, 'rets_mls_number[0]');
     let listing_office = get(tax_input, 'wpp_office.listing_office[0].name', null);
-    let listing_status_sale = get(tax_input, 'wpp_listing_status.listing_status_sale[0].slug', '');
+    let listing_status_sale = get(tax_input, 'wpp_sale_status.listing_status_sale[0].slug', '');
     let sale_type = listing_status_sale.replace('for-', '');
-    let sale_types = get(tax_input, 'wpp_listing_status.listing_status_sale', []).map(e => e.slug.replace('for-', ''));
+    let sale_types = get(tax_input, 'wpp_sale_status.listing_status_sale', []).map(e => e.slug.replace('for-', ''));
     let listing_sub_types = map(get(tax_input, 'wpp_listing_subtype.listing_sub_type', []), 'name');
     let listing_type = get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
     let officePhoneNumber = get(post_meta, 'rets_lo1_office_phone1_number[0]');

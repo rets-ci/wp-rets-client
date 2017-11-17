@@ -102,7 +102,7 @@ class AttributeTabs extends Component {
     switch(listing_type){
       case 'residential':
 
-        let sale_type = get(property, 'tax_input.wpp_listing_status.listing_status_sale[0].slug');
+        let sale_type = get(property, 'tax_input.wpp_sale_status.listing_status_sale[0].slug');
 
         // Street information
         description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
