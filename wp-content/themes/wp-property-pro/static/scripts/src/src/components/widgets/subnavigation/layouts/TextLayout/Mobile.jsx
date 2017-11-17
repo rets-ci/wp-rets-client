@@ -72,7 +72,9 @@ class Mobile extends Component {
       let item = this.props.items[i];
       if (get(item, 'classes.0', null) === 'btn') {
         btn = item;
-        btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
+        if (btn.classes.filter(d => d.indexOf(Lib.FORM_MODAL_PREFIX_ACTION) >= 0).length) {
+          btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
+        }
       } else {
         links.push(item);
         if (get(item, 'url') == this.props.currentUrl)
