@@ -1,4 +1,5 @@
 import {
+  openFormModal,
   openLoginModal,
   routeChanged,
   receiveWordpressContentFetching,
@@ -29,7 +30,7 @@ import UserPanel from './UserPanel.jsx';
 import {Lib} from '../lib.jsx';
 import get from 'lodash/get';
 import throttle from 'lodash/throttle';
-
+import FormModals from './Modals/FormModals/Index.jsx';
 import Page from './Page.jsx';
 import loadArchive from 'bundle-loader?lazy&name=BlogArchive!./blog/Archive.jsx';
 import loadGuideArchive from 'bundle-loader?lazy&name=GuideArchive!./guide/Archive.jsx';
@@ -103,6 +104,7 @@ class PageLayout extends Component {
   static propTypes = {
     // TODO: specify this
     location: PropTypes.object.isRequired,
+    openFormModal: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired
   };
 
@@ -217,6 +219,7 @@ class PageLayout extends Component {
       history,
       isFetching,
       location,
+      openFormModal,
       openLoginModal,
       openUserPanel,
       userPanelOpen
@@ -239,10 +242,12 @@ class PageLayout extends Component {
 
     let mainContent = (
       <div className={containerClass}>
+        <FormModals />
         <UserPanel
           closeUserPanel={closeUserPanel}
           historyPush={history.push}
           location={location}
+          openFormModal={openFormModal}
           panelOpen={userPanelOpen}
           menu_items={get(this.state, 'sidebar_menu_items', [])}
         />
@@ -315,7 +320,7 @@ class PageLayout extends Component {
             }
           } />
         </Switch>
-        <Footer/>
+        <Footer openFormModal={openFormModal} />
       </div>
     );
     let main = (

@@ -99,7 +99,6 @@ class ArchiveContent extends Component {
 
           </div>
         </div>
-        <FormModals />
       </div>
     )
   }
