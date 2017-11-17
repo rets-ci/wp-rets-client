@@ -456,7 +456,7 @@ class Util extends React.Component {
 
   static reddoorTermDetailsFromSearchParam = searchQueryParamsCollection => {
     let termTypeMapper = {
-      "wpp_location": ["city", "zip", "county", "country", "city_state", "state", "route", "subdivision"],
+      "wpp_location": ["city", "zip", "county", "country", "city_state", "state", "route", "subdivision", "neighborhood"],
       "wpp_schools": ["school"]
     };
     let tax;

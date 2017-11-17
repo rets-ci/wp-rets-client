@@ -33,6 +33,9 @@ class Api {
       "location_subdivision": {
         "title": "Subdivision"
       },
+      "location_neighborhood": {
+        "title": "Neighborhood"
+      },
       "wpp_schools_elementary_school": {
         "slug": "elementary_school",
         "title": "Elementary School",
