@@ -78,7 +78,7 @@ export default [
         {"name": "Flood Plain", "value": (data) => { return get(data, 'tax_input.rets_flood_plain.rets_flood_plain', []).map(d => d.name).join(', ') || null; }, "order": 19},
         {"name": "Traffic Count", "value": (data) => { return get(data, 'post_meta.rets_traffic_count[0]', null); }, "order": 20},
         {"name": "Distance to RDU", "value": (data) => { return get(data, 'tax_input.rets_distance_rdu.rets_distance_rdu', []).map(d => d.name).join(', ') || null; }, "order": 21},
-        {"name": "Rail Service", "value": (data) => { return null }, "order": 22}
+        {"name": "Rail Service", "value": (data) => { return get(data, 'tax_input.rets_rail_service.rets_rail_service', []).map(d => d.name).join(', ') || null }, "order": 22}
       ], "order": 2},
       {"name": "Utility", "items": [
         {"name": "Utilities", "value": (data) => { return get(data, 'post_meta.rets_number_of_rentals[0]', null); }, "order": 1},
