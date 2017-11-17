@@ -13,12 +13,13 @@ const Desktop = ({currentUrl, historyPush, items, openFormModal, pageModalData})
     let item = items[i];
     if (get(items[i], 'classes.0', null) === 'btn') {
       btn = item;
-      btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
+      if (btn.classes.filter(d => d.indexOf(Lib.FORM_MODAL_PREFIX_ACTION) >= 0).length) {
+        btn['formModalId'] = Util.getFormModalIdFromCSSClass(item.classes);
+      }
     } else {
       links.push(item);
     }
   }
-  
   return (isEmpty(items)
       ? null
       :

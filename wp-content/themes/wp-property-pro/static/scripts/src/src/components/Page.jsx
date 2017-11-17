@@ -9,7 +9,7 @@ import NotFound from 'app_root/components/NotFound.jsx';
 import Testimonials from './widgets/testimonials/Testimonials.jsx';
 import {Lib} from '../lib.jsx';
 import ListingCarousel from './widgets/listing_carousel/ListingCarousel.jsx';
-import FormModals from './Modals/FormModals/Index.jsx';;
+
 import Subnavigation from './widgets/subnavigation/Subnavigation.jsx';
 import Tour from './widgets/tour/Tour.jsx';
 import Single from './blog/Single.jsx';
@@ -100,7 +100,6 @@ class Page extends Component {
               )
             })
           }
-          <FormModals />
         </div>
       </div>
     )
