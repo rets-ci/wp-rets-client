@@ -142,7 +142,7 @@ function getBedroomsOnFirstFloor(data) {
 }
 
 function getCity(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_city', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_city.location_city', []).map(d => d.name).join(', ') || null;
 }
 
 function getCooling(data) {
@@ -150,7 +150,7 @@ function getCooling(data) {
 }
 
 function getCounty(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_county', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_county.location_county', []).map(d => d.name).join(', ') || null;
 }
 
 function getCrossStreet(data) {
@@ -236,7 +236,7 @@ function getHighSchool(data) {
 function getInsideCity(data) {
   let t = formatYesOrNoFields(data, 'tax_input.rets_inside_city.rets_inside_city[0].name');
   if (t === 'Yes') {
-    let city = get(data, 'tax_input.wpp_location.wpp_location_city', []).map(d => d.name);
+    let city = get(data, 'tax_input.location_city.location_city', []).map(d => d.name);
     return t + (city.length ? ', ' + city.join(', ') : '');
   } else if (t === 'No') {
     return t;
@@ -307,7 +307,7 @@ function getModifiedDate(data) {
 }
 
 function getNeighborhood(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_neighborhood', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_neighborhood.location_neighborhood', []).map(d => d.name).join(', ') || null;
 }
 
 function getNewConstruction(data) {
@@ -384,7 +384,7 @@ function getSQFT(data) {
 }
 
 function getState(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_state', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_state.location_state', []).map(d => d.name).join(', ') || null;
 }
 
 function getStatus(data) {
@@ -412,7 +412,7 @@ function getSubArea(data) {
 }
 
 function getSubdivision(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_subdivision', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_subdivision.location_subdivision', []).map(d => d.name).join(', ') || null;
 }
 
 function getSubTypes(data) {

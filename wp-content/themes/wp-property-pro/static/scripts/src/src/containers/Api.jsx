@@ -24,7 +24,7 @@ class Api {
       "location_city": {
         "title": "City"
       },
-      "location_zipcode": {
+      "location_zip": {
         "title": "Zip"
       },
       "location_county": {
@@ -153,7 +153,12 @@ class Api {
           "post_meta.address_unit",
           "post_meta.rets_address",
           "post_meta.rets_postal_code",
-          "tax_input.wpp_location"
+          "tax_input.location_state",
+          "tax_input.location_zip",
+          "tax_input.location_county",
+          "tax_input.location_city",
+          "tax_input.location_subdivision",
+          "tax_input.location_neighborhood",
         ];
 
     let suggest = {
@@ -262,7 +267,7 @@ class Api {
 
             _buckets.push({
               id: get(option, '_source.post_title', ''),
-              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city[0].name', '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_state[0].slug', '').toUpperCase() + ', ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
+              text: (get(option, '_source.tax_input.post_meta.rets_address', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.location_city.location_city[0].name', '') + ', ' + get(option, '_source.tax_input.location_state.location_state[0].slug', '').toUpperCase() + ', ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
               url: get(option, '_source.post_name', null) ? [get(bundle, 'property_single_url'), get(option, '_source.post_name', null)].join('/') : ''
             });
           }
@@ -350,7 +355,7 @@ class Api {
               term: get(responseAggs[replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
               termType: get(meta, 'term_type', ''),
               count: get(bucket, 'doc_count', ''),
-              taxonomy: 'wpp_location'
+              taxonomy: get(meta, 'term_type', '')
             });
 
           }

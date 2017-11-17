@@ -115,7 +115,7 @@ class LocationModal extends Component {
     let currentTerms = !isEmpty(get(this.props, 'currentTerms', [])) ? get(this.props, 'currentTerms') : get(this.props, 'terms', []);
 
     // @TODO should be fixed and should contain term label like `city`,
-    // for now get needed value from typeType `wpp_location_city`
+    // for now get needed value from typeType `location_city`
     if(termType){
       let shortTermTypeValue = Util.reddoorConvertTermTypeToSearchURLPrefix(termType);
 

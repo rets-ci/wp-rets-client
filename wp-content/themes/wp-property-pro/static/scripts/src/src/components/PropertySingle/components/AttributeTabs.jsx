@@ -111,7 +111,7 @@ class AttributeTabs extends Component {
         description += [' is a', listing_subtype, sale_type.toLowerCase().replace('-', ' ')].join(' ');
 
         // Location
-        description += ` in ${get(property, 'tax_input.wpp_location.wpp_location_city[0].name')}, ` + [get(property, 'tax_input.wpp_location.wpp_location_state[0].slug').toUpperCase(), get(property, 'tax_input.wpp_location.wpp_location_zipcode[0].name')].join(' ') + '.';
+        description += ` in ${get(property, 'tax_input.location_city.location_city[0].name')}, ` + [get(property, 'tax_input.location_state.location_state[0].slug').toUpperCase(), get(property, 'tax_input.location_zip.location_zip[0].name')].join(' ') + '.';
 
         // Attributes
         description += [' This', Util.formatSQFTValue(get(property, 'post_meta.sqft[0]', 0)), 'SQFT', listing_subtype, 'sits', 'on a', Util.formatAcresValue(get(property, 'post_meta.rets_lot_size_area[0]', 0)), 'acre lot and features', get(property, 'post_meta.rets_beds[0]', 0), 'bedrooms and', get(property, 'post_meta.rets_total_baths[0]', 0), 'bathrooms.'].join(' ');

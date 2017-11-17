@@ -450,20 +450,13 @@ namespace UsabilityDynamics {
           $params['post']['wpp_listing_type'] = reset(wp_get_post_terms($post->ID, 'wpp_listing_type', ['hide_empty' => false]))->slug;
 
           /** Get property location */
-          $location_city_term_type = 'wpp_location_city';
-          $city_terms = array_filter(array_map(function ($term) {
-            $term->term_type = get_term_meta($term->term_id, '_type', true);
-            return $term;
-          }, wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false])), function ($term) use ($location_city_term_type) {
-            return $term->term_type === $location_city_term_type;
-          });
-
-          if(count($city_terms) === 1){
-            $city_term = reset($city_terms);
+          $location_city = get_the_terms($post->ID, 'location_city');
+          $location_city = !empty($location_city) && !is_wp_error($location_city) ? reset($location_city) : null;
+          if($location_city){
             $params['post']['wpp_location'] = [
-                'term_type' => $location_city_term_type,
-                'slug' => $city_term->slug,
-                'term' => $city_term->name
+                'term_type' => $location_city->taxonomy,
+                'slug' => $location_city->slug,
+                'term' => $location_city->name
             ];
           }
 
@@ -871,11 +864,11 @@ namespace UsabilityDynamics {
 
                   /** Get city  */
                   $location_city = get_the_terms($postId, 'location_city');
-                  $formatted_post->city = !empty($location_city) && !is_wp_error($location_city) ? $location_city->name : '';
+                  $formatted_post->city = !empty($location_city) && !is_wp_error($location_city) ? reset($location_city)->name : '';
 
                   /** Get state  */
                   $location_state = get_the_terms($postId, 'location_state');
-                  $formatted_post->state = !empty($location_state) && !is_wp_error($location_state) ? $location_state->name : '';
+                  $formatted_post->state = !empty($location_state) && !is_wp_error($location_state) ? reset($location_state)->name : '';
 
                   /** Get gallery images */
                   $formatted_post->gallery_images = [];

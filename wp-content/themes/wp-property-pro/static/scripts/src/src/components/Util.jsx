@@ -152,8 +152,8 @@ class Util extends React.Component {
 
   static getReddoorSearchTerm(tax, termType) {
     let str;
-    if (tax === 'wpp_location') {
-      str = termType.replace(tax + '_', '');
+    if (tax.indexOf('location_') !== -1) {
+      str = termType.replace('location_', '');
     } else if (tax === 'wpp_schools') {
       str = 'school';
     } else {
@@ -190,17 +190,17 @@ class Util extends React.Component {
         term,
         tax
       } = t;
-      if (tax === 'wpp_location') {
+      if (tax.indexOf('location_') !== -1) {
         aggs[slug] = {
           "filter": {
             "term": {
-              [`tax_input.wpp_location.wpp_location_${term}.slug`]: slug
+              [`tax_input.location_${term}.location_${term}.slug`]: slug
             }
           },
           "aggs": {
             "inside": {
               "terms": {
-                "field": `tax_input.wpp_location.wpp_location_${term}.name.raw`,
+                "field": `tax_input.location_${term}.location_${term}.name.raw`,
                 "size": 1
               }
             }
@@ -445,8 +445,8 @@ class Util extends React.Component {
   };
 
   static reddoorConvertTermTypeToSearchURLPrefix = (termType) => {
-    if (termType.indexOf('wpp_location') >= 0) {
-      return termType.replace('wpp_location_', '');
+    if (termType.indexOf('location_') >= 0) {
+      return termType.replace('location_', '');
     } else if (termType.indexOf('school') >= 0) {
       return 'school';
     } else {
@@ -471,7 +471,7 @@ class Util extends React.Component {
       if (termTypeMapper['wpp_location'].indexOf(key) >= 0) {
         termDetails.push({
           slug: values[0],
-          tax: "wpp_location",
+          tax: "location_"+key,
           term: key
         })
       } else if (key.includes('school')) {
@@ -622,7 +622,7 @@ class Util extends React.Component {
     let agentPhoneNumber = get(post_meta, 'rets_la1_agent_phone1_number[0]', null);
     let baths  = get(post_meta, 'rets_total_baths', null);
     let beds = get(post_meta, 'rets_beds', null);
-    let city = get(tax_input, 'wpp_location.wpp_location_city[0].name', null);
+    let city = get(tax_input, 'location_city.location_city[0].name', null);
     let elementary_school = get(tax_input, 'rets_state.wpp_schools.elementary_school', null);
     let formatted_address_simple = get(post_meta, 'formatted_address_simple', null);
     let images = wpp_media.map(w => w.url);
@@ -637,7 +637,7 @@ class Util extends React.Component {
     let rets_postal_code = get(post_meta, 'rets_postal_code', null);
     let rets_state = get(tax_input, 'rets_state', null);
     let rets_year_built = get(post_meta, 'rets_year_built', null);
-    let state = get(tax_input, 'wpp_location.wpp_location_state[0].name', null);
+    let state = get(tax_input, 'location_state.location_state[0].name', null);
     let sqft = get(post_meta, 'sqft', null);
     let mlsId = get(post_meta, 'rets_mls_number[0]');
     let listing_office = get(tax_input, 'wpp_office.listing_office[0].name', null);
@@ -648,8 +648,8 @@ class Util extends React.Component {
     let listing_type = get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
     let officePhoneNumber = get(post_meta, 'rets_lo1_office_phone1_number[0]');
     let listingTypes = get(tax_input, 'wpp_listing_type.listing_type', []);
-    let wpp_location_subdivision = get(tax_input, 'rets_state.wpp_location.wpp_location_subdivision', null);
-    let wpp_location_city = get(tax_input, 'rets_state.wpp_location.wpp_location_city', null);
+    let wpp_location_subdivision = get(tax_input, 'location_subdivision.location_subdivision', null);
+    let wpp_location_city = get(tax_input, 'location_city.location_city', null);
     let wpp_import_time = get(post_meta, 'wpp_import_time[0]', null);
 
     // @TODO: improve later
