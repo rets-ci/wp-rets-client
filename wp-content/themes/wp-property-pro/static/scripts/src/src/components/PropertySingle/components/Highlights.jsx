@@ -23,12 +23,12 @@ const LISTING_TYPES_TO_HIDE = [ 'commercial', 'land' ];
 const Highlights = ({ elasticSearchSource, fromMapView }) => {
 
   const listingType = getListingType(elasticSearchSource)
-  if (LISTING_TYPES_TO_HIDE.indexOf(listingType) >= 0) {
+  if (LISTING_TYPES_TO_HIDE.indexOf(listingType.toLowerCase()) >= 0) {
     return null;
   }
 
   let boxClass = `${Lib.THEME_CLASSES_PREFIX}attr-box`;
-  let gridClass = fromMapView ? 'col-6' : 'col-6 col-md-4';
+  let gridClass = fromMapView ? 'col-12' : 'col-12 col-md-4';
 
   const subTypes          = getSubTypes(elasticSearchSource) || 'N/A'
   const design            = getDesign(elasticSearchSource) || 'N/A'
@@ -50,6 +50,8 @@ const Highlights = ({ elasticSearchSource, fromMapView }) => {
       <div className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header` }>
         Property Highlights
       </div>
+
+      <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-box-overlay` } />
 
       <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-box-container row` }>
         <div className={ gridClass }><div className={ boxClass }>
