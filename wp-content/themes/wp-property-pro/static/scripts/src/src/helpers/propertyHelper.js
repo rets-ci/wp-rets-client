@@ -6,6 +6,7 @@ import { Lib } from 'app_root/lib.jsx';
 
 export {
   commonDateFormat,
+  footFormat,
   getLastUpdatedMoment,
   getLastCheckedMoment,
   daysPassedSincePostedDate,
@@ -163,6 +164,10 @@ function formatYesOrNoFields(data, ESReference) {
 function moneyFormat(data) {
   return data !== null && data !== 0 && '$' + numeral(data).format('0,0');
 };
+
+function footFormat(data) {
+  return numeral(data).format('0,0');
+}
 
 /************************************
 * private functions
