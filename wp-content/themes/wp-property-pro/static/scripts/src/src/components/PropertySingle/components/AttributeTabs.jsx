@@ -112,7 +112,7 @@ class AttributeTabs extends Component {
         let sale_type = get(property, 'tax_input.wpp_sale_status.listing_status_sale[0].slug');
 
         // Street information
-        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
+        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.address_unit')].join(' ');
 
         // Subtype and sale type
         description += [' is a', listing_subtype, sale_type.toLowerCase().replace('-', ' ')].join(' ');
@@ -136,7 +136,7 @@ class AttributeTabs extends Component {
       case 'commercial':
 
         // Street information
-        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
+        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.address_unit')].join(' ');
 
         // Subtype and sale type
         description += [' is a', listing_subtype, 'commercial space for', sale_types].join(' ');
@@ -149,7 +149,7 @@ class AttributeTabs extends Component {
       case 'land':
 
         // Street information
-        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
+        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.address_unit')].join(' ');
 
         // Subtype and sale type
         description += [' is a', get(property, 'post_meta.rets_lot_size_area'), 'acre lot for', sale_types].join(' ');
