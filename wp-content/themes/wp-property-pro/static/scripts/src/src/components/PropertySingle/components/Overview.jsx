@@ -32,7 +32,7 @@ class Overview extends Component {
     }
 
     let boxClass = `${Lib.THEME_CLASSES_PREFIX}attr-box`;
-    let gridClass = fromMapView ? 'col-6' : 'col-6 col-md-4';
+    let gridClass = fromMapView ? 'col-12' : 'col-12 col-md-4';
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-overview` }>
@@ -41,7 +41,9 @@ class Overview extends Component {
           { renderHTML(post_content) }
         </p>
 
-        <div className="row">
+        <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-box-overlay` } />
+
+        <div className={ `${Lib.THEME_CLASSES_PREFIX}attr-box-container row` }>
           <div className={ gridClass }><div className={ boxClass }>
             <p>Last Checked</p>
             <p>{
