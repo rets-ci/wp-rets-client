@@ -99,6 +99,14 @@ class AttributeTabs extends Component {
     let listing_type = get(property, 'tax_input.wpp_listing_type.listing_type[0].slug');
     let listing_subtype = get(property, 'tax_input.wpp_listing_subtype.listing_sub_type[0].slug');
 
+    let sale_types = get(property, 'tax_input.wpp_sale_status.listing_status_sale', []).map((item) => {
+      return get(item, 'slug', '').replace('for-', '');
+    });
+
+    if(sale_types.length === 2){
+      sale_types = sale_types.join('and');
+    }
+
     switch(listing_type){
       case 'residential':
 
@@ -124,6 +132,31 @@ class AttributeTabs extends Component {
         }else{
           description += '.';
         }
+        break;
+
+      case 'commercial':
+
+        // Street information
+        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
+
+        // Subtype and sale type
+        description += [' is a', listing_subtype, 'commercial space for', sale_types].join(' ');
+
+        // Location
+        description += ` in ${get(property, 'tax_input.location_city.location_city[0].name')}, ` + [get(property, 'tax_input.location_state.location_state[0].slug').toUpperCase(), get(property, 'tax_input.location_zip.location_zip[0].name')].join(' ') + '.';
+
+        break;
+
+      case 'land':
+
+        // Street information
+        description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
+
+        // Subtype and sale type
+        description += [' is a', get(property, 'post_meta.rets_lot_size_area'), 'acre lot for', sale_types].join(' ');
+
+        // Location
+        description += ` in ${get(property, 'tax_input.location_city.location_city[0].name')}, ` + [get(property, 'tax_input.location_state.location_state[0].slug').toUpperCase(), get(property, 'tax_input.location_zip.location_zip[0].name')].join(' ') + '.';
 
         break;
     }
