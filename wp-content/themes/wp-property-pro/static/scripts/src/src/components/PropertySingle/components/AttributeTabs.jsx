@@ -93,8 +93,7 @@ class AttributeTabs extends Component {
   }
 
   generateDescription(property){
-    // @TODO Default static hardcode while not ready template for dynamic description
-    let description = '847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.';
+    let description;
 
     let listing_type = get(property, 'tax_input.wpp_listing_type.listing_type[0].slug');
     let listing_subtype = get(property, 'tax_input.wpp_listing_subtype.listing_sub_type[0].slug');
