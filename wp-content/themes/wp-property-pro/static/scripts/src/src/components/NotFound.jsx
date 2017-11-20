@@ -43,7 +43,7 @@ class NotFound extends Component {
                     <TitleDescriptionLayout
                       searchOptions={searchOptions}
                       title={"Page Not Found"}
-                      subtitle={"We're sorry, but the page you're looking for no longer exists. Start a new home search below!"}
+                      subtitle={"We're sorry, but the page you're looking for no longer exists. Start a new search below!"}
                     />
                   </div>
                 </div>
