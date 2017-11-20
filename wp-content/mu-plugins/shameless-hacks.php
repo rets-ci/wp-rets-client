@@ -19,10 +19,39 @@ add_filter( 'ud:messages:admin_notices', function() { return null; });
 add_filter( 'ud:warnings:admin_notices', function() { return null; });
 
 /**
+ * Extend title_suggest mapping contexts with our custom one.
  *
- * Add rets_mls_number and wpp_address_formatted_simple to search input.
  *
- * Add wpp_address_formatted_simple and rets_mls_number to title payload.
+ */
+add_filter( 'wpp:elastic:title_suggest:contexts', function( $contexts ) {
+
+  if( !is_array( $contexts ) ) {
+    return $contexts;
+  }
+
+  $sale_status_exists = false;
+  foreach( $contexts as $context ) {
+    if( isset( $context['name'] ) && $context['name'] == 'sale_status' ) {
+      $sale_status_exists = true;
+      break;
+    }
+  }
+
+  if( !$sale_status_exists ) {
+    array_push( $contexts, array(
+      'name' => 'sale_status',
+      'type' => 'category'
+    ) );
+  }
+
+  return $contexts;
+} );
+
+/**
+ *
+ * - Add rets_mls_number and wpp_address_formatted_simple to search input.
+ * - Add wpp_address_formatted_simple and rets_mls_number to title payload.
+ * - Extend contexts with sale_status
  *
  */
 add_filter( 'wpp:elastic:title_suggest', function( $title_suggest, $post_args, $post_id ) {
