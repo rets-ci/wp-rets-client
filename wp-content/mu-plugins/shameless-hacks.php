@@ -34,9 +34,37 @@ add_filter( 'wpp:elastic:title_suggest', function( $title_suggest, $post_args, $
     isset( $post_args['post_meta']['wpp_address_formatted_simple'] ) ? $post_args['post_meta']['wpp_address_formatted_simple'] : array()
   ));
 
+  $contexts = !empty( $title_suggest['contexts'] ) ? $title_suggest['contexts'] : array();
+
+  if( empty( $contexts[ 'sale_status' ] ) ) {
+    $contexts['sale_status'] = rdc_get_suggest_contexts( $post_id, 'wpp_sale_status' );
+  }
+
+  if( empty( $contexts[ 'listing_type_status' ] ) ) {
+    $contexts[ 'listing_type_status' ] = array();
+  }
+
+  if(
+    !empty( $contexts['listing_type'] ) && is_array( $contexts['listing_type'] ) &&
+    !empty( $contexts['sale_status'] ) && is_array( $contexts['sale_status'] )
+  ) {
+    foreach( $contexts['listing_type'] as $type_slug => $type_value ) {
+      foreach( $contexts['sale_status'] as $status_slug => $status_value ) {
+        if( strpos( $type_slug, 'slug-' ) === 0 && strpos( $status_slug, 'slug-' ) === 0 ) {
+          array_push( $contexts[ 'listing_type_status' ], $type_value . '-' . $status_value );
+        }
+        else if( strpos( $type_slug, 'name-' ) === 0 && strpos( $status_slug, 'name-' ) === 0 ) {
+          array_push( $contexts[ 'listing_type_status' ], $type_value . ' ' . $status_value );
+        }
+      }
+    }
+  }
+
+  $title_suggest['contexts'] = $contexts;
+
   return $title_suggest;
 
-}, 10, 3 );
+}, 100, 3 );
 
 add_filter( 'wpp:elastic:prepare', function( $post_args, $post_id ) {
 
@@ -94,6 +122,28 @@ add_action( 'wpp::cli::trigger::fix_wpp_settings', function( $args ) {
   update_option('wpp_settings', $wpp_settings);
 
 } );
+
+
+function rdc_get_suggest_contexts( $post_id, $taxonomy ) {
+
+  $terms = wp_get_object_terms( $post_id, $taxonomy );
+
+  if( empty( $terms ) ) {
+    return $terms;
+  }
+
+  $contexts = array();
+  foreach( $terms as $term ) {
+    $contexts[ sanitize_title( 'slug-' . $term->slug ) ] = $term->slug;
+    $contexts[ sanitize_title( 'name-' . $term->name ) ] = $term->name;
+
+  }
+
+  $contexts = array_unique( $contexts );
+
+  return $contexts;
+
+}
 
 class SH_Array_cleaner {
 
