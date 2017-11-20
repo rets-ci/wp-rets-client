@@ -131,7 +131,7 @@
     {
       "Pricing & Terms": [
         {"name": "Rental", "esReference": "tax_input.rets_rental_terms.rets_rental_terms"},
-        {"name": "Sale Type", "esReference": "tax_input.wpp_listing_status.listing_status_sale[0].name"},
+        {"name": "Sale Type", "esReference": "tax_input.wpp_sale_status.listing_status_sale[0].name"},
         {"name": "Payment Period", "esReference": "post_meta.rets_payment_period[0]"},
         {"name": "Security Deposit", "esReference": "post_meta.rets_security_deposit[0]"},
         {"name": "Rental Terms", "esReference": "tax_input.rets_rental_terms.rets_rental_terms"},

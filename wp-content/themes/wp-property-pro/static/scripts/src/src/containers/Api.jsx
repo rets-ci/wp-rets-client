@@ -21,37 +21,20 @@ class Api {
         "old_key": "mls-id",
         "taxonomy": "wpp_listing"
       },
-      "wpp_location_city": {
-        "slug": "city",
-        "title": "City",
-        "field": "tax_input.location_city",
-        "search_field": "_search.location_city",
-        "old_key": "location-city",
-        "taxonomy": "wpp_location"
+      "location_city": {
+        "title": "City"
       },
-      "wpp_location_zipcode": {
-        "slug": "zip",
-        "title": "Zip",
-        "field": "_system.addressDetail.zipcode",
-        "search_field": "_search.location_zip",
-        "old_key": "location-zipcode",
-        "taxonomy": "wpp_location"
+      "location_zip": {
+        "title": "Zip"
       },
-      "wpp_location_county": {
-        "slug": "county",
-        "title": "County",
-        "field": "tax_input.location_county",
-        "search_field": "_search.location_county",
-        "old_key": "location-county",
-        "taxonomy": "wpp_location"
+      "location_county": {
+        "title": "County"
       },
-      "wpp_location_subdivision": {
-        "slug": "subdivision",
-        "title": "Subdivision",
-        "field": "tax_input.subdivision",
-        "search_field": "_search.subdivision",
-        "old_key": "subdivision",
-        "taxonomy": "wpp_location"
+      "location_subdivision": {
+        "title": "Subdivision"
+      },
+      "location_neighborhood": {
+        "title": "Neighborhood"
       },
       "wpp_schools_elementary_school": {
         "slug": "elementary_school",
@@ -118,24 +101,24 @@ class Api {
   static getTopAggregations() {
     return {
       "aggs": {
-        "wpp_location_city_name": {
+        "location_city_name": {
           "terms": {
             "title": "Filter by Popular City",
-            "field": "tax_input.wpp_location.wpp_location_city.name.raw",
+            "field": "tax_input.location_city.location_city.name.raw",
           },
             "total_terms": {
                 "cardinality": {
-                    "field": "tax_input.wpp_location.wpp_location_city.name.raw"
+                    "field": "tax_input.location_city.location_city.name.raw"
                 }
             },
           "meta": {
-            "term_type": "wpp_location_city"
+            "term_type": "location_city"
           }
         },
-        "wpp_location_city_slug": {
+        "location_city_slug": {
           "terms": {
             "title": "Filter by Popular City",
-            "field": "tax_input.wpp_location.wpp_location_city.slug",
+            "field": "tax_input.location_city.location_city.slug",
           }
         }
       }
@@ -173,7 +156,12 @@ class Api {
           "post_meta.address_unit",
           "post_meta.rets_address",
           "post_meta.rets_postal_code",
-          "tax_input.wpp_location"
+          "tax_input.location_state",
+          "tax_input.location_zip",
+          "tax_input.location_county",
+          "tax_input.location_city",
+          "tax_input.location_subdivision",
+          "tax_input.location_neighborhood",
         ];
 
     let suggest = {
@@ -188,16 +176,15 @@ class Api {
         }
       }
     };
-    for (let i in aggregationsFields) {
-      let agg = aggregationsFields[i];
+    for (let aggregationKey in aggregationsFields) {
 
-      suggest[i] = {
+      suggest[aggregationKey] = {
         "text": params.term,
         "completion": {
           "field": "term_suggest",
           "size": Lib.TERM_SUGGEST_COUNT,
           "contexts": {
-            "term_type": [i, get(agg, 'old_key', '')]
+            "term_type": aggregationKey
           }
         }
       };
@@ -240,7 +227,7 @@ class Api {
 
             for (let ind in term.options) {
               let option = term.options[ind];
-              if (get(option, '_source.term_type', null) === aggregationKey || get(option, '_source.term_type', null) === get(aggregationsFields[aggregationKey], 'old_key', null)) {
+              if (get(option, '_source.term_type', null) === aggregationKey) {
                 _buckets.push({
                   id: get(option, '_id', ''),
                   text: get(option, '_source.name', ''),
@@ -283,7 +270,7 @@ class Api {
 
             _buckets.push({
               id: get(option, '_source.post_title', ''),
-              text: (get(option, '_source.tax_input.wpp_location', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_city[0].name', '') + ', ' + get(option, '_source.tax_input.wpp_location.wpp_location_state[0].slug', '').toUpperCase() + ', ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
+              text: (get(option, '_source.tax_input.post_meta.rets_address', null) ? get(option, '_source.post_meta.rets_address', '') + (get(option, '_source.post_meta.address_unit[0]', null) ? (' ' + option._source.post_meta.address_unit) : '') + ', ' + get(option, '_source.tax_input.location_city.location_city[0].name', '') + ', ' + get(option, '_source.tax_input.location_state.location_state[0].slug', '').toUpperCase() + ', ' + get(option, '_source.post_meta.rets_postal_code', '') : get(option, '_source.post_title')),
               url: get(option, '_source.post_name', null) ? [get(bundle, 'property_single_url'), get(option, '_source.post_name', null)].join('/') : ''
             });
           }
@@ -371,7 +358,7 @@ class Api {
               term: get(responseAggs[replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
               termType: get(meta, 'term_type', ''),
               count: get(bucket, 'doc_count', ''),
-              taxonomy: 'wpp_location'
+              taxonomy: get(meta, 'term_type', '')
             });
 
           }
@@ -441,7 +428,7 @@ class Api {
       saleType.forEach(saleType => {
         saleTypeShouldArray.push({
           "term": {
-            "terms.wpp_listing_status.slug": 'for-' + saleType
+            "tax_input.wpp_sale_status.listing_status_sale.slug": 'for-' + saleType
           }
         })
       });
@@ -649,7 +636,12 @@ class Api {
         if (jqXHR.status === 0) {
           errorMsg = "Couldn't establish a connection.";
         } else if (jqXHR.status == 404) {
-          return callback(null, {pageNotFound: true});
+          let responseJson = jqXHR.responseJSON || {};
+          let obj = {
+            pageNotFound: true,
+            ...responseJson
+          };
+          return callback(null, obj);
         } else if (jqXHR.status == 500) {
           errorMsg = "Internal Server Error [500].";
         } else if (textStatus === 'parsererror') {

@@ -26,16 +26,15 @@ function showContentValue(data, dataReference) {
 
 function getContent(items, data) {
   let contentElements = items.sort((a, b) => a.order - b.order).map((c, i) => {
-    //TODO: Remove these console.logs before going live, these are meant for development only
-    // console.log('name: ', c.name);
-    // console.log('value: ', showContentValue(data, c.value));
-    // console.log('-------------------');
-    return [null].indexOf(showContentValue(data, c.value)) < 0 ?
-      <div key={JSON.stringify(c)}>
-        <span>{c.name}: </span>
-        <span>{showContentValue(data, c.value)}</span>
-      </div>
-      : null;
+    const contentValue = showContentValue(data, c.value)
+    // contentValue could be an object which will result in react rendering error
+    // stringify it
+    return contentValue !== null
+      ? <div key={ `${c.name}-${i}` }>
+          <span>{c.name}: </span>
+          <span>{JSON.stringify(contentValue).slice(1, -1)}</span>
+        </div>
+      : null
   });
   return contentElements;
 }

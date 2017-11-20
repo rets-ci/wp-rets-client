@@ -30,9 +30,9 @@ const ListingProvider = ({ curatedPropertyInfo, fromMapView }) => {
   return (
     <section className={ `${Lib.THEME_CLASSES_PREFIX}single-listing-provider py-5` }>
       <div className="container"><div className="row"><div className="col-12">
-        <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
+        <div className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
           Listing Provider for {address[0]} {address_unit}
-        </h5>
+        </div>
 
         <p className={`text-muted ${Lib.THEME_CLASSES_PREFIX}info-description text-muted py-3`}>
           {DISCLAIMER_TEXT}

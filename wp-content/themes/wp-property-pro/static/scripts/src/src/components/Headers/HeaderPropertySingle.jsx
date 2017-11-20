@@ -116,8 +116,8 @@ class HeaderPropertySingle extends Component {
       search_type: this.props.searchType,
       term: [{
         slug: this.props.location.slug,
-        tax: "wpp_location",
-        term: this.props.location.term_type.replace('wpp_location_', ''),
+        tax: this.props.location.term_type,
+        term: this.props.location.term_type.replace('location_', ''),
         text: this.props.location.term
       }]
     };

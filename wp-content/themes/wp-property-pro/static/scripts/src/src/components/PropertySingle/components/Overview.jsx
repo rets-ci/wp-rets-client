@@ -11,6 +11,7 @@ class Overview extends Component {
 
   render() {
     let {
+      fromMapView,
       curatedPropertyInfo: {
         post_content,
         listing_type,
@@ -30,12 +31,8 @@ class Overview extends Component {
       availabilityOpening = "Available " + availableDate.format('MMMM D, YYYY') + '. ';
     }
 
-    let gridClass = `${Lib.THEME_CLASSES_PREFIX}small-info-box `;
-    if (this.props.fromMapView) {
-      gridClass += 'col-6 col-xl-4'
-    } else {
-      gridClass += 'col-4 col-md-4'
-    }
+    let boxClass = `${Lib.THEME_CLASSES_PREFIX}attr-box`;
+    let gridClass = fromMapView ? 'col-6' : 'col-6 col-md-4';
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-overview` }>
@@ -45,24 +42,24 @@ class Overview extends Component {
         </p>
 
         <div className="row">
-          <div className={ `${gridClass}` }>
-            <p className="text-muted">Last Checked</p>
+          <div className={ gridClass }><div className={ boxClass }>
+            <p>Last Checked</p>
             <p>{
               // lastCheckedMoment.fromNow()
               lastCheckedMoment
             }</p>
-          </div>
+          </div></div>
           {lastUpdatedMoment &&
-            <div className={ `${gridClass}` }>
-              <p className="text-muted">Last Updated</p>
+            <div className={ gridClass }><div className={ boxClass }>
+              <p>Last Updated</p>
               <p>{lastUpdatedMoment.format('MMM DD, YYYY')}</p>
-            </div>
+            </div></div>
           }
           {daysOnWebsite &&
-            <div className={ `${gridClass}` }>
-              <p className="text-muted">Days on Website</p>
+            <div className={ gridClass }><div className={ boxClass }>
+              <p>Days on Website</p>
               <p>{daysOnWebsite}</p>
-            </div>
+            </div></div>
           }
         </div>
       </div>

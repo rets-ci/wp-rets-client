@@ -199,9 +199,12 @@ namespace UsabilityDynamics {
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
 
+      /** Front page post content for 404's page displaying search bar */
+      if(is_404()){
       $front_page_id = get_option('page_on_front');
-      if ($post_data = get_post_meta($front_page_id, 'panels_data', true) && !is_front_page()) {
-        $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+        if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
+          $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+        }
       }
 
       /** Build search options array for search type dropDown at search result page */
@@ -435,9 +438,7 @@ namespace UsabilityDynamics {
           $statuses = array_map(function($t){
             /** Cut off prefix 'For ' from name */
             return explode(' ', $t->name)[1];
-          }, array_filter(wp_get_post_terms($post->ID, 'wpp_listing_status', ['hide_empty' => false]), function ($term) {
-            return $term->parent;
-          }));
+          }, wp_get_post_terms($post->ID, 'wpp_sale_status', ['hide_empty' => false]));
 
           if(count($statuses) === 1){
             $params['post']['wpp_listing_statuses'] = array_values($statuses);
@@ -447,20 +448,13 @@ namespace UsabilityDynamics {
           $params['post']['wpp_listing_type'] = reset(wp_get_post_terms($post->ID, 'wpp_listing_type', ['hide_empty' => false]))->slug;
 
           /** Get property location */
-          $location_city_term_type = 'wpp_location_city';
-          $city_terms = array_filter(array_map(function ($term) {
-            $term->term_type = get_term_meta($term->term_id, '_type', true);
-            return $term;
-          }, wp_get_post_terms($post->ID, 'wpp_location', ['hide_empty' => false])), function ($term) use ($location_city_term_type) {
-            return $term->term_type === $location_city_term_type;
-          });
-
-          if(count($city_terms) === 1){
-            $city_term = reset($city_terms);
+          $location_city = get_the_terms($post->ID, 'location_city');
+          $location_city = !empty($location_city) && !is_wp_error($location_city) ? reset($location_city) : null;
+          if($location_city){
             $params['post']['wpp_location'] = [
-                'term_type' => $location_city_term_type,
-                'slug' => $city_term->slug,
-                'term' => $city_term->name
+                'term_type' => $location_city->taxonomy,
+                'slug' => $location_city->slug,
+                'term' => $location_city->name
             ];
           }
 
@@ -866,25 +860,13 @@ namespace UsabilityDynamics {
                     return $subtype->name;
                   }, $subtypes));
 
-                  $wpp_location_terms = get_the_terms($postId, 'wpp_location');
-
                   /** Get city  */
-                  $city_term = array_filter(array_map(function ($term) {
-                    $term->term_type = get_term_meta($term->term_id, '_type', true);
-                    return $term;
-                  }, $wpp_location_terms), function ($term) {
-                    return $term->term_type === 'wpp_location_city';
-                  });
-                  $formatted_post->city = $city_term ? array_shift($city_term)->name : '';
+                  $location_city = get_the_terms($postId, 'location_city');
+                  $formatted_post->city = !empty($location_city) && !is_wp_error($location_city) ? reset($location_city)->name : '';
 
-                  /** Get city  */
-                  $state_term = array_filter(array_map(function ($term) {
-                    $term->term_type = get_term_meta($term->term_id, '_type', true);
-                    return $term;
-                  }, $wpp_location_terms), function ($term) {
-                    return $term->term_type === 'wpp_location_state';
-                  });
-                  $formatted_post->state = $state_term ? array_shift($state_term)->name : '';
+                  /** Get state  */
+                  $location_state = get_the_terms($postId, 'location_state');
+                  $formatted_post->state = !empty($location_state) && !is_wp_error($location_state) ? reset($location_state)->name : '';
 
                   /** Get gallery images */
                   $formatted_post->gallery_images = [];

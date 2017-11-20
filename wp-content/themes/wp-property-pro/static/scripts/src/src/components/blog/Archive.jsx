@@ -1,3 +1,4 @@
+import FormModals from 'app_root/components/Modals/FormModals/Index.jsx';
 import HeaderDefault from '../Headers/HeaderDefault.jsx';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';

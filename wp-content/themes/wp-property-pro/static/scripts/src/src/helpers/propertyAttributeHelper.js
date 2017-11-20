@@ -2,8 +2,10 @@ import get from 'lodash/get';
 import { commonDateFormat, formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
 
 export {
+  getAccessibility,
   getAcres,
   getActiveAdultCommunity,
+  getActiveAdultCommunityNA,
   getAppliances,
   getArea,
   getBasement,
@@ -19,6 +21,7 @@ export {
   getDiningRoom,
   getDirections,
   getElementarySchool,
+  getEstFinMonth,
   getExteriorFeatures,
   getExteriorFinish,
   getFireplaces,
@@ -27,6 +30,8 @@ export {
   getFoundation,
   getFullBathrooms,
   getGarageCapacity,
+  getGreenBuildingCert,
+  getGreenBuildingFeatures,
   getHalfBathrooms,
   getHeating,
   getHeatingFuel,
@@ -34,6 +39,7 @@ export {
   getInsideCity,
   getInteriorFeatures,
   getLatitude,
+  getListingStatuses,
   getListingType,
   getLivingAreaAboveGradeSQFT,
   getLivingAreaBelowGradeSQFT,
@@ -54,9 +60,11 @@ export {
   getOtherRooms,
   getParking,
   getPool,
+  getPostDirectional,
   getPrice,
   getPricePerAcre,
   getPricePerSQFT,
+  getPropertySubType,
   getPropertyType,
   getPublishedDate,
   getRestrictiveCovenants,
@@ -68,13 +76,17 @@ export {
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getStyle,
   getSubArea,
   getSubdivision,
+  getSubTypes,
   getTotalBathrooms,
   getTotalLivingAreaSQFT,
   getTotalOtherAreaSQFT,
   getUnitNumber,
   getWaterAndSewer,
+  getWaterfront,
+  getWaterfrontType,
   getWaterHeater,
   getYearBuilt,
   getZip,
@@ -85,11 +97,19 @@ export {
 * public functions
 ************************************/
 
+function getAccessibility(data) {
+  return get(data, 'tax_input.rets_accessibility.rets_accessibility', []).map(d => d.name).join(', ') || null;
+}
+
 function getAcres(data) {
   return get(data, 'post_meta.rets_acres.rets_acres', []).map(d => d.name).join(', ') || null;
 }
 
 function getActiveAdultCommunity(data) {
+  return get(data, 'tax_input.rets_active_adult_community.rets_active_adult_community', []).map(d => d.name).join(', ') || null;
+}
+
+function getActiveAdultCommunityNA(data) {
   return get(data, 'post_meta.rets_active_adult_community_na[0]', null);
 }
 
@@ -122,7 +142,7 @@ function getBedroomsOnFirstFloor(data) {
 }
 
 function getCity(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_city', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_city.location_city', []).map(d => d.name).join(', ') || null;
 }
 
 function getCooling(data) {
@@ -130,7 +150,7 @@ function getCooling(data) {
 }
 
 function getCounty(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_county', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_county.location_county', []).map(d => d.name).join(', ') || null;
 }
 
 function getCrossStreet(data) {
@@ -151,6 +171,10 @@ function getDirections(data) {
 
 function getElementarySchool(data) {
   return get(data, 'tax_input.wpp_schools.elementary_school', []).map(d => d.name).join(', ') || null;
+}
+
+function getEstFinMonth(data) {
+  return get(data, 'tax_input.rets_est_fin_month.rets_est_fin_month', []).map(d => d.name).join(', ') || null;
 }
 
 function getExteriorFeatures(data) {
@@ -185,6 +209,14 @@ function getGarageCapacity(data) {
   return get(data, 'post_meta.rets_garage[0]', null);
 }
 
+function getGreenBuildingCert(data) {
+  return get(data, 'tax_input.rets_green_building_cert.rets_green_building_cert', []).map(d => d.name).join(', ') || null;
+}
+
+function getGreenBuildingFeatures(data) {
+  return get(data, 'tax_input.rets_green_building_features.rets_green_building_features', []).map(d => d.name).join(', ') || null;
+}
+
 function getHalfBathrooms(data) {
   return get(data, 'post_meta.rets_baths_half[0]', false);
 }
@@ -204,10 +236,12 @@ function getHighSchool(data) {
 function getInsideCity(data) {
   let t = formatYesOrNoFields(data, 'tax_input.rets_inside_city.rets_inside_city[0].name');
   if (t === 'Yes') {
-    let city = get(data, 'tax_input.wpp_location.wpp_location_city', []).map(d => d.name);
+    let city = get(data, 'tax_input.location_city.location_city', []).map(d => d.name);
     return t + (city.length ? ', ' + city.join(', ') : '');
-  } else {
+  } else if (t === 'No') {
     return t;
+  } else if (t === false) {
+    return null;
   }
 }
 
@@ -217,6 +251,10 @@ function getInteriorFeatures(data) {
 
 function getLatitude(data) {
   return get(data, 'post_meta.rets_latitude[0]', null);
+}
+
+function getListingStatuses(data) {
+  return get(data, 'tax_input.wpp_listing_status.listing_status_sale', []).map(d => d.name.replace('For ', '')).join(', ');
 }
 
 function getListingType(data) {
@@ -269,7 +307,7 @@ function getModifiedDate(data) {
 }
 
 function getNeighborhood(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_neighborhood', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_neighborhood.location_neighborhood', []).map(d => d.name).join(', ') || null;
 }
 
 function getNewConstruction(data) {
@@ -300,6 +338,10 @@ function getPool(data) {
   return get(data, 'tax_input.rets_pool.rets_pool', []).map(d => d.name).join(', ') || null;
 }
 
+function getPostDirectional(data) {
+  return get(data, 'tax_input.rets_post_direction.rets_post_direction', []).map(d => d.name).join(', ') || null;
+}
+
 function getPrice(data) {
   return moneyFormat(get(data, 'post_meta.rets_list_price[0]', null));
 }
@@ -310,6 +352,10 @@ function getPricePerAcre(data) {
 
 function getPricePerSQFT(data) {
   return moneyFormat(get(data, 'post_meta.rets_price_per_sqft[0]', null));
+}
+
+function getPropertySubType(data) {
+  return get(data, 'tax_input.wpp_listing_subtype.listing_sub_type', []).map(d => d.name).join(', ') || null;
 }
 
 function getPropertyType(data) {
@@ -338,7 +384,7 @@ function getSQFT(data) {
 }
 
 function getState(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_state', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_state.location_state', []).map(d => d.name).join(', ') || null;
 }
 
 function getStatus(data) {
@@ -357,12 +403,20 @@ function getStreetNumber(data) {
   return get(data, 'post_meta.rets_street_number[0]', null);
 }
 
+function getStyle(data) {
+  return get(data, 'tax_input.rets_style.rets_style', []).map(d => d.name).join(', ') || null;
+}
+
 function getSubArea(data) {
   return get(data, 'tax_input.rets_sub_area.rets_sub_area', []).map(d => d.name).join(', ') || null;
 }
 
 function getSubdivision(data) {
-  return get(data, 'tax_input.wpp_location.wpp_location_subdivision', []).map(d => d.name).join(', ') || null;
+  return get(data, 'tax_input.location_subdivision.location_subdivision', []).map(d => d.name).join(', ') || null;
+}
+
+function getSubTypes(data) {
+  return get(data, 'tax_input.wpp_listing_subtype.listing_sub_type', []).map(d => d.name).join(', ') || null;
 }
 
 function getTotalBathrooms(data) {
@@ -383,6 +437,14 @@ function getUnitNumber(data) {
 
 function getWaterAndSewer(data) {
   return get(data, 'tax_input.rets_water_sewer.rets_water_sewer', []).map(d => d.name).join(', ') || null;
+}
+
+function getWaterfront(data) {
+  return get(data, 'tax_input.rets_water_body_name.rets_water_body_name', []).map(d => d.name).join(', ') || null;
+}
+
+function getWaterfrontType(data) {
+  return get(data, 'tax_input.rets_waterfront_type.rets_waterfront_type', []).map(d => d.name).join(', ') || null;
 }
 
 function getWaterHeater(data) {

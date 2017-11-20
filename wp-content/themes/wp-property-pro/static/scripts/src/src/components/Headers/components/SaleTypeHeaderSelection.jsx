@@ -48,7 +48,7 @@ class SaleTypeHeaderSelection extends Component {
     params = params.concat(searchTypeArrayParams);
     if (location) {
       params.push({
-        key: location.term_type.replace('wpp_location_', ''),
+        key: location.term_type.replace('location_', ''),
         values: [location.slug]
       })
     } else if (termFilters) {

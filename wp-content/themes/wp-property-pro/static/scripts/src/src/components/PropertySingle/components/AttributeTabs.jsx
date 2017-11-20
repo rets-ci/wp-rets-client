@@ -102,7 +102,7 @@ class AttributeTabs extends Component {
     switch(listing_type){
       case 'residential':
 
-        let sale_type = get(property, 'tax_input.wpp_listing_status.listing_status_sale[0].slug');
+        let sale_type = get(property, 'tax_input.wpp_sale_status.listing_status_sale[0].slug');
 
         // Street information
         description = [get(property, 'post_meta.rets_street_number'), get(property, 'post_meta.rets_street_name'), get(property, 'post_meta.rets_unit_number')].join(' ');
@@ -111,13 +111,13 @@ class AttributeTabs extends Component {
         description += [' is a', listing_subtype, sale_type.toLowerCase().replace('-', ' ')].join(' ');
 
         // Location
-        description += ` in ${get(property, 'tax_input.wpp_location.wpp_location_city[0].name')}, ` + [get(property, 'tax_input.wpp_location.wpp_location_state[0].slug').toUpperCase(), get(property, 'tax_input.wpp_location.wpp_location_zipcode[0].name')].join(' ') + '.';
+        description += ` in ${get(property, 'tax_input.location_city.location_city[0].name')}, ` + [get(property, 'tax_input.location_state.location_state[0].slug').toUpperCase(), get(property, 'tax_input.location_zip.location_zip[0].name')].join(' ') + '.';
 
         // Attributes
         description += [' This', Util.formatSQFTValue(get(property, 'post_meta.sqft[0]', 0)), 'SQFT', listing_subtype, 'sits', 'on a', Util.formatAcresValue(get(property, 'post_meta.rets_lot_size_area[0]', 0)), 'acre lot and features', get(property, 'post_meta.rets_beds[0]', 0), 'bedrooms and', get(property, 'post_meta.rets_total_baths[0]', 0), 'bathrooms.'].join(' ');
 
         // Additional info
-        description += [' Built in', get(property, 'post_meta.rets_year_built[0]', 0) + ',', 'this ', 'has been on the market for a total of', daysPassedSincePostedDate({rets_list_date: get(property, 'post_meta.rets_list_date[0]')}), 'days and is currently priced at', Util.formatPriceValue(get(property, 'post_meta.rets_list_price[0]', 0))].join(' ');
+        description += [' Built in', get(property, 'post_meta.rets_year_built[0]', 0) + ',', 'this ', listing_subtype, 'has been on the market for a total of', daysPassedSincePostedDate({rets_list_date: get(property, 'post_meta.rets_list_date[0]')}), 'days and is currently priced at', Util.formatPriceValue(get(property, 'post_meta.rets_list_price[0]', 0))].join(' ');
 
         if(sale_type.indexOf('rent') !== -1){
           description += ' a month.';
@@ -171,9 +171,9 @@ class AttributeTabs extends Component {
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-attrs-section pt-5` }>
-        <h5 className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
+        <div className={ `${Lib.THEME_CLASSES_PREFIX}info-section-header mb-4` }>
           Property Details for {address[0]} {address_unit}
-        </h5>
+        </div>
 
         <p className={ `${Lib.THEME_CLASSES_PREFIX}info-description text-muted py-3` }>
           {description}
