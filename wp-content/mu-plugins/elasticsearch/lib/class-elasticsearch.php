@@ -24,15 +24,19 @@ namespace UsabilityDynamics\WPP {
        */
       function __construct() {
 
-        //define( 'EP_INDEX_NAME', 'rdc-maxim-test' );
+          add_action( 'plugins_loaded', array( $this, 'init' ) );
 
-        add_action( 'plugins_loaded', array( $this, 'init' ) );
       }
 
       /**
        *
        */
       public function init() {
+
+        // Break if WP-Property is not activated!!!!
+        if( !function_exists( 'ud_get_wp_property' ) ) {
+          return;
+        }
 
         $_vendor_path = ud_get_wp_property()->path( 'vendor/plugins/elasticpress/elasticpress.php', 'dir' );
 
@@ -41,9 +45,6 @@ namespace UsabilityDynamics\WPP {
         }
 
         if( !defined( 'EP_VERSION' ) && file_exists( $_vendor_path ) ) {
-
-          // Handles indexing of Terms
-          new Elasticsearch_Terms();
 
           // Load plugin.
           require_once( $_vendor_path );

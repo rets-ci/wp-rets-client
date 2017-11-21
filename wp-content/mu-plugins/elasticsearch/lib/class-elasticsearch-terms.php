@@ -128,9 +128,9 @@ namespace UsabilityDynamics\WPP {
           }
         }
         if( !empty( $this->bulk ) ) {
-          WP_CLI::log( sprintf( __( 'Indexing [%s] terms', 'elasticpress' ), count( $this->bulk ) ) );
+          $this->cli_log( sprintf( __( 'Indexing [%s] terms', 'elasticpress' ), count( $this->bulk ) ) );
           $this->bulk_index();
-          WP_CLI::log( __( 'Terms indexed.', 'elasticpress' ) );
+          $this->cli_log( __( 'Terms indexed.', 'elasticpress' ) );
         }
       }
 
@@ -138,7 +138,7 @@ namespace UsabilityDynamics\WPP {
        * Add term to bulk
        *
        */
-      private function queue_term( $taxonomy, $term ) {
+      public function queue_term( $taxonomy, $term ) {
         // Ignore already indexed terms
         if( in_array( $term['term_id'], $this->terms ) ) {
           return;
@@ -148,11 +148,10 @@ namespace UsabilityDynamics\WPP {
           return;
         }
 
-        //WP_CLI::log( 'Starting indexing term ' . $term[ 'term_id' ] );
-
         $_term = get_term( $term['term_id'], $taxonomy );
 
-        $meta = WPP_F::get_term_metadata( $_term );
+        $meta = get_term_meta( $_term->term_id );
+
         $term_type = isset( $meta['term_type'] ) ? $meta['term_type'] : null;
 
         $input = array_values( array_unique( array(
@@ -205,8 +204,6 @@ namespace UsabilityDynamics\WPP {
 
         $this->terms[] = $term['term_id'];
 
-        //WP_CLI::log( 'Ended indexing term ' . $term[ 'term_id' ] );
-
       }
 
       /**
@@ -220,7 +217,7 @@ namespace UsabilityDynamics\WPP {
        * Perform the bulk index operation
        *
        */
-      private function bulk_index() {
+      public function bulk_index() {
         // monitor how many times we attempt to add this particular bulk request
         static $attempts = 0;
 
