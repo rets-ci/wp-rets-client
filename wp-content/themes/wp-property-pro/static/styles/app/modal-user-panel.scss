@@ -25,11 +25,12 @@
 }
 
 .propertypro-menu__more-items {
-
+    margin-top: 0.5rem;
 }
 
 .propertypro-menu-item {
     padding: 2rem 2rem 2rem 3rem;
+    transition: height 0.3s ease-in-out;
 
     & > a {
         display: flex;
@@ -62,11 +63,7 @@
 .propertypro-menu-item--expander {
     border-top: 1px solid #d2dae0;
     cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    font-size: 1.25rem;
-    font-weight: 600;
+    padding-top: 2.5rem;
 
     span {
         font-size: 1.5rem;
@@ -74,6 +71,17 @@
         justify-content: center;
         align-items: center;
     }
+}
+
+.propertypro-menu-item {
+    display: block;
+    animation: fadein .35s ease-in;
+}
+
+.propertypro-menu-item--hidden {
+    display: none;
+    opacity: 0;
+    animation: fadein .35s ease-in;
 }
 
 .propertypro-user-navigation {

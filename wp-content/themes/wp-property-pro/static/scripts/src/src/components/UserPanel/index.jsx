@@ -66,8 +66,10 @@ class UserPanel extends Component {
           <div className={`${Lib.THEME_CLASSES_PREFIX}menu__main-items`}>
           { mainItems.map(item =>
             <div key={ item.id }
-                className={ `${Lib.THEME_CLASSES_PREFIX}menu-item` 
-                + (item.isBordered ? ` ${Lib.THEME_CLASSES_PREFIX}menu-item--bordered`: '')}
+                className={
+                  `${Lib.THEME_CLASSES_PREFIX}menu-item` +
+                  (item.isBordered ? ` ${Lib.THEME_CLASSES_PREFIX}menu-item--bordered`: '')
+                }
             >
               <Link
                 key={ item.id }
@@ -84,15 +86,20 @@ class UserPanel extends Component {
           { hasMore &&
             <div className={`${Lib.THEME_CLASSES_PREFIX}menu__more-items`}>
               <div className={`${Lib.THEME_CLASSES_PREFIX}menu-item ${Lib.THEME_CLASSES_PREFIX}menu-item--expander`} onClick={ this.toggleMoreMenu }>
-                <span className="fa fa-bars"></span>
-                <p>More</p>
-                <span className={ isMoreOpen ? 'fa fa-caret-up' : 'fa fa-caret-down' }></span>
+                <a>
+                  <span className="fa fa-bars"></span>
+                  <p>More</p>
+                  <span className={ isMoreOpen ? 'fa fa-caret-up' : 'fa fa-caret-down' }></span>
+                </a>
               </div>
 
-              { isMoreOpen && moreItems.map(item =>
+              { moreItems.map(item =>
                 <div key={ item.id }
-                    className={ `${Lib.THEME_CLASSES_PREFIX}menu-item` 
-                    + (item.isBordered ? ` ${Lib.THEME_CLASSES_PREFIX}menu-item--bordered`: '')}
+                    className={
+                      `${Lib.THEME_CLASSES_PREFIX}menu-item` +
+                      (item.isBordered ? ` ${Lib.THEME_CLASSES_PREFIX}menu-item--bordered`: '') +
+                      (!isMoreOpen ? ` ${Lib.THEME_CLASSES_PREFIX}menu-item--hidden` : '')
+                    }
                 >
                   <Link
                     key={ item.id }
