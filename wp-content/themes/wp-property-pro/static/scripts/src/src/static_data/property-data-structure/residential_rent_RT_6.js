@@ -62,6 +62,7 @@ import {
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getType,
   getSubdivision,
   getHalfBathrooms,
   getTotalBathrooms,
@@ -133,7 +134,7 @@ export default [
   },
   {"name": "Property", "children": [
     {"name": "Building", "items": [
-      {"name": "Type", "value": (data) => { return getListingStatuses(data); }, "order": 1},
+      {"name": "Type", "value": (data) => { return getType(data); }, "order": 1},
       {"name": "New Construction", "value": (data) => { return getNewConstruction(data); }, "order": 3},
       {"name": "Construction Completion", "value": (data) => { return getConstructionCompletion(data); }, "order": 4},
       {"name": "Year Built", "value": (data) => { return getEstFinYear(data) !== null ? getYearBuilt(data) : null; }, "order": 5},
@@ -189,7 +190,7 @@ export default [
   },
   {"name": "Listing", "children": [
     {"name": "Pricing", "items": [
-      {"name": "Type", "value": (data) => { return 'Rent'; }, "order": 1},
+      {"name": "Type", "value": (data) => { return getListingStatuses(data); }, "order": 1},
       {"name": "Price", "value": (data) => { return getPrice(data); }, "order": 2},
       {"name": "Price", "value": (data) => { return get(data, 'post_meta.rets_payment_period[0]', null); }, "order": 3},
       {"name": "Security Deposit", "value": (data) => { return moneyFormat(get(data, 'post_meta.rets_security_deposit[0]', null)); }, "order": 4},

@@ -69,6 +69,7 @@ import {
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getType,
   getSubdivision,
   getSQFT,
   getHalfBathrooms,
@@ -202,7 +203,7 @@ export default [
   },
   {"name": "Property", "children": [
     {"name": "Building", "items": [
-      {"name": "Type", "value": (data) => { return getListingStatuses(data); }, "order": 1},
+      {"name": "Type", "value": (data) => { return getType(data); }, "order": 1},
       {"name": "New Construction", "value": (data) => { return getNewConstruction(data); }, "order": 3},
       {"name": "Construction Completion", "value": (data) => { return getConstructionCompletion(data); }, "order": 4},
       {"name": "Year Built", "value": (data) => { return !getEstFinYear(data) ? getYearBuilt(data) : null; }, "order": 5},
@@ -280,7 +281,7 @@ export default [
   },
   {"name": "Listing", "children": [
     {"name": "Pricing", "items": [
-      {"name": "Type", "value": (data) => { return 'Sale'; }, "order": 1},
+      {"name": "Type", "value": (data) => { return getListingStatuses(data); }, "order": 1},
       {"name": "Price", "value": (data) => { return getPrice(data); }, "order": 2},
       {"name": "Price Per SQFT", "value": (data) => { return getPricePerSQFT(data); }, "order": 3},
     ], "order": 1},
