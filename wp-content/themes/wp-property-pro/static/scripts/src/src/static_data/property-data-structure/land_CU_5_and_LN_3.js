@@ -33,6 +33,7 @@ import {
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getType,
   getNeighborhood,
   getSubdivision,
   getUnitNumber,
@@ -45,7 +46,7 @@ export default [
   {
     "name": "Features", "children": [
       {"name": "Land", "items": [
-        {"name": "Type", "value": (data) => { return getListingStatuses(data); }, "order": 1},
+        {"name": "Type", "value": (data) => { return getType(data); }, "order": 1},
         {"name": "Description", "value": (data) => { return get(data, 'tax_input.rets_land_description.rets_land_description', []).map(d => d.name).join(', ') || null; }, "order": 2},
         {"name": "Topography", "value": (data) => { return get(data, 'tax_input.rets_topography.rets_topography', []).map(d => d.name).join(', ') || null; }, "order": 3},
         {"name": "Vegetation", "value": (data) => { return get(data, 'tax_input.rets_vegetation.rets_vegetation', []).map(d => d.name).join(', ') || null; }, "order": 4},

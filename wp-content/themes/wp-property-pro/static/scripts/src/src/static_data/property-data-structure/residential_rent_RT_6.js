@@ -36,6 +36,7 @@ import {
   getInsideCity,
   getInteriorFeatures,
   getLatitude,
+  getListingStatuses,
   getLivingAreaAboveGradeSQFT,
   getLivingAreaBelowGradeSQFT,
   getLongitude,

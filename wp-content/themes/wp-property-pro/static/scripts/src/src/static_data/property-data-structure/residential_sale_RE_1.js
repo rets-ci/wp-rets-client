@@ -38,6 +38,7 @@ import {
   getInteriorFeatures,
   getInsideCity,
   getLatitude,
+  getListingStatuses,
   getLongitude,
   getLotDescription,
   getLotNumber,
