@@ -7,6 +7,7 @@ import Api from '../../containers/Api.jsx';
 import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
 import get from 'lodash/get';
+import filter from 'lodash/filter';
 import isEqual from 'lodash/isEqual';
 import MapSearchResults from './MapSearchResults.jsx';
 
@@ -66,11 +67,19 @@ class MapSearchResultsContainer extends Component {
             text: termText
           }
         });
+
+        let propertySubTypesArray = get(response.aggregations, 'property_subtypes.slugs.buckets', []);
+
         // property subtypes
         let propertySubtypes = get(response.aggregations, 'property_subtype_based_on_type.property_subtype_slugs.buckets', []).map(d => {
           let obj = {};
           obj['slug'] = d.key;
-          obj['title'] = get(d, 'property_subtype_name.buckets[0].key');
+
+          // determine current subtype item
+          let currentSubtype = filter(propertySubTypesArray, (subtype) => subtype.key === d.key);
+
+          obj['title'] = get(currentSubtype, '[0].name.buckets[0].key', '');
+
           return obj;
         });
         let data = {
