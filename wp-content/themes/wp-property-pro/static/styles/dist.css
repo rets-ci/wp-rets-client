@@ -1410,22 +1410,6 @@ button.swiper-pagination-bullet {
 /*-----------------------------------------------------------------------------------*/
 /*  css animations
 /*-----------------------------------------------------------------------------------*/
-@keyframes unfoldIn {
-  0% {
-    transform: scaleY(0.005) scaleX(0); }
-  50% {
-    transform: scaleY(0.005) scaleX(1); }
-  100% {
-    transform: scaleY(1) scaleX(1); } }
-
-@keyframes unfoldOut {
-  0% {
-    transform: scaleY(1) scaleX(1); }
-  50% {
-    transform: scaleY(0.005) scaleX(1); }
-  100% {
-    transform: scaleY(0.005) scaleX(0); } }
-
 @keyframes bounceInDown {
   0% {
     opacity: 0;
@@ -1438,34 +1422,26 @@ button.swiper-pagination-bullet {
   100% {
     transform: translateY(0); } }
 
-@keyframes bounceIn {
+/************************************
+  fade in animation
+************************************/
+@keyframes fadein {
   0% {
-    opacity: 0;
-    transform: scale(0.3); }
-  50% {
-    opacity: 1;
-    transform: scale(1.1); }
-  80% {
-    transform: scale(0.89); }
+    opacity: 0; }
   100% {
-    transform: scale(1); } }
+    opacity: 1; } }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0.01;
-    transform-origin: 0 0;
-    transform: scaleY(0); }
-  to {
-    opacity: 1;
-    transform: scaleY(1); } }
-
-@keyframes blowUpModal {
+@-webkit-keyframes fadein {
   0% {
-    opacity: 0;
-    transform: scaleY(0); }
+    opacity: 0; }
   100% {
-    opacity: 1;
-    transform: scaleY(1); } }
+    opacity: 1; } }
+
+@-moz-keyframes fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
 
 /************************************
   Search Modal Animation
@@ -2495,6 +2471,73 @@ ul.card-header-tabs {
       line-height: 2.25rem;
       margin-top: 0.5rem; } }
 
+/* hacky
+ * @FIXME when modal stuff is upgraded
+ */
+.sidebar.sidebar-right .modal-body {
+  display: flex;
+  flex-direction: column; }
+  .sidebar.sidebar-right .modal-body > div {
+    display: flex;
+    flex-direction: column;
+    flex: 1; }
+
+.propertypro-menu-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1; }
+
+.propertypro-menu__main-items {
+  flex: 1 0 auto; }
+
+.propertypro-menu__more-items {
+  margin-top: 0.5rem; }
+
+.propertypro-menu-item {
+  padding: 2rem 2rem 2rem 3rem;
+  transition: height 0.3s ease-in-out; }
+  .propertypro-menu-item > a {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 600; }
+  .propertypro-menu-item span:first-child {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 2rem; }
+  .propertypro-menu-item p {
+    flex: 1 0 auto;
+    margin: 0; }
+
+.propertypro-menu-item--bordered {
+  border-bottom: 1px solid #d2dae0;
+  padding-bottom: 2.5rem; }
+
+.propertypro-menu-item--bordered + .propertypro-menu-item {
+  padding-top: 2.5rem; }
+
+.propertypro-menu-item--expander {
+  border-top: 1px solid #d2dae0;
+  cursor: pointer;
+  padding-top: 2.5rem; }
+  .propertypro-menu-item--expander span {
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+
+.propertypro-menu-item {
+  display: block;
+  animation: fadein .35s ease-in; }
+
+.propertypro-menu-item--hidden {
+  display: none;
+  opacity: 0;
+  animation: fadein .35s ease-in; }
+
+.propertypro-user-navigation {
+  overflow-y: scroll; }
+
 /* @TODO split this file into components */
 /**
  * Theme Name: PropertyPro
@@ -2789,45 +2832,6 @@ ul.propertypro-listing-info-box li:first-child {
 .propertypro-card:hover .propertypro-direction-nav .propertypro-nav-next {
   opacity: 1; }
 
-/** User Panel */
-.propertypro-user-panel {
-  position: fixed;
-  height: 100%;
-  width: 26.25rem;
-  box-shadow: 0 1.25rem 1.5rem rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  z-index: 9999;
-  top: 0;
-  right: 0;
-  display: none; }
-
-.propertypro-user-panel.propertypro-on {
-  display: block; }
-
-.propertypro-user-panel .propertypro-user-info-box {
-  background-color: rgba(237, 242, 245, 0.5);
-  border-bottom: .125rem solid #ebeff2; }
-
-.propertypro-user-panel .propertypro-user-info-box a {
-  display: block;
-  padding: 1.25rem 1.875rem; }
-
-.propertypro-user-panel .propertypro-user-info-box .propertypro-default-user {
-  float: left;
-  margin-right: 1.25rem; }
-
-.propertypro-user-panel .propertypro-user-info-box h5 {
-  font-size: 1.3125rem;
-  font-weight: 500;
-  line-height: .625rem;
-  padding: .3125rem 0 0;
-  display: block; }
-
-.propertypro-user-panel .propertypro-user-info-box p {
-  color: #8b8c8d;
-  margin: 0;
-  font-size: .95rem; }
-
 .propertypro-user-info-box > div {
   position: relative; }
 
@@ -2844,88 +2848,6 @@ ul.propertypro-listing-info-box li:first-child {
 
 .propertypro-user-info-box .propertypro-status.propertypro-loggedin {
   display: block; }
-
-.propertypro-user-navigation {
-  overflow-y: scroll; }
-
-.propertypro-user-navigation .propertypro-user-navigation-list {
-  overflow: auto;
-  display: block;
-  list-style-type: none;
-  margin: 0;
-  padding: 0; }
-
-.propertypro-user-navigation .propertypro-user-navigation-list li {
-  padding-top: 1rem; }
-
-.propertypro-user-navigation .propertypro-user-navigation-list li.propertypro-divider-bottom {
-  border-bottom: .0625rem solid #d2dae0;
-  padding-bottom: 1rem; }
-
-.propertypro-user-navigation .propertypro-user-navigation-list a {
-  display: inline-block;
-  width: 100%;
-  padding-left: 3.0625rem; }
-
-.propertypro-user-navigation .propertypro-user-navigation-list a span {
-  width: 2rem;
-  height: 2rem; }
-
-.propertypro-user-navigation .propertypro-user-navigation-item-link {
-  font-size: 1.050rem;
-  font-weight: 600;
-  line-height: 4.0625rem;
-  position: relative; }
-
-.propertypro-user-navigation .propertypro-user-navigation-item-link span {
-  display: inline-block;
-  margin-right: 2rem; }
-
-.propertypro-user-navigation .propertypro-user-navigation-list li:last-child {
-  border: 0; }
-
-.propertypro-user-panel .propertypro-more {
-  border-top: .0625rem solid #d2dae0;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #fff;
-  z-index: 9; }
-
-.propertypro-user-panel .propertypro-more a {
-  display: block;
-  padding: 1.25rem 2.8125rem;
-  font-size: 1.3rem; }
-
-.propertypro-user-panel .propertypro-more .propertypro-more-link span {
-  display: inline-block;
-  margin-right: .9375rem; }
-
-.propertypro-user-panel .propertypro-more a i {
-  float: right;
-  margin: .3125rem 0 0; }
-
-.propertypro-user-panel .propertypro-close-panel {
-  position: absolute;
-  top: .3125rem;
-  left: -1.875rem;
-  color: #fff;
-  font-size: 1.20rem;
-  width: 1.25rem;
-  height: 1.25rem; }
-
-.propertypro-user-panel .propertypro-tag {
-  display: inline-block;
-  margin-right: 0;
-  line-height: 1.25rem;
-  padding: .25rem .5625rem;
-  color: #fff;
-  border-radius: .1875rem;
-  background-color: #f28200;
-  position: absolute;
-  top: 1.4375rem;
-  right: .625rem; }
 
 /** Testimonial */
 .propertypro-testimonial {
