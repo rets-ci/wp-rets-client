@@ -856,9 +856,9 @@ namespace UsabilityDynamics {
 
                   $formatted_post->type = reset(get_the_terms($postId, 'wpp_listing_type'))->slug;
                   $subtypes = get_the_terms($postId, 'wpp_listing_subtype');
-                  $formatted_post->sub_type = implode(',', array_map(function($subtype){
+                  $formatted_post->sub_types = array_map(function($subtype){
                     return $subtype->name;
-                  }, $subtypes));
+                  }, $subtypes);
 
                   /** Get city  */
                   $location_city = get_the_terms($postId, 'location_city');
