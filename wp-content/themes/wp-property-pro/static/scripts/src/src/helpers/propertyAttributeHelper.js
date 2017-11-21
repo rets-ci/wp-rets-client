@@ -283,7 +283,7 @@ function getLatitude(data) {
 }
 
 function getListingStatuses(data) {
-  return get(data, 'tax_input.wpp_listing_status.listing_status_sale', []).map(d => d.name.replace('For ', '')).join(', ');
+  return get(data, 'tax_input.wpp_sale_status.listing_status_sale', []).map(d => d.name.replace('For ', '')).join(', ');
 }
 
 function getListingType(data) {
