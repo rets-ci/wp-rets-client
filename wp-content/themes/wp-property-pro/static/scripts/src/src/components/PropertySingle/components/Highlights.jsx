@@ -63,7 +63,7 @@ const Highlights = ({ elasticSearchSource, fromMapView }) => {
           <p>{ designAndStyle }</p>
         </div></div>
         <div className={ gridClass }><div className={ boxClass }>
-          <p>Year </p>
+          <p>Year Built </p>
           <p>{ yearAndNewFlag }</p>
         </div></div>
         <div className={ gridClass }><div className={ boxClass }>
