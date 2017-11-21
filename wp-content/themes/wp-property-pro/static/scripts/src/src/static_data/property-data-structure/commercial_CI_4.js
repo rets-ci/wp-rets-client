@@ -32,7 +32,6 @@ import {
   getStreetNumber,
   getSQFT,
   getSubArea,
-  getType,
   getUnitNumber,
   getYearBuilt,
   getZoning,
@@ -52,7 +51,7 @@ export default [
         {"name": "Foundation", "value": (data) => { return getFoundation(data); }, "order": 2}
       ], "order": 2},
       {"name": "Commercial", "items": [
-        {"name": "Type", "value": (data) => { return getType(data); }, "order": 1},
+        {"name": "Type", "value": (data) => { return getListingStatuses(data); }, "order": 1},
         {"name": "Rentals", "value": (data) => { return get(data, 'post_meta.rets_number_of_rentals[0]', null); }, "order": 2},
         {"name": "Docks", "value": (data) => { return get(data, 'post_meta.rets_number_of_docks[0]', null); }, "order": 3},
         {"name": "Drive-in Doors", "value": (data) => { return get(data, 'post_meta.rets_number_of_drive_in_doors[0]', null); }, "order": 4}

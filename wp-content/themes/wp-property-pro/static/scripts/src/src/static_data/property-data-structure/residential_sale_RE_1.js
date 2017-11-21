@@ -75,7 +75,6 @@ import {
   getTotalBathrooms,
   getTotalLivingAreaSQFT,
   getTotalOtherAreaSQFT,
-  getType,
   getUnitNumber,
   getWaterAndSewer,
   getWaterfront,
@@ -202,7 +201,7 @@ export default [
   },
   {"name": "Property", "children": [
     {"name": "Building", "items": [
-      {"name": "Type", "value": (data) => { return getType(data); }, "order": 1},
+      {"name": "Type", "value": (data) => { return getListingStatuses(data); }, "order": 1},
       {"name": "New Construction", "value": (data) => { return getNewConstruction(data); }, "order": 3},
       {"name": "Construction Completion", "value": (data) => { return getConstructionCompletion(data); }, "order": 4},
       {"name": "Year Built", "value": (data) => { return !getEstFinYear(data) ? getYearBuilt(data) : null; }, "order": 5},
