@@ -2299,7 +2299,8 @@ ul.card-header-tabs {
     overflow: hidden;
     height: 3rem; }
     .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button {
-      margin-right: 1.25rem; }
+      margin-right: 1.25rem;
+      margin-bottom: 1px; }
     .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button + button {
       margin-right: 0rem; }
   .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky {
