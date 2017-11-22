@@ -32,7 +32,7 @@ class Overview extends Component {
     }
 
     let boxClass = `${Lib.THEME_CLASSES_PREFIX}attr-box`;
-    let gridClass = fromMapView ? 'col-12' : 'col-12 col-md-4';
+    let gridClass = fromMapView ? 'col-12 col-xl-4' : 'col-12 col-sm-4';
 
     return (
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-overview` }>

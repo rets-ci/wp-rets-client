@@ -104,7 +104,7 @@ class Single extends Component {
 
     const gridWidth = fromMapView ? 'col-12' : 'col-12 col-lg-8';
 
-    const isAgentHiddenOnSticky = fromMapView || (viewport.windowWidth <= Lib.SINGLE_PAGE_STICKY_THRESHOLD);
+    const isAgentHiddenOnSticky = fromMapView || (viewport.width <= Lib.SINGLE_PAGE_STICKY_THRESHOLD);
     const isAgentShownOnSticky = !isAgentHiddenOnSticky;
     const isNarrowAttrTabs = fromMapView || viewport.isMobile;
 

@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import { moneyFormat } from 'app_root/helpers/propertyHelper';
 import {
   getAcres,
-  getArea,
+  getAreaAndSubArea,
   getCity,
   getCounty,
   getCrossStreet,
@@ -33,8 +33,8 @@ import {
   getStreet,
   getStreetDirectional,
   getStreetNumber,
+  getType,
   getNeighborhood,
-  getSubArea,
   getSubdivision,
   getUnitNumber,
   getSQFT,
@@ -46,7 +46,7 @@ export default [
   {
     "name": "Features", "children": [
       {"name": "Land", "items": [
-        {"name": "Type", "value": (data) => { return getPropertyType(data); }, "order": 1},
+        {"name": "Type", "value": (data) => { return getType(data); }, "order": 1},
         {"name": "Description", "value": (data) => { return get(data, 'tax_input.rets_land_description.rets_land_description', []).map(d => d.name).join(', ') || null; }, "order": 2},
         {"name": "Topography", "value": (data) => { return get(data, 'tax_input.rets_topography.rets_topography', []).map(d => d.name).join(', ') || null; }, "order": 3},
         {"name": "Vegetation", "value": (data) => { return get(data, 'tax_input.rets_vegetation.rets_vegetation', []).map(d => d.name).join(', ') || null; }, "order": 4},
@@ -93,8 +93,7 @@ export default [
         {"name": "Subdivision", "value": (data) => { return getSubdivision(data); }, "order": 2},
         {"name": "Neighborhood", "value": (data) => { return getNeighborhood(data); }, "order": 3},
         {"name": "County", "value": (data) => { return getCounty(data); }, "order": 4},
-        {"name": "Area", "value": (data) => { return getArea(data); }, "order": 5},
-        {"name": "Sub Area", "value": (data) => { return getSubArea(data); }, "order": 6},
+        {"name": "Area", "value": (data) => { return getAreaAndSubArea(data); }, "order": 5},
         {"name": "Transit", "value": (data) => { return get(data, 'tax_input.rets_transportation.rets_transportation', []).map(d => d.name).join(', ') || null; }, "order": 7}
       ], "order": 1},
       {"name": "Homeowners Association", "items": [

@@ -88,6 +88,33 @@ class Api {
     };
   }
 
+  static getPropertySubTypes() {
+    return {
+      "filter": {
+        "term": {
+          "taxonomy": "wpp_listing_subtype"
+        }
+      },
+      "aggs": {
+        "slugs": {
+          "terms": {
+            "field": "slug",
+            "size": 100
+
+          },
+          "aggs": {
+            "name": {
+              "terms": {
+                "field": "name.raw",
+                "size": 1
+              }
+            }
+          }
+        }
+      }
+    };
+  }
+
   static getPropertySubTypesAggregations() {
     return {
       "property_subtype_slugs": {
@@ -672,6 +699,7 @@ class Api {
     }
     if (propertyType) {
       aggregations['property_subtype_based_on_type'] = this.getPropertySubTypesByPropertyType(propertyType);
+      aggregations['property_subtypes'] = this.getPropertySubTypes();
     }
     let searchObj = {query: {}, aggregations: aggregations};
     let url = this.getPropertySearchRequestURL(0);

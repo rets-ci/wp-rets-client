@@ -2,12 +2,13 @@ import get from 'lodash/get';
 import { moneyFormat } from 'app_root/helpers/propertyHelper';
 import {
   getAcres,
-  getArea,
+  getAreaAndSubArea,
   getCity,
+  getConstructionCompletion,
   getCounty,
   getCrossStreet,
   getDirections,
-  getEstFinMonth,
+  getEstFinYear,
   getFoundation,
   getInsideCity,
   getLotSizeArea,
@@ -28,6 +29,7 @@ import {
   getStatus,
   getStreet,
   getStreetDirectional,
+  getType,
   getStreetNumber,
   getSQFT,
   getSubArea,
@@ -50,9 +52,10 @@ export default [
         {"name": "Foundation", "value": (data) => { return getFoundation(data); }, "order": 2}
       ], "order": 2},
       {"name": "Commercial", "items": [
-        {"name": "Rentals", "value": (data) => { return get(data, 'post_meta.rets_number_of_rentals[0]', null); }, "order": 1},
-        {"name": "Docks", "value": (data) => { return get(data, 'post_meta.rets_number_of_docks[0]', null); }, "order": 2},
-        {"name": "Drive-in Doors", "value": (data) => { return get(data, 'post_meta.rets_number_of_drive_in_doors[0]', null); }, "order": 3}
+        {"name": "Type", "value": (data) => { return getType(data); }, "order": 1},
+        {"name": "Rentals", "value": (data) => { return get(data, 'post_meta.rets_number_of_rentals[0]', null); }, "order": 2},
+        {"name": "Docks", "value": (data) => { return get(data, 'post_meta.rets_number_of_docks[0]', null); }, "order": 3},
+        {"name": "Drive-in Doors", "value": (data) => { return get(data, 'post_meta.rets_number_of_drive_in_doors[0]', null); }, "order": 4}
       ], "order": 3},
       {"name": "Financials", "items": [
         {"name": "Operating Expense", "value": (data) => { return get(data, 'post_meta.rets_operating_expense[0]', null); }, "order": 1},
@@ -67,8 +70,8 @@ export default [
   {"name": "Property", "children": [
     {"name": "Building", "items": [
       {"name": "New Construction", "value": (data) => { return getNewConstruction(data); }, "order": 1},
-      {"name": "Construction Completion", "value": (data) => { return getEstFinMonth(data); }, "order": 2},
-      {"name": "Year Built", "value": (data) => { return getYearBuilt(data); }, "order": 3},
+      {"name": "Construction Completion", "value": (data) => { return getConstructionCompletion(data); }, "order": 2},
+      {"name": "Year Built", "value": (data) => { return getEstFinYear(data) !== null ? getYearBuilt(data) : null; }, "order": 3},
       {"name": "Building", "value": (data) => { return get(data, 'post_meta.rets_building_name[0]', null); }, "order": 4},
       {"name": "Building SQFT", "value": (data) => { return get(data, 'post_meta.rets_building_sq_ft[0]', null); }, "order": 5},
       {"name": "Building Height", "value": (data) => { return get(data, 'post_meta.rets_stories[0]', null); }, "order": 6},
@@ -90,8 +93,7 @@ export default [
       {"name": "Community", "items": [
         {"name": "Inside City", "value": (data) => { return getInsideCity(data); }, "order": 1},
         {"name": "County", "value": (data) => { return getCounty(data); }, "order": 2},
-        {"name": "Area", "value": (data) => { return getArea(data); }, "order": 3},
-        {"name": "Sub Area", "value": (data) => { return getSubArea(data); }, "order": 4},
+        {"name": "Area", "value": (data) => { return getAreaAndSubArea(data); }, "order": 3},
         {"name": "Distance to RDU", "value": (data) => { return get(data, 'tax_input.rets_distance_rdu.rets_distance_rdu', []).map(d => d.name).join(', ') || null; }, "order": 5}
       ], "order": 1},
       {"name": "Address", "items": [
@@ -116,10 +118,10 @@ export default [
       {"name": "Price", "value": (data) => { return getPrice(data); }, "order": 2},
       {"name": "Price Per SQFT", "value": (data) => { return getPricePerSQFT(data); }, 'order': 3},
       {"name": "Price Per Acre", "value": (data) => { return getPricePerAcre(data); }, "order": 4},
-      {"name": "Min Rent SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_minimum_lease_sq_ft[0]', null); }, "order": 5},
-      {"name": "Min SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_minimum_sq_ft_available[0]', null); }, "order": 6},
-      {"name": "Max Rent SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_max_lease_sq_ft[0]', null); }, "order": 7},
-      {"name": "Max SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_maximum_sq_ft_available[0]', null); }, "order": 8}
+      {"name": "Min SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_minimum_sq_ft_available[0]', null); }, "order": 5},
+      {"name": "Max SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_maximum_sq_ft_available[0]', null); }, "order": 6},
+      {"name": "Min Rent SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_minimum_lease_sq_ft[0]', null); }, "order": 7},
+      {"name": "Max Rent SQFT Available", "value": (data) => { return get(data, 'post_meta.rets_max_lease_sq_ft[0]', null); }, "order": 8}
     ], "order": 1},
     {"name": "Terms", "items": [
       {"name": "Includes", "value": (data) => { return get(data, 'tax_input.rets_sale_lease_includes.rets_sale_lease_includes', []).map(d => d.name).join(', ') || null; }, "order": 1},

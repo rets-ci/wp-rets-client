@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { commonDateFormat, formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
+import { commonDateFormat, footFormat, formatYesOrNoFields, moneyFormat } from 'app_root/helpers/propertyHelper';
 
 export {
   getAccessibility,
@@ -8,12 +8,14 @@ export {
   getActiveAdultCommunityNA,
   getAppliances,
   getArea,
+  getAreaAndSubArea,
   getBasement,
   getBasementDescription,
   getBathFeatures,
   getBedrooms,
   getBedroomsOnFirstFloor,
   getCity,
+  getConstructionCompletion,
   getCooling,
   getCounty,
   getCrossStreet,
@@ -22,6 +24,7 @@ export {
   getDirections,
   getElementarySchool,
   getEstFinMonth,
+  getEstFinYear,
   getExteriorFeatures,
   getExteriorFinish,
   getFireplaces,
@@ -83,6 +86,7 @@ export {
   getTotalBathrooms,
   getTotalLivingAreaSQFT,
   getTotalOtherAreaSQFT,
+  getType,
   getUnitNumber,
   getWaterAndSewer,
   getWaterfront,
@@ -106,7 +110,8 @@ function getAcres(data) {
 }
 
 function getActiveAdultCommunity(data) {
-  return get(data, 'tax_input.rets_active_adult_community.rets_active_adult_community', []).map(d => d.name).join(', ') || null;
+  let v = formatYesOrNoFields(data, 'tax_input.rets_active_adult_community.rets_active_adult_community[0].name');
+  return v === "No" ? null : v;
 }
 
 function getActiveAdultCommunityNA(data) {
@@ -119,6 +124,16 @@ function getAppliances(data) {
 
 function getArea(data) {
   return get(data, 'tax_input.rets_listing_area.rets_listing_area', []).map(d => d.name).join(', ') || null;
+}
+
+function getAreaAndSubArea(data) {
+  let area = getArea(data);
+  let subArea = getSubArea(data);
+  if (area === null) {
+    return null;
+  } else {
+    return area + (subArea ? ', ' + subArea : '');
+  }
 }
 
 function getBasement(data) {
@@ -143,6 +158,16 @@ function getBedroomsOnFirstFloor(data) {
 
 function getCity(data) {
   return get(data, 'tax_input.location_city.location_city', []).map(d => d.name).join(', ') || null;
+}
+
+function getConstructionCompletion(data) {
+  let estFinMonth = getEstFinMonth(data);
+  let estFinYear = getEstFinYear(data);
+  if (estFinMonth === null) {
+    return null
+  } else {
+    return estFinMonth + (estFinYear ? ' ' + estFinYear : '')
+  }
 }
 
 function getCooling(data) {
@@ -175,6 +200,10 @@ function getElementarySchool(data) {
 
 function getEstFinMonth(data) {
   return get(data, 'tax_input.rets_est_fin_month.rets_est_fin_month', []).map(d => d.name).join(', ') || null;
+}
+
+function getEstFinYear(data) {
+  return get(data, 'post_meta.rets_est_fin_year[0]', null);
 }
 
 function getExteriorFeatures(data) {
@@ -254,7 +283,7 @@ function getLatitude(data) {
 }
 
 function getListingStatuses(data) {
-  return get(data, 'tax_input.wpp_listing_status.listing_status_sale', []).map(d => d.name.replace('For ', '')).join(', ');
+  return get(data, 'tax_input.wpp_sale_status.listing_status_sale', []).map(d => d.name.replace('For ', '')).join(', ');
 }
 
 function getListingType(data) {
@@ -372,7 +401,8 @@ function getRestrictiveCovenants(data) {
 }
 
 function getRoadFrontage(data) {
-  return get(data, 'post_meta.rets_road_frontage[0]', null);
+  let v = get(data, 'post_meta.rets_road_frontage[0]', null); 
+  return v ? footFormat(v) + ' ft' : null;
 }
 
 function getRoof(data) {
@@ -429,6 +459,16 @@ function getTotalLivingAreaSQFT(data) {
 
 function getTotalOtherAreaSQFT(data) {
   return get(data, 'post_meta.rets_total_other_area_sq_ft[0]', null);
+}
+
+function getType(data) {
+  let propertyType = getListingType(data);
+  let propertySubtype = getPropertySubType(data);
+  if (propertySubtype === null) {
+    return null;
+  } else {
+    return propertyType + (propertySubtype ? ', ' + propertySubtype : '');
+  }
 }
 
 function getUnitNumber(data) {

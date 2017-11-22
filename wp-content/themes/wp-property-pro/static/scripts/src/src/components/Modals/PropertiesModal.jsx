@@ -108,8 +108,15 @@ class PropertiesModal extends Component {
         this.props.turnOnPropertiesModalModeInLocationModal();
         this.setInitialFilters(this.props.searchFilters, defaultFiltervalues);
         let filters = removeDefaultFilters(Object.assign({}, this.state.filters), defaultFiltervalues);
-        this.props.doSearch(Object.assign({}, filters));
-        this.props.getAvailablePropertySubTypes(Object.assign({}, filters));
+
+        // @TODO Don't send requests in case if just was changed property_type and filters contain old property_type value
+        // Maybe issue should be fixed at another place
+        // fq.jony@UD
+        if(get(this.props, 'searchFilters.property_type') === get(filters, 'property_type')){
+          this.props.doSearch(Object.assign({}, filters));
+          this.props.getAvailablePropertySubTypes(Object.assign({}, filters));
+        }
+
         let showAllFilters = this.displayAllFilters(this.props.searchFilters);
         this.setState({
           showAllFilters

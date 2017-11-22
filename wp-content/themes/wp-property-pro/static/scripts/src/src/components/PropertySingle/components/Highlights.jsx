@@ -28,7 +28,7 @@ const Highlights = ({ elasticSearchSource, fromMapView }) => {
   }
 
   let boxClass = `${Lib.THEME_CLASSES_PREFIX}attr-box`;
-  let gridClass = fromMapView ? 'col-12' : 'col-12 col-md-4';
+  let gridClass = fromMapView ? 'col-12 col-xl-6' : 'col-12 col-sm-6 col-md-4';
 
   const subTypes          = getSubTypes(elasticSearchSource) || 'N/A'
   const design            = getDesign(elasticSearchSource) || 'N/A'
@@ -63,7 +63,7 @@ const Highlights = ({ elasticSearchSource, fromMapView }) => {
           <p>{ designAndStyle }</p>
         </div></div>
         <div className={ gridClass }><div className={ boxClass }>
-          <p>Year </p>
+          <p>Year Built </p>
           <p>{ yearAndNewFlag }</p>
         </div></div>
         <div className={ gridClass }><div className={ boxClass }>
