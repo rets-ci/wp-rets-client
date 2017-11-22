@@ -117,9 +117,16 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
      *
      * @param $term_id
      * @param $meta
-     * @param $taxonomy
      */
     public function update_term_meta( $term_id, $meta ) {
+
+      // Be sure to flush all meta tied to Extended Term at first
+      $existing_meta = get_term_meta( $term_id );
+      foreach( array_keys( $existing_meta ) as $meta_key ) {
+        if( strpos( $meta_key, 'et_' ) === 0 ) {
+          delete_term_meta( $term_id, $meta_key );
+        }
+      }
 
       foreach( $meta as $meta_key => $values ) {
         delete_term_meta( $term_id, $meta_key );
@@ -127,6 +134,9 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
           $values = array($values);
         }
         foreach( $values as $value ) {
+          if( empty( $value ) ) {
+            continue;
+          }
           add_term_meta( $term_id, $meta_key, $value, false );
         }
       }
@@ -192,7 +202,7 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
 
         }
 
-        if ( $value !== null ) {
+        if ( !empty( $value ) ) {
           $termmeta[ $this->get_term_meta_key($k) ] = $value;
         }
 
@@ -256,7 +266,7 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
 
       $this->taxonomies = apply_filters( "et_taxonomies", array(
         self::$associated_taxonomy_slug  => __( "Associated Taxonomy" ),
-        "et_category"               => __( "Category" )
+        "et_label" => __( "Label" )
       ) );
 
       if( !is_array( $this->taxonomies ) ) {
