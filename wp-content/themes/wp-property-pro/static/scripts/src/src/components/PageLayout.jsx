@@ -26,7 +26,7 @@ import {
 import {connect} from 'react-redux';
 import LoadingAccordion from './LoadingAccordion.jsx';
 import nprogress from 'nprogress/nprogress.js';
-import UserPanel from './UserPanel.jsx';
+import UserPanel from 'app_root/components/UserPanel/index.jsx';
 import {Lib} from '../lib.jsx';
 import get from 'lodash/get';
 import throttle from 'lodash/throttle';
@@ -249,7 +249,7 @@ class PageLayout extends Component {
           location={location}
           openFormModal={openFormModal}
           panelOpen={userPanelOpen}
-          menu_items={get(this.state, 'sidebar_menu_items', [])}
+          menuItems={get(this.state, 'sidebar_menu_items', [])}
         />
         <LoginModal />
         <Switch>

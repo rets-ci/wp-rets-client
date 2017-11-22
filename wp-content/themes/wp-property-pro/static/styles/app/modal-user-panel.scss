@@ -1,0 +1,89 @@
+/* hacky
+ * @FIXME when modal stuff is upgraded
+ */
+.sidebar.sidebar-right {
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }   
+    }
+}
+
+.propertypro-menu-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.propertypro-menu__main-items {
+    flex: 1 0 auto;
+}
+
+.propertypro-menu__more-items {
+    margin-top: 0.5rem;
+}
+
+.propertypro-menu-item {
+    padding: 2rem 2rem 2rem 3rem;
+    transition: height 0.3s ease-in-out;
+
+    & > a {
+        display: flex;
+        align-items: center;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    span:first-child {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 2rem;
+    }
+
+    p {
+        flex: 1 0 auto;
+        margin: 0;
+    }
+}
+
+.propertypro-menu-item--bordered {
+    border-bottom: 1px solid #d2dae0;
+    padding-bottom: 2.5rem;
+}
+
+.propertypro-menu-item--bordered + .propertypro-menu-item {
+    padding-top: 2.5rem;
+}
+
+.propertypro-menu-item--expander {
+    border-top: 1px solid #d2dae0;
+    cursor: pointer;
+    padding-top: 2.5rem;
+
+    span {
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.propertypro-menu-item {
+    display: block;
+    animation: fadein .35s ease-in;
+}
+
+.propertypro-menu-item--hidden {
+    display: none;
+    opacity: 0;
+    animation: fadein .35s ease-in;
+}
+
+.propertypro-user-navigation {
+    overflow-y: scroll;
+}
