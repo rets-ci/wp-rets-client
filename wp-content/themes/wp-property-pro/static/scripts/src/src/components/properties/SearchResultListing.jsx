@@ -7,6 +7,7 @@ import difference from 'lodash/difference';
 import LoadingCircle from '../LoadingCircle.jsx';
 import { Lib } from '../../lib.jsx';
 
+const isMobile = window.innerWidth < 576;
 
 class SearchResultListing extends Component {
   static propTypes = {
@@ -52,6 +53,25 @@ class SearchResultListing extends Component {
     let classNames = [];
     classNames.push(Lib.THEME_CLASSES_PREFIX + 'listing-wrap');
     if (isFetching) { classNames.push(Lib.THEME_CLASSES_PREFIX + 'loading-overlay'); }
+
+    // For desktop view there is button for loading next page
+    let loadMoreHandler = <a href="#" onClick={(e) => {
+      e.preventDefault();
+
+      this.setState({loading: true});
+      this.props.seeMoreHandler();
+    }}>Load more</a>;
+
+    // For mobile view there is scroll waypoint for loading next page
+    if(isMobile){
+      loadMoreHandler = <Waypoint
+        onEnter={() => {
+          this.setState({loading: true});
+          this.props.seeMoreHandler();
+        }}
+      />;
+    }
+
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container h-100`}>
         <div className={classNames.join(' ')}>
@@ -70,12 +90,7 @@ class SearchResultListing extends Component {
               <p>Showing {this.props.properties.length} out of {total} results</p> 
               {!this.state.loading ?
                 <div className={`${Lib.THEME_CLASSES_PREFIX}waypoint-container`}>
-                   <Waypoint
-                    onEnter={() => {
-                      this.setState({loading: true});
-                      this.props.seeMoreHandler(); 
-                    }}
-                  /> 
+                  {loadMoreHandler}
                 </div>
             : null}
               <p></p>  
