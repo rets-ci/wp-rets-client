@@ -81,7 +81,6 @@ export {
   getStreetNumber,
   getStyle,
   getSubArea,
-  getSubdivision,
   getSubTypes,
   getTotalBathrooms,
   getTotalLivingAreaSQFT,
@@ -439,10 +438,6 @@ function getStyle(data) {
 
 function getSubArea(data) {
   return get(data, 'tax_input.rets_sub_area.rets_sub_area', []).map(d => d.name).join(', ') || null;
-}
-
-function getSubdivision(data) {
-  return get(data, 'tax_input.location_subdivision.location_subdivision', []).map(d => d.name).join(', ') || null;
 }
 
 function getSubTypes(data) {

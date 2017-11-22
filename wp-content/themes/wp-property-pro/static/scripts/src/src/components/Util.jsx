@@ -455,7 +455,7 @@ class Util extends React.Component {
 
   static reddoorTermDetailsFromSearchParam = searchQueryParamsCollection => {
     let termTypeMapper = {
-      "wpp_location": ["city", "zip", "county", "country", "city_state", "state", "route", "subdivision", "neighborhood"],
+      "wpp_location": ["city", "zip", "county", "country", "city_state", "state", "route", "neighborhood"],
       "wpp_schools": ["school"]
     };
     let tax;
@@ -647,7 +647,6 @@ class Util extends React.Component {
     let listing_type = get(tax_input, 'wpp_listing_type.listing_type[0].slug', null);
     let officePhoneNumber = get(post_meta, 'rets_lo1_office_phone1_number[0]');
     let listingTypes = get(tax_input, 'wpp_listing_type.listing_type', []);
-    let wpp_location_subdivision = get(tax_input, 'location_subdivision.location_subdivision', null);
     let wpp_location_city = get(tax_input, 'location_city.location_city', null);
     let wpp_import_time = get(post_meta, 'wpp_import_time[0]', null);
 
@@ -690,7 +689,6 @@ class Util extends React.Component {
       rets_year_built,
       state,
       sqft,
-      wpp_location_subdivision: get(wpp_location_subdivision, '[0].name', null),
       wpp_location_city: get(wpp_location_city, '[0].name'),
       listing_office,
       listing_status_sale,
