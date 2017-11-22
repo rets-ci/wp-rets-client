@@ -266,7 +266,8 @@ namespace UsabilityDynamics\WPP {
             $this->bulk_index();
           } else {
             foreach ( $response['items'] as $item ) {
-              if ( ! empty( $item['index']['_id'] ) ) {
+              if ( ! empty( $item['index']['_id'] ) && !empty( $item['index']['error'] ) ) {
+                $this->cli_log( "Error happened in indexing the item: [" . json_encode($item) . "]" );
                 $this->failed_posts[] = $item['index']['_id'];
                 $this->failed_posts_message[$item['index']['_id']] = $item['index']['error'];
               }
