@@ -16,7 +16,7 @@ namespace UsabilityDynamics\WPP {
 
       static $taxonomy = 'wpp_listing_type';
       static $sub_taxonomy = 'wpp_listing_subtype';
-      static $meta_property_type = 'property_type';
+      static $meta_property_type = '_property_type';
 
       /**
        * Loads all stuff for WPP_FEATURE_FLAG_WPP_LISTING_TYPE
