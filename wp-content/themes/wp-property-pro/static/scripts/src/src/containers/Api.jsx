@@ -30,9 +30,6 @@ class Api {
       "location_county": {
         "title": "County"
       },
-      "location_subdivision": {
-        "title": "Subdivision"
-      },
       "location_neighborhood": {
         "title": "Neighborhood"
       },
@@ -187,7 +184,6 @@ class Api {
           "tax_input.location_zip",
           "tax_input.location_county",
           "tax_input.location_city",
-          "tax_input.location_subdivision",
           "tax_input.location_neighborhood",
         ];
 

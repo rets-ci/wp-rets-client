@@ -63,7 +63,6 @@ import {
   getStreetDirectional,
   getStreetNumber,
   getType,
-  getSubdivision,
   getHalfBathrooms,
   getTotalBathrooms,
   getTotalLivingAreaSQFT,
@@ -161,7 +160,6 @@ export default [
     "name": "Location", "children": [
       {"name": "Community", "items": [
         {"name": "Inside City", "value": (data) => { return getInsideCity(data); }, "order": 1},
-        {"name": "Subdivision", "value": (data) => { return getSubdivision(data); }, "order": 2},
         {"name": "Neighborhood", "value": (data) => { return getNeighborhood(data); }, "order": 3},
         {"name": "County", "value": (data) => { return getCounty(data); }, "order": 4},
         {"name": "Area", "value": (data) => { return getAreaAndSubArea(data); }, "order": 5},

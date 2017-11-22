@@ -9,7 +9,7 @@ import {
   getStyle,
   getYearBuilt,
   getNewConstruction,
-  getSubdivision,
+  getNeighborhood,
   getInsideCity,
   getCounty,
   getElementarySchool,
@@ -35,7 +35,7 @@ const Highlights = ({ elasticSearchSource, fromMapView }) => {
   const style             = getStyle(elasticSearchSource) || 'N/A'
   const yearBuilt         = getYearBuilt(elasticSearchSource) || 'N/A'
   const isNewConstruction = getNewConstruction(elasticSearchSource)
-  const subDivision       = getSubdivision(elasticSearchSource) || 'N/A'
+  const neighborhood       = getNeighborhood(elasticSearchSource) || 'N/A'
   const insideCity        = getInsideCity(elasticSearchSource)
   const county            = getCounty(elasticSearchSource) || 'N/A'
   const elementarySchool  = getElementarySchool(elasticSearchSource) || 'N/A'
@@ -67,8 +67,8 @@ const Highlights = ({ elasticSearchSource, fromMapView }) => {
           <p>{ yearAndNewFlag }</p>
         </div></div>
         <div className={ gridClass }><div className={ boxClass }>
-          <p>Subdivision</p>
-          <p>{ subDivision }</p>
+          <p>Neighborhood</p>
+          <p>{ neighborhood }</p>
         </div></div>
         <div className={ gridClass }><div className={ boxClass }>
           <p>Inside City</p>
