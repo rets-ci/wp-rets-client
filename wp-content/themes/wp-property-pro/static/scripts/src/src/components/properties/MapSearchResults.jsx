@@ -37,6 +37,8 @@ import SearchResultListing from './SearchResultListing.jsx';
 import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import CarouselOnMap from './CarouselOnMap.jsx';
 import PropertyPanelOnMap from 'app_root/components/properties/Components/PropertyPanelOnMap.jsx';
+import SearchFilterDescriptionTextPlaceholder from 'app_root/components/properties/SearchFilterDescriptionTextPlaceholder.jsx';
+import SearchResultListingPlaceholder from 'app_root/components/properties/SearchResultListingPlaceholder.jsx';
 
 const isMobile = window.innerWidth < 576;
 
@@ -443,26 +445,32 @@ class MapSearchResults extends Component {
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
           { (!isMobile || !this.state.mapDisplay) &&
             <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
-              <SearchFilterDescriptionText
-                data={{
-                  acres: searchFilters.acres,
-                  bathrooms: searchFilters.bathrooms,
-                  bedrooms: searchFilters.bedrooms,
-                  filters: searchFilters,
-                  historyPush: history.push,
-                  price: searchFilters.price,
-                  saleType: searchFilters.sale_type,
-                  sqft: searchFilters.sqft,
-                  subtypes: searchFilters.property_subtype,
-                  terms: searchFilters.term,
-                  total: this.props.resultsTotal,
-                  type: searchFilters.property_type
-                }}
-              />
+              { isFetching
+                ? <SearchFilterDescriptionTextPlaceholder />
+                : <SearchFilterDescriptionText
+                    data={{
+                      acres: searchFilters.acres,
+                      bathrooms: searchFilters.bathrooms,
+                      bedrooms: searchFilters.bedrooms,
+                      filters: searchFilters,
+                      historyPush: history.push,
+                      price: searchFilters.price,
+                      saleType: searchFilters.sale_type,
+                      sqft: searchFilters.sqft,
+                      subtypes: searchFilters.property_subtype,
+                      terms: searchFilters.term,
+                      total: this.props.resultsTotal,
+                      type: searchFilters.property_type
+                    }}
+                  />
+              }
 
-              { this.props.displayedResults.length > 0
-                ?
-                  <SearchResultListing
+              { isFetching &&
+                <SearchResultListingPlaceholder />
+              }
+
+              { !isFetching && this.props.displayedResults.length > 0
+                ? <SearchResultListing
                     allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
                     isFetching={isFetching}
                     properties={displayedResults}
@@ -471,16 +479,11 @@ class MapSearchResults extends Component {
                     selectedProperty={searchFilters.selected_property}
                     total={this.props.resultsTotal}
                   />
-                :
-                  (errorMessage
-                    ?
-                      <ErrorMessage message={errorMessage} />
-                    :
-                      (
-                        !isFetching ?
-                          <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
-                        :
-                        null
+                : (errorMessage
+                    ? <ErrorMessage message={errorMessage} />
+                    : (!isFetching
+                        ? <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
+                        : null
                       )
                   )
               }

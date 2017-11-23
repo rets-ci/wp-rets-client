@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
-import Util from '../Util.jsx';
+import Util from 'app_root/components/Util.jsx';
 
 class SearchFilterDescriptionText extends Component {
   static propTypes = {

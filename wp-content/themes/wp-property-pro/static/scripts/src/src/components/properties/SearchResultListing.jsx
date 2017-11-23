@@ -12,7 +12,6 @@ const isMobile = window.innerWidth < 576;
 class SearchResultListing extends Component {
   static propTypes = {
     allowPagination: PropTypes.bool.isRequired,
-    isFetching: PropTypes.bool.isRequired,
     properties: PropTypes.array.isRequired,
     seeMoreHandler: PropTypes.func.isRequired,
     total: PropTypes.number
@@ -28,7 +27,6 @@ class SearchResultListing extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = (
       nextProps.allowPagination !== this.props.allowPagination || 
-      nextProps.isFetching !== this.props.isFetching ||
       !!difference(nextProps.properties, this.props.properties).length ||
       nextProps.selectedProperty !== this.props.selectedProperty ||
       nextProps.total !== this.props.total ||
@@ -45,14 +43,10 @@ class SearchResultListing extends Component {
 
   render() {
     let {
-      isFetching,
       properties,
       selectedProperty,
       total
     } = this.props;
-    let classNames = [];
-    classNames.push(Lib.THEME_CLASSES_PREFIX + 'listing-wrap');
-    if (isFetching) { classNames.push(Lib.THEME_CLASSES_PREFIX + 'loading-overlay'); }
 
     // For desktop view there is button for loading next page
     let loadMoreHandler = <a href="#" onClick={(e) => {
@@ -74,7 +68,7 @@ class SearchResultListing extends Component {
 
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container h-100`}>
-        <div className={classNames.join(' ')}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap`}>
           <PropertyCardList
             properties={properties}
             selectedProperty={selectedProperty}
