@@ -120,9 +120,6 @@ namespace UsabilityDynamics {
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ), null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
-      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single()) { 
-        wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
-      }
       $params = $this->property_pro_get_base_info();
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
@@ -193,6 +190,10 @@ namespace UsabilityDynamics {
           return [ 'ID' => $item->ID, 'title' => $item->title, 'url' => $item->url, 'relative_url' => str_replace( home_url(), "", $item->url ), 'classes' => $item->classes ];
         }, wp_get_nav_menu_items( $sidebar_menu_term_id ) ) : []
       ];
+
+      if(defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single()){
+        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
+      }
 
       /** Custom elastic press index */
       if(defined('EP_INDEX_NAME') && EP_INDEX_NAME){
