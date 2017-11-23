@@ -1,10 +1,14 @@
 import get from 'lodash/get';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import GoogleMap from 'google-map-react';
+import {fitBounds} from 'google-map-react/utils';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
+import Marker from './Map/Marker.jsx';
+
 import Util from '../Util.jsx';
-import { Lib } from '../../lib.jsx';
+import {Lib} from '../../lib.jsx';
 
 
 let defaultIcon = {
@@ -26,72 +30,69 @@ export default class Map extends Component {
     searchByCoordinates: PropTypes.func.isRequired,
     properties: PropTypes.array.isRequired
   };
+
   constructor(props) {
     super(props);
-    this.bounds;
-    this.map;
-    this.markers = [];
+    this.boundsArray;
     this.state = {
-      dragMode: false
+      dragMode: false,
+      markers: [],
+      zoom: defaultZoom
     };
 
   }
 
   calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
     let calculateCenter = (
-        new google.maps.LatLngBounds(
+      new google.maps.LatLngBounds(
         {
           lat: +swLat,
           lng: +swLon
-          }, {
+        }, {
           lat: +neLat,
           lng: +neLon
         }
-        )
-      ).getCenter();
-      return {
-        lat: calculateCenter.lat(),
-        lng: calculateCenter.lng()
-      };
+      )
+    ).getCenter();
+    return {
+      lat: calculateCenter.lat(),
+      lng: calculateCenter.lng()
+    };
   }
 
   clearBounds() {
-    this.bounds = new google.maps.LatLngBounds();
+    this.boundsArray = new google.maps.LatLngBounds();
   }
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.properties, this.props.properties)) {
       this.updatingProperties = true;
-      if (!this.state.dragMode) {
-        let coordinates = this.getInitialCoordinates(null, nextProps.properties);
-        this.setMapCoordinates(coordinates);
-      }
+
       this.clearMarkers();
       this.clearBounds();
       this.setPropertyMarkers(nextProps.properties);
       if (!this.state.dragMode) {
-        this.map.fitBounds(this.bounds);
-        if (this.map.getZoom() < defaultZoom) {
-          this.map.setZoom(defaultZoom);
-        }
+        let size = {
+          width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
+          height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight,
+        };
+        // fitBounds(this.boundsArray, size);
       }
       this.updatingProperties = false;
     }
-    let condition = !this.markers.filter(m => m.selected).length || nextProps.selectedProperty !== this.markers.filter(m => m.selected)[0].propertyId;
-    if (condition) {
-      this.deselectMarkers(this.markers);
-      this.selectMarker(this.markers, nextProps.selectedProperty);
+
+    if (nextProps.selectedProperty) {
+      this.setPropertyMarkers(nextProps.properties, nextProps.selectedProperty);
     }
-    this.setState({
-      dragMode: false
-    });
+    // this.setState({
+    //   dragMode: false
+    // });
   }
 
   clearMarkers() {
-    this.markers.forEach(m => {
-      m.setMap(null);
-    });
-    this.markers = [];
+    this.setState = {
+      markers: []
+    };
   }
 
   getInitialCoordinates(currentGeoBounds, properties) {
@@ -114,60 +115,37 @@ export default class Map extends Component {
     return centerPoint;
   }
 
-  setMapCoordinates(coordinates) {
-    if (!this.map) {
-      this.map = new window.google.maps.Map(this.mapElement, {
-        center: coordinates,
-        mapTypeControlOptions: {mapTypeIds: []},
-        scrollwheel: false,
-        streetViewControl: false,
-        zoom: defaultZoom,
-        zoomControl: isMobile === false,
-      });
-    } else {
-      this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));
-    }
-  }
-
-  setPropertyMarkers(properties) {
+  setPropertyMarkers(properties, selectedProperty = false) {
     properties.forEach(p => {
+      let propertyId = get(p, '_source.post_meta.rets_mls_number[0]', null);
+      let selected = selectedProperty && selectedProperty === propertyId;
       let loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
-      let marker = new window.google.maps.Marker({
-        icon: defaultIcon,
-        position: loc,
-        map: this.map
-      });
+
+
+      let marker = <Marker
+        // required props
+        key={propertyId}
+        lat={p._source.wpp_location_pin.lat}
+        lng={p._source.wpp_location_pin.lon}
+        icon={selected ? selectedIcon : defaultIcon}
+                           selected={selected}
+                           onClickHandler={() => {
+                             this.props.updateSelectedProperty(propertyId)
+                           }}/>;
       if (!get(p, '_source.post_meta.rets_mls_number[0]', null)) {
         console.log('mls reference missing from the data, property selection on at least some of the items wont work as expected');
       }
-      marker.propertyId = get(p, '_source.post_meta.rets_mls_number[0]', null);
-      marker.selected = false;
-      marker.addListener('click', () => {
-        this.props.updateSelectedProperty(marker.propertyId)
-      });
-      this.markers.push(marker);
-      this.bounds.extend(loc);
+      this.state.markers.push(marker);
+      this.boundsArray.extend(loc);
     });
   }
 
-  componentDidMount() {
-    let {
-      currentGeoBounds
-    } = this.props;
-    // no properties to pass into `getInitialCoordinates`
-    let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
-    this.setMapCoordinates(coordinates);
-    // this.setPropertyMarkers(this.props.properties);
-    this.map.addListener('dragend', this.onMapChange);
-    this.map.addListener('zoom_changed', this.onMapChange);
-  }
-
-  onMapChange = () => {
+  _onBoundsChange = (center, zoom, bounds, marginBounds) => {
     // only trigger the Geo change at a certain zoom level and exclude initial auto zoom to prevent ES requests duplicate
-    if (this.map.getZoom() >= Lib.MAP_CHANGE_ZOOM_LIMIT || this.props.properties.length === 0 || this.updatingProperties) {
+    if (zoom >= Lib.MAP_CHANGE_ZOOM_LIMIT || this.props.properties.length === 0 || this.updatingProperties) {
       return;
     }
-    let bounds = this.map.getBounds();
+
     let ne = bounds.getNorthEast();
     let sw = bounds.getSouthWest();
     this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
@@ -183,32 +161,40 @@ export default class Map extends Component {
       }));
     // enable drag mode to distinguish between initial load and dragging in componentWillReceiveProps
     this.setState({
-      dragMode: true
+      dragMode: true,
+      zoom: zoom
     });
   }
 
-  deselectMarkers(markers) {
-    let selectedMarkers = markers.filter(m => m.selected);
-    if (selectedMarkers.length) {
-      selectedMarkers.forEach(m => {
-        m.selected = false;
-        m.setIcon(defaultIcon);
-      });
-    }
-  }
-
-  selectMarker(markers, selectedProperty) {
-    // Remove all current selected markers
-    let selectedMarker = markers.filter(m => m.propertyId === selectedProperty);
-    if (selectedMarker.length) {
-      selectedMarker[0].setIcon(selectedIcon);
-      selectedMarker[0].selected = true;
-    }
-  }
-
   render() {
+
+    let google_api_key = get(bundle, 'google_api_key');
+
+    if (!google_api_key) {
+      return null;
+    }
+
+    let {
+      currentGeoBounds
+    } = this.props;
+
+    let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
+console.log(coordinates);
+    let center = [coordinates.lat, coordinates.lng];
     return (
-      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} ref={(r) => this.mapElement = r} ></div>
+      <div id={Lib.THEME_CLASSES_PREFIX + "Map"} ref={(r) => this.mapElement = r}>
+        <GoogleMap
+          bootstrapURLKeys={{
+            key: google_api_key,
+            language: 'en'
+          }}
+          center={center}
+          zoom={this.state.zoom}
+          onBoundsChange={this._onBoundsChange}
+        >
+        {this.state.markers}
+        </GoogleMap>
+      </div>
     );
   }
 };
