@@ -10,18 +10,16 @@
   }
 
   // search results description on map view
-  &.propertypro-headtitle {
-    h1 {
-      width: 40%;
-      height: 2rem;
-      overflow: hidden;
-    }
+  .propertypro-headtitle__title {
+    width: 40%;
+    height: 2rem;
+    overflow: hidden;
+  }
 
-    p {
-      width: 80%;
-      height: 1.5rem;
-      overflow: hidden;
-    }
+  .propertypro-headtitle__text {
+    width: 80%;
+    height: 1.875rem;
+    overflow: hidden;
   }
 
   // property cards on map view
