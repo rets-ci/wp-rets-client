@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 export default class Marker extends Component {
   static propTypes = {
     icon: PropTypes.object.isRequired,
-    selected: PropTypes.bool,
     onClickHandler: PropTypes.func.isRequired,
   };
 
@@ -20,7 +19,10 @@ export default class Marker extends Component {
     } = this.props;
 
     return (
-      <div><img src={icon.url}/></div>
+      <div><a href="#" onClick={(e) => {
+        e.preventDefault();
+        this.props.onClickHandler();
+      }}><img src={icon.url}/></a></div>
     );
   }
 };

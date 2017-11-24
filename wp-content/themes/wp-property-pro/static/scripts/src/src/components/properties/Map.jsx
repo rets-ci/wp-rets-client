@@ -33,66 +33,13 @@ export default class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.boundsArray;
     this.state = {
-      dragMode: false,
-      markers: [],
       zoom: defaultZoom
     };
-
   }
 
-  calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
-    let calculateCenter = (
-      new google.maps.LatLngBounds(
-        {
-          lat: +swLat,
-          lng: +swLon
-        }, {
-          lat: +neLat,
-          lng: +neLon
-        }
-      )
-    ).getCenter();
-    return {
-      lat: calculateCenter.lat(),
-      lng: calculateCenter.lng()
-    };
-  }
+  componentWillReceiveProps(nextProps){
 
-  clearBounds() {
-    this.boundsArray = new google.maps.LatLngBounds();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.properties, this.props.properties)) {
-      this.updatingProperties = true;
-
-      this.clearMarkers();
-      this.clearBounds();
-      this.setPropertyMarkers(nextProps.properties);
-      if (!this.state.dragMode) {
-        let size = {
-          width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
-          height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight,
-        };
-        // fitBounds(this.boundsArray, size);
-      }
-      this.updatingProperties = false;
-    }
-
-    if (nextProps.selectedProperty) {
-      this.setPropertyMarkers(nextProps.properties, nextProps.selectedProperty);
-    }
-    // this.setState({
-    //   dragMode: false
-    // });
-  }
-
-  clearMarkers() {
-    this.setState = {
-      markers: []
-    };
   }
 
   getInitialCoordinates(currentGeoBounds, properties) {
@@ -116,53 +63,23 @@ export default class Map extends Component {
   }
 
   setPropertyMarkers(properties, selectedProperty = false) {
-    properties.forEach(p => {
+    return properties.map(p => {
       let propertyId = get(p, '_source.post_meta.rets_mls_number[0]', null);
       let selected = selectedProperty && selectedProperty === propertyId;
-      let loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
 
+      if (!get(p, '_source.post_meta.rets_mls_number[0]', null)) {
+        console.log('mls reference missing from the data, property selection on at least some of the items wont work as expected');
+      }
 
-      let marker = <Marker
+      return (<Marker
         // required props
         key={propertyId}
         lat={p._source.wpp_location_pin.lat}
         lng={p._source.wpp_location_pin.lon}
         icon={selected ? selectedIcon : defaultIcon}
-                           selected={selected}
-                           onClickHandler={() => {
-                             this.props.updateSelectedProperty(propertyId)
-                           }}/>;
-      if (!get(p, '_source.post_meta.rets_mls_number[0]', null)) {
-        console.log('mls reference missing from the data, property selection on at least some of the items wont work as expected');
-      }
-      this.state.markers.push(marker);
-      this.boundsArray.extend(loc);
-    });
-  }
-
-  _onBoundsChange = (center, zoom, bounds, marginBounds) => {
-    // only trigger the Geo change at a certain zoom level and exclude initial auto zoom to prevent ES requests duplicate
-    if (zoom >= Lib.MAP_CHANGE_ZOOM_LIMIT || this.props.properties.length === 0 || this.updatingProperties) {
-      return;
-    }
-
-    let ne = bounds.getNorthEast();
-    let sw = bounds.getSouthWest();
-    this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
-      {
-        ne: {
-          lat: ne.lat(),
-          lon: ne.lng()
-        },
-        sw: {
-          lat: sw.lat(),
-          lon: sw.lng()
-        }
-      }));
-    // enable drag mode to distinguish between initial load and dragging in componentWillReceiveProps
-    this.setState({
-      dragMode: true,
-      zoom: zoom
+        onClickHandler={() => {
+          this.props.updateSelectedProperty(propertyId)
+        }}/>);
     });
   }
 
@@ -175,12 +92,16 @@ export default class Map extends Component {
     }
 
     let {
-      currentGeoBounds
+      currentGeoBounds,
+      properties,
+      selectedProperty
     } = this.props;
 
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
-console.log(coordinates);
     let center = [coordinates.lat, coordinates.lng];
+
+    let markers = properties.length > 0 ? this.setPropertyMarkers(properties, selectedProperty) : null;
+
     return (
       <div id={Lib.THEME_CLASSES_PREFIX + "Map"} ref={(r) => this.mapElement = r}>
         <GoogleMap
@@ -190,9 +111,13 @@ console.log(coordinates);
           }}
           center={center}
           zoom={this.state.zoom}
-          onBoundsChange={this._onBoundsChange}
+          options={
+            {
+              zoomControl: isMobile === false
+            }
+          }
         >
-        {this.state.markers}
+          {markers}
         </GoogleMap>
       </div>
     );
