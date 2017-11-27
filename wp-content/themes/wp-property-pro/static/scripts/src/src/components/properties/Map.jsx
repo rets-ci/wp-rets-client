@@ -33,9 +33,7 @@ export default class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      zoom: defaultZoom
-    };
+    this.bounds = [];
   }
 
   componentWillReceiveProps(nextProps){
@@ -63,6 +61,7 @@ export default class Map extends Component {
   }
 
   setPropertyMarkers(properties, selectedProperty = false) {
+    this.bounds = [];
     return properties.map(p => {
       let propertyId = get(p, '_source.post_meta.rets_mls_number[0]', null);
       let selected = selectedProperty && selectedProperty === propertyId;
@@ -70,6 +69,9 @@ export default class Map extends Component {
       if (!get(p, '_source.post_meta.rets_mls_number[0]', null)) {
         console.log('mls reference missing from the data, property selection on at least some of the items wont work as expected');
       }
+
+      let loc = this.coordinate(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
+      this.bounds.push(loc);
 
       return (<Marker
         // required props
@@ -81,6 +83,13 @@ export default class Map extends Component {
           this.props.updateSelectedProperty(propertyId)
         }}/>);
     });
+  }
+
+  coordinate(x, y) {
+    return {
+      x: x,
+      y: y
+    }
   }
 
   render() {
@@ -97,10 +106,83 @@ export default class Map extends Component {
       selectedProperty
     } = this.props;
 
+    let markers = properties.length > 0 ? this.setPropertyMarkers(properties, selectedProperty) : null;
+
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     let center = [coordinates.lat, coordinates.lng];
+    let zoom = defaultZoom;
 
-    let markers = properties.length > 0 ? this.setPropertyMarkers(properties, selectedProperty) : null;
+    if(markers){
+
+      // Define bounds options
+      let maxN, maxS, maxE, maxW, nw, se;
+      let arr = this.bounds;
+      for(let i = 0; i < arr.length; i++) {
+        if(maxN == undefined) { maxN = arr[i].y; }
+        if(maxS == undefined) { maxS = arr[i].y; }
+        if(maxE == undefined) { maxE = arr[i].x; }
+        if(maxW == undefined) { maxW = arr[i].x; }
+
+        if(arr[i].y > maxN){
+          maxN = arr[i].y;
+        }
+
+        if(arr[i].x > maxE){
+          maxE = arr[i].x;
+        }
+
+        if(arr[i].y < maxS){
+          maxS = arr[i].y;
+        }
+
+        if(arr[i].x < maxW){
+          maxW = arr[i].x;
+        }
+      }
+
+      nw = {
+        x: maxW,
+        y: maxN
+      };
+
+      se = {
+        x: maxE,
+        y: maxS
+      };
+
+      let bounds = {
+        nw: {
+          lat: nw.x,
+          lng: nw.y
+        },
+        se: {
+          lat: se.x,
+          lng: se.y
+        }
+      };
+
+
+      let size = {
+        width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
+        height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight
+      };
+
+      let options = fitBounds(bounds, size);
+
+      // Define zoom level for bounds
+      if(get(options, 'zoom') < 1 || isNaN(get(options, 'zoom'))){
+        let GLOBE_WIDTH = 256; // a constant in Google's map projection
+        let angle = maxE - maxW;
+        if (angle < 0) {
+          angle += 360;
+        }
+        zoom = Math.round(Math.floor(Math.log(size.width * 360 / angle / GLOBE_WIDTH) / Math.LN2) - 1);
+      }
+
+      if(options){
+        center = options.center;
+      }
+    }
 
     return (
       <div id={Lib.THEME_CLASSES_PREFIX + "Map"} ref={(r) => this.mapElement = r}>
@@ -110,7 +192,7 @@ export default class Map extends Component {
             language: 'en'
           }}
           center={center}
-          zoom={this.state.zoom}
+          zoom={zoom}
           options={
             {
               zoomControl: isMobile === false
