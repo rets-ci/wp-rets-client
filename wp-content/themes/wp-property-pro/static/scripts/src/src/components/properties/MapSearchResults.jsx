@@ -40,8 +40,6 @@ import PropertyPanelOnMap from 'app_root/components/properties/Components/Proper
 import SearchFilterDescriptionTextPlaceholder from 'app_root/components/properties/SearchFilterDescriptionTextPlaceholder.jsx';
 import SearchResultListingPlaceholder from 'app_root/components/properties/SearchResultListingPlaceholder.jsx';
 
-const isMobile = window.innerWidth < 576;
-
 
 const mapStateToProps = (state, ownProps) => {
   let propertyTypeOptions = get(state, 'propertyTypeOptions.options');
@@ -102,7 +100,8 @@ const mapStateToProps = (state, ownProps) => {
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     searchQueryParams: searchQueryObject,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
-    termDetails: termDetails
+    termDetails: termDetails,
+    isMobile: get(state, 'viewport.isMobile', false),
   }
 };
 
@@ -227,7 +226,7 @@ class MapSearchResults extends Component {
   componentDidMount() {
     let filters = this.props.searchQueryParams;
     this.applyQueryFilters(filters, this.props.queryDefaults);
-    if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
+    if (this.props.displayedResults.length > 0 && !filters.selected_property && this.props.isMobile) {
       let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
       if (!firstPropertyMLSID) {
         console.log('first property MLS id is missing');
@@ -282,7 +281,7 @@ class MapSearchResults extends Component {
     this.setState({ noticeDisplay: false })
   }
 
-  seeMoreHandler = () => {
+  handleLoadMore = () => {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
     this.props.doSearchWithQuery(modifiedQuery, true);
@@ -355,7 +354,8 @@ class MapSearchResults extends Component {
       results,
       resultsTotal,
       searchQueryParams,
-      termDetails
+      termDetails,
+      isMobile
     } = this.props;
     // create a clone because we might change it in the if statement
     let searchFilters = Object.assign({}, searchQueryParams);
@@ -474,10 +474,11 @@ class MapSearchResults extends Component {
                     allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
                     isFetching={isFetching}
                     properties={displayedResults}
-                    seeMoreHandler={this.seeMoreHandler}
+                    onLoadMore={this.handleLoadMore}
                     onUpdateSelectedProperty={this.updateSelectedProperty}
                     selectedProperty={searchFilters.selected_property}
                     total={this.props.resultsTotal}
+                    isMobile={isMobile}
                   />
                 : (errorMessage
                     ? <ErrorMessage message={errorMessage} />
