@@ -27,7 +27,11 @@ class SearchFilterDescriptionText extends Component {
     })
   };
 
-  clearFilters = (termFilters, sale_type, historyPush) => {
+  handleClearFilters = (evt) => {
+    evt.preventDefault();
+
+    const termFilters = get(this.props, 'data.filters');
+    const historyPush = get(this.props, 'data.historyPush');
 
     let params = [];
 
@@ -71,7 +75,6 @@ class SearchFilterDescriptionText extends Component {
     // Default values
     let title = 'No Results';
     let description = 'Your search does not match any listings. Try zooming out or removing your filters.';
-    let clearFiltersBtn = null;
 
     if(total){
 
@@ -236,14 +239,11 @@ class SearchFilterDescriptionText extends Component {
 
       description = _count + (types ? ' ' + types.toLowerCase() : '') + (saleType ? ' ' + saleType.toLowerCase() : '') + (locations ? ' in ' + locations : '') + _price + ((_bedrooms || _bathrooms) ? ' that have' + _bedrooms + _bathrooms : '') + _sqft + _acres + '.';
 
-    } else {
-      clearFiltersBtn = <a href="#" onClick={event => { event.preventDefault(); this.clearFilters(filters, data.saleType, historyPush)}}>Remove Filters</a>;
     }
 
     return {
       title: title,
       description: description,
-      clearFiltersBtn: clearFiltersBtn
     };
   }
 
@@ -273,14 +273,30 @@ class SearchFilterDescriptionText extends Component {
   }
 
   render() {
-    let data = this.getTitleAndDescription(this.props.data)
-    return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-        <h1>{data.title}</h1>
-        <p>{data.description}</p>
-        {data.clearFiltersBtn}
-      </div>
-    );
+    let data = this.getTitleAndDescription(this.props.data);
+    const total = get(this.props, 'data.total')
+
+    if (total) {
+      return (
+        <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle`}>
+          <h1 className={`${Lib.THEME_CLASSES_PREFIX}headtitle__title`}>{data.title}</h1>
+          <p className={`${Lib.THEME_CLASSES_PREFIX}headtitle__text`}>{data.description}</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle ${Lib.THEME_CLASSES_PREFIX}headtitle--no-results`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle__banner`}
+            style={{ backgroundImage: `url(${bundle.static_images_url}no-results-banner.png)` }}
+          />
+          <h1 className={`${Lib.THEME_CLASSES_PREFIX}headtitle__title`}>{ data.title }</h1>
+          <p className={`${Lib.THEME_CLASSES_PREFIX}headtitle__text`}>{ data.description }</p>
+          <a className={`${Lib.THEME_CLASSES_PREFIX}headtitle__btn btn`} onClick={ this.handleClearFilters }>
+            {'Remove Filters'}
+          </a>
+        </div>
+      );
+    }
   }
 }
 

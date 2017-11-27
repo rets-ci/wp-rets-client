@@ -481,10 +481,7 @@ class MapSearchResults extends Component {
                   />
                 : (errorMessage
                     ? <ErrorMessage message={errorMessage} />
-                    : (!isFetching
-                        ? <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
-                        : null
-                      )
+                    : null
                   )
               }
             </div>

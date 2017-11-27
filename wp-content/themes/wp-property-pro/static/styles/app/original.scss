@@ -1341,26 +1341,55 @@ p.propertypro-gentle-error {
 
 .propertypro-listing-sidebar {
     position: relative;
-    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .propertypro-listing-sidebar .propertypro-headtitle {
     background-color: rgba(232, 238, 242, 0.5);
     border-bottom: .0625rem solid #d2dae0;
-    padding: 1.5rem;
+    padding: 2rem 2rem;
 }
 
-.propertypro-listing-sidebar .propertypro-headtitle h1 {
+.propertypro-listing-sidebar .propertypro-headtitle--no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 2rem;
+
+    .propertypro-headtitle__text {
+        max-width: 37.5rem;
+    }
+}
+
+.propertypro-listing-sidebar .propertypro-headtitle__title {
     font-size: 2rem;
     line-height: 2rem;
-    margin: 0 0 .50em;
+    margin-bottom: 1.5rem;
 }
 
-.propertypro-listing-sidebar .propertypro-headtitle p {
+.propertypro-listing-sidebar .propertypro-headtitle__text {
     color: #8b8c8d;
-    font-size: 1.050rem;
-    line-height: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.875rem;
     margin: 0;
+}
+
+.propertypro-listing-sidebar .propertypro-headtitle__btn {
+    cursor: pointer;
+    border-radius: .1875rem;
+    background-color: #d33320;
+    line-height: 1.5;
+    margin-top: 1.5rem;
+}
+
+.propertypro-listing-sidebar .propertypro-headtitle__banner {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    padding-bottom: 25%;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .propertypro-listing-wrap {
@@ -1392,15 +1421,6 @@ p.propertypro-gentle-error {
 
 .propertypro-card-selected {
     border-bottom: 3px solid #f28200;
-}
-
-/* Search Map -> Search Property Type */
-.propertypro-listing-sidebar .propertypro-headtitle .btn {
-    margin-left: .9375rem;
-    font-size: .90rem;
-    color: #fff;
-    border-radius: .1875rem;
-    background-color: #d33320;
 }
 
 /*-----------------------------------------------------------------------------------*/
