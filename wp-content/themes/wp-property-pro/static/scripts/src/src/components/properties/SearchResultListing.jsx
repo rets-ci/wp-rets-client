@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import PropertyCardList from './PropertyCardList.jsx';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Waypoint from 'react-waypoint';
-import difference from 'lodash/difference';
 
 import { Lib } from '../../lib.jsx';
 import SearchResultListingPlaceholder from 'app_root/components/properties/SearchResultListingPlaceholder.jsx';
+import PropertyCardList from './PropertyCardList.jsx';
+
 
 
 class SearchResultListing extends Component {
@@ -35,8 +36,13 @@ class SearchResultListing extends Component {
 
     const allowPagination = properties.length < total;
 
+    const containerClass = classNames(
+      `${Lib.THEME_CLASSES_PREFIX}listing-wrap-container`,
+      { 'h-100': total > 0 }
+    )
+
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container h-100`}>
+      <div className={ containerClass }>
         <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap`}>
           <PropertyCardList
             properties={properties}
