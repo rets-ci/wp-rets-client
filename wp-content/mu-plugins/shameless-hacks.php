@@ -21,6 +21,7 @@ add_filter( 'ud:warnings:admin_notices', function() { return null; });
 // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1699
 add_filter( 'enable_post_by_email_configuration', '__return_false', 100 );
 
+add_filter( 'xmlrpc_enabled', '__return_false', 999 );
 
 /**
  * Get rid of wpp settings and localization javascript inline data on frontend,
