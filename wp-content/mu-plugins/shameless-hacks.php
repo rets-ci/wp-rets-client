@@ -23,6 +23,18 @@ add_filter( 'enable_post_by_email_configuration', '__return_false', 100 );
 
 add_filter( 'xmlrpc_enabled', '__return_false', 999 );
 
+function rdc_disable_feed() {
+  wp_die( __('No feed available, please visit our <a href="'. get_bloginfo('url') .'">' . get_bloginfo('name') . '</a>.') );
+}
+
+add_action('do_feed', 'rdc_disable_feed', 1);
+add_action('do_feed_rdf', 'rdc_disable_feed', 1);
+add_action('do_feed_rss', 'rdc_disable_feed', 1);
+add_action('do_feed_rss2', 'rdc_disable_feed', 1);
+add_action('do_feed_atom', 'rdc_disable_feed', 1);
+add_action('do_feed_rss2_comments', 'rdc_disable_feed', 1);
+add_action('do_feed_atom_comments', 'rdc_disable_feed', 1);
+
 /**
  * Get rid of wpp settings and localization javascript inline data on frontend,
  * since we are not using it anywhere.
