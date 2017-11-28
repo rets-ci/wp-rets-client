@@ -1,3 +1,5 @@
+var wpp = typeof wpp == 'object' ? wpp : {};
+
 wpp.utility = {
     sendEvent: function (timingCategory, timingVar) {
         var timingValue = 0;

@@ -40,10 +40,15 @@ add_filter( 'wpp::localization::instance', function($data){
 
 /**
  * Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
+ * Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1692
  */
 add_action( 'template_redirect', function() {
   wp_dequeue_style( 'wp-property-agents' );
-  //wp_dequeue_script( 'wpp-jquery-fancybox' );
+  wp_dequeue_script( 'wpp-jquery-fancybox' );
+  wp_dequeue_script( 'wp-property-global' );
+
+  remove_action('wp_head', 'print_emoji_detection_script', 7);
+  remove_action('wp_print_styles', 'print_emoji_styles');
 }, 999 );
 
 
