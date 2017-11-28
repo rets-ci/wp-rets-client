@@ -56,14 +56,35 @@ add_action( 'template_redirect', function() {
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
   wp_dequeue_style( 'wp-property-agents' );
 
+}, 999 );
+
+add_action( 'after_setup_theme', function() {
+
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1695
   remove_action('wp_head', 'wp_generator');
   add_filter('the_generator', function(){return '';} );
 
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1694
   remove_action( 'wp_head', 'wlwmanifest_link');
-  
-}, 999 );
+
+  // Remove the REST API lines from the HTML Header
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1693
+  remove_action( 'wp_head', 'rest_output_link_wp_head' );
+
+  // Remove the REST API endpoint.
+  remove_action( 'rest_api_init', 'wp_oembed_register_route' );
+  // Turn off oEmbed auto discovery.
+  add_filter( 'embed_oembed_discover', '__return_false' );
+  // Don't filter oEmbed results.
+  remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
+  // Remove oEmbed discovery links.
+  remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+  // Remove oEmbed-specific JavaScript from the front-end and back-end.
+  remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+  // Remove all embeds rewrite rules.
+  add_filter( 'rewrite_rules_array', 'disable_embeds_rewrites' );
+
+} );
 
 
 /**
