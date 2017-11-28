@@ -60,6 +60,7 @@ export const Lib = {
   POST_SUGGEST_COUNT: 10,
   TERM_SUGGEST_COUNT: 20,
   TOP_LEFT_URL_PREFIX: 'geotl',
+  ZOOM_URL_PREFIX: 'geoz',
   PROPERTIES_LIST_CAROUSEL: 'carousel',
   PROPERTIES_LIST_DEFAULT: "default",
   THEME_CLASSES_PREFIX: get(bundle, 'theme_prefix', ''),

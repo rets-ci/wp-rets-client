@@ -319,6 +319,8 @@ class MapSearchResults extends Component {
     filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: geoCoordinates['bottomRight']['lat'], lon: geoCoordinates['bottomRight']['lon']};
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: geoCoordinates['topLeft']['lat'], lon: geoCoordinates['topLeft']['lon']};
+    delete filters[Lib.ZOOM_URL_PREFIX];
+    filters[Lib.ZOOM_URL_PREFIX] = geoCoordinates['zoom'];
     delete filters['search_type'];
     if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['rent', 'sale'].sort())) {
       delete filters['sale_type']
@@ -391,7 +393,7 @@ class MapSearchResults extends Component {
 
     const mapElement = (
       <Map
-        currentGeoBounds={(searchFilters.geotl && searchFilters.geobr) ? Util.elasticsearchGeoFormatToGoogle({bottomRight: searchFilters[Lib.BOTTOM_RIGHT_URL_PREFIX], topLeft: searchFilters[Lib.TOP_LEFT_URL_PREFIX]}) : null} 
+        currentGeoBounds={(searchFilters.geotl && searchFilters.geobr && searchFilters.geoz) ? Util.elasticsearchGeoFormatToGoogle({bottomRight: searchFilters[Lib.BOTTOM_RIGHT_URL_PREFIX], topLeft: searchFilters[Lib.TOP_LEFT_URL_PREFIX], zoom: searchFilters[Lib.ZOOM_URL_PREFIX]}) : null}
         historyPush={history.push}
         location={this.props.location}
         properties={displayedResults}

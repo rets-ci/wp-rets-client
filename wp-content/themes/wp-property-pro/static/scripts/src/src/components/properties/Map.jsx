@@ -34,17 +34,30 @@ export default class Map extends Component {
   constructor(props) {
     super(props);
     this.bounds = [];
+
+    this.state = {
+      dragged: false
+    };
   }
 
-  componentWillReceiveProps(nextProps){
+  shouldComponentUpdate(nextProps) {
+    let shouldComponentUpdate = !this.state.dragged && this.props.properties !== get(nextProps.props, 'properties', null)
+      || this.props.currentGeoBounds !== get(nextProps.props, 'currentGeoBounds', null)
+      || this.props.selectedProperty !== get(nextProps.props, 'selectedProperty');
 
+    return shouldComponentUpdate;
   }
 
   getInitialCoordinates(currentGeoBounds, properties) {
     // calculate the initial coordinates based on geo bounds from the URL or the properties
     let centerPoint;
     if (currentGeoBounds) {
-      centerPoint = this.calculateGeoRectangleCenterPoint(currentGeoBounds.ne.lat, currentGeoBounds.ne.lon, currentGeoBounds.sw.lat, currentGeoBounds.sw.Lon);
+      let size = {
+        width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
+        height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight
+      };
+
+      centerPoint = fitBounds(currentGeoBounds, size);
     } else if (properties && properties.length) {
       centerPoint = {
         lat: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[0] : 0,
@@ -85,11 +98,49 @@ export default class Map extends Component {
     });
   }
 
+  componentDidMount(){
+
+  }
+
   coordinate(x, y) {
     return {
       x: x,
       y: y
     }
+  }
+
+  _onBoundsChanged(options){
+
+    if(!this.state.dragged){
+      return null;
+    }
+
+    let bounds = get(options, 'bounds');
+
+    console.log(options);
+    if(!bounds){
+      console.log('Missing bounds');
+      return null;
+    }
+
+
+    this.props.searchByCoordinates(Object.assign(Util.googleGeoFormatToElasticsearch(
+      {
+        ne: {
+          lat: bounds.ne.lat,
+          lon: bounds.ne.lng
+        },
+        sw: {
+          lat: bounds.sw.lat,
+          lon: bounds.sw.lng
+        }
+      }), {
+      zoom: get(options, 'zoom', defaultZoom)
+    }));
+
+    this.setState({
+      dragged: false
+    });
   }
 
   render() {
@@ -108,80 +159,82 @@ export default class Map extends Component {
 
     let markers = properties.length > 0 ? this.setPropertyMarkers(properties, selectedProperty) : null;
 
+    // console.log(currentGeoBounds);
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     let center = [coordinates.lat, coordinates.lng];
-    let zoom = defaultZoom;
 
-    if(markers){
+    let zoom = parseInt(get(currentGeoBounds, 'zoom', defaultZoom));
 
-      // Define bounds options
-      let maxN, maxS, maxE, maxW, nw, se;
-      let arr = this.bounds;
-      for(let i = 0; i < arr.length; i++) {
-        if(maxN == undefined) { maxN = arr[i].y; }
-        if(maxS == undefined) { maxS = arr[i].y; }
-        if(maxE == undefined) { maxE = arr[i].x; }
-        if(maxW == undefined) { maxW = arr[i].x; }
+    if(!currentGeoBounds && markers){
+        // Define bounds options
+        let maxN, maxS, maxE, maxW, nw, se;
+        let arr = this.bounds;
+        for(let i = 0; i < arr.length; i++) {
+          if(maxN == undefined) { maxN = arr[i].y; }
+          if(maxS == undefined) { maxS = arr[i].y; }
+          if(maxE == undefined) { maxE = arr[i].x; }
+          if(maxW == undefined) { maxW = arr[i].x; }
 
-        if(arr[i].y > maxN){
-          maxN = arr[i].y;
+          if(arr[i].y > maxN){
+            maxN = arr[i].y;
+          }
+
+          if(arr[i].x > maxE){
+            maxE = arr[i].x;
+          }
+
+          if(arr[i].y < maxS){
+            maxS = arr[i].y;
+          }
+
+          if(arr[i].x < maxW){
+            maxW = arr[i].x;
+          }
         }
 
-        if(arr[i].x > maxE){
-          maxE = arr[i].x;
+        nw = {
+          x: maxW,
+          y: maxN
+        };
+
+        se = {
+          x: maxE,
+          y: maxS
+        };
+
+        let bounds = {
+          nw: {
+            lat: nw.x,
+            lng: nw.y
+          },
+          se: {
+            lat: se.x,
+            lng: se.y
+          }
+        };
+
+
+        let size = {
+          width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
+          height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight
+        };
+
+        let options = fitBounds(bounds, size);
+        // Define zoom level for bounds
+        if(get(options, 'zoom') < 1 || isNaN(get(options, 'zoom'))){
+          let GLOBE_WIDTH = 256; // a constant in Google's map projection
+          let angle = maxE - maxW;
+          if (angle < 0) {
+            angle += 360;
+          }
+          zoom = Math.round(Math.floor(Math.log(size.width * 360 / angle / GLOBE_WIDTH) / Math.LN2) - 1);
         }
 
-        if(arr[i].y < maxS){
-          maxS = arr[i].y;
+        if(options){
+          center = options.center;
         }
 
-        if(arr[i].x < maxW){
-          maxW = arr[i].x;
-        }
-      }
 
-      nw = {
-        x: maxW,
-        y: maxN
-      };
-
-      se = {
-        x: maxE,
-        y: maxS
-      };
-
-      let bounds = {
-        nw: {
-          lat: nw.x,
-          lng: nw.y
-        },
-        se: {
-          lat: se.x,
-          lng: se.y
-        }
-      };
-
-
-      let size = {
-        width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
-        height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight
-      };
-
-      let options = fitBounds(bounds, size);
-
-      // Define zoom level for bounds
-      if(get(options, 'zoom') < 1 || isNaN(get(options, 'zoom'))){
-        let GLOBE_WIDTH = 256; // a constant in Google's map projection
-        let angle = maxE - maxW;
-        if (angle < 0) {
-          angle += 360;
-        }
-        zoom = Math.round(Math.floor(Math.log(size.width * 360 / angle / GLOBE_WIDTH) / Math.LN2) - 1);
-      }
-
-      if(options){
-        center = options.center;
-      }
     }
 
     return (
@@ -193,6 +246,12 @@ export default class Map extends Component {
           }}
           center={center}
           zoom={zoom}
+          onChange={(options) => {this._onBoundsChanged(options)}}
+          onZoomAnimationEnd={() => {console.log(zoom);this.setState({
+            dragged: true
+          });
+          }}
+
           options={
             {
               zoomControl: isMobile === false
