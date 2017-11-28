@@ -118,7 +118,7 @@ namespace UsabilityDynamics {
       wp_enqueue_style('style', get_stylesheet_uri());
 
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
-      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'wp-property-global' ), null, true);
+      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'jquery' ), null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
       $params = $this->property_pro_get_base_info();
       /**
