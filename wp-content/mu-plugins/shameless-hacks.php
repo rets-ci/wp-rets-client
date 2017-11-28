@@ -18,6 +18,22 @@ add_filter( 'ud:errors:admin_notices', function() { return null; });
 add_filter( 'ud:messages:admin_notices', function() { return null; });
 add_filter( 'ud:warnings:admin_notices', function() { return null; });
 
+// Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1699
+add_filter( 'enable_post_by_email_configuration', '__return_false', 100 );
+
+add_filter( 'xmlrpc_enabled', '__return_false', 999 );
+
+function rdc_disable_feed() {
+  wp_die( __('No feed available, please visit our <a href="'. get_bloginfo('url') .'">' . get_bloginfo('name') . '</a>.') );
+}
+
+add_action('do_feed', 'rdc_disable_feed', 1);
+add_action('do_feed_rdf', 'rdc_disable_feed', 1);
+add_action('do_feed_rss', 'rdc_disable_feed', 1);
+add_action('do_feed_rss2', 'rdc_disable_feed', 1);
+add_action('do_feed_atom', 'rdc_disable_feed', 1);
+add_action('do_feed_rss2_comments', 'rdc_disable_feed', 1);
+add_action('do_feed_atom_comments', 'rdc_disable_feed', 1);
 
 /**
  * Get rid of wpp settings and localization javascript inline data on frontend,
@@ -39,17 +55,66 @@ add_filter( 'wpp::localization::instance', function($data){
 }, 999 );
 
 /**
- * Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
- * Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1692
+ * Removes extra output from frontend.
+ *
  */
 add_action( 'template_redirect', function() {
-  wp_dequeue_style( 'wp-property-agents' );
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1692
   wp_dequeue_script( 'wpp-jquery-fancybox' );
   wp_dequeue_script( 'wp-property-global' );
+  remove_action('wp_print_styles', 'print_emoji_styles');
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
+  wp_dequeue_style( 'wp-property-agents' );
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1695
+  remove_action('wp_head', 'wp_generator');
+  add_filter('the_generator', function(){return '';} );
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1694
+  remove_action( 'wp_head', 'wlwmanifest_link');
+
+  // Remove the REST API lines from the HTML Header
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1693
+  remove_action( 'wp_head', 'rest_output_link_wp_head' );
 
   remove_action('wp_head', 'print_emoji_detection_script', 7);
   remove_action('wp_print_styles', 'print_emoji_styles');
+  remove_action('admin_print_scripts', 'print_emoji_detection_script');
+  remove_action('admin_print_styles', 'print_emoji_styles');
+
+  remove_action('wp_head', 'feed_links_extra', 3);
+  remove_action('wp_head', 'feed_links', 2);
+  remove_action('wp_head', 'rsd_link');
+  remove_action('wp_head', 'index_rel_link');
+
 }, 999 );
+
+/**
+ * Removes extra output from frontend.
+ *
+ */
+add_action( 'after_setup_theme', function() {
+
+  remove_action('template_redirect', 'wp_shortlink_header', 11);
+  remove_action('template_redirect', 'rest_output_link_header', 11);
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1697
+  // Remove the REST API endpoint.
+  remove_action( 'rest_api_init', 'wp_oembed_register_route' );
+  // Turn off oEmbed auto discovery.
+  add_filter( 'embed_oembed_discover', '__return_false' );
+  // Don't filter oEmbed results.
+  remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
+  // Remove oEmbed discovery links.
+  remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+  // Remove oEmbed-specific JavaScript from the front-end and back-end.
+  remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+  // Remove all embeds rewrite rules.
+  add_filter( 'rewrite_rules_array', 'disable_embeds_rewrites' );
+
+} );
 
 
 /**
