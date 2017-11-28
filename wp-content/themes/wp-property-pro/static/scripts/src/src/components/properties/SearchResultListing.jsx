@@ -17,17 +17,6 @@ class SearchResultListing extends Component {
     isFetching: PropTypes.bool.isRequired,
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    let shouldUpdate = (
-      !!difference(nextProps.properties, this.props.properties).length ||
-      nextProps.selectedProperty !== this.props.selectedProperty ||
-      nextProps.total !== this.props.total ||
-      nextProps.isFetching !== this.props.isFetching ||
-      nextProps.isMobile !== this.props.isMobile
-    );
-    return shouldUpdate;
-  }
-
   handleLoadMore = (e) => {
     if (typeof e.preventDefault === 'function') {
       e.preventDefault();
