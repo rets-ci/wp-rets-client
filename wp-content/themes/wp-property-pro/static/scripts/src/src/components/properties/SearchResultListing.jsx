@@ -19,10 +19,11 @@ class SearchResultListing extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = (
-      nextProps.allowPagination !== this.props.allowPagination || 
       !!difference(nextProps.properties, this.props.properties).length ||
       nextProps.selectedProperty !== this.props.selectedProperty ||
-      nextProps.total !== this.props.total
+      nextProps.total !== this.props.total ||
+      nextProps.isFetching !== this.props.isFetching ||
+      nextProps.isMobile !== this.props.isMobile
     );
     return shouldUpdate;
   }
