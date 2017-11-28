@@ -60,6 +60,9 @@ add_action( 'template_redirect', function() {
   remove_action('wp_head', 'wp_generator');
   add_filter('the_generator', function(){return '';} );
 
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1694
+  remove_action( 'wp_head', 'wlwmanifest_link');
+  
 }, 999 );
 
 
