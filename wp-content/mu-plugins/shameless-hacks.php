@@ -18,6 +18,28 @@ add_filter( 'ud:errors:admin_notices', function() { return null; });
 add_filter( 'ud:messages:admin_notices', function() { return null; });
 add_filter( 'ud:warnings:admin_notices', function() { return null; });
 
+
+/**
+ * Get rid of wpp settings and localization javascript inline data on frontend,
+ * since we are not using it anywhere.
+ *
+ * Issues:
+ * - https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1690
+ * - https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1691
+ * - https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1696
+ */
+add_filter( 'wpp::js::localization', function($data){
+  if(!is_admin()) { return array(); }
+  return $data;
+}, 999 );
+
+add_filter( 'wpp::localization::instance', function($data){
+  if(!is_admin()) { return array(); }
+  return $data;
+}, 999 );
+
+
+
 /**
  * Extend title_suggest mapping contexts with our custom one.
  *
