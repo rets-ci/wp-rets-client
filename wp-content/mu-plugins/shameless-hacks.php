@@ -18,6 +18,9 @@ add_filter( 'ud:errors:admin_notices', function() { return null; });
 add_filter( 'ud:messages:admin_notices', function() { return null; });
 add_filter( 'ud:warnings:admin_notices', function() { return null; });
 
+// Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1699
+add_filter( 'enable_post_by_email_configuration', '__return_false', 100 );
+
 
 /**
  * Get rid of wpp settings and localization javascript inline data on frontend,
@@ -39,16 +42,24 @@ add_filter( 'wpp::localization::instance', function($data){
 }, 999 );
 
 /**
- * Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
- * Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1692
+ * Removes extra output on frontend.
+ *
  */
 add_action( 'template_redirect', function() {
-  wp_dequeue_style( 'wp-property-agents' );
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1692
   wp_dequeue_script( 'wpp-jquery-fancybox' );
   wp_dequeue_script( 'wp-property-global' );
-
   remove_action('wp_head', 'print_emoji_detection_script', 7);
   remove_action('wp_print_styles', 'print_emoji_styles');
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
+  wp_dequeue_style( 'wp-property-agents' );
+
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1695
+  remove_action('wp_head', 'wp_generator');
+  add_filter('the_generator', function(){return '';} );
+
 }, 999 );
 
 
