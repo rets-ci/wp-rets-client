@@ -42,7 +42,7 @@ add_filter( 'wpp::localization::instance', function($data){
 }, 999 );
 
 /**
- * Removes extra output on frontend.
+ * Removes extra scripts/styles from frontend.
  *
  */
 add_action( 'template_redirect', function() {
@@ -58,6 +58,10 @@ add_action( 'template_redirect', function() {
 
 }, 999 );
 
+/**
+ * Removes extra output from frontend.
+ *
+ */
 add_action( 'after_setup_theme', function() {
 
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1695
@@ -71,6 +75,7 @@ add_action( 'after_setup_theme', function() {
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1693
   remove_action( 'wp_head', 'rest_output_link_wp_head' );
 
+  // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1697
   // Remove the REST API endpoint.
   remove_action( 'rest_api_init', 'wp_oembed_register_route' );
   // Turn off oEmbed auto discovery.
