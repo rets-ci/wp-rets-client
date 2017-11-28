@@ -37,8 +37,7 @@ import SearchResultListing from './SearchResultListing.jsx';
 import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import CarouselOnMap from './CarouselOnMap.jsx';
 import PropertyPanelOnMap from 'app_root/components/properties/Components/PropertyPanelOnMap.jsx';
-
-const isMobile = window.innerWidth < 576;
+import SearchFilterDescriptionTextPlaceholder from 'app_root/components/properties/SearchFilterDescriptionTextPlaceholder.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -100,7 +99,8 @@ const mapStateToProps = (state, ownProps) => {
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     searchQueryParams: searchQueryObject,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
-    termDetails: termDetails
+    termDetails: termDetails,
+    isMobile: get(state, 'viewport.isMobile', false),
   }
 };
 
@@ -225,7 +225,7 @@ class MapSearchResults extends Component {
   componentDidMount() {
     let filters = this.props.searchQueryParams;
     this.applyQueryFilters(filters, this.props.queryDefaults);
-    if (this.props.displayedResults.length > 0 && !filters.selected_property && isMobile) {
+    if (this.props.displayedResults.length > 0 && !filters.selected_property && this.props.isMobile) {
       let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
       if (!firstPropertyMLSID) {
         console.log('first property MLS id is missing');
@@ -280,7 +280,7 @@ class MapSearchResults extends Component {
     this.setState({ noticeDisplay: false })
   }
 
-  seeMoreHandler = () => {
+  handleLoadMore = () => {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
     this.props.doSearchWithQuery(modifiedQuery, true);
@@ -353,7 +353,8 @@ class MapSearchResults extends Component {
       results,
       resultsTotal,
       searchQueryParams,
-      termDetails
+      termDetails,
+      isMobile
     } = this.props;
     // create a clone because we might change it in the if statement
     let searchFilters = Object.assign({}, searchQueryParams);
@@ -443,46 +444,37 @@ class MapSearchResults extends Component {
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
           { (!isMobile || !this.state.mapDisplay) &&
             <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
-              <SearchFilterDescriptionText
-                data={{
-                  acres: searchFilters.acres,
-                  bathrooms: searchFilters.bathrooms,
-                  bedrooms: searchFilters.bedrooms,
-                  filters: searchFilters,
-                  historyPush: history.push,
-                  price: searchFilters.price,
-                  saleType: searchFilters.sale_type,
-                  sqft: searchFilters.sqft,
-                  subtypes: searchFilters.property_subtype,
-                  terms: searchFilters.term,
-                  total: this.props.resultsTotal,
-                  type: searchFilters.property_type
-                }}
-              />
+              { isFetching
+                ? <SearchFilterDescriptionTextPlaceholder />
+                : <SearchFilterDescriptionText
+                    data={{
+                      acres: searchFilters.acres,
+                      bathrooms: searchFilters.bathrooms,
+                      bedrooms: searchFilters.bedrooms,
+                      filters: searchFilters,
+                      historyPush: history.push,
+                      price: searchFilters.price,
+                      saleType: searchFilters.sale_type,
+                      sqft: searchFilters.sqft,
+                      subtypes: searchFilters.property_subtype,
+                      terms: searchFilters.term,
+                      total: this.props.resultsTotal,
+                      type: searchFilters.property_type
+                    }}
+                  />
+              }
 
-              { this.props.displayedResults.length > 0
-                ?
-                  <SearchResultListing
-                    allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+              { errorMessage
+                ? <ErrorMessage message={errorMessage} />
+                : <SearchResultListing
                     isFetching={isFetching}
                     properties={displayedResults}
-                    seeMoreHandler={this.seeMoreHandler}
+                    onLoadMore={this.handleLoadMore}
                     onUpdateSelectedProperty={this.updateSelectedProperty}
                     selectedProperty={searchFilters.selected_property}
                     total={this.props.resultsTotal}
+                    isMobile={isMobile}
                   />
-                :
-                  (errorMessage
-                    ?
-                      <ErrorMessage message={errorMessage} />
-                    :
-                      (
-                        !isFetching ?
-                          <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try adjusting the search parameters</p>
-                        :
-                        null
-                      )
-                  )
               }
             </div>
           }
