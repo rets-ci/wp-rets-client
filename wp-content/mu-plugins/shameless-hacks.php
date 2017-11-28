@@ -38,6 +38,13 @@ add_filter( 'wpp::localization::instance', function($data){
   return $data;
 }, 999 );
 
+/**
+ * Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
+ */
+add_action( 'template_redirect', function() {
+  wp_dequeue_style( 'wp-property-agents' );
+  //wp_dequeue_script( 'wpp-jquery-fancybox' );
+}, 999 );
 
 
 /**
