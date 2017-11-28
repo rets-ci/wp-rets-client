@@ -5,14 +5,16 @@ import Waypoint from 'react-waypoint';
 import difference from 'lodash/difference';
 
 import { Lib } from '../../lib.jsx';
+import SearchResultListingPlaceholder from 'app_root/components/properties/SearchResultListingPlaceholder.jsx';
 
 
 class SearchResultListing extends Component {
   static propTypes = {
-    allowPagination: PropTypes.bool.isRequired,
     properties: PropTypes.array.isRequired,
     onLoadMore: PropTypes.func.isRequired,
-    total: PropTypes.number
+    total: PropTypes.number,
+    isMobile: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -37,9 +39,11 @@ class SearchResultListing extends Component {
       properties,
       selectedProperty,
       total,
-      allowPagination,
+      isFetching,
       isMobile,
     } = this.props;
+
+    const allowPagination = properties.length < total;
 
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap-container h-100`}>
@@ -49,16 +53,19 @@ class SearchResultListing extends Component {
             selectedProperty={selectedProperty}
             onUpdateSelectedProperty={this.props.onUpdateSelectedProperty}
           />
+          { isFetching &&
+            <SearchResultListingPlaceholder isMobile={ isMobile }/>
+          }
         </div>
-        { allowPagination &&
+        { allowPagination && !isFetching &&
           ( isMobile
-            ? (<div className={ `${Lib.THEME_CLASSES_PREFIX}search-result-container` }>
+            ? <div className={ `${Lib.THEME_CLASSES_PREFIX}search-result-container` }>
                 <Waypoint onEnter={ this.handleLoadMore } />
-              </div>)
-            : (<div className={ `${Lib.THEME_CLASSES_PREFIX}search-result-container` }>
+              </div>
+            : <div className={ `${Lib.THEME_CLASSES_PREFIX}search-result-container` }>
                 <a className="btn" onClick={ this.handleLoadMore }>{'Load More'}</a>
                 <span>{ `${properties.length} of ${total} `}</span>
-              </div>)
+              </div>
           )
         }
       </div>

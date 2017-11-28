@@ -45,22 +45,17 @@ const CardPlaceholder = () => {
   );
 };
 
-const Placeholder = () => {
+const Placeholder = ({ isMobile }) => {
   return (
-    <div className={ `${Lib.THEME_CLASSES_PREFIX}listing-wrap-container h-100` }>
-      <div className={ `${Lib.THEME_CLASSES_PREFIX}listing-wrap` }>
-        <div className="row">
-          <div className="col-12 col-xl-6">
-            <CardPlaceholder />
-          </div>
-          <div className="col-12 col-xl-6">
-            <CardPlaceholder />
-          </div>
-          <div className="col-12 col-xl-6">
-            <CardPlaceholder />
-          </div>
-        </div>
+    <div className="row">
+      <div className="col-12 col-xl-6">
+        <CardPlaceholder />
       </div>
+      { !isMobile &&
+        <div className="col-12 col-xl-6">
+          <CardPlaceholder />
+        </div>
+      }
     </div>
   );
 };

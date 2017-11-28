@@ -38,7 +38,6 @@ import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import CarouselOnMap from './CarouselOnMap.jsx';
 import PropertyPanelOnMap from 'app_root/components/properties/Components/PropertyPanelOnMap.jsx';
 import SearchFilterDescriptionTextPlaceholder from 'app_root/components/properties/SearchFilterDescriptionTextPlaceholder.jsx';
-import SearchResultListingPlaceholder from 'app_root/components/properties/SearchResultListingPlaceholder.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -465,13 +464,9 @@ class MapSearchResults extends Component {
                   />
               }
 
-              { isFetching &&
-                <SearchResultListingPlaceholder />
-              }
-
-              { !isFetching && this.props.displayedResults.length > 0
-                ? <SearchResultListing
-                    allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+              { errorMessage
+                ? <ErrorMessage message={errorMessage} />
+                : <SearchResultListing
                     isFetching={isFetching}
                     properties={displayedResults}
                     onLoadMore={this.handleLoadMore}
@@ -480,10 +475,6 @@ class MapSearchResults extends Component {
                     total={this.props.resultsTotal}
                     isMobile={isMobile}
                   />
-                : (errorMessage
-                    ? <ErrorMessage message={errorMessage} />
-                    : null
-                  )
               }
             </div>
           }
