@@ -2721,15 +2721,17 @@ html, body {
   color: #414141;
   display: table-cell;
   vertical-align: middle; }
-
-.propertypro-subnavigation ul li a:hover svg path {
-  fill: red; }
-
-.propertypro-subnavigation ul li a span {
-  display: block;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 1.25rem 0 0; }
+  .propertypro-subnavigation ul li a img {
+    width: 3.75rem;
+    height: 3.75rem;
+    opacity: 0.6; }
+  .propertypro-subnavigation ul li a span {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 1.25rem 0 0; }
+  .propertypro-subnavigation ul li a:hover svg path {
+    fill: red; }
 
 .propertypro-subnavigation.propertypro-subnavigation-text-layout nav {
   width: 100%; }
