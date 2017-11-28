@@ -42,7 +42,7 @@ add_filter( 'wpp::localization::instance', function($data){
 }, 999 );
 
 /**
- * Removes extra scripts/styles from frontend.
+ * Removes extra output from frontend.
  *
  */
 add_action( 'template_redirect', function() {
@@ -50,19 +50,10 @@ add_action( 'template_redirect', function() {
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1692
   wp_dequeue_script( 'wpp-jquery-fancybox' );
   wp_dequeue_script( 'wp-property-global' );
-  remove_action('wp_head', 'print_emoji_detection_script', 7);
   remove_action('wp_print_styles', 'print_emoji_styles');
 
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1688
   wp_dequeue_style( 'wp-property-agents' );
-
-}, 999 );
-
-/**
- * Removes extra output from frontend.
- *
- */
-add_action( 'after_setup_theme', function() {
 
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1695
   remove_action('wp_head', 'wp_generator');
@@ -74,6 +65,27 @@ add_action( 'after_setup_theme', function() {
   // Remove the REST API lines from the HTML Header
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1693
   remove_action( 'wp_head', 'rest_output_link_wp_head' );
+
+  remove_action('wp_head', 'print_emoji_detection_script', 7);
+  remove_action('wp_print_styles', 'print_emoji_styles');
+  remove_action('admin_print_scripts', 'print_emoji_detection_script');
+  remove_action('admin_print_styles', 'print_emoji_styles');
+
+  remove_action('wp_head', 'feed_links_extra', 3);
+  remove_action('wp_head', 'feed_links', 2);
+  remove_action('wp_head', 'rsd_link');
+  remove_action('wp_head', 'index_rel_link');
+
+}, 999 );
+
+/**
+ * Removes extra output from frontend.
+ *
+ */
+add_action( 'after_setup_theme', function() {
+
+  remove_action('template_redirect', 'wp_shortlink_header', 11);
+  remove_action('template_redirect', 'rest_output_link_header', 11);
 
   // Issue: https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/1697
   // Remove the REST API endpoint.
