@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import difference from 'lodash/difference';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import find from 'lodash/find';
@@ -69,11 +68,6 @@ class PropertyCardList extends Component {
         this.props.selectPropertyOnMap(property._source); 
       }
     }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return !!difference(nextProps.properties, this.props.properties).length ||
-      nextProps.selectedProperty !== this.props.selectedProperty;
   }
 
   scrollToProperty(propertyId) {
