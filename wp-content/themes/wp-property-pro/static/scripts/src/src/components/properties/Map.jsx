@@ -117,7 +117,6 @@ export default class Map extends Component {
 
     let bounds = get(options, 'bounds');
 
-    console.log(options);
     if(!bounds){
       console.log('Missing bounds');
       return null;
@@ -159,7 +158,6 @@ export default class Map extends Component {
 
     let markers = properties.length > 0 ? this.setPropertyMarkers(properties, selectedProperty) : null;
 
-    // console.log(currentGeoBounds);
     let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     let center = [coordinates.lat, coordinates.lng];
 
@@ -247,7 +245,7 @@ export default class Map extends Component {
           center={center}
           zoom={zoom}
           onChange={(options) => {this._onBoundsChanged(options)}}
-          onZoomAnimationEnd={() => {console.log(zoom);this.setState({
+          onZoomAnimationEnd={() => {this.setState({
             dragged: true
           });
           }}
