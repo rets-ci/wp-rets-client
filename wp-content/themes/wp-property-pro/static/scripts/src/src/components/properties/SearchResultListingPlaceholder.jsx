@@ -45,9 +45,9 @@ const CardPlaceholder = () => {
   );
 };
 
-const Placeholder = ({ isMobile }) => {
+const Placeholder = ({ onInit, isFetching, isMobile }) => {
   return (
-    <div className="row">
+    <div className={ isFetching ? 'row d-flex' : 'row d-none' } ref={ onInit }>
       <div className="col-12 col-xl-6">
         <CardPlaceholder />
       </div>
