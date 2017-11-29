@@ -169,17 +169,25 @@ html, body {
     color: #414141;
     display: table-cell;
     vertical-align: middle;
-}
 
-.propertypro-subnavigation ul li a:hover svg path {
-    fill: red;
-}
+    img {
+        width: 3.75rem;
+        height: 3.75rem;
+        opacity: 0.6;
+    }
 
-.propertypro-subnavigation ul li a span {
-    display: block;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 1.25rem 0 0;
+    span {
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 1.25rem 0 0;
+    }
+
+    &:hover {
+        svg path {
+            fill: red;
+        }
+    }
 }
 
 .propertypro-subnavigation.propertypro-subnavigation-text-layout nav {
@@ -1341,26 +1349,57 @@ p.propertypro-gentle-error {
 
 .propertypro-listing-sidebar {
     position: relative;
-    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .btn {
+        cursor: pointer;
+        background-color: #d33320;
+        color: #fff;
+    }
 }
 
 .propertypro-listing-sidebar .propertypro-headtitle {
     background-color: rgba(232, 238, 242, 0.5);
     border-bottom: .0625rem solid #d2dae0;
-    padding: 1.5rem;
+    padding: 2rem;
 }
 
-.propertypro-listing-sidebar .propertypro-headtitle h1 {
+.propertypro-listing-sidebar .propertypro-headtitle--no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 2rem;
+
+    .propertypro-headtitle__text {
+        max-width: 37.5rem;
+    }
+}
+
+.propertypro-listing-sidebar .propertypro-headtitle__title {
     font-size: 2rem;
     line-height: 2rem;
-    margin: 0 0 .50em;
+    margin-bottom: 1.5rem;
 }
 
-.propertypro-listing-sidebar .propertypro-headtitle p {
+.propertypro-listing-sidebar .propertypro-headtitle__text {
     color: #8b8c8d;
-    font-size: 1.050rem;
-    line-height: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.875rem;
     margin: 0;
+}
+
+.propertypro-listing-sidebar .propertypro-headtitle__btn {
+    margin-top: 1.5rem;
+}
+
+.propertypro-listing-sidebar .propertypro-headtitle__banner {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    padding-bottom: 25%;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .propertypro-listing-wrap {
@@ -1369,16 +1408,14 @@ p.propertypro-gentle-error {
 }
 
 .propertypro-search-result-container {
-    overflow: hidden;
-}
+    padding: 0 1rem 1rem 1rem;
+    display: flex;
+    align-items: center;
 
-.propertypro-search-result-container p {
-    color: #000000;
-    margin: 1rem;
-}
-
-.propertypro-search-result-inner-container {
-    float: right;
+    span {
+        color: #000000;
+        margin-left: 1rem;
+    }
 }
 
 .propertypro-listing-wrap .propertypro-card {
@@ -1394,13 +1431,8 @@ p.propertypro-gentle-error {
     border-bottom: 3px solid #f28200;
 }
 
-/* Search Map -> Search Property Type */
-.propertypro-listing-sidebar .propertypro-headtitle .btn {
-    margin-left: .9375rem;
-    font-size: .90rem;
-    color: #fff;
-    border-radius: .1875rem;
-    background-color: #d33320;
+.propertypro-waypoint-container {
+    height: 1rem;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -1692,10 +1724,6 @@ p.propertypro-gentle-error {
 
 .propertypro-guide-navigation-cotrols {
     width: 100%;
-}
-
-.propertypro-waypoint-container {
-    height: 1rem;
 }
 
 /*-----------------------------------------------------------------------------------*/

@@ -16,6 +16,7 @@
     "prop-types": "^15.5.10",
     "qs": "^6.4.0",
     "react": "^15.4.2",
+    "react-content-loader": "^1.5.2",
     "react-dom": "^15.4.2",
     "react-history": "^0.18.2",
     "react-id-swiper": "1.4.0",

@@ -2299,7 +2299,8 @@ ul.card-header-tabs {
     overflow: hidden;
     height: 3rem; }
     .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button {
-      margin-right: 1.25rem; }
+      margin-right: 1.25rem;
+      margin-bottom: 1px; }
     .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button + button {
       margin-right: 0rem; }
   .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky {
@@ -2538,6 +2539,47 @@ ul.card-header-tabs {
 .propertypro-user-navigation {
   overflow-y: scroll; }
 
+.propertypro-content-placeholder svg {
+  width: 100%;
+  height: auto; }
+  .propertypro-content-placeholder svg rect {
+    width: 100%;
+    height: 100%; }
+
+.propertypro-content-placeholder .propertypro-headtitle__title {
+  width: 40%;
+  height: 2rem;
+  overflow: hidden; }
+
+.propertypro-content-placeholder .propertypro-headtitle__text {
+  width: 80%;
+  height: 1.875rem;
+  overflow: hidden; }
+
+.propertypro-content-placeholder .propertypro-card-img {
+  line-height: 0; }
+
+.propertypro-content-placeholder .propertypro-card-title {
+  width: 75%;
+  height: 1rem;
+  overflow: hidden;
+  margin-bottom: 1rem; }
+
+.propertypro-content-placeholder .propertypro-card-text {
+  width: 50%;
+  height: 1rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem; }
+
+.propertypro-content-placeholder .propertypro-listing-info-box {
+  display: flex;
+  justify-content: flex-start; }
+  .propertypro-content-placeholder .propertypro-listing-info-box > * {
+    width: 20%;
+    height: 1rem;
+    overflow: hidden;
+    padding-right: 1rem; }
+
 /* @TODO split this file into components */
 /**
  * Theme Name: PropertyPro
@@ -2679,15 +2721,17 @@ html, body {
   color: #414141;
   display: table-cell;
   vertical-align: middle; }
-
-.propertypro-subnavigation ul li a:hover svg path {
-  fill: red; }
-
-.propertypro-subnavigation ul li a span {
-  display: block;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 1.25rem 0 0; }
+  .propertypro-subnavigation ul li a img {
+    width: 3.75rem;
+    height: 3.75rem;
+    opacity: 0.6; }
+  .propertypro-subnavigation ul li a span {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 1.25rem 0 0; }
+  .propertypro-subnavigation ul li a:hover svg path {
+    fill: red; }
 
 .propertypro-subnavigation.propertypro-subnavigation-text-layout nav {
   width: 100%; }
@@ -3644,37 +3688,59 @@ p.propertypro-gentle-error {
 
 .propertypro-listing-sidebar {
   position: relative;
-  overflow-y: scroll; }
+  overflow-x: hidden;
+  overflow-y: auto; }
+  .propertypro-listing-sidebar .btn {
+    cursor: pointer;
+    background-color: #d33320;
+    color: #fff; }
 
 .propertypro-listing-sidebar .propertypro-headtitle {
   background-color: rgba(232, 238, 242, 0.5);
   border-bottom: .0625rem solid #d2dae0;
-  padding: 1.5rem; }
+  padding: 2rem; }
 
-.propertypro-listing-sidebar .propertypro-headtitle h1 {
+.propertypro-listing-sidebar .propertypro-headtitle--no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 2rem; }
+  .propertypro-listing-sidebar .propertypro-headtitle--no-results .propertypro-headtitle__text {
+    max-width: 37.5rem; }
+
+.propertypro-listing-sidebar .propertypro-headtitle__title {
   font-size: 2rem;
   line-height: 2rem;
-  margin: 0 0 .50em; }
+  margin-bottom: 1.5rem; }
 
-.propertypro-listing-sidebar .propertypro-headtitle p {
+.propertypro-listing-sidebar .propertypro-headtitle__text {
   color: #8b8c8d;
-  font-size: 1.050rem;
-  line-height: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
   margin: 0; }
+
+.propertypro-listing-sidebar .propertypro-headtitle__btn {
+  margin-top: 1.5rem; }
+
+.propertypro-listing-sidebar .propertypro-headtitle__banner {
+  margin-bottom: 1.5rem;
+  width: 100%;
+  padding-bottom: 25%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat; }
 
 .propertypro-listing-wrap {
   position: relative;
   padding: 1rem; }
 
 .propertypro-search-result-container {
-  overflow: hidden; }
-
-.propertypro-search-result-container p {
-  color: #000000;
-  margin: 1rem; }
-
-.propertypro-search-result-inner-container {
-  float: right; }
+  padding: 0 1rem 1rem 1rem;
+  display: flex;
+  align-items: center; }
+  .propertypro-search-result-container span {
+    color: #000000;
+    margin-left: 1rem; }
 
 .propertypro-listing-wrap .propertypro-card {
   margin-bottom: 1.875rem; }
@@ -3686,13 +3752,8 @@ p.propertypro-gentle-error {
 .propertypro-card-selected {
   border-bottom: 3px solid #f28200; }
 
-/* Search Map -> Search Property Type */
-.propertypro-listing-sidebar .propertypro-headtitle .btn {
-  margin-left: .9375rem;
-  font-size: .90rem;
-  color: #fff;
-  border-radius: .1875rem;
-  background-color: #d33320; }
+.propertypro-waypoint-container {
+  height: 1rem; }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Blog
@@ -3932,9 +3993,6 @@ p.propertypro-gentle-error {
 
 .propertypro-guide-navigation-cotrols {
   width: 100%; }
-
-.propertypro-waypoint-container {
-  height: 1rem; }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Forms and modals
