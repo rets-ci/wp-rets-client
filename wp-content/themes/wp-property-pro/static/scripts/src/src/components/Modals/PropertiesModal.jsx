@@ -9,10 +9,10 @@ import {
   defaultPropertyFilters as defaultFiltervalues
 } from '../staticFilters.js';
 
-import BuyIcon from '../../../../../images/src/buy-icon-standard.svg';
-import RentIcon from '../../../../../images/src/rent-icon-standard.svg';
-import CommercialIcon from '../../../../../images/src/commercial-icon-standard.svg';
-import LandIcon from '../../../../../images/src/land-icon-standard.svg';
+import BuyIcon from 'public_assets/icon-residential-house.svg';
+import RentIcon from 'public_assets/icon-residential-apartment.svg';
+import CommercialIcon from 'public_assets/icon-commercial-retail.svg';
+import LandIcon from 'public_assets/icon-land-wooded.svg';
 
 import difference from 'lodash/difference';
 import get from 'lodash/get';

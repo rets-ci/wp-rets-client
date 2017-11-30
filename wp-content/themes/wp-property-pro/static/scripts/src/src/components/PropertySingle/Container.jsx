@@ -97,7 +97,7 @@ class SingleContainer extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (!get(this.props, 'post.post_id', null)) {
       console.log('property id is not defined');
     } else {
