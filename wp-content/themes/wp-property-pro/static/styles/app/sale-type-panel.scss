@@ -17,9 +17,12 @@
     padding: 1.4rem 0;
 }
 
-.propertypro-sale-type-selection .propertypro-selection-container a img {
+.propertypro-sale-type-selection .propertypro-selection-container a svg {
     display: block;
-    margin: 0 auto 1rem auto;
+    margin: 0 auto 0.5rem auto;
+    width: 3rem;
+    height: 3rem;
+    fill: #FFF;
 }
 
 .propertypro-sale-type-selection .propertypro-selection-container a:hover {

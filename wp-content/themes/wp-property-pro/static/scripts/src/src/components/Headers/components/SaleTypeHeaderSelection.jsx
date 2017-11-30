@@ -9,6 +9,12 @@ import get from 'lodash/get';
 import pickBy from 'lodash/pickBy';
 import {setSearchType} from 'app_root/actions/index.jsx';
 
+import BuyIcon from 'public_assets/icon-residential-house.svg';
+import RentIcon from 'public_assets/icon-residential-apartment.svg';
+import CommercialIcon from 'public_assets/icon-commercial-retail.svg';
+import LandIcon from 'public_assets/icon-land-wooded.svg';
+
+
 const mapStateToProps = (state, ownProps) => {
   return {}
 };
@@ -83,7 +89,7 @@ class SaleTypeHeaderSelection extends Component {
               event.preventDefault();
               this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Buy', propertyTypeOptions, historyPush)
             }}>
-              <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
+              <BuyIcon />
               <span>Buy</span>
             </a>
           </div>
@@ -92,7 +98,7 @@ class SaleTypeHeaderSelection extends Component {
               event.preventDefault();
               this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Rent', propertyTypeOptions, historyPush)
             }}>
-              <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
+              <RentIcon />
               <span>Rent</span>
             </a>
           </div>
@@ -101,7 +107,7 @@ class SaleTypeHeaderSelection extends Component {
               event.preventDefault();
               this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Commercial', propertyTypeOptions, historyPush);
             }}>
-              <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
+              <CommercialIcon />
               <span>Commercial</span>
             </a>
           </div>
@@ -110,7 +116,7 @@ class SaleTypeHeaderSelection extends Component {
               event.preventDefault();
               this.handleSaleSelectionItemClick(this.props.currentURL, termFilters, location, 'Land', propertyTypeOptions, historyPush);
             }}>
-              <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
+              <LandIcon />
               <span>Land</span>
             </a>
           </div>

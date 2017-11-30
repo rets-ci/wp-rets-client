@@ -100,6 +100,8 @@ module.exports = {
       alias: {
         // root directory for all imports across the app
         'app_root': path.resolve(__dirname, 'src/'),
+        // root directory for image assts
+        'public_assets': path.resolve(__dirname, '../../images/src'),
         // this is so we can work with svg-react-loader after webpack upgrade
         'react$': path.join(__dirname, `/node_modules/react/${reactMainLocation}`),
         'slick-css': path.join(__dirname, '/node_modules/slick-carousel/slick/slick.css'),
