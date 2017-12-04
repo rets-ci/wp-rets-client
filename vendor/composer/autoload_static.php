@@ -22,6 +22,7 @@ class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
         'UsabilityDynamics\\WPRETSC\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\Houzez' => __DIR__ . '/../..' . '/lib/connectors/class-theme-houzez.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\Loader' => __DIR__ . '/../..' . '/lib/connectors/class-loader.php',
+        'UsabilityDynamics\\WPRETSC\\Connectors\\RealHomes' => __DIR__ . '/../..' . '/lib/connectors/class-theme-real-homes.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\WPML' => __DIR__ . '/../..' . '/lib/connectors/class-wpml.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\WPProperty' => __DIR__ . '/../..' . '/lib/connectors/class-wp-property.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\WPRABBIT' => __DIR__ . '/../..' . '/lib/connectors/class-wprabbit.php',

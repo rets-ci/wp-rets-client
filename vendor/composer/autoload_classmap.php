@@ -17,6 +17,7 @@ return array(
     'UsabilityDynamics\\WPRETSC\\Bootstrap' => $baseDir . '/lib/classes/class-bootstrap.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\Houzez' => $baseDir . '/lib/connectors/class-theme-houzez.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\Loader' => $baseDir . '/lib/connectors/class-loader.php',
+    'UsabilityDynamics\\WPRETSC\\Connectors\\RealHomes' => $baseDir . '/lib/connectors/class-theme-real-homes.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\WPML' => $baseDir . '/lib/connectors/class-wpml.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\WPProperty' => $baseDir . '/lib/connectors/class-wp-property.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\WPRABBIT' => $baseDir . '/lib/connectors/class-wprabbit.php',
