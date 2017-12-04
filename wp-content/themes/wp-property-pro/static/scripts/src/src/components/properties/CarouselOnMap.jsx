@@ -85,6 +85,20 @@ export default class CarouselOnMap extends Component {
         }
         </Swiper>
       }
+
+      { properties.length === 0 &&
+        <div className={`${Lib.THEME_CLASSES_PREFIX}noresults-banner`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}banner__image`}
+            style={{ backgroundImage: `url(${bundle.static_images_url}no-results-banner.png)` }}
+          />
+          <h1 className={`${Lib.THEME_CLASSES_PREFIX}banner__title`}>
+            { 'No Results' }
+          </h1>
+          <p className={`${Lib.THEME_CLASSES_PREFIX}banner__text`}>
+            { 'Your search does not match any listings. Try zooming out or removing your filters.' }
+          </p>
+        </div>
+      }
       </div>
     );
   }
