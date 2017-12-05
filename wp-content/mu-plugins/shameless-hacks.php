@@ -156,8 +156,8 @@ add_filter( 'wpp:elastic:title_suggest:contexts', function( $contexts ) {
 
 /**
  *
- * - Add rets_mls_number and wpp_address_formatted_simple to search input.
- * - Add wpp_address_formatted_simple and rets_mls_number to title payload.
+ * - Add rets_id and formatted_address_simple to search input.
+ * - Add formatted_address_simple and rets_id to title payload.
  * - Extend contexts with sale_status
  *
  */
@@ -166,8 +166,8 @@ add_filter( 'wpp:elastic:title_suggest', function( $title_suggest, $post_args, $
   // add MLS Number and Formatted Address
   $title_suggest['input'] = array_filter( array_merge(
     $title_suggest['input'],
-    $post_args['post_meta']['rets_mls_number'],
-    isset( $post_args['post_meta']['wpp_address_formatted_simple'] ) ? $post_args['post_meta']['wpp_address_formatted_simple'] : array()
+    $post_args['post_meta']['rets_id'],
+    isset( $post_args['post_meta']['formatted_address_simple'] ) ? $post_args['post_meta']['formatted_address_simple'] : array()
   ));
 
   $contexts = !empty( $title_suggest['contexts'] ) ? $title_suggest['contexts'] : array();
