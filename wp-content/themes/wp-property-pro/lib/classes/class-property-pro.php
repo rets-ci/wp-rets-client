@@ -115,7 +115,6 @@ namespace UsabilityDynamics {
       wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js', [], null, true);
       wp_enqueue_style('property-pro-bootstrap-css', $this->_stylesDir . '/src/bootstrap.min.css');
       wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/dist.css');
-      wp_enqueue_style('style', get_stylesheet_uri());
 
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'jquery' ), null, true);
