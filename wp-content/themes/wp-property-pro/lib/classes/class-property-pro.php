@@ -184,9 +184,11 @@ namespace UsabilityDynamics {
 
           $new_user = new \stdClass();
 
+          $new_user->data = new \stdClass();
           $new_user->data->display_name = $user->display_name;
 
           if($meta){
+            $new_user->data->meta = new \stdClass();
             $new_user->data->meta->phone_number = isset($meta['phone_number']) ? $meta['phone_number'] : '';
             $new_user->data->meta->sale_type = isset($meta['sale_type']) ? $meta['sale_type'] : '';
             $new_user->data->meta->triangle_mls_id = isset($meta['triangle_mls_id']) ? $meta['triangle_mls_id'] : '';
