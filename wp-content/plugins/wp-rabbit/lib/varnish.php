@@ -115,7 +115,7 @@ function rabbit_purge_url( $url, $args = array() ) {
 
   $parse = parse_url($url);
 
-  if( !$parse['path'] ) {
+  if( !isset( $parse['path'] ) || !$parse['path'] ) {
     return false;
   }
 
@@ -136,23 +136,24 @@ function rabbit_purge_url( $url, $args = array() ) {
     $_purge_url = $_purge_url . '?' . $parse['query'];
   }
   
-  $_bracch = isset($_SERVER['GIT_BRANCH'])?$_SERVER['GIT_BRANCH']:'';
+  $_branch = isset($_SERVER['GIT_BRANCH'])?$_SERVER['GIT_BRANCH']:'';
 
   // make purge request to wpcloud.io. (this gets public DNS of wpcloud servers and then uses GCE load balancers to purge the appropriate machien based on hostname)
   $_purge = wp_remote_request( $_purge_url, $purge_request_args );
 
   if( isset( $args['post_id'] ) ) {
-    rabbit_write_log( 'Post [' . $args['post_id']. '] updated. Purging cache at [' . $parse['host'] . $_purge_url . '] url for ['.$_bracch.'] branch.' );
+    rabbit_write_log( 'Post [' . $args['post_id']. '] updated. Purging cache at [' . $parse['host'] . str_replace( 'http://c.rabbit.ci', '', $_purge_url ) . '] url for ['.$_branch.'] branch.' );
   } else {
-    rabbit_write_log( 'Purging cache at [' . $parse['host'] . $_purge_url . '] url for ['.$_bracch.'] branch.' );
+    rabbit_write_log( 'Purging cache at [' . $parse['host'] . str_replace( 'http://c.rabbit.ci', '', $_purge_url )  . '] url for ['.$_branch.'] branch.' );
   }
 
   if( $_purge && wp_remote_retrieve_body( $_purge ) && defined( "WP_DEBUG" ) ) {
 
-    try {
-      $_response = json_decode( wp_remote_retrieve_body( $_purge ) );
-      rabbit_write_log( ' - Purge response for [' . $_purge_url . '], [' . $_response->message . '].' );
 
+    try {
+      $_response = json_decode( wp_remote_retrieve_body( $_purge ), true );
+	    $_response  = (object) array_merge( array( "branch" => $_branch, "url" => $_purge_url ), $_response  );
+      rabbit_write_log( 'Purge response for [' . str_replace( 'http://c.rabbit.ci', '', $_purge_url )  . '], [' . $_response->message . '].' );
     } catch ( Exception $e ) {
       rabbit_write_log( ' - Unable to parse purge response.' );
     }
