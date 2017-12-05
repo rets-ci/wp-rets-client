@@ -9,7 +9,7 @@ const Footer = ({history, openFormModal}) => {
   let pathRoot = get(location, 'pathname', '').replace(/\//g, '');
 
   // Don't display footer for properties base page and guide
-  if(pathRoot === get(wpp, 'instance.settings.configuration.base_slug', '') || pathRoot.indexOf('search') >= 0 || pathRoot.indexOf('guide') !== -1){
+  if(pathRoot.indexOf('search') >= 0 || pathRoot.indexOf('guide') !== -1){
     return null;
   }
   return (
