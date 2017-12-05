@@ -248,7 +248,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		);
 		$wrapper_attr_string = '';
 		foreach ( $data as $name => $value ) {
-			$wrapper_attr_string = ' data-' . esc_html( $name ) . '="' . esc_attr( $value ) . '"';
+			$wrapper_attr_string .= ' data-' . esc_html( $name ) . '="' . esc_attr( $value ) . '"';
 		}
 
 		return $wrapper_attr_string;
@@ -467,8 +467,8 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 				$this->fields[$field_name] = $field;
 			}
 			?>
-			<input type="hidden" name="<?php echo $this->get_field_name('_sow_form_id') ?>" value="<?php echo esc_attr( $instance['_sow_form_id'] ) ?>" class="siteorigin-widgets-form-id" />
-			<input type="hidden" name="<?php echo $this->get_field_name('_sow_form_timestamp') ?>" value="<?php echo ! empty( $instance['_sow_form_timestamp'] ) ? esc_attr( $instance['_sow_form_timestamp'] ) : '' ?>" class="siteorigin-widgets-form-timestamp" />
+			<input type="hidden" name="<?php echo $this->so_get_field_name('_sow_form_id') ?>" value="<?php echo esc_attr( $instance['_sow_form_id'] ) ?>" class="siteorigin-widgets-form-id" />
+			<input type="hidden" name="<?php echo $this->so_get_field_name('_sow_form_timestamp') ?>" value="<?php echo ! empty( $instance['_sow_form_timestamp'] ) ? esc_attr( $instance['_sow_form_timestamp'] ) : '' ?>" class="siteorigin-widgets-form-timestamp" />
 		</div>
 		<div class="siteorigin-widget-form-no-styles">
 			<?php $this->scripts_loading_message() ?>
@@ -481,7 +481,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		<?php endif; ?>
 
 		<?php if( !empty( $this->widget_options['help'] ) ) : ?>
-			<a href="<?php echo sow_esc_url($this->widget_options['help']) ?>" class="siteorigin-widget-help-link siteorigin-panels-help-link" target="_blank"><?php _e('Help', 'so-widgets-bundle') ?></a>
+			<a href="<?php echo sow_esc_url($this->widget_options['help']) ?>" class="siteorigin-widget-help-link siteorigin-panels-help-link" target="_blank" rel="noopener noreferrer"><?php _e('Help', 'so-widgets-bundle') ?></a>
 		<?php endif; ?>
 
 		<script type="text/javascript">

@@ -373,8 +373,10 @@ var sowbForms = window.sowbForms || {};
 			// Setup the Builder fields
 			if (typeof jQuery.fn.soPanelsSetupBuilderWidget !== 'undefined') {
 				$fields.filter('.siteorigin-widget-field-type-builder').each(function () {
-					var $$ = $(this);
-					$$.find('> .siteorigin-page-builder-field').soPanelsSetupBuilderWidget();
+					$( this ).find( '> .siteorigin-page-builder-field' ).each( function () {
+						var $$ = $( this );
+						$$.soPanelsSetupBuilderWidget( { builderType: $$.data( 'type' ) } );
+					} );
 				});
 			}
 
@@ -539,8 +541,8 @@ var sowbForms = window.sowbForms || {};
 
 				// Update the field names for all the input items
 				$$.find('.siteorigin-widget-input').each(function (i, input) {
-					var pos = $(input).data('repeater-positions');
 					var $in = $(input);
+					var pos = $in.data('repeater-positions');
 
 					if (typeof pos !== 'undefined') {
 						var newName = $in.attr('data-original-name');
@@ -588,6 +590,9 @@ var sowbForms = window.sowbForms || {};
 				handle: '.siteorigin-widget-field-repeater-item-top',
 				items: '> .siteorigin-widget-field-repeater-item',
 				update: function () {
+					// Clear `name` attributes for radio inputs. They'll be reassigned on update.
+					// This prevents some radio inputs values being cleared during the update process.
+					$items.find( 'input[type="radio"].siteorigin-widget-input' ).attr( 'name', '' );
 					$items.trigger('updateFieldPositions');
 				},
 				sortstop: function (event, ui) {
@@ -1027,9 +1032,18 @@ var sowbForms = window.sowbForms || {};
 		});
 		return data;
 	};
-
-	sowbForms.setWidgetFormValues = function (formContainer, data) {
-
+	
+	
+	/**
+	 * Sets all the widget form fields in the given container with the given data values.
+	 *
+	 * @param formContainer The jQuery element containing the widget form fields.
+	 * @param data The data from which to set the widget form field values.
+	 * @param skipMissingValues If `true`, this will skip form fields for which the data values are missing.
+	 * 							If `false`, the form fields will be cleared. Default is `false`.
+	 */
+	sowbForms.setWidgetFormValues = function (formContainer, data, skipMissingValues) {
+		skipMissingValues = skipMissingValues || false;
 		// First check if this form has any repeaters.
 		var depth = 0;
 		var updateRepeaterChildren = function ( formParent, formData ) {
@@ -1041,7 +1055,7 @@ var sowbForms = window.sowbForms || {};
 				var $repeater = $( this ).find( '> .siteorigin-widget-field-repeater' );
 				var repeaterName = $repeater.data( 'repeaterName' );
 				var repeaterData = formData.hasOwnProperty( repeaterName ) ? formData[ repeaterName ] : null;
-				if ( ! repeaterData || ! Array.isArray( repeaterData ) || repeaterData.length === 0 ) {
+				if ( ! repeaterData || ! Array.isArray( repeaterData ) ) {
 					return;
 				}
 				// Check that the number of child items matches the number of data items.
@@ -1054,7 +1068,7 @@ var sowbForms = window.sowbForms || {};
 						$repeater.find( '> .siteorigin-widget-field-repeater-add' ).click();
 					}
 
-				} else if ( numItems < numChildren ) {
+				} else if ( ! skipMissingValues && numItems < numChildren ) {
 					// If child items > data items, remove extra child items.
 					for ( var j = numItems; j < numChildren; j++) {
 						var $child = $( repeaterChildren.eq( j ) );
@@ -1080,7 +1094,7 @@ var sowbForms = window.sowbForms || {};
 			var $$ = $(this);
 			var name = /[a-zA-Z0-9\-]+\[[a-zA-Z0-9]+\]\[(.*)\]/.exec($$.attr('name'));
 
-			if (name === undefined) {
+			if ( name === undefined || name === null ) {
 				return true;
 			}
 
@@ -1099,7 +1113,14 @@ var sowbForms = window.sowbForms || {};
 			var sub = data;
 			var value;
 			for (var i = 0; i < parts.length; i++) {
-
+				// If the field is missing from the data, just leave `value` as `undefined`.
+				if ( ! sub.hasOwnProperty( parts[ i ] ) ) {
+					if ( skipMissingValues ) {
+						return true;
+					} else {
+						break;
+					}
+				}
 				if (i === parts.length - 1) {
 					value = sub[ parts[ i ] ];
 				} else {
@@ -1108,7 +1129,7 @@ var sowbForms = window.sowbForms || {};
 			}
 
 			// This is the end, so we need to set the value on the field here.
-			if ( $$.attr( 'type' ) === 'checkbox' )  {
+			if ( $$.attr( 'type' ) === 'checkbox' ) {
 				$$.prop( 'checked', value );
 			} else if ( $$.attr( 'type' ) === 'radio' ) {
 				$$.prop( 'checked', value === $$.val() );
