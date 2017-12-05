@@ -122,7 +122,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     doSearchWithQuery: (query, append) => {
       let url = Api.getPropertySearchRequestURL();
-      dispatch(requestSearchResultsPosts());
+      dispatch(requestSearchResultsPosts(append));
       Api.search(url, query, (err, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
