@@ -1,3 +1,9 @@
+### 1.1.1
+* Added [rabbit purge] CLI command to purge Varnish/CloudFront.
+
+### 1.1.0
+* Protected branch support.
+
 ### 1.0.9
 * Support for getting Git Branch from disk, if `$_SERVER[GIT_BRANCH]` is not set.
 

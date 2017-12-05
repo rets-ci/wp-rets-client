@@ -26,3 +26,10 @@ git clone git@github.com:RabbitCI/wp-rabbit.git wp-content/plugins/wp-rabbit
 Add `wp-content/plugins/wp-rabbit/.git` to .gitignores on the main project while developing locally. 
 
 Be advised, once you push to GitHub the site you are working on will update the plugin almost immediatly.
+
+
+### Constants
+
+* CI_RABBIT_STATE_PROTECTED
+* CI_RABBIT_STATE_SETUP
+* CI_RABBIT_STATE_PROVISIOEND
