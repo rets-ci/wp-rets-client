@@ -2201,7 +2201,8 @@ ul.card-header-tabs {
 /*-----------------------------------------------------------------------------------*/
 .propertypro-property-single-carousel {
   position: relative;
-  background: #eceeef; }
+  background: #eceeef;
+  /* less than 767px */ }
   .propertypro-property-single-carousel .swiper-container {
     position: relative;
     width: 100%;
@@ -2238,6 +2239,9 @@ ul.card-header-tabs {
   .propertypro-property-single-carousel .propertypro-direction-nav .propertypro-nav-prev,
   .propertypro-property-single-carousel .propertypro-direction-nav .propertypro-nav-next {
     opacity: 1; }
+  @media screen and (max-width: 47.938em) {
+    .propertypro-property-single-carousel {
+      min-height: auto !important; } }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Agent Contact Form
@@ -2582,6 +2586,11 @@ ul.card-header-tabs {
     height: 1rem;
     overflow: hidden;
     padding-right: 1rem; }
+
+/* Extra small devices (portrait phones, less than 640px) */
+@media screen and (max-width: 40em) {
+  .propertypro-content-placeholder.propertypro-card {
+    border-bottom: 1px solid #d2dae0 !important; } }
 
 /* @TODO split this file into components */
 /**
