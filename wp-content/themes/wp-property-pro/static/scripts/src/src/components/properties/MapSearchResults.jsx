@@ -406,6 +406,7 @@ class MapSearchResults extends Component {
         properties={displayedResults}
         selectedProperty={searchFilters.selected_property}
         onChangeSlide={this.updateSelectedProperty}
+        isFetching={isFetching}
       />
     );
 

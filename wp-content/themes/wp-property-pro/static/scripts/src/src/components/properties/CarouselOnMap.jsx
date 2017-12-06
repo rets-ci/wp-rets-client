@@ -4,8 +4,9 @@ import Swiper from 'react-id-swiper';
 import get from 'lodash/get';
 import map from 'lodash/map';
 
-import { Lib } from '../../lib.jsx';
-import PropertyCard from '../PropertyCard.jsx';
+import { Lib }      from 'app_root/lib.jsx';
+import PropertyCard from 'app_root/components/PropertyCard.jsx';
+import SearchResultListingPlaceholder from 'app_root/components/properties/SearchResultListingPlaceholder.jsx';
 
 
 export default class CarouselOnMap extends Component {
@@ -35,7 +36,7 @@ export default class CarouselOnMap extends Component {
   }
 
   render() {
-    const { properties } = this.props;
+    const { properties, isFetching } = this.props;
     const swiperParams = {
       slidesPerView: 1,
       slidesPerGroup: 1,
@@ -86,7 +87,7 @@ export default class CarouselOnMap extends Component {
         </Swiper>
       }
 
-      { properties.length === 0 &&
+      { properties.length === 0 && !isFetching &&
         <div className={`${Lib.THEME_CLASSES_PREFIX}noresults-banner`}>
           <div className={`${Lib.THEME_CLASSES_PREFIX}banner__image`}
             style={{ backgroundImage: `url(${bundle.static_images_url}no-results-banner.png)` }}
@@ -98,6 +99,13 @@ export default class CarouselOnMap extends Component {
             { 'Your search does not match any listings. Try zooming out or removing your filters.' }
           </p>
         </div>
+      }
+      { properties.length === 0 && isFetching &&
+        <SearchResultListingPlaceholder
+          isFetching={ isFetching }
+          isMobile={ true }
+          onInit={ () => {} }
+        />
       }
       </div>
     );
