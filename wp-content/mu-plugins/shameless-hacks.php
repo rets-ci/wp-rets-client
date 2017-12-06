@@ -111,8 +111,16 @@ add_action( 'after_setup_theme', function() {
   remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
   // Remove oEmbed-specific JavaScript from the front-end and back-end.
   remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+
   // Remove all embeds rewrite rules.
-  add_filter( 'rewrite_rules_array', 'disable_embeds_rewrites' );
+  add_filter( 'rewrite_rules_array', function ($rules) {
+    foreach($rules as $rule => $rewrite) {
+      if(false !== strpos($rewrite, 'embed=true')) {
+        unset($rules[$rule]);
+      }
+    }
+    return $rules;
+  } );
 
 } );
 
