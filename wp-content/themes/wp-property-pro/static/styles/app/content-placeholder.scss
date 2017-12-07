@@ -23,8 +23,6 @@
   }
 
   // property cards on map view
-
-
   .propertypro-card-img {
     line-height: 0;
   }
@@ -52,6 +50,20 @@
       height: 1rem;
       overflow: hidden;
       padding-right: 1rem;
+    }
+  }
+
+  // property single
+  .propertypro-single-masthead {
+    h4 {
+      width: 50%;
+      height: 1.625rem;
+      overflow: hidden;
+    }
+    h6 {
+      width: 25%;
+      height: 1rem;
+      overflow: hidden;
     }
   }
 }
