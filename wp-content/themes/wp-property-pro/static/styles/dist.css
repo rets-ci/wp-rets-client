@@ -2597,10 +2597,14 @@ ul.card-header-tabs {
   height: 1rem;
   overflow: hidden; }
 
-/* Extra small devices (portrait phones, less than 640px) */
-@media screen and (max-width: 40em) {
+/* less than 767px */
+@media screen and (max-width: 47.938em) {
   .propertypro-content-placeholder.propertypro-card {
-    border-bottom: 1px solid #d2dae0 !important; } }
+    border-bottom: 1px solid #d2dae0 !important; }
+  .propertypro-content-placeholder .propertypro-single-masthead h4 {
+    width: 80%; }
+  .propertypro-content-placeholder .propertypro-single-masthead h6 {
+    width: 50%; } }
 
 /* @TODO split this file into components */
 /**

@@ -11,15 +11,13 @@ import LoadingCircle from 'app_root/components/LoadingCircle.jsx';
 const Placeholder = ({ viewport }) => {
 
   let carouselClass = `${Lib.THEME_CLASSES_PREFIX}property-single-carousel`;
-  let carouselHeight;
+  let carouselHeight = '600px';
 
   if (viewport.isMobile) {
-    carouselHeight = viewport.width;
+    carouselHeight = viewport.width + 'px';
   } else if (viewport.isShort) {
     carouselHeight = '400px';
     carouselClass += ` ${Lib.THEME_CLASSES_PREFIX}viewport-short`;
-  } else {
-    carouselHeight = '600px';
   }
 
   return (
