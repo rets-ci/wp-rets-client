@@ -14,7 +14,7 @@ const Placeholder = ({ viewport }) => {
   let carouselHeight = '600px';
 
   if (viewport.isMobile) {
-    carouselHeight = viewport.width;
+    carouselHeight = viewport.width + 'px';
   } else if (viewport.isShort) {
     carouselHeight = '400px';
     carouselClass += ` ${Lib.THEME_CLASSES_PREFIX}viewport-short`;
