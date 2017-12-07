@@ -360,7 +360,7 @@ class Api {
         buckets.push({
           id: get(city, '_source.slug'),
           text: get(city, '_source.name'),
-          term: get(city, '_source.name'),
+          term: get(city, '_source.slug'),
           termType: cityTaxonomy,
           taxonomy: cityTaxonomy,
           label: get(city, '_source.meta.et_label'),
