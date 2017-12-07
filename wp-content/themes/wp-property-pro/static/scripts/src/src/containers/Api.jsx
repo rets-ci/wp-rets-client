@@ -363,8 +363,8 @@ class Api {
           term: get(city, '_source.name'),
           termType: cityTaxonomy,
           taxonomy: cityTaxonomy,
-          label: get(city, '_source.meta.et_custom_label'),
-          images: get(city, '_source.meta.et_custom_images'),
+          label: get(city, '_source.meta.et_label'),
+          images: get(city, '_source.meta.et_images'),
         });
       }
 
