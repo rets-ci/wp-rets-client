@@ -38,9 +38,12 @@ export default class CarouselOnMap extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // after loading more props, go to selected property
+    // after loading more props, update selected_property
     if (prevProps.properties.length !== this.props.properties.length) {
-      this.slideToId(this.props.selectedProperty);
+      const property = this.props.properties[ prevProps.properties.length ];
+      if (property) {
+        this.props.onChangeSlide(get(property, '_source.post_meta.rets_mls_number[0]', null));
+      }
     }
   }
 
@@ -63,7 +66,7 @@ export default class CarouselOnMap extends Component {
       spaceBetween: 0,
       onInit: (swiper) => {
         this.swiper = swiper;
-        // this.swiper.on('slideChangeStart', this.handleSlideChange);
+        // this.swiper.on('slideChangeEnd', this.handleSlideChange);
         this.swiper.on('transitionStart', throttle(this.handleSlideChange, 2000)); // fired twice each slide change
       }
     };
