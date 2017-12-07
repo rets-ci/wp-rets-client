@@ -1,6 +1,7 @@
 import React from 'react';
 import {Lib} from '../lib.jsx';
 import get from 'lodash/get';
+import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
 import replace from 'lodash/replace';
 import Util from '../components/Util.jsx';
@@ -122,32 +123,22 @@ class Api {
     };
   }
 
-  static getTopAggregations() {
-    return {
-      "aggs": {
-        "location_city_name": {
-          "terms": {
-            "title": "Filter by Popular City",
-            "field": "tax_input.location_city.location_city.name.raw",
-          },
-            "total_terms": {
-                "cardinality": {
-                    "field": "tax_input.location_city.location_city.name.raw"
-                }
-            },
-          "meta": {
-            "term_type": "location_city"
-          }
-        },
-        "location_city_slug": {
-          "terms": {
-            "title": "Filter by Popular City",
-            "field": "tax_input.location_city.location_city.slug",
-          }
-        }
-      }
-    };
+  static getTopCities(){
+    return [
+      'Durham',
+      'Raleigh',
+      'Chapel Hill',
+      'Carrboro',
+      'Cary',
+      'Apex',
+      'Morrisville',
+      'Hillsborough',
+      'Holly Springs',
+      'Fuquay Varina',
+      'Garner'
+    ]
   }
+
 
   static autocompleteQuery(params, callback) {
 
@@ -315,37 +306,32 @@ class Api {
 
   static topQuery(params, callback) {
 
-    let rows = [
-      {
-        'order_key': 'city'
-      }
-    ];
+    let rows = [];
+    let cityTaxonomy = 'location_city';
 
-    let aggregations = this.getTopAggregations().aggs;
+    // Get top cities array
+    let cities = this.getTopCities();
+
+    // Build the query body
     let body = {
-      "aggs": {}
-    };
-    for (let aggIndex in aggregations) {
-      let aggregation = aggregations[aggIndex];
-
-      body.aggs[aggIndex] = {
-        "terms": {
-          "field": get(aggregation, 'terms.field', ''),
-          "size": Lib.AGGREGATION_LOAD_LIMIT
+      "query": {
+        "bool": {
+          "must": [{
+            "terms": {
+              "name.raw": cities
+            }
+          }],
+          "filter": {
+            "term": {
+              "taxonomy": cityTaxonomy
+            }
+          }
         }
-      };
-
-      if (aggregation.meta) {
-        body.aggs[aggIndex]['meta'] = aggregation.meta;
       }
-
-      if (aggregation.total_terms) {
-          body.aggs[aggIndex + '_count'] = aggregation.total_terms;
-      }
-    }
+    };
 
     Api.makeRequest({
-      'url': Api.getPropertySearchRequestURL(0),
+      'url': Api.getPropertySearchRequestURL(),
       'query': {
         data: JSON.stringify(body)
       }
@@ -353,54 +339,40 @@ class Api {
       if (err) {
         return callback(err);
       }
-      let responseAggs = get(response, 'aggregations');
+      let citiesResponse = get(response, 'hits.hits');
 
-      for (let i in responseAggs) {
+      // Sorting received array with original array
+      citiesResponse = sortBy(citiesResponse, cityItem => {
+        let index = 0;
 
-        if (i.indexOf('slug') !== -1) {
-          continue;
-        }
-
-        let data = null;
-        let _buckets = [];
-        let term = responseAggs[i];
-        let meta = responseAggs[i].meta;
-
-        if (get(term, 'buckets', null) === null) {
-          continue;
-        }
-
-        for (let ind in term.buckets) {
-
-          let bucket = term.buckets[ind];
-
-          if (get(bucket, 'key', null) !== null) {
-            _buckets.push({
-              id: get(bucket, 'key', ''),
-              text: get(bucket, 'key', ''),
-              term: get(responseAggs[replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
-              termType: get(meta, 'term_type', ''),
-              count: get(bucket, 'doc_count', ''),
-              taxonomy: get(meta, 'term_type', '')
-            });
-
+        for(let ind in cities){
+          if(get(cityItem, '_source.name') === cities[ind]){
+            index = ind;
           }
         }
+        return index;
+      });
 
-        if (_buckets.length > 0) {
-          data = Object.assign({}, data, {
-            key: i,
-            text: get(aggregations[i], 'terms.title'),
-            children: _buckets
-          });
+      let buckets = [];
+      for (let c in citiesResponse) {
+        let city = citiesResponse[c];
 
-          for (let r in rows) {
-            if (i.indexOf(rows[r].order_key) !== -1) {
-              rows[r] = data;
-            }
-          }
-        }
+        buckets.push({
+          id: get(city, '_source.slug'),
+          text: get(city, '_source.name'),
+          term: get(city, '_source.name'),
+          termType: cityTaxonomy,
+          taxonomy: cityTaxonomy,
+          label: get(city, '_source.meta.et_label'),
+          images: get(city, '_source.meta.et_images'),
+        });
       }
+
+      rows.push({
+        key: 0,
+        text: 'Filter by popular cities',
+        children: buckets
+      });
 
       callback(null, rows);
     });
