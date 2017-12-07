@@ -11,6 +11,18 @@ let defaultState = {
 
 const searchResults = (state = defaultState, action) => {
   switch (action.type) {
+    case Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:
+      if (!action.append) {
+        return {
+          ...defaultState,
+          isFetching: true
+        };
+      } else {
+        return {
+          ...state,
+          isFetching: true
+        }
+      }
     case Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION:
       let displayedResults = [];
       if (action.append) {

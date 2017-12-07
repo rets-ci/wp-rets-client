@@ -30,12 +30,12 @@ class PropertyCard extends Component {
   }
 
   handlePrevClick = (e) => {
-    e.stopPropagation();
+    e.preventDefault();
     this.swiper.slidePrev();
   }
 
   handleNextClick = (e) => {
-    e.stopPropagation();
+    e.preventDefault();
     this.swiper.slideNext();
   }
 
@@ -210,7 +210,7 @@ class PropertyCard extends Component {
           <Link to={link}>
             { cardImageBlock }
             { cardInfoBlock }
-            </Link>
+          </Link>
         </div>
       );
     }

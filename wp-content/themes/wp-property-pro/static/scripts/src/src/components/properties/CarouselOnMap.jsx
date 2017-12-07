@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import Swiper from 'react-id-swiper';
 import get from 'lodash/get';
 import map from 'lodash/map';
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 
-import { Lib } from '../../lib.jsx';
-import PropertyCard from '../PropertyCard.jsx';
+import { Lib }      from 'app_root/lib.jsx';
+import PropertyCard from 'app_root/components/PropertyCard.jsx';
+import SearchResultListingPlaceholder from 'app_root/components/properties/SearchResultListingPlaceholder.jsx';
 
 
 export default class CarouselOnMap extends Component {
@@ -30,28 +33,44 @@ export default class CarouselOnMap extends Component {
   slideToId = (propertyId) => {
     const index = (this.props.properties || []).findIndex(e => get(e, '_source.post_meta.rets_mls_number[0]', null) === propertyId);
     if (this.swiper && index > -1) {
-      this.swiper.slideTo(index);
+      this.swiper.slideTo(index, 0);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // after loading more props, go to selected property
+    if (prevProps.properties.length !== this.props.properties.length) {
+      this.slideToId(this.props.selectedProperty);
+    }
+  }
+
+  handleSlideChange = () => {
+    const { isEnd, activeIndex, previousIndex } = this.swiper;
+    const property = this.props.properties[ activeIndex ];
+
+    this.props.onChangeSlide(get(property, '_source.post_meta.rets_mls_number[0]', null));
+
+    if (isEnd && activeIndex === previousIndex) {
+      this.props.onLoadMore();
     }
   }
 
   render() {
-    const { properties } = this.props;
+    const { properties, isFetching } = this.props;
     const swiperParams = {
       slidesPerView: 1,
       slidesPerGroup: 1,
       spaceBetween: 0,
       onInit: (swiper) => {
         this.swiper = swiper;
-      },
-      onSlideChangeEnd: (swiper) => {
-        const property = this.props.properties[ swiper.activeIndex ];
-        this.props.onChangeSlide(get(property, '_source.post_meta.rets_mls_number[0]', null));
+        // this.swiper.on('slideChangeStart', this.handleSlideChange);
+        this.swiper.on('transitionStart', throttle(this.handleSlideChange, 2000)); // fired twice each slide change
       }
     };
 
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap hidden-sm-up`}>
-      { properties.length > 0 &&
+      { !isFetching && properties.length > 0 &&
         <Swiper {...swiperParams}>
         {
           properties.map((p, key) => {
@@ -77,13 +96,34 @@ export default class CarouselOnMap extends Component {
             };
 
             return (
-              <div className="swiper-slide" key={key}>
+              <div className="swiper-slide" key={p._id}>
                 <PropertyCard data={item} />
               </div>
             )
           })
         }
         </Swiper>
+      }
+
+      { properties.length === 0 && !isFetching &&
+        <div className={`${Lib.THEME_CLASSES_PREFIX}noresults-banner`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}banner__image`}
+            style={{ backgroundImage: `url(${bundle.static_images_url}no-results-banner.png)` }}
+          />
+          <h1 className={`${Lib.THEME_CLASSES_PREFIX}banner__title`}>
+            { 'No Results' }
+          </h1>
+          <p className={`${Lib.THEME_CLASSES_PREFIX}banner__text`}>
+            { 'Your search does not match any listings. Try zooming out or removing your filters.' }
+          </p>
+        </div>
+      }
+      { isFetching &&
+        <SearchResultListingPlaceholder
+          isFetching={ isFetching }
+          isMobile={ true }
+          onInit={ () => {} }
+        />
       }
       </div>
     );

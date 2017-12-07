@@ -124,9 +124,10 @@ export const receiveLocationModalPosts = (posts) => {
   }
 };
 
-export const requestSearchResultsPosts = () => {
+export const requestSearchResultsPosts = (append) => {
   return {
-    type: Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION
+    type: Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION,
+    append: append
   }
 };
 

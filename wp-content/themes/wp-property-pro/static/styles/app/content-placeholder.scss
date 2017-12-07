@@ -23,6 +23,8 @@
   }
 
   // property cards on map view
+
+
   .propertypro-card-img {
     line-height: 0;
   }
@@ -51,5 +53,12 @@
       overflow: hidden;
       padding-right: 1rem;
     }
+  }
+}
+
+/* Extra small devices (portrait phones, less than 640px) */
+@media screen and (max-width: 40.000em) {
+  .propertypro-content-placeholder.propertypro-card {
+    border-bottom: 1px solid #d2dae0 !important;
   }
 }
