@@ -2587,6 +2587,16 @@ ul.card-header-tabs {
     overflow: hidden;
     padding-right: 1rem; }
 
+.propertypro-content-placeholder .propertypro-single-masthead h4 {
+  width: 50%;
+  height: 1.625rem;
+  overflow: hidden; }
+
+.propertypro-content-placeholder .propertypro-single-masthead h6 {
+  width: 25%;
+  height: 1rem;
+  overflow: hidden; }
+
 /* Extra small devices (portrait phones, less than 640px) */
 @media screen and (max-width: 40em) {
   .propertypro-content-placeholder.propertypro-card {
