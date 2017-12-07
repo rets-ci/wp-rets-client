@@ -481,14 +481,25 @@ class MapSearchResults extends Component {
             </div>
           }
 
-          <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
-            { captionElement }
-            { !isMobile && propertyPanelElement }
-            { mapElement }
-            { isMobile && sliderElement }
-          </div>
+          { !isMobile &&
+            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+              { captionElement }
+              { propertyPanelElement }
+              { mapElement }
+            </div>
+          }
 
-          { isMobile && mobileNavigatorElement }
+          { isMobile &&
+            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map`}>
+              { captionElement }
+              { mapElement }
+              { sliderElement }
+            </div>
+          }
+
+          { isMobile &&
+            mobileNavigatorElement
+          }
 
         </section>
       </div>
