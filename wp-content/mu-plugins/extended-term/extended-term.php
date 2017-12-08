@@ -76,7 +76,7 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
 
       $termmeta = $this->get_term_meta( $post->ID );
 
-      $this->update_term_meta( $term_id, $termmeta, $taxonomy );
+      $this->update_term_meta( $term_id, $termmeta );
 
     }
 
