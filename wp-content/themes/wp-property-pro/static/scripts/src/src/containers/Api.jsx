@@ -2,6 +2,7 @@ import React from 'react';
 import {Lib} from '../lib.jsx';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
+import reverse from 'lodash/reverse';
 import isEmpty from 'lodash/isEmpty';
 import replace from 'lodash/replace';
 import Util from '../components/Util.jsx';
@@ -341,40 +342,64 @@ class Api {
       }
       let citiesResponse = get(response, 'hits.hits');
 
-      // Sorting received array with original array
-      citiesResponse = sortBy(citiesResponse, cityItem => {
-        let index = 0;
-
-        for(let ind in cities){
-          if(get(cityItem, '_source.name') === cities[ind]){
-            index = ind;
+      // Send new aggregations request to getting listings count for each terms
+      let body = {
+        "aggregations":{
+          "location_city":{
+            "terms":{
+              "field": "tax_input." + cityTaxonomy + "." + cityTaxonomy + ".name.raw",
+              "size": 300
+            },
+            "meta":{
+              "term_type" : cityTaxonomy
+            }
           }
         }
-        return index;
-      });
+      };
 
-      let buckets = [];
-      for (let c in citiesResponse) {
-        let city = citiesResponse[c];
+      Api.makeRequest({
+        'url': Api.getPropertySearchRequestURL(),
+        'query': {
+          data: JSON.stringify(body)
+        }
+      }, function (err, aggResponse) {
+        let items = get(aggResponse, 'aggregations.'+cityTaxonomy+'.buckets', []);
 
-        buckets.push({
-          id: get(city, '_source.slug'),
-          text: get(city, '_source.name'),
-          term: get(city, '_source.slug'),
-          termType: cityTaxonomy,
-          taxonomy: cityTaxonomy,
-          label: get(city, '_source.meta.et_label'),
-          images: get(city, '_source.meta.et_images'),
+        // Sorting received array by listings counts
+        citiesResponse = reverse(sortBy(citiesResponse, cityItem => {
+          let index = 0;
+
+          for(let ind in items){
+            if(get(cityItem, '_source.name') === get(items[ind], 'key')){
+              index = get(items[ind], 'doc_count');
+            }
+          }
+          return index;
+        }));
+
+        let buckets = [];
+        for (let c in citiesResponse) {
+          let city = citiesResponse[c];
+
+          buckets.push({
+            id: get(city, '_source.slug'),
+            text: get(city, '_source.name'),
+            term: get(city, '_source.slug'),
+            termType: cityTaxonomy,
+            taxonomy: cityTaxonomy,
+            label: get(city, '_source.meta.et_label'),
+            images: get(city, '_source.meta.et_images'),
+          });
+        }
+
+        rows.push({
+          key: 0,
+          text: 'Filter by popular cities',
+          children: buckets
         });
-      }
 
-      rows.push({
-        key: 0,
-        text: 'Filter by popular cities',
-        children: buckets
+        callback(null, rows);
       });
-
-      callback(null, rows);
     });
   }
 

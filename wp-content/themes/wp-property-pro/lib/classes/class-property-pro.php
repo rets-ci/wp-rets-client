@@ -176,7 +176,7 @@ namespace UsabilityDynamics {
         'admin_ajax_url' => admin_url('admin-ajax.php'),
         'template_url' => get_template_directory_uri(),
         'site_name' => esc_attr(get_bloginfo('name')),
-        'page_title' => get_bloginfo('name') . wp_title('»', false),
+        'page_title' => wp_title('&raquo;', false),
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
