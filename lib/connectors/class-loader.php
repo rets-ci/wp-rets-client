@@ -40,6 +40,13 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
           }
         } );
 
+        // Real homes theme connector
+        add_action( 'after_setup_theme', function() {
+          if( defined( 'REAL_HOMES_THEME_NAME' ) ) {
+            $this->connectors[] = new RealHomes();
+          }
+        } );
+
         // WP-Rabbit plugin connector
         // check if wp-rabbit plugin enabled by constant
         // which set in wp-rabbit plugin init
