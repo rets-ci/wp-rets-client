@@ -795,7 +795,37 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-search-modal .propertypro-modal-header {
     flex: 0 0 auto;
-    height: 6rem;
+    height: 5rem;
+}
+
+.propertypro-search-modal .propertypro-modal-header > .propertypro-logo {
+    padding: 0 2.5rem;
+}
+
+.propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav {
+    padding: 0 2.25rem;
+    cursor: pointer;
+}
+
+.propertypro-search-modal .propertypro-modal-header .propertypro-flex-wrapper {
+    position: relative;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow-x: hidden;
+
+    .propertypro-bs-tags-box {
+        overflow-x: auto;
+    }
+    &::after {
+      position: absolute;
+      content: '';
+      width: 3rem;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.001), white 50%);
+      top: 0;
+      right: -1px;
+      bottom: 0;
+      z-index: 2;
+    }
 }
 
 .propertypro-search-modal .propertypro-modal-body {
@@ -806,10 +836,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-search-modal .propertypro-close-panel {
     font-size: 2rem;
+    outline: 0;
 }
 
 .propertypro-search-modal .propertypro-modal-header {
-    padding: 1rem 0;
+    padding: 0;
 }
 
 .propertypro-search-modal .propertypro-modal-header i {
@@ -820,7 +851,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-search-modal .propertypro-modal-header input {
     font-size: 1.5rem;
     font-weight: 700;
-    padding-left: 1.5rem;
     border: 0;
 }
 
@@ -968,10 +998,6 @@ p.propertypro-gentle-error {
     overflow: auto;
     padding: 2.1875rem 0 5rem;
     background-color: #e9eff3;
-}
-
-.propertypro-advanced-filter .propertypro-bs-tags-box {
-    margin-left: 1.5rem;
 }
 
 .propertypro-advanced-filter form .button-group .btn-primary {

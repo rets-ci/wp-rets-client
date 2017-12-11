@@ -2,6 +2,34 @@
   z-index: 1100;
 }
 
+/***********
+  animation
+************/
+.propertypro-location-modal {
+  display: block;
+  transition: transform .3s ease-in-out, opacity .5s ease-in-out, visibility .5s ease-in-out;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+
+  &.remove {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0);
+  }
+
+  &.active {
+    .propertypro-modal-header {
+      transform: translateY(-500px);
+      animation: bounceInDown .3s .5s ease-in-out forwards;
+    }
+  }
+}
+// -- END of animations --
+
 .propertypro-search-title {
   color: #8b8c8d;
 }
@@ -33,7 +61,7 @@
 
 /* Extra small devices (portrait phones, less than 640px) */
 @media screen and (max-width: 40.000em) {
-  .propertypro-search-modal .propertypro-search-result-group {
+  .propertypro-location-modal .propertypro-search-result-group {
     margin-top: 1rem;
   }
 
@@ -46,6 +74,12 @@
         line-height: 2.25rem;
         margin-top: 0.5rem;
       }
+    }
+  }
+
+  .propertypro-search-modal.propertypro-location-modal .modal-header {
+    & > .propertypro-logo {
+      padding: 0 0.5rem;
     }
   }
 }

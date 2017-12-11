@@ -212,6 +212,7 @@ class LocationModal extends Component {
       errorMessage,
       isFetching,
       searchResults,
+      searchType,
     } = this.props;
     let resultsElements = searchResults.map(s => (
       <PaginatedSearchResults key={s.key} group={s} onClickResult={this.handleResultClick} />
@@ -233,44 +234,50 @@ class LocationModal extends Component {
       <div className={`modal ${searchModalClasses} ${Lib.THEME_CLASSES_PREFIX}location-modal`} onKeyDown={this.handleKeyPress.bind(this)}>
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`}>
           <div className={`modal-content border-0 ${Lib.THEME_CLASSES_PREFIX}modal-content`}>
-            <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
-              <div className="container">
-
-                <div className="d-flex flex-row filter-container">
-                  <div className="p-2 my-auto">
-                    <i className="fa fa-search"></i>
-                  </div>
-
-                  <div className="p-2 col-xl-10 col-lg-9 my-auto">
-                    <input
-                      autoComplete="off"
-                      className={inputClasses}
-                      id={Lib.THEME_PREFIX + "search-input"}
-                      onChange={this.handleSearchValueChange.bind(this)}
-                      ref={(input) => {
-                        this.searchInput = input;
-                      }}
-                      type="text"
-                      value={this.state.searchValue}
-                      placeholder={placeholder}
-                    />
-                  </div>
-
-                  <div className="p-2 my-auto hidden-sm-down">
-                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>
-                      Search
-                    </button>
-                  </div>
-
-                  <button type="button" className={`close p-2 my-auto ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
-                      e.preventDefault();
-                      this.props.closeModal();
-                    }} aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-
-                </div>
+            <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
+              <div className={`${Lib.THEME_CLASSES_PREFIX}logo`}>
+                <a href={get(bundle, 'site_url', '')}>
+                  <img src={bundle.logos.square_logo} alt={get(bundle, 'site_name', '')}
+                       className={`${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>
+                </a>
               </div>
+
+              <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav hidden-sm-down`}>
+                <a href="#">{ searchType }</a>
+              </div>
+
+              <div className="pl-2 pl-md-4 pr-2">
+                <i className="fa fa-search"></i>
+              </div>
+
+              <div className={ `${Lib.THEME_CLASSES_PREFIX}flex-wrapper` }>
+                <input
+                  autoComplete="off"
+                  className={inputClasses}
+                  id={Lib.THEME_PREFIX + "search-input"}
+                  onChange={this.handleSearchValueChange.bind(this)}
+                  ref={(input) => {
+                    this.searchInput = input;
+                  }}
+                  type="text"
+                  value={this.state.searchValue}
+                  placeholder={placeholder}
+                />
+              </div>
+
+              <div className="hidden-sm-down">
+                <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>
+                  Search
+                </button>
+              </div>
+
+              <button type="button" className={`close px-2 px-md-4 ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
+                  e.preventDefault();
+                  this.props.closeModal();
+                }} aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
             </div>
 
             <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
