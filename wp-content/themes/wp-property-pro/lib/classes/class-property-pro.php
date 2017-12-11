@@ -1018,6 +1018,16 @@ namespace UsabilityDynamics {
         $params['post']['scripts'] = $scripts;
       }
 
+      // Get head content
+      preg_match_all('/<head>(.*?)<\/head>/s', $output, $matches);
+
+      // Get head meta data
+      preg_match_all('~<([^/][^>]*?)>~', $matches[1][0], $arr, PREG_PATTERN_ORDER);
+      $arr = array_values(array_filter($arr[0], function($item){
+        return strpos($item, 'meta') != false;
+      }));;
+      $params['post']['head_tags'] = $arr;
+
       return wp_json_encode($params);
     }
 
