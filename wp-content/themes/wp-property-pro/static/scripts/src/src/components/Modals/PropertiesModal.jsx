@@ -621,44 +621,50 @@ class PropertiesModal extends Component {
           className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${open ? "active" : "remove"}`}>
           <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`} role="document">
             <div className="modal-content">
-              <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header hidden-md-down`}>
-                <div className="container">
-                  <div className="d-flex flex-row filter-container">
-                    <div className="p-2 my-auto">
-                      <i className="fa fa-search"></i>
-                    </div>
-                    <div className="p-2 col-xl-8 col-lg-8 my-auto">
-                      <FilterBar
-                        deleteSingleLocalFilter={(filterKey) => this.handleSingleFilterRemove(filterKey, defaultFiltervalues)}
-                        deleteLocalFilterTerm={this.handleTermFilterRemove}
-                        deleteSubPropertyTypeFilter={this.handleDeleteSubPropertyTypeFilter}
-                        filters={displayedOnFilterBar(this.state.filters, defaultFiltervalues)}
-                        deleteLastLocalFilterTerm={this.handleLastTermRemove}
-                        deleteSaleTypeFilter={this.handleSaleTypeFilterRemove}
-                      />
-                    </div>
-                    <div className="p-2 my-auto">
-                      <a href="#" className="btn-reset" onClick={this.resetFilters}>Reset</a>
-                    </div>
-                    <div className="p-2 my-auto">
-                      <a
-                        href="#"
-                        className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button ${this.props.resultCountButtonLoading || this.props.errorMessage ? 'disabled' : ''}`}
-                        onClick={this.saveFilters}>
-                          {this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"}
-                      </a>
-                    </div>
-                    <div className="p-2 my-auto">
-                      <button
-                        aria-label="Close"
-                        className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
-                        type="button"
-                        onClick={this.handleCancel}
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
+              <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}modal-header hidden-md-down`}>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}logo`}>
+                  <a href={get(bundle, 'site_url', '')}>
+                    <img src={bundle.logos.square_logo} alt={get(bundle, 'site_name', '')}
+                         className={`${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>
+                  </a>
+                </div>
+
+                <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav hidden-sm-down`}>
+                  <a href="#">{ search_type }</a>
+                </div>
+                <div className="px-4">
+                  <i className="fa fa-search"></i>
+                </div>
+                <div className={ `${Lib.THEME_CLASSES_PREFIX}flex-wrapper` }>
+                  <FilterBar
+                    deleteSingleLocalFilter={(filterKey) => this.handleSingleFilterRemove(filterKey, defaultFiltervalues)}
+                    deleteLocalFilterTerm={this.handleTermFilterRemove}
+                    deleteSubPropertyTypeFilter={this.handleDeleteSubPropertyTypeFilter}
+                    filters={displayedOnFilterBar(this.state.filters, defaultFiltervalues)}
+                    deleteLastLocalFilterTerm={this.handleLastTermRemove}
+                    deleteSaleTypeFilter={this.handleSaleTypeFilterRemove}
+                  />
+                </div>
+                <div className="px-4">
+                  <a href="#" className="btn-reset" onClick={this.resetFilters}>Reset</a>
+                </div>
+                <div>
+                  <a
+                    href="#"
+                    className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button ${this.props.resultCountButtonLoading || this.props.errorMessage ? 'disabled' : ''}`}
+                    onClick={this.saveFilters}>
+                      {this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"}
+                  </a>
+                </div>
+                <div className="px-4">
+                  <button
+                    aria-label="Close"
+                    className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
+                    type="button"
+                    onClick={this.handleCancel}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
               </div>
               <div className="modal-body p-0">
