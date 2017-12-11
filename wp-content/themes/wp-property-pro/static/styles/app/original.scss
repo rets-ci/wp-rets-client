@@ -787,10 +787,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     height: 100%;
 }
 
-.propertypro-search-modal .propertypro-modal-content {
+.propertypro-search-modal .modal-content {
     height: 100%;
     display: flex;
     flex-direction: column;
+    border-radius: 0;
 }
 
 .propertypro-search-modal .propertypro-modal-header {

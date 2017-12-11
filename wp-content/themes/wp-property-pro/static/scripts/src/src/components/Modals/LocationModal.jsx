@@ -233,7 +233,7 @@ class LocationModal extends Component {
     return (
       <div className={`modal ${searchModalClasses} ${Lib.THEME_CLASSES_PREFIX}location-modal`} onKeyDown={this.handleKeyPress.bind(this)}>
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`}>
-          <div className={`modal-content border-0 ${Lib.THEME_CLASSES_PREFIX}modal-content`}>
+          <div className={`modal-content border-0`}>
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
               <div className={`${Lib.THEME_CLASSES_PREFIX}logo`}>
                 <a href={get(bundle, 'site_url', '')}>
