@@ -6,6 +6,7 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width">
+    <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,700|Playfair+Display:400" />
     <link rel="manifest" href="/wp-content/themes/wp-property-pro/static/scripts/src/manifest.json">
