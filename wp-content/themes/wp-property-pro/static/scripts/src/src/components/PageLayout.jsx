@@ -246,7 +246,7 @@ class PageLayout extends Component {
           {
             get(paramsToSet.post, 'head_tags', null)
               ?
-              <Helmet     onChangeClientState={(newState) => console.log(newState)}>
+              <Helmet>
                 {get(paramsToSet.post, 'head_tags').map(tag => {
                   return renderHTML(tag);
                 })}
