@@ -89,6 +89,18 @@ namespace UsabilityDynamics {
       /** Delete cache with siteorigin posts query widget result on save post */
       add_action('save_post', [$this, 'property_pro_delete_widget_posts_cache'], 10, 3);
 
+      /** Build seo meta data on wp_head */
+      add_action('wp_head', [$this, 'property_pro_build_seo_meta_data']);
+
+      /** Disable standart seo meta data output  */
+      add_filter( 'wpseo_opengraph_title', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_desc', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_url', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_site_name', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_admin', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_type', '__return_false', 10, 1 );
+      add_filter( 'wpseo_output_twitter_card', '__return_false', 10, 1 );
+
       /** Add ajax actions */
 
       /** Get posts list */
@@ -1018,15 +1030,41 @@ namespace UsabilityDynamics {
         $params['post']['scripts'] = $scripts;
       }
 
+      /** Dynamic meta which needed for payload */
+      $dynamic_meta = [
+          'og:type',
+          'og:title',
+          'og:description',
+          'og:url',
+          'og:site_name',
+          'fb:admins',
+          'twitter:card',
+          'twitter:description',
+          'twitter:title',
+          'twitter:site',
+          'twitter:image',
+          'twitter:creator'
+      ];
+
       // Get head content
       preg_match_all('/<head>(.*?)<\/head>/s', $output, $matches);
 
       // Get head meta data
       preg_match_all('~<([^/][^>]*?)>~', $matches[1][0], $arr, PREG_PATTERN_ORDER);
-      $arr = array_values(array_filter($arr[0], function($item){
-        return strpos($item, 'meta') != false;
-      }));;
-      $params['post']['head_tags'] = $arr;
+      $head_tags = array_values( array_filter( $arr[ 0 ], function ( $item ) use ( $dynamic_meta ) {
+
+        $return = false;
+        foreach ($dynamic_meta as $meta_item) {
+
+          $return = strpos( $item, $meta_item ) != false;
+
+          if( $return ) {
+            break;
+          }
+        }
+        return $return;
+      } ) );
+      $params[ 'post' ][ 'head_tags' ] = $head_tags;
 
       return wp_json_encode($params);
     }
@@ -1120,6 +1158,48 @@ namespace UsabilityDynamics {
 
       return true;
 
+    }
+
+    /**
+     * Build seo meta data
+     *
+     */
+    function property_pro_build_seo_meta_data() {
+      global $post;
+
+      $frontpage_id = get_option( 'page_on_front' );
+
+      $title = wp_title( '&raquo;', false );
+      $description = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
+      $site = '@reddoorcompany';
+      $image = get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
+
+      echo '
+      <meta property="og:type" content="website" data-react-helmet="true" />
+      <meta property="og:title" content="' . $title . '" data-react-helmet="true" />';
+
+      if( $description ) {
+        echo '
+      <meta property="og:description" content="' . $description . '" data-react-helmet="true" />';
+      }
+
+      echo '
+      <meta property="og:url" content="' . get_the_permalink( $post ) . '" data-react-helmet="true" />
+      <meta property="og:site_name" content="' . get_bloginfo() . '" data-react-helmet="true" />
+      <meta property="fb:admins" content="59702192" data-react-helmet="true" />
+      <meta name="twitter:card" content="summary" data-react-helmet="true" />';
+
+      if( $description ) {
+        echo '
+      <meta name="twitter:description" content="' . $description . '" data-react-helmet="true" />';
+      }
+
+      echo '
+      <meta name="twitter:title" content="' . $title . '" data-react-helmet="true" />
+      <meta name="twitter:site" content="' . $site . '" data-react-helmet="true" />
+      <meta name="twitter:image" content="' . $image . '" data-react-helmet="true" />
+      <meta name="twitter:creator" content="' . $site . '" data-react-helmet="true" />
+      ';
     }
 
   }
