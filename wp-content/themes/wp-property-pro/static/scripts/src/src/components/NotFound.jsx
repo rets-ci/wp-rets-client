@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import get from 'lodash/get';
 import HeaderDefault from 'app_root/components/Headers/HeaderDefault.jsx';
-import LocationModal from 'app_root/components/Modals/LocationModal.jsx';
+import LocationModal from 'app_root/components/Modals/LocationModal/LocationModal.jsx';
 import TitleDescriptionLayout from 'app_root/components/widgets/masthead/layouts/TitleDescriptionLayout.jsx'
 import {Lib} from 'app_root/lib.jsx';
 

@@ -4,7 +4,7 @@ import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import BlogSingleLayout from './layouts/BlogSingleLayout.jsx'
 import GuideLayout from './layouts/GuideLayout.jsx'
 import GuideSingleLayout from './layouts/GuideSingleLayout.jsx'
-import LocationModal from '../../Modals/LocationModal.jsx';
+import LocationModal from 'app_root/components/Modals/LocationModal/LocationModal.jsx';
 import {Lib} from '../../../lib.jsx';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';

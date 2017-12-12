@@ -1,23 +1,25 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import URL from 'urijs';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+
 import {
   setSearchProps,
   receiveLocationModalFetchingError,
   receiveLocationModalPosts,
   requestLocationModalPosts
-} from '../../actions/index.jsx';
-import ErrorMessage from '../ErrorMessage.jsx';
-import GroupTransition from '../GroupTransition.jsx';
-import PaginatedSearchResults from './components/PaginatedSearchResults.jsx';
-import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import {withRouter} from 'react-router';
-import {connect} from 'react-redux';
-import URL from 'urijs';
-import Api from '../../containers/Api.jsx';
-import LoadingAccordion from '../LoadingAccordion.jsx';
-import {Lib} from '../../lib.jsx';
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
-import Util from '../Util.jsx';
+} from 'app_root/actions/index.jsx';
+import PaginatedSearchResults from 'app_root/components/Modals/components/PaginatedSearchResults.jsx';
+import ErrorMessage from 'app_root/components/ErrorMessage.jsx';
+import GroupTransition from 'app_root/components/GroupTransition.jsx';
+import LoadingAccordion from 'app_root/components/LoadingAccordion.jsx';
+import Api from 'app_root/containers/Api.jsx';
+import {Lib} from 'app_root/lib.jsx';
+import Util from 'app_root/components/Util.jsx';
+
 
 const mapStateToProps = (state, ownProps) => {
   return {
