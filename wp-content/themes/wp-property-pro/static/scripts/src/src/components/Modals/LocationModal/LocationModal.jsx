@@ -12,7 +12,9 @@ import {
   receiveLocationModalPosts,
   requestLocationModalPosts
 } from 'app_root/actions/index.jsx';
-import PaginatedSearchResults from 'app_root/components/Modals/components/PaginatedSearchResults.jsx';
+import PaginatedSearchResults from 'app_root/components/Modals/LocationModal/PaginatedSearchResults.jsx';
+import FeaturedCities from 'app_root/components/Modals/LocationModal/FeaturedCities.jsx';
+import FeaturedCitiesPlaceholder from 'app_root/components/Modals/LocationModal/FeaturedCitiesPlaceholder.jsx';
 import ErrorMessage from 'app_root/components/ErrorMessage.jsx';
 import GroupTransition from 'app_root/components/GroupTransition.jsx';
 import LoadingAccordion from 'app_root/components/LoadingAccordion.jsx';
@@ -30,7 +32,8 @@ const mapStateToProps = (state, ownProps) => {
     propertyTypeOptions: get(state, 'propertyTypeOptions.options'),
     searchResults: get(state, 'locationModal.items', []),
     searchType: get(state, 'searchType.searchType', ''),
-    currentTerms: get(state, 'locationModal.currentTerms', null)
+    currentTerms: get(state, 'locationModal.currentTerms', null),
+    isMobile: state.viewport.isMobile,
   }
 };
 
@@ -57,7 +60,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           size: Lib.TOP_AGGREGATIONS_COUNT
         },
         function (err, rows) {
-          if (err) { return dispatch(receiveLocationModalFetchingError(err)); }
+          if (err) { return dispatch((err)); }
           dispatch(receiveLocationModalPosts(rows));
         }
       );
@@ -232,6 +235,9 @@ class LocationModal extends Component {
       searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal remove`;
     }
 
+    const showFeaturedCards = !this.state.searchValue
+    const featuredCities = get(searchResults, '0.children', [])
+
     return (
       <div className={`modal ${searchModalClasses} ${Lib.THEME_CLASSES_PREFIX}location-modal`} onKeyDown={this.handleKeyPress.bind(this)}>
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`}>
@@ -284,16 +290,19 @@ class LocationModal extends Component {
 
             <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
               <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
-              {
-                !this.props.open
-                  ? null
-                  : searchResults.length
-                    ? <GroupTransition>{ resultsElements }</GroupTransition>
-                    : isFetching
-                      ? <LoadingAccordion />
-                      : errorMessage
-                        ? <ErrorMessage message={errorMessage} />
-                        : <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>
+              { this.props.open
+                ? searchResults.length
+                  ? showFeaturedCards
+                    ? <FeaturedCities cities={featuredCities} onClick={this.handleResultClick} />
+                    : <GroupTransition>{ resultsElements }</GroupTransition>
+                  : isFetching
+                    ? showFeaturedCards
+                      ? <FeaturedCitiesPlaceholder isMobile={this.props.isMobile} />
+                      : <LoadingAccordion />
+                    : errorMessage
+                      ? <ErrorMessage message={errorMessage} />
+                      : <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>
+                : null
               }
               </div>
             </div>
