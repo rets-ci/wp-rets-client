@@ -31,16 +31,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Callout {
 
     function initialize()
     {
-      $this->register_frontend_styles(
-        [
-          [
-            'property-pro-callout-base',
-            get_template_directory_uri() . '/lib/widgets/property-pro-callout/css/style.css',
-            [],
-            SOW_BUNDLE_VERSION
-          ],
-        ]
-      );
+
     }
 
     function initialize_form()

@@ -31,16 +31,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Tour {
 
     function initialize()
     {
-      $this->register_frontend_styles(
-        [
-          [
-            'property-pro-tour-base',
-            get_template_directory_uri() . '/lib/widgets/property-pro-tour/css/style.css',
-            [],
-            SOW_BUNDLE_VERSION
-          ],
-        ]
-      );
+
     }
 
     function initialize_form()
