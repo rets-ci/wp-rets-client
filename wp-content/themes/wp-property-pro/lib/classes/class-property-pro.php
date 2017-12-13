@@ -112,14 +112,20 @@ namespace UsabilityDynamics {
 
       wp_enqueue_script('property-pro-jquery', '', [], null, true);
       wp_enqueue_script('property-pro-tether', $this->_scriptsDir . '/src/tether.min.js', [], null, true);
-      wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js', [], null, true);
+      wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js', [ 'jquery' ], null, true );
       wp_enqueue_style('property-pro-bootstrap-css', $this->_stylesDir . '/src/bootstrap.min.css');
       wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/dist.css');
-      wp_enqueue_style('style', get_stylesheet_uri());
 
       // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
-      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'jquery' ), null, true);
+      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', [], null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single()) { 
+        wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
+      }
+
+      // Exclude SO font flex
+      wp_deregister_style( 'siteorigin-panels-front' );
+
       $params = $this->property_pro_get_base_info();
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
@@ -170,7 +176,7 @@ namespace UsabilityDynamics {
         'admin_ajax_url' => admin_url('admin-ajax.php'),
         'template_url' => get_template_directory_uri(),
         'site_name' => esc_attr(get_bloginfo('name')),
-        'page_title' => get_bloginfo('name') . wp_title('»', false),
+        'page_title' => wp_title('&raquo;', false),
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
@@ -178,22 +184,30 @@ namespace UsabilityDynamics {
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : '',
         'property_single_url' => $property_single_url,
         'agents' => array_map(function($user){
-          $user->meta = get_user_meta($user->ID);
+          $meta = get_user_meta($user->ID);
 
-          $user->images = array_map(function($image){
+          $new_user = new \stdClass();
+
+          $new_user->data = new \stdClass();
+          $new_user->data->display_name = $user->display_name;
+
+          if($meta){
+            $new_user->data->meta = new \stdClass();
+            $new_user->data->meta->phone_number = isset($meta['phone_number']) ? $meta['phone_number'] : '';
+            $new_user->data->meta->sale_type = isset($meta['sale_type']) ? $meta['sale_type'] : '';
+            $new_user->data->meta->triangle_mls_id = isset($meta['triangle_mls_id']) ? $meta['triangle_mls_id'] : '';
+          }
+
+          $new_user->data->images = array_map(function($image){
             return wp_get_attachment_image_src(unserialize($image)[0]);
-          }, (isset($user->meta['agent_images']) ? $user->meta['agent_images'] : []));
+          }, (isset($meta['agent_images']) ? $meta['agent_images'] : []));
 
-          return $user;
+          return $new_user;
         }, get_users(['role' => 'agent'])),
         'sidebar_menu_items' => $sidebar_menu_term_id ? array_map( function ( $item ) {
           return [ 'ID' => $item->ID, 'title' => $item->title, 'url' => $item->url, 'relative_url' => str_replace( home_url(), "", $item->url ), 'classes' => $item->classes ];
         }, wp_get_nav_menu_items( $sidebar_menu_term_id ) ) : []
       ];
-
-      if(defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single()){
-        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
-      }
 
       /** Custom elastic press index */
       if(defined('EP_INDEX_NAME') && EP_INDEX_NAME){
@@ -290,10 +304,6 @@ namespace UsabilityDynamics {
           }, wp_get_nav_menu_items($menu_id));
         }
       }
-
-      /** Get customizer colors settings */
-      $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
-      $params['colors']['secondary_color'] = get_theme_mod('property_pro_secondary_color');
 
       /** Plural values for listing types titles */
       $listing_subtypes_plural_values_filename = WP_CONTENT_DIR . '/static/json/listing_subtypes_plural_values.json';
@@ -1103,6 +1113,5 @@ namespace UsabilityDynamics {
     }
 
   }
-
 
 }

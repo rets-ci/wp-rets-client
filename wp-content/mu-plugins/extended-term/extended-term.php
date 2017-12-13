@@ -76,7 +76,7 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
 
       $termmeta = $this->get_term_meta( $post->ID );
 
-      $this->update_term_meta( $term_id, $termmeta, $taxonomy );
+      $this->update_term_meta( $term_id, $termmeta );
 
     }
 
@@ -99,7 +99,12 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
           continue;
         }
 
-        $associated_tem = get_term_by( 'name', $post->post_name, $term->slug );
+        // Try to detect Term by Name
+        $associated_tem = get_term_by( 'name', $post->post_title, $term->slug );
+        // On false, try to detect term by Slug
+        if( !$associated_tem ) {
+          $associated_tem = get_term_by( 'slug', $post->post_name, $term->slug );
+        }
 
         if( $associated_tem ) {
 

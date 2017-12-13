@@ -34,6 +34,11 @@ namespace RedDoorCompany\Policy {
     $_plugins[] = 'siteorigin-panels/siteorigin-panels.php';
     $_plugins[] = 'so-widgets-bundle/so-widgets-bundle.php';
     $_plugins[] = 'wp-stateless/wp-stateless-media.php';
+    $_plugins[] = 'wp-property/wp-property.php';
+    $_plugins[] = 'wp-property-terms/wp-property-terms.php';
+    $_plugins[] = 'wp-property-agents/wp-property-agents.php';
+    $_plugins[] = 'wp-rets-client/wp-rets-client.php';
+
 
     return array_unique( $_plugins );
 

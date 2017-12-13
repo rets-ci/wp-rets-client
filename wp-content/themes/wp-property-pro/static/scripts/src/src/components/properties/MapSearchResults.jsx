@@ -122,7 +122,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     doSearchWithQuery: (query, append) => {
       let url = Api.getPropertySearchRequestURL();
-      dispatch(requestSearchResultsPosts());
+      dispatch(requestSearchResultsPosts(append));
       Api.search(url, query, (err, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
@@ -412,6 +412,8 @@ class MapSearchResults extends Component {
         properties={displayedResults}
         selectedProperty={searchFilters.selected_property}
         onChangeSlide={this.updateSelectedProperty}
+        isFetching={isFetching}
+        onLoadMore={this.handleLoadMore}
       />
     );
 
@@ -485,14 +487,25 @@ class MapSearchResults extends Component {
             </div>
           }
 
-          <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
-            { captionElement }
-            { !isMobile && propertyPanelElement }
-            { mapElement }
-            { isMobile && sliderElement }
-          </div>
+          { !isMobile &&
+            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+              { captionElement }
+              { propertyPanelElement }
+              { mapElement }
+            </div>
+          }
 
-          { isMobile && mobileNavigatorElement }
+          { isMobile &&
+            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map`}>
+              { captionElement }
+              { mapElement }
+              { sliderElement }
+            </div>
+          }
+
+          { isMobile &&
+            mobileNavigatorElement
+          }
 
         </section>
       </div>

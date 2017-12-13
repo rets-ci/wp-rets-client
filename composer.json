@@ -20,6 +20,8 @@
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_develop-v3-maxim": {
+      "EP_INDEX_NAME": "rdc-develop-v3-maxim",
+      "db_name": "develop-v3-maxim",
       "MEMCACHED_DISABLED": true,
       "wp_debug_log": true,
       "wp_debug_display": true,
