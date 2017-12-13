@@ -128,8 +128,6 @@ namespace UsabilityDynamics {
       wp_enqueue_style('property-pro-bootstrap-css', $this->_stylesDir . '/src/bootstrap.min.css');
       wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/dist.css');
 
-      // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
-      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', [], null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single()) { 
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
