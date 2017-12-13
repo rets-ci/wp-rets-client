@@ -374,7 +374,7 @@ class Api {
             term: get(city, '_source.slug'),
             termType: cityTaxonomy,
             taxonomy: cityTaxonomy,
-            label: get(city, '_source.meta.et_label', []),
+            label: get(city, '_source.meta.et_label.0', ''),
             images: get(city, '_source.meta.et_images', []),
             listingsCount: aggregation ? aggregation.doc_count : 0,
           };
