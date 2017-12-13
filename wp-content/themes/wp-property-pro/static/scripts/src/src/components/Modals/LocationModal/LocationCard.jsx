@@ -104,7 +104,7 @@ class LocationCard extends Component {
 
     const cardInfoBlock = (
       <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`}>
-        <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title`}>{ `${listingsCount} Listings` }</h4>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}card-attrs`}>{ `${listingsCount} Listings` }</div>
       </div>
     );
 
