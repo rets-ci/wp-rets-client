@@ -73,7 +73,7 @@
     border: 0;
 }
 
-.propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4, .propertypro-search-modal form .form-control {
+.propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box .search-title, .propertypro-search-modal form .form-control {
     font-size: 1.5rem;
 }
 
@@ -364,6 +364,21 @@ p.propertypro-gentle-error {
     margin-bottom: 3rem;
 }
 /* end of search modal -> Advanced Search Filter */
+
+/* location modal - featured cities cards */
+.propertypro-featured-cities-wrapper {
+  padding-top: 2rem;
+
+  .propertypro-card {
+    cursor: pointer;
+    margin-bottom: 3rem;
+
+    .propertypro-card-title {
+      text-align: left;
+    }
+  }
+}
+/* end of featured cities cards */
 
 /* Extra small devices (portrait phones, less than 640px) */
 @media screen and (max-width: 40.000em) {

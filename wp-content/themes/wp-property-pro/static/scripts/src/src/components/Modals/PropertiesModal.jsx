@@ -18,7 +18,7 @@ import difference from 'lodash/difference';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
-import LocationModal from './LocationModal.jsx';
+import LocationModal from 'app_root/components/Modals/LocationModal/LocationModal.jsx';
 
 import SQFT from '../properties/Filters/SQFT.jsx';
 import LotSize from '../properties/Filters/LotSize.jsx';
