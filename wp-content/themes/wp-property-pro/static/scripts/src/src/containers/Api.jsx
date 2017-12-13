@@ -1,5 +1,6 @@
 import React from 'react';
 import {Lib} from '../lib.jsx';
+import find from 'lodash/find';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
 import reverse from 'lodash/reverse';
@@ -340,7 +341,7 @@ class Api {
       if (err) {
         return callback(err);
       }
-      let citiesResponse = get(response, 'hits.hits');
+      let citiesResponse = get(response, 'hits.hits', []);
 
       // Send new aggregations request to getting listings count for each terms
       let body = {
@@ -363,39 +364,26 @@ class Api {
           data: JSON.stringify(body)
         }
       }, function (err, aggResponse) {
-        let items = get(aggResponse, 'aggregations.'+cityTaxonomy+'.buckets', []);
+        let aggregations = get(aggResponse, 'aggregations.'+cityTaxonomy+'.buckets', []);
 
-        // Sorting received array by listings counts
-        citiesResponse = reverse(sortBy(citiesResponse, cityItem => {
-          let index = 0;
-
-          for(let ind in items){
-            if(get(cityItem, '_source.name') === get(items[ind], 'key')){
-              index = get(items[ind], 'doc_count');
-            }
-          }
-          return index;
-        }));
-
-        let buckets = [];
-        for (let c in citiesResponse) {
-          let city = citiesResponse[c];
-
-          buckets.push({
+        let buckets = citiesResponse.map(city => {
+          const aggregation = find(aggregations, { key: get(city, '_source.name') });
+          return {
             id: get(city, '_source.slug'),
             text: get(city, '_source.name'),
             term: get(city, '_source.slug'),
             termType: cityTaxonomy,
             taxonomy: cityTaxonomy,
-            label: get(city, '_source.meta.et_label'),
-            images: get(city, '_source.meta.et_images'),
-          });
-        }
+            label: get(city, '_source.meta.et_label', []),
+            images: get(city, '_source.meta.et_images', []),
+            listingsCount: aggregation ? aggregation.doc_count : 0,
+          };
+        });
 
         rows.push({
           key: 0,
           text: 'Filter by popular cities',
-          children: buckets
+          children: reverse(sortBy(buckets, 'listingsCount'))
         });
 
         callback(null, rows);
