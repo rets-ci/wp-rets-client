@@ -162,11 +162,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(requestSearchResultsPosts());
       let params = Object.assign({}, p);
       // geoCorrdinates
-      if (p[Lib.BOTTOM_RIGHT_URL_PREFIX] && p[Lib.TOP_LEFT_URL_PREFIX] && p[Lib.ZOOM_URL_PREFIX]) {
+      if (p[Lib.BOTTOM_RIGHT_URL_PREFIX] && p[Lib.TOP_LEFT_URL_PREFIX]) {
         params.geoCoordinates = {
           bottomRight: [p[Lib.BOTTOM_RIGHT_URL_PREFIX][0], p[Lib.BOTTOM_RIGHT_URL_PREFIX][1]],
-          topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]],
-          zoom: p[Lib.ZOOM_URL_PREFIX]
+          topLeft: [p[Lib.TOP_LEFT_URL_PREFIX][0], p[Lib.TOP_LEFT_URL_PREFIX][1]]
         };
       }
       params = Util.enricSearchParamshWithDefaults(params, defaults);
@@ -242,10 +241,9 @@ class MapSearchResults extends Component {
     // Update url without selected property for re-rendering listings list if listing was unselected
     if(get(this.props, 'panelOnMapShown', false) && !get(nextProps, 'panelOnMapShown', false)){
 
-      if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX] && filters[Lib.ZOOM_URL_PREFIX]) {
+      if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX]) {
         filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
         filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
-        filters[Lib.ZOOM_URL_PREFIX] = filters[Lib.ZOOM_URL_PREFIX];
       }
 
       if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {
@@ -302,10 +300,9 @@ class MapSearchResults extends Component {
   updateSelectedProperty = (propertyId) => {
     let filters = Object.assign({}, this.props.searchQueryParams);
     filters['selected_property'] = propertyId;
-    if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX] && filters[Lib.ZOOM_URL_PREFIX]) {
+    if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX]) {
       filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
       filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
-      filters[Lib.ZOOM_URL_PREFIX] = filters[Lib.ZOOM_URL_PREFIX];
     }
     delete filters['search_type'];
     if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {
@@ -323,8 +320,6 @@ class MapSearchResults extends Component {
     filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: geoCoordinates['bottomRight']['lat'], lon: geoCoordinates['bottomRight']['lon']};
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: geoCoordinates['topLeft']['lat'], lon: geoCoordinates['topLeft']['lon']};
-    delete filters[Lib.ZOOM_URL_PREFIX];
-    filters[Lib.ZOOM_URL_PREFIX] = geoCoordinates['zoom'];
     delete filters['search_type'];
     if (filters['sale_type'] && isEqual(filters['sale_type'].sort(), ['rent', 'sale'].sort())) {
       delete filters['sale_type']
@@ -397,7 +392,7 @@ class MapSearchResults extends Component {
 
     const mapElement = (
       <Map
-        currentGeoBounds={(searchFilters.geotl && searchFilters.geobr && searchFilters.geoz) ? Util.elasticsearchGeoFormatToGoogle({bottomRight: searchFilters[Lib.BOTTOM_RIGHT_URL_PREFIX], topLeft: searchFilters[Lib.TOP_LEFT_URL_PREFIX], zoom: searchFilters[Lib.ZOOM_URL_PREFIX]}) : null}
+        currentGeoBounds={(searchFilters.geotl && searchFilters.geobr && searchFilters.geoz) ? Util.elasticsearchGeoFormatToGoogle({bottomRight: searchFilters[Lib.BOTTOM_RIGHT_URL_PREFIX], topLeft: searchFilters[Lib.TOP_LEFT_URL_PREFIX]}) : null}
         historyPush={history.push}
         location={this.props.location}
         properties={displayedResults}

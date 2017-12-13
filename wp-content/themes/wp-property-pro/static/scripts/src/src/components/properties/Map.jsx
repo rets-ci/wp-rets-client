@@ -1,25 +1,27 @@
 import get from 'lodash/get';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import GoogleMap from 'google-map-react';
-import {fitBounds} from 'google-map-react/utils';
+import { fitBounds } from 'google-map-react/utils';
 import PropTypes from 'prop-types';
+import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
 import Marker from './Map/Marker.jsx';
 
 import Util from '../Util.jsx';
-import {Lib} from '../../lib.jsx';
+import { Lib } from '../../lib.jsx';
 
 
 let defaultIcon = {
   url: bundle.static_images_url + 'oval-3-25.png',
 };
 
+const DEFAULT_ZOOM = 9;
+
 let selectedIcon = {
   url: bundle.static_images_url + 'oval-selected-3-25.png'
 };
 
-let defaultZoom = 9;
 
 const isMobile = window.innerWidth < Lib.MOBILE_WIDTH;
 
@@ -33,48 +35,22 @@ export default class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.bounds = [];
+    this.points = [];
 
     this.state = {
-      dragged: false
+      userDrag: false
     };
   }
 
   shouldComponentUpdate(nextProps) {
-    let shouldComponentUpdate = !this.state.dragged && this.props.properties !== get(nextProps.props, 'properties', null)
-      || this.props.currentGeoBounds !== get(nextProps.props, 'currentGeoBounds', null)
-      || this.props.selectedProperty !== get(nextProps.props, 'selectedProperty');
+    let shouldComponentUpdate = this.props.properties !== get(nextProps.props, 'properties', null) ||
+      this.props.currentGeoBounds !== get(nextProps.props, 'currentGeoBounds', null) ||
+      this.props.selectedProperty !== get(nextProps.props, 'selectedProperty');
 
     return shouldComponentUpdate;
   }
 
-  getInitialCoordinates(currentGeoBounds, properties) {
-    // calculate the initial coordinates based on geo bounds from the URL or the properties
-    let centerPoint;
-    if (currentGeoBounds) {
-      let size = {
-        width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
-        height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight
-      };
-
-      centerPoint = fitBounds(currentGeoBounds, size);
-    } else if (properties && properties.length) {
-      centerPoint = {
-        lat: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[0] : 0,
-        lng: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[1] : 0
-      };
-    } else {
-      centerPoint = {
-        lat: Lib.DEFAULT_MAP_COORDINATES.lat,
-        lng: Lib.DEFAULT_MAP_COORDINATES.lng
-      };
-    }
-
-    return centerPoint;
-  }
-
-  setPropertyMarkers(properties, selectedProperty = false) {
-    this.bounds = [];
+  markers(properties, selectedProperty = false) {
     return properties.map(p => {
       let propertyId = get(p, '_source.post_meta.rets_mls_number[0]', null);
       let selected = selectedProperty && selectedProperty === propertyId;
@@ -83,8 +59,8 @@ export default class Map extends Component {
         console.log('mls reference missing from the data, property selection on at least some of the items wont work as expected');
       }
 
-      let loc = this.coordinate(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
-      this.bounds.push(loc);
+      let loc = { lat: p._source.wpp_location_pin.lat, lng: p._source.wpp_location_pin.lon }
+      this.points.push(loc);
 
       return (<Marker
         // required props
@@ -94,149 +70,98 @@ export default class Map extends Component {
         icon={selected ? selectedIcon : defaultIcon}
         onClickHandler={() => {
           this.props.updateSelectedProperty(propertyId)
-        }}/>);
+        }} />);
     });
   }
 
-  componentDidMount(){
+  calculateGeoBoundsByPoints(points) {
+    let bounds = new window.google.maps.LatLngBounds();
+    points.forEach(point => {
+      bounds.extend(new window.google.maps.LatLng({ lat: +point.lat, lng: +point.lng }));
+    });
 
+    let ne = bounds.getNorthEast();
+    let sw = bounds.getSouthWest();
+    let finalBounds = {
+      ne: {
+        lat: ne.lat(),
+        lng: ne.lng()
+      },
+      sw: {
+        lat: sw.lat(),
+        lng: sw.lng()
+      }
+    };
+    return finalBounds;
   }
 
-  coordinate(x, y) {
-    return {
-      x: x,
-      y: y
-    }
-  }
+  handleOnDrag(bounds) {
 
-  _onBoundsChanged(options){
-
-    if(!this.state.dragged){
-      return null;
-    }
-
-    let bounds = get(options, 'bounds');
-
-    if(!bounds){
+    if (!bounds) {
       console.log('Missing bounds');
       return null;
     }
 
-
-    this.props.searchByCoordinates(Object.assign(Util.googleGeoFormatToElasticsearch(
-      {
-        ne: {
-          lat: bounds.ne.lat,
-          lon: bounds.ne.lng
-        },
-        sw: {
-          lat: bounds.sw.lat,
-          lon: bounds.sw.lng
-        }
-      }), {
-      zoom: get(options, 'zoom', defaultZoom)
-    }));
-
     this.setState({
-      dragged: false
+      userDrag: true
     });
+
+    this.props.searchByCoordinates(
+      Object.assign({},
+        Util.googleGeoFormatToElasticsearch(
+          {
+            ne: {
+              lat: bounds.ne.lat,
+              lon: bounds.ne.lng
+            },
+            sw: {
+              lat: bounds.sw.lat,
+              lon: bounds.sw.lng
+            }
+          }
+        )
+      )
+    );
+
   }
 
   render() {
-
-    let google_api_key = get(bundle, 'google_api_key');
-
-    if (!google_api_key) {
-      return null;
-    }
-
     let {
       currentGeoBounds,
       properties,
       selectedProperty
     } = this.props;
 
-    let markers = properties.length > 0 ? this.setPropertyMarkers(properties, selectedProperty) : null;
+    let boundsOptions;
+    let center;
+    let google_api_key = get(bundle, 'google_api_key');
+    let size = {
+      width: Lib.SEARCH_MAP_SIZE_WIDTH,
+      height: Lib.SEARCH_MAP_SIZE_HEIGHT
+    };
+    if (!google_api_key) { return null; }
 
-    let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
-    let center = [coordinates.lat, coordinates.lng];
+    let markers = properties.length > 0 ? this.markers(properties, selectedProperty) : null;
+    let zoom;
 
-    let zoom = parseInt(get(currentGeoBounds, 'zoom', defaultZoom));
-
-    if(!currentGeoBounds && markers){
-        // Define bounds options
-        let maxN, maxS, maxE, maxW, nw, se;
-        let arr = this.bounds;
-        for(let i = 0; i < arr.length; i++) {
-          if(maxN == undefined) { maxN = arr[i].y; }
-          if(maxS == undefined) { maxS = arr[i].y; }
-          if(maxE == undefined) { maxE = arr[i].x; }
-          if(maxW == undefined) { maxW = arr[i].x; }
-
-          if(arr[i].y > maxN){
-            maxN = arr[i].y;
-          }
-
-          if(arr[i].x > maxE){
-            maxE = arr[i].x;
-          }
-
-          if(arr[i].y < maxS){
-            maxS = arr[i].y;
-          }
-
-          if(arr[i].x < maxW){
-            maxW = arr[i].x;
-          }
-        }
-
-        nw = {
-          x: maxW,
-          y: maxN
-        };
-
-        se = {
-          x: maxE,
-          y: maxS
-        };
-
-        let bounds = {
-          nw: {
-            lat: nw.x,
-            lng: nw.y
-          },
-          se: {
-            lat: se.x,
-            lng: se.y
-          }
-        };
-
-
-        let size = {
-          width: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetWidth,
-          height: document.getElementById(Lib.THEME_CLASSES_PREFIX + "Map").offsetHeight
-        };
-
-        let options = fitBounds(bounds, size);
-        // Define zoom level for bounds
-        if(get(options, 'zoom') < 1 || isNaN(get(options, 'zoom'))){
-          let GLOBE_WIDTH = 256; // a constant in Google's map projection
-          let angle = maxE - maxW;
-          if (angle < 0) {
-            angle += 360;
-          }
-          zoom = Math.round(Math.floor(Math.log(size.width * 360 / angle / GLOBE_WIDTH) / Math.LN2) - 1);
-        }
-
-        if(options){
-          center = options.center;
-        }
-
-
+    if (currentGeoBounds) {
+      boundsOptions = fitBounds(currentGeoBounds, size);
+      center = boundsOptions.center;
+      zoom = boundsOptions.zoom;
+    } else if (this.points.length) {
+      let geoBounds = this.calculateGeoBoundsByPoints(this.points);
+      boundsOptions = fitBounds(geoBounds, size);
+      center = boundsOptions.center;
+      zoom = boundsOptions.zoom;
+    } else {
+      center = {
+        lat: Lib.DEFAULT_MAP_COORDINATES.lat,
+        lng: Lib.DEFAULT_MAP_COORDINATES.lng
+      };
+      zoom = DEFAULT_ZOOM;
     }
-
     return (
-      <div id={Lib.THEME_CLASSES_PREFIX + "Map"} ref={(r) => this.mapElement = r}>
+      <div id={Lib.THEME_CLASSES_PREFIX + "Map"}>
         <GoogleMap
           bootstrapURLKeys={{
             key: google_api_key,
@@ -244,17 +169,15 @@ export default class Map extends Component {
           }}
           center={center}
           zoom={zoom}
-          onChange={(options) => {this._onBoundsChanged(options)}}
-          onZoomAnimationEnd={() => {this.setState({
-            dragged: true
-          });
+          onDrag={debounce((options) => {
+            this.handleOnDrag({ ne: this._updatedBounds.ne, sw: this._updatedBounds.sw });
+          }, 500)}
+          onChange={({ bounds, center }) => {
+            this._updatedBounds = bounds;
           }}
-
-          options={
-            {
-              zoomControl: isMobile === false
-            }
-          }
+          options={{
+            zoomControl: isMobile === false
+          }}
         >
           {markers}
         </GoogleMap>
