@@ -138,7 +138,7 @@ namespace UsabilityDynamics {
       // Exclude SO font flex
       wp_deregister_style( 'siteorigin-panels-front' );
 
-      $params = $this->property_pro_get_base_info();
+      $params = $this->property_pro_get_base_info(true);
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
        * now host value in theme composer.json
@@ -156,7 +156,7 @@ namespace UsabilityDynamics {
       wp_enqueue_script('admin_script', $this->_scriptsDir . '/admin/admin.js', [], null, true);
     }
 
-    private function property_pro_get_base_info()
+    private function property_pro_get_base_info($localize = false)
     {
 
       $blog_post_id = get_option('page_for_posts');
@@ -195,27 +195,6 @@ namespace UsabilityDynamics {
         'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : '',
         'property_single_url' => $property_single_url,
-        'agents' => array_map(function($user){
-          $meta = get_user_meta($user->ID);
-
-          $new_user = new \stdClass();
-
-          $new_user->data = new \stdClass();
-          $new_user->data->display_name = $user->display_name;
-
-          if($meta){
-            $new_user->data->meta = new \stdClass();
-            $new_user->data->meta->phone_number = isset($meta['phone_number']) ? $meta['phone_number'] : '';
-            $new_user->data->meta->sale_type = isset($meta['sale_type']) ? $meta['sale_type'] : '';
-            $new_user->data->meta->triangle_mls_id = isset($meta['triangle_mls_id']) ? $meta['triangle_mls_id'] : '';
-          }
-
-          $new_user->data->images = array_map(function($image){
-            return wp_get_attachment_image_src(unserialize($image)[0]);
-          }, (isset($meta['agent_images']) ? $meta['agent_images'] : []));
-
-          return $new_user;
-        }, get_users(['role' => 'agent'])),
         'sidebar_menu_items' => $sidebar_menu_term_id ? array_map( function ( $item ) {
           return [ 'ID' => $item->ID, 'title' => $item->title, 'url' => $item->url, 'relative_url' => str_replace( home_url(), "", $item->url ), 'classes' => $item->classes ];
         }, wp_get_nav_menu_items( $sidebar_menu_term_id ) ) : []
@@ -225,6 +204,72 @@ namespace UsabilityDynamics {
       if(defined('EP_INDEX_NAME') && EP_INDEX_NAME){
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
+
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
+        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
+      }
+
+      /** Get company logos */
+      $params['logos'] = [
+          'square_logo' => get_theme_mod('property_pro_company_square_logo'),
+          'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
+          'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
+      ];
+
+      /** Get footer menus */
+      $footer_structure = [
+          'top_footer' => [
+              get_theme_mod('property_pro_footer_top_menu_one'),
+              get_theme_mod('property_pro_footer_top_menu_two'),
+              get_theme_mod('property_pro_footer_top_menu_three'),
+              get_theme_mod('property_pro_footer_top_menu_four')
+          ],
+          'bottom_footer' => [
+              'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
+              'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
+          ]
+      ];
+
+      foreach ($footer_structure as $level_title => $level) {
+        foreach ($level as $key => $menu_id) {
+          $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
+          $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
+            return [
+                'ID' => $item->ID,
+                'title' => $item->title,
+                'url' => $item->url,
+                'relative_url' => str_replace(home_url(), "", $item->url),
+                'classes' => $item->classes
+            ];
+          }, wp_get_nav_menu_items($menu_id));
+        }
+      }
+
+      if($localize){
+        return $params;
+      }
+
+      $params['agents'] = array_map(function($user){
+        $meta = get_user_meta($user->ID);
+
+        $new_user = new \stdClass();
+
+        $new_user->data = new \stdClass();
+        $new_user->data->display_name = $user->display_name;
+
+        if($meta){
+          $new_user->data->meta = new \stdClass();
+          $new_user->data->meta->phone_number = isset($meta['phone_number']) ? $meta['phone_number'] : '';
+          $new_user->data->meta->sale_type = isset($meta['sale_type']) ? $meta['sale_type'] : '';
+          $new_user->data->meta->triangle_mls_id = isset($meta['triangle_mls_id']) ? $meta['triangle_mls_id'] : '';
+        }
+
+        $new_user->data->images = array_map(function($image){
+          return wp_get_attachment_image_src(unserialize($image)[0]);
+        }, (isset($meta['agent_images']) ? $meta['agent_images'] : []));
+
+        return $new_user;
+      }, get_users(['role' => 'agent']));
 
       /** Front page post content for 404's page displaying search bar */
       if(is_404()){
@@ -276,46 +321,6 @@ namespace UsabilityDynamics {
       }
 
       $params['property_search_options'] = $property_search_options;
-
-      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
-        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
-      }
-
-      /** Get company logos */
-      $params['logos'] = [
-        'square_logo' => get_theme_mod('property_pro_company_square_logo'),
-        'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
-        'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
-      ];
-
-      /** Get footer menus */
-      $footer_structure = [
-        'top_footer' => [
-          get_theme_mod('property_pro_footer_top_menu_one'),
-          get_theme_mod('property_pro_footer_top_menu_two'),
-          get_theme_mod('property_pro_footer_top_menu_three'),
-          get_theme_mod('property_pro_footer_top_menu_four')
-        ],
-        'bottom_footer' => [
-          'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
-          'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
-        ]
-      ];
-
-      foreach ($footer_structure as $level_title => $level) {
-        foreach ($level as $key => $menu_id) {
-          $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
-          $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
-            return [
-              'ID' => $item->ID,
-              'title' => $item->title,
-              'url' => $item->url,
-              'relative_url' => str_replace(home_url(), "", $item->url),
-              'classes' => $item->classes
-            ];
-          }, wp_get_nav_menu_items($menu_id));
-        }
-      }
 
       /** Plural values for listing types titles */
       $listing_subtypes_plural_values_filename = WP_CONTENT_DIR . '/static/json/listing_subtypes_plural_values.json';
