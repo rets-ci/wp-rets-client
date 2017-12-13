@@ -1168,14 +1168,46 @@ namespace UsabilityDynamics {
       global $post;
 
       $frontpage_id = get_option( 'page_on_front' );
+      $wpseo_social = get_option( 'wpseo_social' );
 
       $title = wp_title( '&raquo;', false );
       $description = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
-      $site = '@reddoorcompany';
-      $image = get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
+      $site = '@' . (isset( $wpseo_social[ 'twitter_site' ] ) && $wpseo_social[ 'twitter_site' ] ? $wpseo_social[ 'twitter_site' ] : 'reddoorcompany');
+      $image = isset( $wpseo_social[ 'og_default_image' ] ) && $wpseo_social[ 'og_default_image' ] ? $wpseo_social[ 'og_default_image' ] : get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
+
+      $twitter_card_type = isset($wpseo_social['twitter_card_type']) && $wpseo_social['twitter_card_type'] ? $wpseo_social['twitter_card_type'] : 'summary';
+
+      if ( is_singular() && has_shortcode( $post->post_content, 'gallery' ) ) {
+
+        $images = get_post_gallery_images($post);
+
+        if ( count( $images ) > 0 ) {
+          $twitter_card_type = 'summary_large_image';
+        }
+      }
+
+      if ( ! in_array( $twitter_card_type, array(
+          'summary',
+          'summary_large_image',
+          'app',
+          'player',
+      ), true )
+      ) {
+        $twitter_card_type = 'summary';
+      }
+
+      if ( is_front_page() || is_home() ) {
+        $og_type = 'website';
+      }
+      elseif ( is_singular() ) {
+        $og_type = 'article';
+      }
+      else {
+        $og_type = 'object';
+      }
 
       echo '
-      <meta property="og:type" content="website" data-react-helmet="true" />
+      <meta property="og:type" content="' . $og_type . '" data-react-helmet="true" />
       <meta property="og:title" content="' . $title . '" data-react-helmet="true" />';
 
       if( $description ) {
@@ -1183,11 +1215,25 @@ namespace UsabilityDynamics {
       <meta property="og:description" content="' . $description . '" data-react-helmet="true" />';
       }
 
+      $fb_admins = $wpseo_social[ 'fb_admins' ];
+      $admin_id = 0;
+
+      if( $fb_admins ) {
+        reset( $fb_admins );
+        $admin_id = key( $fb_admins );
+      }
+
       echo '
       <meta property="og:url" content="' . get_the_permalink( $post ) . '" data-react-helmet="true" />
-      <meta property="og:site_name" content="' . get_bloginfo() . '" data-react-helmet="true" />
-      <meta property="fb:admins" content="59702192" data-react-helmet="true" />
-      <meta name="twitter:card" content="summary" data-react-helmet="true" />';
+      <meta property="og:site_name" content="' . get_bloginfo() . '" data-react-helmet="true" />';
+
+      if( $admin_id ) {
+        echo '
+      <meta property="fb:admins" content="' . $admin_id . '" data-react-helmet="true" />';
+      }
+
+      echo '
+      <meta name="twitter:card" content="' . $twitter_card_type . '" data-react-helmet="true" />';
 
       if( $description ) {
         echo '
