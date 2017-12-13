@@ -50,8 +50,8 @@ class LocationCard extends Component {
     swiperImages.push(
       Util.getGoogleStaticMapThumbnailURL({
         size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
-        location: text,
-        zoom: 10,
+        location: `${text},NC`, // @FIXME later
+        zoom: 11,
       })
     )
 
