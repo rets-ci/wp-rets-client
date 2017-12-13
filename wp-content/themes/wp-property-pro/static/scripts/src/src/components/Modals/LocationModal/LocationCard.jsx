@@ -66,10 +66,9 @@ class LocationCard extends Component {
         <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
           <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{ text }</span>
           <span className={labelClass}>{ label }</span>
-          <span className={Lib.THEME_CLASSES_PREFIX + "action-btn-group"}>
-            <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`}
-              title="Save as favorite">
-              <i className="fa fa-heart" aria-hidden="true"></i>
+          <span className={Lib.THEME_CLASSES_PREFIX + "action-buttons"}>
+            <a href="#">
+              <i className="fa fa-search" aria-hidden="true"></i>
             </a>
           </span>
           <Swiper {...swiperParams}>

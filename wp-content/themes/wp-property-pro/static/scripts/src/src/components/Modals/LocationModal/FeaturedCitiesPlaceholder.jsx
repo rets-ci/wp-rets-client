@@ -28,11 +28,16 @@ const Placeholder = ({ isMobile }) => {
   return (
     <div className={ `${Lib.THEME_CLASSES_PREFIX}featured-cities-wrapper container` }>
       <div className="row">
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-6 col-lg-4">
           <CardPlaceholder />
         </div>
         { !isMobile &&
-          <div className="col-12 col-md-6">
+          <div className="col-12 col-md-6 col-lg-4">
+            <CardPlaceholder />
+          </div>
+        }
+        { !isMobile &&
+          <div className="col-12 col-md-6 col-lg-4">
             <CardPlaceholder />
           </div>
         }
