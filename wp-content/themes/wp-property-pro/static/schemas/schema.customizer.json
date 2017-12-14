@@ -81,13 +81,10 @@
         ".propertypro-testimonial .propertypro-slides li .propertypro-rating i",
         ".propertypro-sliderContent .propertypro-slides li p",
         ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.propertypro-active a",
-        ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:hover",
-        ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:focus",
-        ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:active",
-        ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a.propertypro-active",
-        ".card .propertypro-listing-top .propertypro-action-btn-group a:hover",
-        ".card .propertypro-listing-top .propertypro-action-btn-group a:focus",
-        ".card .propertypro-listing-top .propertypro-action-btn-group a:active",
+        ".propertypro-card-img-top .propertypro-action-buttons a:hover i",
+        ".propertypro-card-img-top .propertypro-action-buttons a:focus i",
+        ".propertypro-card-img-top .propertypro-action-buttons a:active i",
+        ".propertypro-card-img-top .propertypro-action-buttons a.propertypro-active i",
         ".propertypro-advanced-filter .btn-reset",
         ".propertypro-view-link",
         ".propertypro-filter-footernav .nav-item-right a.btn-apply",
@@ -114,7 +111,8 @@
             ".propertypro-spinner-accordion > div",
             ".propertypro-advanced-filter form .btn-primary",
             ".propertypro-range-slider .propertypro-slider-bar",
-            ".propertypro-bs-slider"
+            ".propertypro-bs-slider",
+            ".propertypro-card-img-top .propertypro-label.propertypro-featured"
           ]
         },
         {

@@ -16,7 +16,7 @@ class FeaturedCities extends Component {
       <div className={ `${Lib.THEME_CLASSES_PREFIX}featured-cities-wrapper container` }>
         <div className="row">
           { this.props.cities.map(city =>
-            <div className="col-12 col-md-4" key={city.id} onClick={this.handleClick(city)} >
+            <div className="col-12 col-md-6 col-lg-4" key={city.id} onClick={this.handleClick(city)} >
               <LocationCard data={city} />
             </div>
           )}

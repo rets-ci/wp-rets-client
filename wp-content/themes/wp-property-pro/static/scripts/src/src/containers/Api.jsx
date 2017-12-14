@@ -312,15 +312,15 @@ class Api {
     let cityTaxonomy = 'location_city';
 
     // Get top cities array
-    let cities = this.getTopCities();
+    let topCities = this.getTopCities();
 
     // Build the query body
-    let body = {
+    let paramsForTopCities = {
       "query": {
         "bool": {
           "must": [{
             "terms": {
-              "name.raw": cities
+              "name.raw": topCities
             }
           }],
           "filter": {
@@ -332,10 +332,25 @@ class Api {
       }
     };
 
+    // Send new aggregations request to getting listings count for each terms
+    let paramsForListingCounts = {
+      "aggregations":{
+        "location_city":{
+          "terms":{
+            "field": "tax_input." + cityTaxonomy + "." + cityTaxonomy + ".name.raw",
+            "size": 300
+          },
+          "meta":{
+            "term_type" : cityTaxonomy
+          }
+        }
+      }
+    };
+
     Api.makeRequest({
       'url': Api.getPropertySearchRequestURL(),
       'query': {
-        data: JSON.stringify(body)
+        data: JSON.stringify(paramsForTopCities)
       }
     }, function (err, response) {
       if (err) {
@@ -343,25 +358,10 @@ class Api {
       }
       let citiesResponse = get(response, 'hits.hits', []);
 
-      // Send new aggregations request to getting listings count for each terms
-      let body = {
-        "aggregations":{
-          "location_city":{
-            "terms":{
-              "field": "tax_input." + cityTaxonomy + "." + cityTaxonomy + ".name.raw",
-              "size": 300
-            },
-            "meta":{
-              "term_type" : cityTaxonomy
-            }
-          }
-        }
-      };
-
       Api.makeRequest({
         'url': Api.getPropertySearchRequestURL(),
         'query': {
-          data: JSON.stringify(body)
+          data: JSON.stringify(paramsForListingCounts)
         }
       }, function (err, aggResponse) {
         let aggregations = get(aggResponse, 'aggregations.'+cityTaxonomy+'.buckets', []);
@@ -374,7 +374,7 @@ class Api {
             term: get(city, '_source.slug'),
             termType: cityTaxonomy,
             taxonomy: cityTaxonomy,
-            label: get(city, '_source.meta.et_label', []),
+            label: get(city, '_source.meta.et_label.0', ''),
             images: get(city, '_source.meta.et_images', []),
             listingsCount: aggregation ? aggregation.doc_count : 0,
           };

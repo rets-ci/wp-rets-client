@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import Swiper from 'react-id-swiper';
 import map from 'lodash/map';
 import get from 'lodash/get';
@@ -50,23 +51,26 @@ class LocationCard extends Component {
     swiperImages.push(
       Util.getGoogleStaticMapThumbnailURL({
         size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
-        location: text,
-        zoom: 10,
+        location: `${text},NC`, // @FIXME later
+        zoom: 11,
       })
     )
+
+    const labelClass = classNames(
+      Lib.THEME_CLASSES_PREFIX + 'label',
+      Lib.THEME_CLASSES_PREFIX + label.toLowerCase(),
+    );
 
     const cardImageBlock = (
       <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
         <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
-          <div className={Lib.THEME_CLASSES_PREFIX + "listing-top"}>
-            <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{ text }</span>
-            <span className={Lib.THEME_CLASSES_PREFIX + "action-btn-group"}>
-              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`}
-                title="Save as favorite">
-                <i className="fa fa-heart" aria-hidden="true"></i>
-              </a>
-            </span>
-          </div>
+          <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{ text }</span>
+          <span className={labelClass}>{ label }</span>
+          <span className={Lib.THEME_CLASSES_PREFIX + "action-buttons"}>
+            <a href="#">
+              <i className="fa fa-search" aria-hidden="true"></i>
+            </a>
+          </span>
           <Swiper {...swiperParams}>
             {swiperImages.map((url, index) =>
               <div className="swiper-slide" key={index}>
@@ -77,28 +81,30 @@ class LocationCard extends Component {
             )}
           </Swiper>
         </div>
-        <div className={Lib.THEME_CLASSES_PREFIX + "direction-nav-container"}>
-          <ul className={`nav ${Lib.THEME_CLASSES_PREFIX}direction-nav text-center`}>
-            <li className="nav-item mr-auto">
-              <span
-                className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`}
-                onClick={this.handlePrevClick}
-              ></span>
-            </li>
-            <li className="nav-item">
-              <span
-                className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
-                onClick={this.handleNextClick}
-              ></span>
-            </li>
-          </ul>
-        </div>
+        { swiperImages.length > 1 &&
+          <div className={Lib.THEME_CLASSES_PREFIX + "direction-nav-container"}>
+            <ul className={`nav ${Lib.THEME_CLASSES_PREFIX}direction-nav text-center`}>
+              <li className="nav-item mr-auto">
+                <span
+                  className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`}
+                  onClick={this.handlePrevClick}
+                ></span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
+                  onClick={this.handleNextClick}
+                ></span>
+              </li>
+            </ul>
+          </div>
+        }
       </div>
     );
 
     const cardInfoBlock = (
       <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`}>
-        <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title`}>{ `${listingsCount} Listings` }</h4>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}card-attrs`}>{ `${listingsCount} Listings` }</div>
       </div>
     );
 
