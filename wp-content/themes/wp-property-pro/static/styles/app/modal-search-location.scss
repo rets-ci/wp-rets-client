@@ -19,16 +19,36 @@
     flex: 0 0 auto;
     height: 5rem;
     padding: 0;
+
+    & > .propertypro-logo {
+      padding: 0 2.5rem;
+    }
+
+    & > .propertypro-drop-nav {
+      padding: 0 2.25rem;
+
+      a {
+        cursor: default;
+      }
+    }
+
+    @media screen and (max-width: 40em) {
+      & > .propertypro-logo {
+        padding: 0 0.5rem;
+      }
+
+      & > .propertypro-drop-nav {
+        font-size: 1rem;
+        padding: 0 1rem;
+
+        a {
+          line-height: auto;
+          font-size: 1rem;
+        }
+      }
+    }
 }
 
-.propertypro-search-modal .propertypro-modal-header > .propertypro-logo {
-    padding: 0 2.5rem;
-}
-
-.propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav {
-    padding: 0 2.25rem;
-    cursor: pointer;
-}
 
 .propertypro-search-modal .propertypro-modal-header .propertypro-flex-wrapper {
     position: relative;
@@ -55,6 +75,7 @@
     flex: 1;
     background-color: #e9eff3;
     overflow: auto;
+    padding: 0;
 }
 
 .propertypro-search-modal .propertypro-close-panel {
@@ -367,7 +388,7 @@ p.propertypro-gentle-error {
 
 /* location modal - featured cities cards */
 .propertypro-featured-cities-wrapper {
-  padding-top: 2rem;
+  padding: 2rem 0 0;
 
   .propertypro-card {
     cursor: pointer;
@@ -395,12 +416,6 @@ p.propertypro-gentle-error {
         line-height: 2.25rem;
         margin-top: 0.5rem;
       }
-    }
-  }
-
-  .propertypro-search-modal.propertypro-location-modal .modal-header {
-    & > .propertypro-logo {
-      padding: 0 0.5rem;
     }
   }
 }

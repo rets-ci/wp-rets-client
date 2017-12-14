@@ -964,14 +964,14 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     border: .0625rem solid #d2dae0;
     border-top-width: 0;
     border-bottom-width: 0;
+    display: flex;
+    align-items: center;
 }
 
 .propertypro-toolbar .propertypro-drop-nav a {
-    line-height: 5rem;
     color: #414141;
     font-size: 1.40rem;
     font-weight: 600;
-    vertical-align: middle;
     white-space: nowrap;
 }
 
