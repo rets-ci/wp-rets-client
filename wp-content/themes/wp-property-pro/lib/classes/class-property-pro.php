@@ -90,7 +90,7 @@ namespace UsabilityDynamics {
       add_action('save_post', [$this, 'property_pro_delete_widget_posts_cache'], 10, 3);
 
       /** Build seo meta data on wp_head */
-      add_action('wp_head', [$this, 'property_pro_build_seo_meta_data']);
+      add_action('wp_head', [$this, 'property_pro_build_seo_meta_tags']);
 
       /** Disable standart seo meta data output  */
       add_filter( 'wpseo_opengraph_title', '__return_false', 10, 1 );
@@ -1033,40 +1033,63 @@ namespace UsabilityDynamics {
         $params['post']['scripts'] = $scripts;
       }
 
-      /** Dynamic meta which needed for payload */
-      $dynamic_meta = [
-          'og:type',
-          'og:title',
-          'og:description',
-          'og:url',
-          'og:site_name',
-          'fb:admins',
-          'twitter:card',
-          'twitter:description',
-          'twitter:title',
-          'twitter:site',
-          'twitter:image',
-          'twitter:creator'
-      ];
+      if(is_single()){
 
-      // Get head content
-      preg_match_all('/<head>(.*?)<\/head>/s', $output, $matches);
+        $seo_data = $this->property_pro_prepare_seo_meta_data($post);
 
-      // Get head meta data
-      preg_match_all('~<([^/][^>]*?)>~', $matches[1][0], $arr, PREG_PATTERN_ORDER);
-      $head_tags = array_values( array_filter( $arr[ 0 ], function ( $item ) use ( $dynamic_meta ) {
+        $head_tags = [
+          '<meta property="og:type" content="' . $seo_data['og_type'] . '" data-react-helmet="true" />',
+          '<meta property="og:title" content="' . $seo_data['title'] . '" data-react-helmet="true" />',
+          '<meta property="og:description" content="' . $seo_data['description'] . '" data-react-helmet="true" />',
+          '<meta property="og:url" content="' . $seo_data['og_url'] . '" data-react-helmet="true" />',
+          '<meta property="og:site_name" content="' . $seo_data['site_name'] . '" data-react-helmet="true" />',
+          '<meta property="fb:admins" content="' . $seo_data['admin_id'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:card" content="' . $seo_data['twitter_card_type'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:description" content="' . $seo_data['description'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:title" content="' . $seo_data['title'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:site" content="' . $seo_data['site'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:image" content="' . $seo_data['image'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:creator" content="' . $seo_data['site'] . '" data-react-helmet="true" />'
+        ];
 
-        $return = false;
-        foreach ($dynamic_meta as $meta_item) {
+      }else{
+        /** Dynamic meta which needed for payload */
+        $dynamic_meta = [
+            'og:type',
+            'og:title',
+            'og:description',
+            'og:url',
+            'og:site_name',
+            'fb:admins',
+            'twitter:card',
+            'twitter:description',
+            'twitter:title',
+            'twitter:site',
+            'twitter:image',
+            'twitter:creator'
+        ];
 
-          $return = strpos( $item, $meta_item ) != false;
+        // Get head content
+        preg_match_all('/<head>(.*?)<\/head>/s', $output, $matches);
 
-          if( $return ) {
-            break;
+        // Get head meta data
+        preg_match_all('~<([^/][^>]*?)>~', $matches[1][0], $arr, PREG_PATTERN_ORDER);
+        $head_tags = array_values( array_filter( $arr[ 0 ], function ( $item ) use ( $dynamic_meta ) {
+
+          $return = false;
+          foreach ($dynamic_meta as $meta_item) {
+
+            $return = strpos( $item, $meta_item ) != false;
+
+            if( $return ) {
+              break;
+            }
           }
-        }
-        return $return;
-      } ) );
+          return $return;
+        } ) );
+      }
+
+      $params[ 'post' ][ 'test' ] = $output;
       $params[ 'post' ][ 'head_tags' ] = $head_tags;
 
       return wp_json_encode($params);
@@ -1164,19 +1187,23 @@ namespace UsabilityDynamics {
     }
 
     /**
-     * Build seo meta data
+     * Preparing data for seo meta tags
      *
+     * @param $post
+     * @return array
      */
-    function property_pro_build_seo_meta_data() {
-      global $post;
+    private function property_pro_prepare_seo_meta_data($post){
+      $data = [];
 
       $frontpage_id = get_option( 'page_on_front' );
       $wpseo_social = get_option( 'wpseo_social' );
 
-      $title = wp_title( '&raquo;', false );
-      $description = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
-      $site = '@' . (isset( $wpseo_social[ 'twitter_site' ] ) && $wpseo_social[ 'twitter_site' ] ? $wpseo_social[ 'twitter_site' ] : 'reddoorcompany');
-      $image = isset( $wpseo_social[ 'og_default_image' ] ) && $wpseo_social[ 'og_default_image' ] ? $wpseo_social[ 'og_default_image' ] : get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
+      $data['title'] = wp_title( '&raquo;', false );
+      $data['description'] = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
+      $data['site'] = '@' . (isset( $wpseo_social[ 'twitter_site' ] ) && $wpseo_social[ 'twitter_site' ] ? $wpseo_social[ 'twitter_site' ] : 'reddoorcompany');
+      $data['image'] = isset( $wpseo_social[ 'og_default_image' ] ) && $wpseo_social[ 'og_default_image' ] ? $wpseo_social[ 'og_default_image' ] : get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
+      $data['og_url'] = get_the_permalink($post);
+      $data['og_site_name'] = get_bloginfo();
 
       $twitter_card_type = isset($wpseo_social['twitter_card_type']) && $wpseo_social['twitter_card_type'] ? $wpseo_social['twitter_card_type'] : 'summary';
 
@@ -1198,6 +1225,8 @@ namespace UsabilityDynamics {
       ) {
         $twitter_card_type = 'summary';
       }
+      $data['twitter_card_type'] = $twitter_card_type;
+
 
       if ( is_front_page() || is_home() ) {
         $og_type = 'website';
@@ -1208,15 +1237,7 @@ namespace UsabilityDynamics {
       else {
         $og_type = 'object';
       }
-
-      echo '
-      <meta property="og:type" content="' . $og_type . '" data-react-helmet="true" />
-      <meta property="og:title" content="' . $title . '" data-react-helmet="true" />';
-
-      if( $description ) {
-        echo '
-      <meta property="og:description" content="' . $description . '" data-react-helmet="true" />';
-      }
+      $data['og_type'] = $og_type;
 
       $fb_admins = $wpseo_social[ 'fb_admins' ];
       $admin_id = 0;
@@ -1225,30 +1246,28 @@ namespace UsabilityDynamics {
         reset( $fb_admins );
         $admin_id = key( $fb_admins );
       }
+      $data['admin_id'] = $admin_id;
 
-      echo '
-      <meta property="og:url" content="' . get_the_permalink( $post ) . '" data-react-helmet="true" />
-      <meta property="og:site_name" content="' . get_bloginfo() . '" data-react-helmet="true" />';
+      return $data;
+    }
 
-      if( $admin_id ) {
-        echo '
-      <meta property="fb:admins" content="' . $admin_id . '" data-react-helmet="true" />';
-      }
+    /**
+     * Build seo meta data
+     *
+     */
+    function property_pro_build_seo_meta_tags() {
+      global $post;
 
-      echo '
-      <meta name="twitter:card" content="' . $twitter_card_type . '" data-react-helmet="true" />';
+      $seo_data = $this->property_pro_prepare_seo_meta_data( $post );
 
-      if( $description ) {
-        echo '
-      <meta name="twitter:description" content="' . $description . '" data-react-helmet="true" />';
-      }
-
-      echo '
-      <meta name="twitter:title" content="' . $title . '" data-react-helmet="true" />
-      <meta name="twitter:site" content="' . $site . '" data-react-helmet="true" />
-      <meta name="twitter:image" content="' . $image . '" data-react-helmet="true" />
-      <meta name="twitter:creator" content="' . $site . '" data-react-helmet="true" />
-      ';
+      echo '<meta property="og:type" content="' . $seo_data[ 'og_type' ] . '" data-react-helmet="true" /> '."\n";
+      echo '<meta property="og:title" content="' . $seo_data[ 'title' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="og:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="og:url" content="' . $seo_data['og_url'] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="og:site_name" content="' . $seo_data['og_site_name'] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="fb:admins" content="' . $seo_data[ 'admin_id' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta name="twitter:card" content="' . $seo_data[ 'twitter_card_type' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta name="twitter:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />'."\n";
     }
 
   }
