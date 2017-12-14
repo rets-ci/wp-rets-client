@@ -101,6 +101,9 @@ namespace UsabilityDynamics {
       add_filter( 'wpseo_opengraph_type', '__return_false', 10, 1 );
       add_filter( 'wpseo_output_twitter_card', '__return_false', 10, 1 );
 
+      /** Do not output site origin styles to front-end */
+      remove_action('wp_footer', 'siteorigin_widget_print_styles');
+
       /** Add ajax actions */
 
       /** Get posts list */
