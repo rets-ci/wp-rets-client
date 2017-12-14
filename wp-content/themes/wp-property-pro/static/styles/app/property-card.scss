@@ -25,8 +25,8 @@
     .propertypro-price {
         position: absolute;
         z-index: 2;
-        left: 1.875rem;
-        bottom: 1.25rem;
+        left: 1.5rem;
+        bottom: 1.125rem;
         font-size: 1.5rem;
         line-height: 1.5rem;
         color: #FFF;
@@ -37,22 +37,18 @@
         position: absolute;
         z-index: 2;
         top: 1.125rem;
-        left: 2rem;
+        left: 1.75rem;
         font-size: 0.75rem;
         line-height: 0.75rem;
         border-radius: 3px;
         text-transform: uppercase;
         padding: 0.5rem 1rem;
-
-        &.propertypro-default, &.propertypro-featured {
-            background-color: #d03528;
-        }
     }
 
     .propertypro-action-buttons {
         position: absolute;
         z-index: 2;
-        right: 1.625rem;
+        right: 1.5rem;
         bottom: -1.5rem;
 
         a {
@@ -73,17 +69,13 @@
             color: rgba(65, 65, 65, 0.5);
             transition: all .3s ease;
         }
-
-        .propertypro-active i,
-        a:hover i {
-            color: #e64c3c;
-        }
     }
 }
 
 .propertypro-card-block {
     position: relative;
     padding: 1rem 1.5rem 1.25rem;
+    text-align: left;
 }
 
 .propertypro-card .propertypro-card-block > * {
@@ -101,12 +93,21 @@
 
 .propertypro-card .propertypro-card-text {
     color: #8b8c8d;
-    font-size: .875rem;
+    font-size: 1rem;
     line-height: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .propertypro-card .propertypro-listing-info-box {
+    font-size: 1.125rem;
     margin: 0;
+}
+
+.propertypro-card .propertypro-card-attrs {
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    color: #414141;
 }
 
 .propertypro-card .propertypro-card-img .bg-card-img {
