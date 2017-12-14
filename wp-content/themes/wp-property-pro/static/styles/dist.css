@@ -2232,7 +2232,7 @@ ul.card-header-tabs {
     border-top-right-radius: 0.3125rem;
     border-top-left-radius: 0.3125rem; }
   .propertypro-agent-contact-form .propertypro-agent-photo {
-    clip-path: circle(50px at center); }
+    border-radius: 50%; }
   .propertypro-agent-contact-form .propertypro-agent-card-content h5 {
     font-weight: bold; }
   .propertypro-agent-contact-form .propertypro-agent-card-content p {
@@ -2276,64 +2276,63 @@ ul.card-header-tabs {
 /*-----------------------------------------------------------------------------------*/
 /*  Sticky Agent Card
 /*-----------------------------------------------------------------------------------*/
-.propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden {
-  background-color: rgba(232, 238, 242, 0.5);
-  padding-bottom: 3rem; }
-  .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons {
-    overflow: hidden;
-    height: 3rem; }
-    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button {
-      margin-right: 1.25rem;
-      margin-bottom: 1px; }
-    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button + button {
-      margin-right: 0rem; }
-  .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky {
-    padding: 1.25rem 0;
+.propertypro-single-container .propertypro-sticky-container {
+  width: 100%; }
+  .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden {
+    background-color: rgba(232, 238, 242, 0.5);
+    padding-bottom: 3rem; }
+    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons {
+      overflow: hidden;
+      height: 3rem; }
+      .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button {
+        margin-right: 1.25rem;
+        margin-bottom: 1px; }
+      .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden .propertypro-request-buttons button + button {
+        margin-right: 0rem; }
+    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky {
+      padding: 1.25rem 0;
+      background-color: white;
+      box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15); }
+      .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky .propertypro-request-buttons {
+        padding-bottom: 0; }
+  .propertypro-single-container .propertypro-sticky-container.is-sticky .propertypro-agent-card {
+    margin-top: 0; }
+  .propertypro-single-container .propertypro-sticky-container.is-sticky.propertypro-agent-shown:before {
+    content: '';
+    display: block;
+    height: 2rem; }
+  .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card {
+    border: 1px solid #d2dae0;
+    border-radius: 0.25rem;
     background-color: white;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15); }
-    .propertypro-single-container .propertypro-sticky-container.propertypro-agent-hidden.is-sticky .propertypro-request-buttons {
-      padding-bottom: 0; }
-
-.propertypro-single-container .propertypro-sticky-container.is-sticky .propertypro-agent-card {
-  margin-top: 0; }
-
-.propertypro-single-container .propertypro-sticky-container.is-sticky.propertypro-agent-shown:before {
-  content: '';
-  display: block;
-  height: 2rem; }
-
-.propertypro-single-container .propertypro-sticky-container .propertypro-agent-card {
-  border: 1px solid #d2dae0;
-  border-radius: 0.25rem;
-  background-color: white;
-  padding: 2rem;
-  margin-top: -8rem; }
-  .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-avatar {
-    width: 7.5rem;
-    height: 7.5rem;
-    border-radius: 50%;
-    background-size: contain;
-    background-position: center center;
-    margin-bottom: 2.375rem; }
-  .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-name {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #414141;
-    margin-bottom: 0.75px; }
-  .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-company {
-    font-size: 0.75rem;
-    color: #d33320;
-    margin-bottom: 1.25rem; }
-  .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-phone {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #414141;
-    margin-bottom: 2rem; }
-  .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-request-buttons {
-    display: flex;
-    flex-direction: column; }
-    .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-request-buttons button + button {
-      margin-top: 0.75rem; }
+    padding: 2rem;
+    margin-top: -8rem; }
+    .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-avatar {
+      width: 7.5rem;
+      height: 7.5rem;
+      border-radius: 50%;
+      background-size: contain;
+      background-position: center center;
+      margin-bottom: 2.375rem; }
+    .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-name {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #414141;
+      margin-bottom: 0.75px; }
+    .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-company {
+      font-size: 0.75rem;
+      color: #d33320;
+      margin-bottom: 1.25rem; }
+    .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-agent-phone {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #414141;
+      margin-bottom: 2rem; }
+    .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-request-buttons {
+      display: flex;
+      flex-direction: column; }
+      .propertypro-single-container .propertypro-sticky-container .propertypro-agent-card .propertypro-request-buttons button + button {
+        margin-top: 0.75rem; }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Attribute Tabs
