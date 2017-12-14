@@ -2438,13 +2438,21 @@ ul.card-header-tabs {
   flex: 0 0 auto;
   height: 5rem;
   padding: 0; }
-
-.propertypro-search-modal .propertypro-modal-header > .propertypro-logo {
-  padding: 0 2.5rem; }
-
-.propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav {
-  padding: 0 2.25rem;
-  cursor: pointer; }
+  .propertypro-search-modal .propertypro-modal-header > .propertypro-logo {
+    padding: 0 2.5rem; }
+  .propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav {
+    padding: 0 2.25rem; }
+    .propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav a {
+      cursor: default; }
+  @media screen and (max-width: 40em) {
+    .propertypro-search-modal .propertypro-modal-header > .propertypro-logo {
+      padding: 0 0.5rem; }
+    .propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav {
+      font-size: 1rem;
+      padding: 0 1rem; }
+      .propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav a {
+        line-height: auto;
+        font-size: 1rem; } }
 
 .propertypro-search-modal .propertypro-modal-header .propertypro-flex-wrapper {
   position: relative;
@@ -2466,7 +2474,8 @@ ul.card-header-tabs {
 .propertypro-search-modal .propertypro-modal-body {
   flex: 1;
   background-color: #e9eff3;
-  overflow: auto; }
+  overflow: auto;
+  padding: 0; }
 
 .propertypro-search-modal .propertypro-close-panel {
   font-size: 2rem;
@@ -2707,7 +2716,7 @@ p.propertypro-gentle-error {
 /* end of search modal -> Advanced Search Filter */
 /* location modal - featured cities cards */
 .propertypro-featured-cities-wrapper {
-  padding-top: 2rem; }
+  padding: 2rem 0 0; }
   .propertypro-featured-cities-wrapper .propertypro-card {
     cursor: pointer;
     margin-bottom: 3rem; }
@@ -2724,9 +2733,7 @@ p.propertypro-gentle-error {
     .propertypro-search-result-group .list-group .list-group-item {
       font-size: 1rem;
       line-height: 2.25rem;
-      margin-top: 0.5rem; }
-  .propertypro-search-modal.propertypro-location-modal .modal-header > .propertypro-logo {
-    padding: 0 0.5rem; } }
+      margin-top: 0.5rem; } }
 
 /* hacky
  * @FIXME when modal stuff is upgraded
@@ -3642,14 +3649,14 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
   background-color: rgba(237, 242, 245, 0.5);
   border: .0625rem solid #d2dae0;
   border-top-width: 0;
-  border-bottom-width: 0; }
+  border-bottom-width: 0;
+  display: flex;
+  align-items: center; }
 
 .propertypro-toolbar .propertypro-drop-nav a {
-  line-height: 5rem;
   color: #414141;
   font-size: 1.40rem;
   font-weight: 600;
-  vertical-align: middle;
   white-space: nowrap; }
 
 .propertypro-top-nav-bar {
