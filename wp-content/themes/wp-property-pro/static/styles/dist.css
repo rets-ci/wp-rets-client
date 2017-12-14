@@ -1841,7 +1841,8 @@ button.swiper-pagination-bullet {
   -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.08);
   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.08);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid #d2dae0; }
+  border-bottom: 1px solid #d2dae0;
+  height: 100%; }
   .propertypro-header-search-navigation .propertypro-drop-nav .fa {
     transition: transform .3s ease-in-out;
     transform: rotate(0deg); }

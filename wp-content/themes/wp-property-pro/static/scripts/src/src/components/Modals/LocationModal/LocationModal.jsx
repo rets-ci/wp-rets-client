@@ -254,7 +254,7 @@ class LocationModal extends Component {
                 <a href="#">{ searchType }</a>
               </div>
 
-              <div className="pl-2 pl-md-4 pr-2">
+              <div className="pl-3 pl-md-4 pr-2">
                 <i className="fa fa-search"></i>
               </div>
 
@@ -279,7 +279,7 @@ class LocationModal extends Component {
                 </button>
               </div>
 
-              <button type="button" className={`close px-2 px-md-4 ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
+              <button type="button" className={`close px-3 px-md-4 ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
                   e.preventDefault();
                   this.props.closeModal();
                 }} aria-label="Close">
