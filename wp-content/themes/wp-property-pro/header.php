@@ -4,29 +4,24 @@
 ?><!DOCTYPE html>
 <html>
 <head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,600,700|Playfair+Display:400" />
-    <link rel="manifest" href="/wp-content/themes/wp-property-pro/static/scripts/src/manifest.json">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
-    <title><?php wp_title(); ?></title>
-  <?php wp_head(); ?>
-    <noscript><p class="no-js-header">This site uses Javascript extensively to work. Please enable Javascript on your browser to continue!</p></noscript>
-    <!-- Google Analytics -->
-    <script type="text/javascript">
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    </script>
-  <?php if(defined('WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY')): ?>
-    <script type="text/javascript">
-        ga('create', '<?php echo WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY; ?>', 'auto');
-    </script>
-  <?php endif; ?>
+<meta charset="<?php bloginfo('charset'); ?>">
+<meta name="viewport" content="width=device-width">
+<meta name="format-detection" content="telephone=no">
+<title><?php wp_title(); ?></title>
+<?php wp_head(); ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,600,700|Playfair+Display:400" />
+<link rel="manifest" href="/wp-content/themes/wp-property-pro/static/scripts/src/manifest.json">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+<noscript><p class="no-js-header">This site uses Javascript extensively to work. Please enable Javascript on your browser to continue!</p></noscript>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-P4ZJT4V');</script>
 </head>
 
 <body <?php body_class(); ?>>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P4ZJT4V" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

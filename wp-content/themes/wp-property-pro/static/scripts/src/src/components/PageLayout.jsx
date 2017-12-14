@@ -17,6 +17,8 @@ import Footer from './Footer.jsx';
 import LoginModal from './Modals/LoginModal.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {Helmet} from "react-helmet";
+import renderHTML from 'react-render-html';
 import {
   BrowserRouter as Router,
   Route,
@@ -174,7 +176,6 @@ class PageLayout extends Component {
       }
       if (get(data, 'post', null)) {
         this.props.receiveWordpressContentFetchingFunc();
-        document.title = get(data, 'page_title', '').replace(/\&amp;/g,'&');
         self.setState({
           agents: get(data, 'agents'),
           search_options: get(data, 'search_options'),
@@ -242,6 +243,16 @@ class PageLayout extends Component {
 
     let mainContent = (
       <div className={containerClass}>
+          {
+            get(paramsToSet.post, 'head_tags', null)
+              ?
+              <Helmet>
+                {get(paramsToSet.post, 'head_tags').map(tag => {
+                  return renderHTML(tag);
+                })}
+              </Helmet>
+              : null
+          }
         <FormModals />
         <UserPanel
           closeUserPanel={closeUserPanel}
