@@ -40,9 +40,9 @@ if( !class_exists( 'UD_Extended_Term_Post_type' ) ) {
       add_filter( 'rwmb_meta_boxes', array( $this, 'rwmb_meta_boxes' ) );
 
       // Associate Extended Post with Term
-      add_filter( 'save_post_' . self::$post_type, array( $this, 'associate_post' ), 10, 2 );
-      add_action( 'edited_term', array( $this, 'associate_term' ), 10, 3 );
-      add_action( 'created_term', array( $this, 'associate_term' ), 10, 3 );
+      add_filter( 'save_post_' . self::$post_type, array( $this, 'associate_post' ), 999, 2 );
+      add_action( 'edited_term', array( $this, 'associate_term' ), 999, 3 );
+      add_action( 'created_term', array( $this, 'associate_term' ), 999, 3 );
 
     }
 
