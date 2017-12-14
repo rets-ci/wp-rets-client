@@ -1196,6 +1196,8 @@ namespace UsabilityDynamics {
      * @return array
      */
     private function property_pro_prepare_seo_meta_data($post){
+      global $wp;
+
       $data = [];
 
       $frontpage_id = get_option( 'page_on_front' );
@@ -1205,7 +1207,7 @@ namespace UsabilityDynamics {
       $data['description'] = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
       $data['site'] = '@' . (isset( $wpseo_social[ 'twitter_site' ] ) && $wpseo_social[ 'twitter_site' ] ? $wpseo_social[ 'twitter_site' ] : 'reddoorcompany');
       $data['image'] = isset( $wpseo_social[ 'og_default_image' ] ) && $wpseo_social[ 'og_default_image' ] ? $wpseo_social[ 'og_default_image' ] : get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
-      $data['og_url'] = get_the_permalink($post);
+      $data['og_url'] = home_url( $wp->request );
       $data['og_site_name'] = get_bloginfo();
 
       $twitter_card_type = isset($wpseo_social['twitter_card_type']) && $wpseo_social['twitter_card_type'] ? $wpseo_social['twitter_card_type'] : 'summary';
