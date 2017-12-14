@@ -89,6 +89,21 @@ namespace UsabilityDynamics {
       /** Delete cache with siteorigin posts query widget result on save post */
       add_action('save_post', [$this, 'property_pro_delete_widget_posts_cache'], 10, 3);
 
+      /** Build seo meta data on wp_head */
+      add_action('wp_head', [$this, 'property_pro_build_seo_meta_tags']);
+
+      /** Disable standart seo meta data output  */
+      add_filter( 'wpseo_opengraph_title', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_desc', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_url', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_site_name', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_admin', '__return_false', 10, 1 );
+      add_filter( 'wpseo_opengraph_type', '__return_false', 10, 1 );
+      add_filter( 'wpseo_output_twitter_card', '__return_false', 10, 1 );
+
+      /** Do not output site origin styles to front-end */
+      remove_action('wp_footer', 'siteorigin_widget_print_styles');
+
       /** Add ajax actions */
 
       /** Get posts list */
@@ -112,18 +127,19 @@ namespace UsabilityDynamics {
 
       wp_enqueue_script('property-pro-jquery', '', [], null, true);
       wp_enqueue_script('property-pro-tether', $this->_scriptsDir . '/src/tether.min.js', [], null, true);
-      wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js', [], null, true);
+      wp_enqueue_script('property-pro-bootstrap-js', $this->_scriptsDir . '/src/bootstrap.min.js', [ 'jquery' ], null, true );
       wp_enqueue_style('property-pro-bootstrap-css', $this->_stylesDir . '/src/bootstrap.min.css');
       wp_enqueue_style('property-pro-main-css', $this->_stylesDir . '/dist.css');
-      wp_enqueue_style('style', get_stylesheet_uri());
 
-      // since it uses wpp.analytics, we must declare 'wp-property-global' as a dependency.
-      wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js', array( 'jquery' ), null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/dist/bundle.js', [], null, true);
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single()) { 
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY, [], null, true);
       }
-      $params = $this->property_pro_get_base_info();
+
+      // Exclude SO font flex
+      wp_deregister_style( 'siteorigin-panels-front' );
+
+      $params = $this->property_pro_get_base_info(true);
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
        * now host value in theme composer.json
@@ -141,7 +157,7 @@ namespace UsabilityDynamics {
       wp_enqueue_script('admin_script', $this->_scriptsDir . '/admin/admin.js', [], null, true);
     }
 
-    private function property_pro_get_base_info()
+    private function property_pro_get_base_info($localize = false)
     {
 
       $blog_post_id = get_option('page_for_posts');
@@ -173,22 +189,13 @@ namespace UsabilityDynamics {
         'admin_ajax_url' => admin_url('admin-ajax.php'),
         'template_url' => get_template_directory_uri(),
         'site_name' => esc_attr(get_bloginfo('name')),
-        'page_title' => get_bloginfo('name') . wp_title('»', false),
+        'page_title' => wp_title('&raquo;', false),
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
         'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : '',
         'property_single_url' => $property_single_url,
-        'agents' => array_map(function($user){
-          $user->meta = get_user_meta($user->ID);
-
-          $user->images = array_map(function($image){
-            return wp_get_attachment_image_src(unserialize($image)[0]);
-          }, (isset($user->meta['agent_images']) ? $user->meta['agent_images'] : []));
-
-          return $user;
-        }, get_users(['role' => 'agent'])),
         'sidebar_menu_items' => $sidebar_menu_term_id ? array_map( function ( $item ) {
           return [ 'ID' => $item->ID, 'title' => $item->title, 'url' => $item->url, 'relative_url' => str_replace( home_url(), "", $item->url ), 'classes' => $item->classes ];
         }, wp_get_nav_menu_items( $sidebar_menu_term_id ) ) : []
@@ -198,6 +205,72 @@ namespace UsabilityDynamics {
       if(defined('EP_INDEX_NAME') && EP_INDEX_NAME){
         $params['ep_index_name'] = EP_INDEX_NAME;
       }
+
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
+        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
+      }
+
+      /** Get company logos */
+      $params['logos'] = [
+          'square_logo' => get_theme_mod('property_pro_company_square_logo'),
+          'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
+          'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
+      ];
+
+      /** Get footer menus */
+      $footer_structure = [
+          'top_footer' => [
+              get_theme_mod('property_pro_footer_top_menu_one'),
+              get_theme_mod('property_pro_footer_top_menu_two'),
+              get_theme_mod('property_pro_footer_top_menu_three'),
+              get_theme_mod('property_pro_footer_top_menu_four')
+          ],
+          'bottom_footer' => [
+              'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
+              'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
+          ]
+      ];
+
+      foreach ($footer_structure as $level_title => $level) {
+        foreach ($level as $key => $menu_id) {
+          $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
+          $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
+            return [
+                'ID' => $item->ID,
+                'title' => $item->title,
+                'url' => $item->url,
+                'relative_url' => str_replace(home_url(), "", $item->url),
+                'classes' => $item->classes
+            ];
+          }, wp_get_nav_menu_items($menu_id));
+        }
+      }
+
+      if($localize){
+        return $params;
+      }
+
+      $params['agents'] = array_map(function($user){
+        $meta = get_user_meta($user->ID);
+
+        $new_user = new \stdClass();
+
+        $new_user->data = new \stdClass();
+        $new_user->data->display_name = $user->display_name;
+
+        if($meta){
+          $new_user->data->meta = new \stdClass();
+          $new_user->data->meta->phone_number = isset($meta['phone_number']) ? $meta['phone_number'] : '';
+          $new_user->data->meta->sale_type = isset($meta['sale_type']) ? $meta['sale_type'] : '';
+          $new_user->data->meta->triangle_mls_id = isset($meta['triangle_mls_id']) ? $meta['triangle_mls_id'] : '';
+        }
+
+        $new_user->data->images = array_map(function($image){
+          return wp_get_attachment_image_src(unserialize($image)[0]);
+        }, (isset($meta['agent_images']) ? $meta['agent_images'] : []));
+
+        return $new_user;
+      }, get_users(['role' => 'agent']));
 
       /** Front page post content for 404's page displaying search bar */
       if(is_404()){
@@ -249,50 +322,6 @@ namespace UsabilityDynamics {
       }
 
       $params['property_search_options'] = $property_search_options;
-
-      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
-        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
-      }
-
-      /** Get company logos */
-      $params['logos'] = [
-        'square_logo' => get_theme_mod('property_pro_company_square_logo'),
-        'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
-        'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
-      ];
-
-      /** Get footer menus */
-      $footer_structure = [
-        'top_footer' => [
-          get_theme_mod('property_pro_footer_top_menu_one'),
-          get_theme_mod('property_pro_footer_top_menu_two'),
-          get_theme_mod('property_pro_footer_top_menu_three'),
-          get_theme_mod('property_pro_footer_top_menu_four')
-        ],
-        'bottom_footer' => [
-          'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
-          'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
-        ]
-      ];
-
-      foreach ($footer_structure as $level_title => $level) {
-        foreach ($level as $key => $menu_id) {
-          $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
-          $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
-            return [
-              'ID' => $item->ID,
-              'title' => $item->title,
-              'url' => $item->url,
-              'relative_url' => str_replace(home_url(), "", $item->url),
-              'classes' => $item->classes
-            ];
-          }, wp_get_nav_menu_items($menu_id));
-        }
-      }
-
-      /** Get customizer colors settings */
-      $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
-      $params['colors']['secondary_color'] = get_theme_mod('property_pro_secondary_color');
 
       /** Plural values for listing types titles */
       $listing_subtypes_plural_values_filename = WP_CONTENT_DIR . '/static/json/listing_subtypes_plural_values.json';
@@ -1007,6 +1036,65 @@ namespace UsabilityDynamics {
         $params['post']['scripts'] = $scripts;
       }
 
+      if(is_single()){
+
+        $seo_data = $this->property_pro_prepare_seo_meta_data($post);
+
+        $head_tags = [
+          '<meta property="og:type" content="' . $seo_data['og_type'] . '" data-react-helmet="true" />',
+          '<meta property="og:title" content="' . $seo_data['title'] . '" data-react-helmet="true" />',
+          '<meta property="og:description" content="' . $seo_data['description'] . '" data-react-helmet="true" />',
+          '<meta property="og:url" content="' . $seo_data['og_url'] . '" data-react-helmet="true" />',
+          '<meta property="og:site_name" content="' . $seo_data['site_name'] . '" data-react-helmet="true" />',
+          '<meta property="fb:admins" content="' . $seo_data['admin_id'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:card" content="' . $seo_data['twitter_card_type'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:description" content="' . $seo_data['description'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:title" content="' . $seo_data['title'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:site" content="' . $seo_data['site'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:image" content="' . $seo_data['image'] . '" data-react-helmet="true" />',
+          '<meta name="twitter:creator" content="' . $seo_data['site'] . '" data-react-helmet="true" />'
+        ];
+
+      }else{
+        /** Dynamic meta which needed for payload */
+        $dynamic_meta = [
+            'og:type',
+            'og:title',
+            'og:description',
+            'og:url',
+            'og:site_name',
+            'fb:admins',
+            'twitter:card',
+            'twitter:description',
+            'twitter:title',
+            'twitter:site',
+            'twitter:image',
+            'twitter:creator'
+        ];
+
+        // Get head content
+        preg_match_all('/<head>(.*?)<\/head>/s', $output, $matches);
+
+        // Get head meta data
+        preg_match_all('~<([^/][^>]*?)>~', $matches[1][0], $arr, PREG_PATTERN_ORDER);
+        $head_tags = array_values( array_filter( $arr[ 0 ], function ( $item ) use ( $dynamic_meta ) {
+
+          $return = false;
+          foreach ($dynamic_meta as $meta_item) {
+
+            $return = strpos( $item, $meta_item ) != false;
+
+            if( $return ) {
+              break;
+            }
+          }
+          return $return;
+        } ) );
+      }
+
+      $params[ 'post' ][ 'test' ] = $output;
+      $params[ 'post' ][ 'head_tags' ] = $head_tags;
+
       return wp_json_encode($params);
     }
 
@@ -1101,7 +1189,92 @@ namespace UsabilityDynamics {
 
     }
 
-  }
+    /**
+     * Preparing data for seo meta tags
+     *
+     * @param $post
+     * @return array
+     */
+    private function property_pro_prepare_seo_meta_data($post){
+      global $wp;
 
+      $data = [];
+
+      $frontpage_id = get_option( 'page_on_front' );
+      $wpseo_social = get_option( 'wpseo_social' );
+
+      $data['title'] = wp_title( '&raquo;', false );
+      $data['description'] = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
+      $data['site'] = '@' . (isset( $wpseo_social[ 'twitter_site' ] ) && $wpseo_social[ 'twitter_site' ] ? $wpseo_social[ 'twitter_site' ] : 'reddoorcompany');
+      $data['image'] = isset( $wpseo_social[ 'og_default_image' ] ) && $wpseo_social[ 'og_default_image' ] ? $wpseo_social[ 'og_default_image' ] : get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
+      $data['og_url'] = home_url( $wp->request );
+      $data['og_site_name'] = get_bloginfo();
+
+      $twitter_card_type = isset($wpseo_social['twitter_card_type']) && $wpseo_social['twitter_card_type'] ? $wpseo_social['twitter_card_type'] : 'summary';
+
+      if ( is_singular() && has_shortcode( $post->post_content, 'gallery' ) ) {
+
+        $images = get_post_gallery_images($post);
+
+        if ( count( $images ) > 0 ) {
+          $twitter_card_type = 'summary_large_image';
+        }
+      }
+
+      if ( ! in_array( $twitter_card_type, array(
+          'summary',
+          'summary_large_image',
+          'app',
+          'player',
+      ), true )
+      ) {
+        $twitter_card_type = 'summary';
+      }
+      $data['twitter_card_type'] = $twitter_card_type;
+
+
+      if ( is_front_page() || is_home() ) {
+        $og_type = 'website';
+      }
+      elseif ( is_singular() ) {
+        $og_type = 'article';
+      }
+      else {
+        $og_type = 'object';
+      }
+      $data['og_type'] = $og_type;
+
+      $fb_admins = $wpseo_social[ 'fb_admins' ];
+      $admin_id = 0;
+
+      if( $fb_admins ) {
+        reset( $fb_admins );
+        $admin_id = key( $fb_admins );
+      }
+      $data['admin_id'] = $admin_id;
+
+      return $data;
+    }
+
+    /**
+     * Build seo meta data
+     *
+     */
+    function property_pro_build_seo_meta_tags() {
+      global $post;
+
+      $seo_data = $this->property_pro_prepare_seo_meta_data( $post );
+
+      echo '<meta property="og:type" content="' . $seo_data[ 'og_type' ] . '" data-react-helmet="true" /> '."\n";
+      echo '<meta property="og:title" content="' . $seo_data[ 'title' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="og:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="og:url" content="' . $seo_data['og_url'] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="og:site_name" content="' . $seo_data['og_site_name'] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="fb:admins" content="' . $seo_data[ 'admin_id' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta name="twitter:card" content="' . $seo_data[ 'twitter_card_type' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta name="twitter:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />'."\n";
+    }
+
+  }
 
 }

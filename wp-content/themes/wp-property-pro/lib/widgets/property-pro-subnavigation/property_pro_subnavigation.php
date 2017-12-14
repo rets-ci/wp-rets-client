@@ -33,16 +33,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Subnavigation {
 
     function initialize()
     {
-      $this->register_frontend_styles(
-        [
-          [
-            'property-pro-subnavigation-base',
-            get_template_directory_uri().'/lib/widgets/property-pro-subnavigation/css/style.css',
-            [],
-            SOW_BUNDLE_VERSION
-          ],
-        ]
-      );
+
     }
 
     function initialize_form()

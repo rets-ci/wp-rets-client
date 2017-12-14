@@ -162,6 +162,18 @@ namespace wpCloud\StatelessMedia {
            */
           if( !$this->has_errors() ) {
 
+            if( $this->get( 'sm.mode' ) === 'stateless' ) {
+              /**
+               * ACF image crop addons compatibility.
+               * We hook into image crops admin_ajax crop request and alter
+               * wp_upload_dir() using upload_dir filter.
+               * Then we remove the filter once the plugin get the GCS image link.
+               * 
+               */
+              add_action( 'wp_ajax_acf_image_crop_perform_crop', array( $this, 'acf_image_crop_perform_crop' ), 1 );
+
+            }
+
             if( $this->get( 'sm.mode' ) === 'cdn' || $this->get( 'sm.mode' ) === 'stateless' ) {
               add_filter( 'wp_get_attachment_image_attributes', array( $this, 'wp_get_attachment_image_attributes' ), 20, 3 );
               add_filter( 'wp_get_attachment_url', array( $this, 'wp_get_attachment_url' ), 20, 2 );
@@ -222,6 +234,30 @@ namespace wpCloud\StatelessMedia {
       }
 
       /**
+       * Alter wp_upload_dir() using upload_dir filter.
+       * Then we remove the filter once the plugin get the GCS image link.
+       * 
+       */
+      public function acf_image_crop_perform_crop(){
+        add_filter('upload_dir', array( $this, 'upload_dir') );
+        // Removing upload_dir filter.
+        add_filter('acf-image-crop/filename_postfix', array( $this, 'remove_filter_upload_dir') );
+
+      }
+
+      /**
+       * Remove upload_dir filter as it's work is done.
+       * Used acf-image-crop/filename_postfix as intermediate/temporary hook.
+       * We need to remove the upload_dir filter before that function tries to 
+       * insert attachment to media library. Unless media library would get confused.
+       * 
+       */
+      public function remove_filter_upload_dir($postfix=''){
+        remove_filter('upload_dir', array( $this, 'upload_dir') );
+        return $postfix;
+      }
+
+      /**
        * Rebuild srcset from gs_link.
        * 
        * 
@@ -253,8 +289,10 @@ namespace wpCloud\StatelessMedia {
       public function get_gs_host($sm = array()) {
         $sm = $sm?$sm: $this->get( 'sm');
         $image_host = 'https://storage.googleapis.com/';
-        if ( $sm['bucket'] && $sm['custom_domain'] == $sm['bucket']) {
-            $image_host = 'http://';  // bucketname will be host
+        $is_ssl = strpos($sm['custom_domain'], 'https://');
+        $custom_domain = str_replace('https://', '', $sm['custom_domain']);
+        if ( $sm['bucket'] && $custom_domain == $sm['bucket']) {
+            $image_host = $is_ssl === 0 ? 'https://' : 'http://';  // bucketname will be host
         }
         return $image_host . $sm['bucket'];
       }
@@ -559,6 +597,7 @@ namespace wpCloud\StatelessMedia {
 
         $file_path = str_replace( trailingslashit( $upload_dir[ 'basedir' ] ), '', $file );
         $file_info = @getimagesize( $file );
+        $mimeType = wp_check_filetype( $file );
 
         if ( $file_info ) {
           $_metadata = array(
@@ -575,6 +614,7 @@ namespace wpCloud\StatelessMedia {
           'absolutePath' => wp_normalize_path( $file ),
           'cacheControl' => apply_filters( 'sm:item:cacheControl', 'public, max-age=36000, must-revalidate', $_metadata ),
           'contentDisposition' => null,
+          'mimeType' => $mimeType['type'],
           'metadata' => $_metadata
         ) ) ) );
 
@@ -931,12 +971,15 @@ namespace wpCloud\StatelessMedia {
             $trnst[ 'error' ] = $client->get_error_message();
           } else {
             $connected = $client->is_connected();
-            if( $connected !== true && $error = $connected->getErrors()) {
-              $error = reset($error);
+            if( $connected !== true ) {
               $trnst[ 'success' ] = 'false';
               $trnst[ 'error' ] = sprintf( __( 'Could not connect to Google Storage bucket. Please, be sure that bucket with name <b>%s</b> exists.', $this->domain ), $this->get( 'sm.bucket' ) );
-              if($error['reason'] == 'accessNotConfigured')
-                $trnst[ 'error' ] .= "<br>" . make_clickable($error['message']);
+
+              if( is_callable(array($connected, 'getErrors')) && $error = $connected->getErrors() ){
+                $error = reset($error);
+                if($error['reason'] == 'accessNotConfigured')
+                  $trnst[ 'error' ] .= "<br>" . make_clickable($error['message']);
+              }
             }
           }
           set_transient( 'sm::is_connected_to_gs', $trnst, 4 * HOUR_IN_SECONDS );
@@ -1024,6 +1067,7 @@ namespace wpCloud\StatelessMedia {
        * @return mixed
        */
       public function upload_dir( $data ) {
+        $data[ 'basedir' ] = $this->get_gs_host();
         $data[ 'baseurl' ] = $this->get_gs_host();
         $data[ 'url' ] = $data[ 'baseurl' ] . $data[ 'subdir' ];
 

@@ -267,6 +267,17 @@ class Util extends React.Component {
     return `${Lib.GOOGLE_STREETVIEW_URL}?size=${params.size}&location=${params.location}&key=${key}`;
   }
 
+  static getGoogleStaticMapThumbnailURL({ location, zoom = 10, size = Lib.PROPERTY_LISTING_IMAGE_SIZE }) {
+    let key = get(bundle, 'google_api_key', null);
+
+    if (!location || !key) {
+      console.log('Missed params');
+      return '';
+    }
+
+    return `${Lib.GOOGLE_STATICMAP_URL}?center=${location}&zoom=${zoom}&size=${size}&maptype=roadmap&key=${key}`;
+  }
+
   static getSearchTypeParameters(options) {
     // Hack for changing Sale to Buy in dropdown options
     // TODO: ideally this should be done in the server-side and send down to the client to not pollute the client-side code

@@ -285,13 +285,13 @@ class SearchFilterDescriptionText extends Component {
       );
     } else {
       return (
-        <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle ${Lib.THEME_CLASSES_PREFIX}headtitle--no-results`}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle__banner`}
+        <div className={`${Lib.THEME_CLASSES_PREFIX}noresults-banner`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}banner__image`}
             style={{ backgroundImage: `url(${bundle.static_images_url}no-results-banner.png)` }}
           />
-          <h1 className={`${Lib.THEME_CLASSES_PREFIX}headtitle__title`}>{ data.title }</h1>
-          <p className={`${Lib.THEME_CLASSES_PREFIX}headtitle__text`}>{ data.description }</p>
-          <a className={`${Lib.THEME_CLASSES_PREFIX}headtitle__btn btn`} onClick={ this.handleClearFilters }>
+          <h1 className={`${Lib.THEME_CLASSES_PREFIX}banner__title`}>{ data.title }</h1>
+          <p className={`${Lib.THEME_CLASSES_PREFIX}banner__text`}>{ data.description }</p>
+          <a className={`${Lib.THEME_CLASSES_PREFIX}banner__btn btn`} onClick={ this.handleClearFilters }>
             {'Remove Filters'}
           </a>
         </div>

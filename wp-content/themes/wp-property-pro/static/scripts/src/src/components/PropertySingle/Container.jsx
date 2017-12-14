@@ -11,11 +11,11 @@ import {
 import { Lib } from 'app_root/lib.jsx';
 import Api from 'app_root/containers/Api.jsx';
 
+import Util                 from 'app_root/components/Util.jsx';
 import ErrorMessageModal    from 'app_root/components/ErrorMessageModal.jsx';
 import HeaderPropertySingle from 'app_root/components/Headers/HeaderPropertySingle.jsx';
-import LoadingAccordion     from 'app_root/components/LoadingAccordion.jsx';
 import PropertySingle       from 'app_root/components/PropertySingle/PropertySingle.jsx';
-import Util                 from 'app_root/components/Util.jsx';
+import PropertySinglePlaceholder from 'app_root/components/PropertySingle/PropertySinglePlaceholder.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -130,6 +130,7 @@ class SingleContainer extends Component {
     let propertyMeta = {};
     if (property) { propertyMeta = Util.transformPropertyMeta(property); }
     let searchType = Util.determineSearchType(propertyTypeOptions, propertyType, sale ? sale : null);
+
     return (
       <div>
         <div className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search`}>
@@ -149,22 +150,25 @@ class SingleContainer extends Component {
             searchType={searchType}
           />
         </div>
-        {!property ?
-          (isFetching ?
-            <LoadingAccordion containerHeight="600px" verticallyCentered={true} /> :
-            (errorMessage ?
-              <ErrorMessageModal errorMessage={errorMessage} />
-            :
-            <p>Request property id {id} could not be found</p>)
-            ):
-            <PropertySingle
-              agents={agents}
-              curatedPropertyInfo={propertyMeta}
-              elasticSearchSource={property}
-              saleType={sale}
-              searchType={searchType}
-              fromMapView={false}
-            />
+        { isFetching &&
+          <PropertySinglePlaceholder />
+        }
+        { !isFetching && property &&
+          <PropertySingle
+            isFetching={isFetching}
+            agents={agents}
+            curatedPropertyInfo={propertyMeta}
+            elasticSearchSource={property}
+            saleType={sale}
+            searchType={searchType}
+            fromMapView={false}
+          />
+        }
+        { !isFetching && 
+          (errorMessage
+            ? <ErrorMessageModal errorMessage={errorMessage} />
+            : <p>Request property id {id} could not be found</p>
+          )
         }
       </div>
     );

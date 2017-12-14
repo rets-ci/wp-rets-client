@@ -79,12 +79,10 @@
       "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
     },
     "settings_production-v2": {
-      "db_name": "production-v2",
-      "WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1"
+      "db_name": "production-v2"
     },
     "settings_production-v3": {
-      "db_name": "production-v3",
-      "WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1"
+      "db_name": "production-v3"
     },
     "settings_production-hotfix": {
       "wp_debug_log": true,
@@ -171,8 +169,7 @@
         "write": 5,
         "charset": "utf8",
         "collate": "utf8_general_ci"
-      },
-      "WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY": "UA-31717595-2"
+      }
     }
   },
   "config": {

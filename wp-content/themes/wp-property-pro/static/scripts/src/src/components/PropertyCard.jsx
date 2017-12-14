@@ -30,12 +30,12 @@ class PropertyCard extends Component {
   }
 
   handlePrevClick = (e) => {
-    e.stopPropagation();
+    e.preventDefault();
     this.swiper.slidePrev();
   }
 
   handleNextClick = (e) => {
-    e.stopPropagation();
+    e.preventDefault();
     this.swiper.slideNext();
   }
 
@@ -141,18 +141,7 @@ class PropertyCard extends Component {
     const cardImageBlock = (
       <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
         <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
-          <div className={Lib.THEME_CLASSES_PREFIX + "listing-top"}>
-            <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{Util.formatPriceValue(price)}</span>
-            <span className={Lib.THEME_CLASSES_PREFIX + "action-btn-group"}>
-              {/*<a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`}
-                title="Save as favorite">
-                <i className="fa fa-heart" aria-hidden="true"></i>
-              </a>
-              <a href="#" className={Lib.THEME_CLASSES_PREFIX + "hide"} title="Hide">
-                <i className="fa fa-eye-slash" aria-hidden="true"></i>
-              </a>*/}
-            </span>
-          </div>
+          <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{Util.formatPriceValue(price)}</span>
           <Swiper {...swiperParams}>
             {swiperImages.map((url, index) =>
               <div className="swiper-slide" key={index}>
@@ -210,7 +199,7 @@ class PropertyCard extends Component {
           <Link to={link}>
             { cardImageBlock }
             { cardInfoBlock }
-            </Link>
+          </Link>
         </div>
       );
     }

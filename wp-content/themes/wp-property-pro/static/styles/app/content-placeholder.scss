@@ -52,4 +52,33 @@
       padding-right: 1rem;
     }
   }
+
+  // property single
+  .propertypro-single-masthead {
+    h4 {
+      width: 50%;
+      height: 1.625rem;
+      overflow: hidden;
+    }
+    h6 {
+      width: 25%;
+      height: 1rem;
+      overflow: hidden;
+    }
+  }
+}
+
+/* less than 767px */
+@media screen and (max-width: 47.938em) {
+  .propertypro-content-placeholder.propertypro-card {
+    border-bottom: 1px solid #d2dae0 !important;
+  }
+  .propertypro-content-placeholder .propertypro-single-masthead {
+    h4 {
+      width: 80%;
+    }
+    h6 {
+      width: 50%;
+    }
+  }
 }

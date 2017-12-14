@@ -148,6 +148,11 @@ ul.card-header-tabs {
   .propertypro-direction-nav .propertypro-nav-next {
       opacity: 1;
   }
+
+  /* less than 767px */
+  @media screen and (max-width: 47.938em) {
+    min-height: auto !important;
+  }
 }
 
 /*-----------------------------------------------------------------------------------*/

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ContentLoader, { Rect, Circle } from 'react-content-loader';
 
 import { Lib } from 'app_root/lib.jsx';
@@ -59,5 +60,11 @@ const Placeholder = ({ onInit, isFetching, isMobile }) => {
     </div>
   );
 };
+
+Placeholder.propTypes = {
+  isFetching: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
+  onInit: PropTypes.func.isRequired,
+}
 
 export default Placeholder;

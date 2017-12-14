@@ -34,16 +34,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
 
     function initialize()
     {
-      $this->register_frontend_styles(
-        [
-          [
-            'property-pro-masthead-base',
-            get_template_directory_uri() . '/lib/widgets/property-pro-masthead/css/style.css',
-            [],
-            SOW_BUNDLE_VERSION
-          ],
-        ]
-      );
+
     }
 
     function initialize_form()

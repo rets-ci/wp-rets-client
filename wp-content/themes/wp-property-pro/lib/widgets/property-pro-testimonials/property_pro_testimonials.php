@@ -34,16 +34,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Testimonials {
 
     function initialize()
     {
-      $this->register_frontend_styles(
-        [
-          [
-            'property-pro-testimonials-base',
-            get_template_directory_uri().'/lib/widgets/property-pro-testimonials/css/style.css',
-            [],
-            SOW_BUNDLE_VERSION
-          ],
-        ]
-      );
+
     }
 
     function initialize_form()

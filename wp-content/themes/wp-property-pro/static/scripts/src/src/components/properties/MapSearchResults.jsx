@@ -30,8 +30,8 @@ import Util from '../Util.jsx';
 import { Lib } from '../../lib.jsx';
 import ErrorMessage from '../ErrorMessage.jsx';
 import HeaderSearch from '../Headers/HeaderSearch.jsx';
-import PropertiesModal from '../Modals/PropertiesModal.jsx';
-import LocationModal from '../Modals/LocationModal.jsx';
+import PropertiesModal from 'app_root/components/Modals/PropertiesModal.jsx';
+import LocationModal from 'app_root/components/Modals/LocationModal/LocationModal.jsx';
 import Map from './Map.jsx';
 import SearchResultListing from './SearchResultListing.jsx';
 import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
@@ -122,7 +122,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     doSearchWithQuery: (query, append) => {
       let url = Api.getPropertySearchRequestURL();
-      dispatch(requestSearchResultsPosts());
+      dispatch(requestSearchResultsPosts(append));
       Api.search(url, query, (err, response) => {
         if (err) {
           return dispatch(receiveSearchResultsPostsError(err));
@@ -406,6 +406,8 @@ class MapSearchResults extends Component {
         properties={displayedResults}
         selectedProperty={searchFilters.selected_property}
         onChangeSlide={this.updateSelectedProperty}
+        isFetching={isFetching}
+        onLoadMore={this.handleLoadMore}
       />
     );
 
@@ -479,14 +481,25 @@ class MapSearchResults extends Component {
             </div>
           }
 
-          <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
-            { captionElement }
-            { !isMobile && propertyPanelElement }
-            { mapElement }
-            { isMobile && sliderElement }
-          </div>
+          { !isMobile &&
+            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+              { captionElement }
+              { propertyPanelElement }
+              { mapElement }
+            </div>
+          }
 
-          { isMobile && mobileNavigatorElement }
+          { isMobile &&
+            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map`}>
+              { captionElement }
+              { mapElement }
+              { sliderElement }
+            </div>
+          }
+
+          { isMobile &&
+            mobileNavigatorElement
+          }
 
         </section>
       </div>

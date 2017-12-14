@@ -31,16 +31,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\ListingCarousel {
 
     function initialize()
     {
-      $this->register_frontend_styles(
-        [
-          [
-            'property-pro-listing-carousel-base',
-            get_template_directory_uri() . '/lib/widgets/property-pro-listing-carousel/css/style.css',
-            [],
-            SOW_BUNDLE_VERSION
-          ],
-        ]
-      );
+
     }
 
     function initialize_form()
