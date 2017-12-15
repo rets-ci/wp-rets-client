@@ -629,10 +629,10 @@ class PropertiesModal extends Component {
                   </a>
                 </div>
 
-                <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav hidden-sm-down`}>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
                   <a href="#">{ search_type }</a>
                 </div>
-                <div className="px-4">
+                <div className="pl-3 pl-md-4 pr-2">
                   <i className="fa fa-search"></i>
                 </div>
                 <div className={ `${Lib.THEME_CLASSES_PREFIX}flex-wrapper` }>
@@ -656,7 +656,7 @@ class PropertiesModal extends Component {
                       {this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"}
                   </a>
                 </div>
-                <div className="px-4">
+                <div className="px-3 px-md-4">
                   <button
                     aria-label="Close"
                     className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}

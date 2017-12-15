@@ -223,10 +223,10 @@ class LocationModal extends Component {
       <PaginatedSearchResults key={s.key} group={s} onClickResult={this.handleResultClick} />
     ));
 
-    let placeholder = 'Address, City, Zip, or Neighborhood.';
+    let placeholder = 'Address, City, Zip, or Neighborhood';
     let inputClasses = 'form-control';
     if (window.innerWidth < Lib.MOBILE_WIDTH) {
-      placeholder = '';
+      placeholder = 'Address, City, Zip';
       inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}with-padding`
     }
 
@@ -250,11 +250,11 @@ class LocationModal extends Component {
                 </a>
               </div>
 
-              <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav hidden-sm-down`}>
+              <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
                 <a href="#">{ searchType }</a>
               </div>
 
-              <div className="pl-2 pl-md-4 pr-2">
+              <div className="pl-3 pl-md-4 pr-2">
                 <i className="fa fa-search"></i>
               </div>
 
@@ -279,7 +279,7 @@ class LocationModal extends Component {
                 </button>
               </div>
 
-              <button type="button" className={`close px-2 px-md-4 ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
+              <button type="button" className={`close px-3 px-md-4 ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
                   e.preventDefault();
                   this.props.closeModal();
                 }} aria-label="Close">
