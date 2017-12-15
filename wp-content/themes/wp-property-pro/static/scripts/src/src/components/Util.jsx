@@ -356,7 +356,8 @@ class Util extends React.Component {
   static elasticsearchGeoFormatToGoogle(params) {
     let {
       bottomRight,
-      topLeft
+      topLeft,
+      zoom
     } = params;
     return {
       ne: {
@@ -366,7 +367,8 @@ class Util extends React.Component {
       sw: {
         lat: bottomRight[0],
         lon: topLeft[1]
-      }
+      },
+      zoom: zoom
     }
   }
 
