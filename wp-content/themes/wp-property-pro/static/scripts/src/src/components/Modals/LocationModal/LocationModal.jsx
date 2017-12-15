@@ -254,7 +254,7 @@ class LocationModal extends Component {
                 <a href="#">{ searchType }</a>
               </div>
 
-              <div className="pl-3 pl-md-4 pr-2">
+              <div className="pl-3 pl-md-4 pr-3">
                 <i className="fa fa-search"></i>
               </div>
 

@@ -16,37 +16,21 @@
 }
 
 .propertypro-search-modal .propertypro-modal-header {
-    flex: 0 0 auto;
-    height: 5rem;
-    padding: 0;
+  flex: 0 0 auto;
+  height: 5rem;
+  padding: 0;
 
-    & > .propertypro-logo {
-      padding: 0 2.5rem;
+  & > .propertypro-logo {
+    padding: 0 2.5rem;
+  }
+
+  & > .propertypro-drop-nav {
+    padding: 0 2.25rem;
+
+    a {
+      cursor: default;
     }
-
-    & > .propertypro-drop-nav {
-      padding: 0 2.25rem;
-
-      a {
-        cursor: default;
-      }
-    }
-
-    @media screen and (max-width: 40em) {
-      & > .propertypro-logo {
-        padding: 0 0.5rem;
-      }
-
-      & > .propertypro-drop-nav {
-        font-size: 1rem;
-        padding: 0 1rem;
-
-        a {
-          line-height: auto;
-          font-size: 1rem;
-        }
-      }
-    }
+  }
 }
 
 
@@ -90,8 +74,9 @@
 
 .propertypro-search-modal .propertypro-modal-header input {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 500;
     border: 0;
+    padding: 0;
 }
 
 .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box .search-title, .propertypro-search-modal form .form-control {
@@ -177,9 +162,9 @@
 }
 
 p.propertypro-gentle-error {
-    padding: .5rem 1.5rem;
-    font-size: 1.2rem;
-    color: #414141;
+  font-size: 1.5rem;
+  color: #414141;
+  padding: 2rem 1rem;
 }
 
 .propertypro-error-message-container {
@@ -417,5 +402,47 @@ p.propertypro-gentle-error {
         margin-top: 0.5rem;
       }
     }
+  }
+
+  .propertypro-search-modal .propertypro-modal-header {
+    height: 3rem;
+    padding: 0;
+
+    .container {
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    i {
+      font-size: 1.125rem;
+    }
+
+    input {
+      padding: 0;
+      font-size: 1rem;
+    }
+
+    .btn {
+      padding: 0.4rem 1rem;
+      font-size: 1rem;
+    }
+
+    & > .propertypro-logo {
+      padding: 0 0.5rem;
+    }
+
+    & > .propertypro-drop-nav {
+      font-size: 1rem;
+      padding: 0 1rem;
+
+      a {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  p.propertypro-gentle-error {
+    font-size: 1rem;
   }
 }
