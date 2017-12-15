@@ -16,19 +16,23 @@
 }
 
 .propertypro-search-modal .propertypro-modal-header {
-    flex: 0 0 auto;
-    height: 5rem;
-    padding: 0;
-}
+  flex: 0 0 auto;
+  height: 5rem;
+  padding: 0;
 
-.propertypro-search-modal .propertypro-modal-header > .propertypro-logo {
+  & > .propertypro-logo {
     padding: 0 2.5rem;
+  }
+
+  & > .propertypro-drop-nav {
+    padding: 0 2.25rem;
+
+    a {
+      cursor: default;
+    }
+  }
 }
 
-.propertypro-search-modal .propertypro-modal-header > .propertypro-drop-nav {
-    padding: 0 2.25rem;
-    cursor: pointer;
-}
 
 .propertypro-search-modal .propertypro-modal-header .propertypro-flex-wrapper {
     position: relative;
@@ -55,6 +59,7 @@
     flex: 1;
     background-color: #e9eff3;
     overflow: auto;
+    padding: 0;
 }
 
 .propertypro-search-modal .propertypro-close-panel {
@@ -69,8 +74,9 @@
 
 .propertypro-search-modal .propertypro-modal-header input {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 500;
     border: 0;
+    padding: 0;
 }
 
 .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box .search-title, .propertypro-search-modal form .form-control {
@@ -156,9 +162,9 @@
 }
 
 p.propertypro-gentle-error {
-    padding: .5rem 1.5rem;
-    font-size: 1.2rem;
-    color: #414141;
+  font-size: 1.5rem;
+  color: #414141;
+  padding: 2rem 1rem;
 }
 
 .propertypro-error-message-container {
@@ -367,7 +373,7 @@ p.propertypro-gentle-error {
 
 /* location modal - featured cities cards */
 .propertypro-featured-cities-wrapper {
-  padding-top: 2rem;
+  padding: 2rem 0 0;
 
   .propertypro-card {
     cursor: pointer;
@@ -398,9 +404,51 @@ p.propertypro-gentle-error {
     }
   }
 
-  .propertypro-search-modal.propertypro-location-modal .modal-header {
+  .propertypro-search-modal .propertypro-modal-header {
+    height: 3rem;
+    padding: 0;
+
+    .container {
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    i {
+      font-size: 1.125rem;
+    }
+
+    input {
+      padding: 0;
+      font-size: 1rem;
+    }
+
+    .btn {
+      padding: 0.4rem 1rem;
+      font-size: 1rem;
+    }
+
     & > .propertypro-logo {
       padding: 0 0.5rem;
+    }
+
+    & > .propertypro-drop-nav {
+      font-size: 1rem;
+      padding: 0 1rem;
+
+      a {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  p.propertypro-gentle-error {
+    font-size: 1rem;
+  }
+
+  .propertypro-featured-cities-wrapper {
+    .propertypro-card {
+      margin-bottom: 2rem;
     }
   }
 }

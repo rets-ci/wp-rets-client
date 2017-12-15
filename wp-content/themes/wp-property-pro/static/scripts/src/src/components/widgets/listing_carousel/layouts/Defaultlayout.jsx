@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import React, {Component} from 'react';
 import PropertyCard from '../../../PropertyCard.jsx';
-import Swiper from 'react-id-swiper';
 import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
 
@@ -42,7 +41,7 @@ export default class DefaultLayout extends Component {
     const slickParams = {
       arrows: false,
       dots: false,
-      infinite: false,
+      infinite: true,
       lazyLoad: true,
       nextArrow: null,
       prevArrow: null,

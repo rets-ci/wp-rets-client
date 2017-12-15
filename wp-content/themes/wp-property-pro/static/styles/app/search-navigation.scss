@@ -21,6 +21,7 @@
 
   @include propertypro-box-shadow(0px, 1px);
   border-bottom: 1px solid $propertypro-border-color;
+  height: 100%;
 
   .propertypro-drop-nav .fa {
     transition: transform .3s ease-in-out;
@@ -67,6 +68,10 @@
   }
 }
 
+.propertypro-navbar-navigation-icon {
+  font-size: 1.25rem;
+}
+
 .propertypro-toolbar .propertypro-search-filters {
   cursor: pointer;
   height: 100%;
@@ -106,7 +111,7 @@
   }
 
   .propertypro-header-search-navigation > .propertypro-logo {
-    padding: 0 1rem;
+    padding: 0;
   }
 
   .propertypro-header-search-navigation .propertypro-search-box-wrap {
@@ -114,7 +119,7 @@
     padding: 0 0.5rem;
   }
 
-  .propertypro-header-search-navigation > .propertypro-logo {
-    padding: 0 0.5rem;
+  .propertypro-navbar-navigation-icon {
+    font-size: 0.875rem;
   }
 }

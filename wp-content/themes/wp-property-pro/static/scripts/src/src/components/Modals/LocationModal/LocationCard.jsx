@@ -33,6 +33,7 @@ class LocationCard extends Component {
     } = this.props.data;
 
     const swiperParams = {
+      loop: true,
       preloadImages: false,
       lazyLoading: true,
       lazyLoadingInPrevNext: true,

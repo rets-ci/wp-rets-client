@@ -72,6 +72,7 @@ class PropertyCard extends Component {
       zip
     } = this.props.data;
     const swiperParams = {
+      loop: true,
       preloadImages: false,
       lazyLoading: true,
       lazyLoadingInPrevNext: true,

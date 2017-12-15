@@ -181,6 +181,7 @@ class AttributeTabs extends Component {
       prevButton: '.swiper-button-prev-custom',
       nextButtonCustomizedClass: 'fa fa-angle-right',
       prevButtonCustomizedClass: 'fa fa-angle-left',
+      loop: true,
     };
 
 
