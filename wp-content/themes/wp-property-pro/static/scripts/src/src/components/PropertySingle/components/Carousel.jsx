@@ -65,6 +65,7 @@ class Carousel extends Component {
 
     const desktopSwiperParams = {
       freeMode: true,
+      loop: true,
       slidesPerView: 'auto',
       spaceBetween: 5,
       preloadImages: false,

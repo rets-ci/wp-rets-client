@@ -81,7 +81,7 @@ class HeaderSearch extends Component {
           open={this.props.saleTypesPanelOpen}
         />
         <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation d-flex align-items-center`}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-menu-left hidden-md-up px-2`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-menu-left hidden-md-up mr-2`}>
             <UserPanelIcon openUserPanel={this.props.openUserPanel} />
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}logo`}>

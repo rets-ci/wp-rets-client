@@ -769,7 +769,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-square-logo {
-    max-width: 3rem;
+    width: 3rem;
 }
 
 
@@ -1006,7 +1006,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #414141;
 }
 
-.propertypro-navbar-navigation-icon {
+.propertypro-side-navigation {
     font-size: 1.5rem;
 }
 
@@ -1983,7 +1983,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /* Extra small devices (portrait phones, less than 767px) */
 @media screen and (max-width: 47.938em) {
     .propertypro-navigation-navbar {
-        padding: .5rem 0;
+        padding: .75rem 0;
     }
 
     .propertypro-navigation-items {
@@ -2087,16 +2087,23 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-subnavigation ul li a {
         height: 15.625rem;
+
+        img {
+            width: 3rem;
+            height: 3rem;
+        }
     }
 
     .propertypro-login-box {
         border-radius: .1875rem;
         font-weight: 700;
-        font-size: 1.20rem;
+        font-size: 0.75rem;
+        padding: 0.4rem 1rem;
     }
 
     .propertypro-navigation-logo-container {
         max-width: 3.125rem;
+        padding: 0;
     }
 
     .propertypro-subnavigation.propertypro-subnavigation-text-layout {
@@ -2283,10 +2290,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 @media screen and (max-width: 40.000em) {
 
     .propertypro-square-logo {
-        max-width: 2rem;
+        width: 1.5rem;
     }
-    .propertypro-toolbar .propertypro-menu-icon {
-        font-size: 1.75rem;
+    .propertypro-toolbar .propertypro-menu-icon,
+    .propertypro-side-navigation {
+        font-size: 1rem;
     }
 
     .propertypro-guide-toolbar .propertypro-btn-back-to-home {
@@ -2486,30 +2494,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-blog-posts-row .propertypro-post-item:last-child {
         margin-left: 0;
-    }
-
-    .propertypro-search-modal .propertypro-modal-header {
-        height: 3.5rem;
-        padding: 0;
-    }
-
-    .propertypro-search-modal .propertypro-modal-header .container {
-        width: 100%;
-        padding: 0 1rem;
-    }
-
-    .propertypro-search-modal .propertypro-modal-header i {
-        font-size: 1.25rem;
-    }
-
-    .propertypro-search-modal .propertypro-modal-header input {
-        padding: 0.5rem 0;
-        font-size: 1rem;
-    }
-
-    .propertypro-search-modal .propertypro-modal-header .btn {
-        padding: 0.4rem 1rem;
-        font-size: 1rem;
     }
 
     .propertypro-image-mixer {

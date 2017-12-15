@@ -8,12 +8,12 @@ const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
       {
         get(bundle, 'static_images_url', null)
           ?
-          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}menu-icon hidden-md-up my-auto mr-3`} onClick={(eve) => { eve.preventDefault();  openUserPanel(); }}>
+          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}menu-icon hidden-md-up my-auto mr-2`} onClick={(eve) => { eve.preventDefault();  openUserPanel(); }}>
             <span className="fa fa-bars"></span>
           </a>
           : null
       }
-      <a className={`${Lib.THEME_CLASSES_PREFIX}navigation-logo-container navbar-brand mr-auto`}
+      <a className={`${Lib.THEME_CLASSES_PREFIX}navigation-logo-container d-flex align-items-center mr-auto`}
          href={get(bundle, 'site_url', '')}
          onClick={(eve) => {
            eve.preventDefault();
@@ -33,7 +33,7 @@ const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
         }
       </a>
       <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
-        <li className="nav-item mr-4">
+        <li className="nav-item mr-3">
           <a href="#" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}login-box`} onClick={openLoginModal}>Login</a>
         </li>
         <li className="nav-item hidden-sm-down">

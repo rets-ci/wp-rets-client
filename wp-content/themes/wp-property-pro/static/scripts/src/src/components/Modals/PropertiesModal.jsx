@@ -632,7 +632,7 @@ class PropertiesModal extends Component {
                 <div className={`${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
                   <a href="#">{ search_type }</a>
                 </div>
-                <div className="pl-3 pl-md-4 pr-2">
+                <div className="pl-3 pl-md-4 pr-3">
                   <i className="fa fa-search"></i>
                 </div>
                 <div className={ `${Lib.THEME_CLASSES_PREFIX}flex-wrapper` }>
