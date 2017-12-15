@@ -36,10 +36,10 @@ export default class Map extends Component {
   constructor(props) {
     super(props);
     this.points = [];
-
-    this.state = {
-      userDrag: false
-    };
+    this.currentZoom = 0;
+    this.currentCenter = {};
+    this.userDrag = false;
+    this.updatingProperties = false;
   }
 
   shouldComponentUpdate(nextProps) {
@@ -48,6 +48,15 @@ export default class Map extends Component {
       this.props.selectedProperty !== get(nextProps.props, 'selectedProperty');
 
     return shouldComponentUpdate;
+  }
+
+  componentWillUpdate(){
+    this.points = [];
+    this.updatingProperties = true;
+  }
+
+  componentDidUpdate(){
+    this.updatingProperties = false;
   }
 
   markers(properties, selectedProperty = false) {
@@ -95,16 +104,19 @@ export default class Map extends Component {
     return finalBounds;
   }
 
-  handleOnDrag(bounds) {
+  handleOnDrag(bounds, zoom) {
+
+    // only trigger the Geo change at a certain zoom level and exclude initial auto zoom to prevent ES requests duplicate
+    if (zoom >= Lib.MAP_CHANGE_ZOOM_LIMIT || this.updatingProperties) {
+      return null;
+    }
 
     if (!bounds) {
       console.log('Missing bounds');
       return null;
     }
 
-    this.setState({
-      userDrag: true
-    });
+    this.userDrag = true;
 
     this.props.searchByCoordinates(
       Object.assign({},
@@ -145,9 +157,15 @@ export default class Map extends Component {
     let zoom;
 
     if (currentGeoBounds) {
-      boundsOptions = fitBounds(currentGeoBounds, size);
-      center = boundsOptions.center;
-      zoom = boundsOptions.zoom;
+      if(this.userDrag){
+        // Drag event shouldn't update center and zoom
+        zoom = this.currentZoom;
+        center = this.currentCenter;
+      }else{
+        boundsOptions = fitBounds(currentGeoBounds, size);
+        center = boundsOptions.center;
+        zoom = boundsOptions.zoom;
+      }
     } else if (this.points.length) {
       let geoBounds = this.calculateGeoBoundsByPoints(this.points);
       boundsOptions = fitBounds(geoBounds, size);
@@ -160,6 +178,11 @@ export default class Map extends Component {
       };
       zoom = DEFAULT_ZOOM;
     }
+
+    // Store current options values
+    this.currentCenter = center;
+    this.currentZoom = zoom;
+
     return (
       <div id={Lib.THEME_CLASSES_PREFIX + "Map"}>
         <GoogleMap
@@ -172,11 +195,18 @@ export default class Map extends Component {
           onDrag={debounce((options) => {
             this.handleOnDrag({ ne: this._updatedBounds.ne, sw: this._updatedBounds.sw });
           }, 500)}
-          onChange={({ bounds, center }) => {
+          onChange={({ bounds, center, zoom }) => {
             this._updatedBounds = bounds;
+
+            // Zoom change event case
+            if(zoom !== this.currentZoom && !this.updatingProperties){
+              this.handleOnDrag({ ne: this._updatedBounds.ne, sw: this._updatedBounds.sw }, zoom);
+            }
+
           }}
           options={{
-            zoomControl: isMobile === false
+            zoomControl: isMobile === false,
+            fullscreenControl: false
           }}
         >
           {markers}
