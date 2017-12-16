@@ -47,7 +47,7 @@ class LocationCard extends Component {
       },
     };
 
-    let swiperImages = images.slice(0)
+    let swiperImages = (images || []).slice(0)
 
     swiperImages.push(
       Util.getGoogleStaticMapThumbnailURL({

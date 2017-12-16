@@ -18,6 +18,7 @@ import FeaturedCitiesPlaceholder from 'app_root/components/Modals/LocationModal/
 import ErrorMessage from 'app_root/components/ErrorMessage.jsx';
 import GroupTransition from 'app_root/components/GroupTransition.jsx';
 import LoadingAccordion from 'app_root/components/LoadingAccordion.jsx';
+import InputWrapper from 'app_root/components/Forms/InputWrapper.jsx';
 import Api from 'app_root/containers/Api.jsx';
 import {Lib} from 'app_root/lib.jsx';
 import Util from 'app_root/components/Util.jsx';
@@ -87,10 +88,7 @@ class LocationModal extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      searchValue: '',
-      timeoutId: 0
-    };
+    this.state = { isCardsMode: true };
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -101,9 +99,7 @@ class LocationModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.open && this.props.open !== nextProps.open) {
-      this.setState({
-        searchValue: ''
-      });
+      this.setState({ isCardsMode: true });
       this.props.topQuery();
     }
   }
@@ -176,40 +172,29 @@ class LocationModal extends Component {
     }
   }
 
-  search() {
-    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(this.props.searchType, this.props.propertyTypeOptions);
-    let {
-      property_type,
-      sale_type
-    } = searchOptions;
-    let val = this.state.searchValue;
-    if (!val) {
-      this.props.topQuery();
+  handleSearch = (val) => {
+    let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(
+      this.props.searchType,
+      this.props.propertyTypeOptions,
+    );
+    if (val) {
+      this.props.searchHandler(val, searchOptions.sale_type, searchOptions.property_type);
+      this.setState({ isCardsMode: false });
     } else {
-      this.props.searchHandler(val, sale_type, property_type);
+      this.props.topQuery();
+      this.setState({ isCardsMode: true });
     }
   }
 
-  handleSearchValueChange(eve) {
-    let val = eve.target.value;
-
-    if(this.state.timeoutId){
-      clearTimeout(this.state.timeoutId);
-    }
-
-    let timeoutId = setTimeout(this.search.bind(this), Lib.LOCATION_MODAL_REQUESTS_DELAY);
-
-    this.setState({
-      searchValue: val,
-      timeoutId: timeoutId
-    });
-  }
-
-  handleKeyPress(event) {
+  handleKeyPress = event => {
     if (event.keyCode === 27) {
       // ESC key
       this.props.closeModal();
     }
+  }
+
+  handleInputInit = dom => {
+    this.searchInput = dom;
   }
 
   render() {
@@ -219,9 +204,6 @@ class LocationModal extends Component {
       searchResults,
       searchType,
     } = this.props;
-    let resultsElements = searchResults.map(s => (
-      <PaginatedSearchResults key={s.key} group={s} onClickResult={this.handleResultClick} />
-    ));
 
     let placeholder = 'Address, City, Zip, or Neighborhood';
     let inputClasses = 'form-control';
@@ -235,8 +217,17 @@ class LocationModal extends Component {
       searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal remove`;
     }
 
-    const showFeaturedCards = !this.state.searchValue
-    const featuredCities = get(searchResults, '0.children', [])
+    const { isCardsMode } = this.state
+    let featuredCities = []
+    let resultsElements = []
+    if (isCardsMode) {
+      featuredCities = get(searchResults, '0.children', [])
+    } else {
+      resultsElements = searchResults.map(s => (
+        <PaginatedSearchResults key={s.key} group={s} onClickResult={this.handleResultClick} />
+      ));
+    }
+
 
     return (
       <div className={`modal ${searchModalClasses} ${Lib.THEME_CLASSES_PREFIX}location-modal`} onKeyDown={this.handleKeyPress.bind(this)}>
@@ -259,18 +250,16 @@ class LocationModal extends Component {
               </div>
 
               <div className={ `${Lib.THEME_CLASSES_PREFIX}flex-wrapper` }>
-                <input
-                  autoComplete="off"
+              { this.props.open &&
+                  <InputWrapper
                   className={inputClasses}
                   id={Lib.THEME_PREFIX + "search-input"}
-                  onChange={this.handleSearchValueChange.bind(this)}
-                  ref={(input) => {
-                    this.searchInput = input;
-                  }}
-                  type="text"
-                  value={this.state.searchValue}
                   placeholder={placeholder}
+                  delay={Lib.LOCATION_MODAL_REQUESTS_DELAY}
+                  onChangeValue={this.handleSearch}
+                  onInit={this.handleInputInit}
                 />
+              }
               </div>
 
               <div className="hidden-sm-down">
@@ -292,11 +281,11 @@ class LocationModal extends Component {
               <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
               { this.props.open
                 ? searchResults.length
-                  ? showFeaturedCards
+                  ? isCardsMode
                     ? <FeaturedCities cities={featuredCities} onClick={this.handleResultClick} />
                     : <GroupTransition>{ resultsElements }</GroupTransition>
                   : isFetching
-                    ? showFeaturedCards
+                    ? isCardsMode
                       ? <FeaturedCitiesPlaceholder isMobile={this.props.isMobile} />
                       : <LoadingAccordion />
                     : errorMessage
