@@ -825,99 +825,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     border-color: transparent !important;
 }
 
-.additional-filter {
-    display: block;
-}
-
-.propertypro-view-link {
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.5rem;
-}
-
-.search-filter-nav {
-    box-shadow: 0 1.25rem 1.5rem rgba(224, 230, 234, 0.6);
-    background-color: #ffffff;
-    position: relative;
-}
-
-.search-filter-nav > div {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.search-filter-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.propertypro-search-filter-nav svg.icon-group {
-  fill: rgb(139, 140, 141);
-  width: 25%;
-  height: 25%;
-}
-
-.propertypro-search-filter-nav svg.icon-group:hover {
-  fill: rgb(208, 53, 40);
-  cursor: pointer;
-}
-
-.propertypro-search-filter-nav svg.icon-group.selected {
-  fill: rgb(208, 53, 40);
-}
-
-.search-filter-nav ul li a span {
-    display: block;
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin: 1.25rem 0 0;
-}
-
-.propertypro-filter-footernav {
-    box-shadow: 0 0 1.5rem rgba(224, 230, 234, 0.6);
-    background-color: #ffffff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: .75rem 0;
-    z-index: 99;
-}
-
-.propertypro-filter-footernav .btn-reset {
-    float: left;
-    color: #a0a0a0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 2rem;
-    background: transparent;
-    cursor: pointer;
-    padding-left: 0;
-}
-
-.propertypro-filter-footernav .nav-item-right {
-    float: right;
-    color: #cad3d9;
-    font-size: 1.25rem;
-    padding-top: .5rem;
-    color: #a0a0a0;
-}
-
-.propertypro-filter-footernav .propertypro-filter-footernav-item-right a {
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 2rem;
-}
-
-.propertypro-filter-footernav .propertypro-filter-footernav-item-right a.btn-cancel {
-    margin-right: .3125rem;
-}
-
-.propertypro-filter-footernav .propertypro-filter-footernav-item-right a.btn-apply {
-    margin-left: .3125rem;
-}
-
 /*-----------------------------------------------------------------------------------*/
 /*  Properties page
 /*-----------------------------------------------------------------------------------*/
@@ -2319,7 +2226,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         padding: 0 0.8em;
     }
 
-    .propertypro-bs-tags-box .propertypro-tag i, .propertypro-filter-section-button i {
+    .propertypro-bs-tags-box .propertypro-tag i {
         top: 0;
     }
 
@@ -2386,10 +2293,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     .propertypro-search-modal-box ol li a {
         font-size: 1rem;
         line-height: 2.5rem;
-    }
-
-    .propertypro-filter-section {
-        margin-bottom: 5rem;
     }
 
     .propertypro-tour-section {
@@ -2517,8 +2420,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         margin-top: 1rem;
     }
 
-    .propertypro-subnavigation ul li a span,
-    .propertypro-search-filter-nav .propertypro-filter-nav-item-label {
+    .propertypro-subnavigation ul li a span {
         font-size: 1rem;
     }
 
@@ -2539,40 +2441,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
       /*width: auto;*/
       line-height: 1.5625rem;
       padding: .60em 2em;
-    }
-
-    .propertypro-search-filter-nav .propertypro-filter-nav-item-label {
-        margin: .625rem 0 0;
-    }
-
-    .propertypro-search-filter-nav .propertypro-filter-nav-item {
-        height: 6.875rem;
-    }
-
-    .propertypro-filter-section .btn-primary {
-        font-size: 1rem;
-        line-height: 1.125rem;
-    }
-
-    .propertypro-filter-section .propertypro-tag {
-        line-height: 1.75rem;
-    }
-
-    .propertypro-filter-section h3 {
-        font-size: 1.25rem;
-        line-height: 1.25rem;
-    }
-
-    .propertypro-filter-section h3 span {
-        font-size: 0.875rem;
-    }
-
-    .propertypro-filter-footernav {
-        padding: .5rem 0;
-    }
-
-    .propertypro-filter-footernav .btn-reset, .propertypro-filter-footernav .nav-item-right a {
-        font-size: 0.9375rem;
     }
 
     .propertypro-load-more .propertypro-load-more-link {
@@ -2705,14 +2573,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     ul.propertypro-listing-info-box li {
         padding: 0 .625rem;
         font-size: .90rem;
-    }
-
-    .propertypro-search-filter-nav .propertypro-filter-nav-item {
-        height: 5.9375rem;
-    }
-
-    .search-filter-nav ul li a span {
-        display: none;
     }
 
     .propertypro-blog-posts .propertypro-load-more {
