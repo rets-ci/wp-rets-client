@@ -1,32 +1,30 @@
-import FilterBar from './components/FilterBar.jsx';
 import React, {Component} from 'react';
-import {Lib} from '../../lib.jsx';
-import Price from '../properties/Filters/Price.jsx';
 import PropTypes from 'prop-types';
-import {
-  bathroom as bathroomOptions,
-  bedroom as bedroomOptions,
-  defaultPropertyFilters as defaultFiltervalues
-} from '../staticFilters.js';
+import qs from 'qs';
+import URI from 'urijs';
+import difference from 'lodash/difference';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 
 import BuyIcon from 'public_assets/icon-residential-house.svg';
 import RentIcon from 'public_assets/icon-residential-apartment.svg';
 import CommercialIcon from 'public_assets/icon-commercial-retail.svg';
 import LandIcon from 'public_assets/icon-land-wooded.svg';
 
-import difference from 'lodash/difference';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
-
+import {Lib} from 'app_root/lib.jsx';
+import Util from 'app_root/components/Util.jsx';
+import GroupTransition from 'app_root/components/GroupTransition.jsx';
+import {
+  bathroom as bathroomOptions,
+  bedroom as bedroomOptions,
+  defaultPropertyFilters as defaultFiltervalues
+} from 'app_root/components/staticFilters.js';
+import Price from 'app_root/components/properties/Filters/Price.jsx';
+import SQFT from 'app_root/components/properties/Filters/SQFT.jsx';
+import LotSize from 'app_root/components/properties/Filters/LotSize.jsx';
+import FilterBar from 'app_root/components/Modals/components/FilterBar.jsx';
 import LocationModal from 'app_root/components/Modals/LocationModal/LocationModal.jsx';
 
-import SQFT from '../properties/Filters/SQFT.jsx';
-import LotSize from '../properties/Filters/LotSize.jsx';
-import GroupTransition from '../GroupTransition.jsx';
-
-import qs from 'qs';
-import URI from 'urijs';
-import Util from '../Util.jsx';
 
 let convertToSearchParamObject = obj => {
   let searchObject = {};
@@ -598,7 +596,7 @@ class PropertiesModal extends Component {
 
     modalBody.push(
       <div className="row" key="view-more">
-        <div className={`col-7 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
+        <div className={`col-12 col-md-7 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
           <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
             onClick={this.toggleViewAllFilters}>
             { showAllFilters
@@ -668,39 +666,23 @@ class PropertiesModal extends Component {
                 </div>
               </div>
               <div className="modal-body p-0">
-                <div className={`${Lib.THEME_CLASSES_PREFIX}search-filter-nav hidden-lg-up`}>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}sale-types-panel-mobile container hidden-md-up`}>
                   <div className="row">
-                    <div className="card col-3">
-                      <div className="card-img-top mt-4 text-center">
-                      <BuyIcon className={`icon-group ${search_type === 'Buy' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Buy')} />
-                      </div>
-                      <div className="card-block">
-                        <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Buy</h3>
-                      </div>
+                    <div className={ `col-3 ${Lib.THEME_CLASSES_PREFIX}sale-type-box` }>
+                      <BuyIcon className={`${search_type === 'Buy' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Buy')} />
+                      <span>Buy</span>
                     </div>
-                    <div className="card col-3">
-                      <div className="card-img-top mt-4 text-center">
-                        <RentIcon className={`icon-group ${search_type === 'Rent' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Rent')} />
-                      </div>
-                      <div className="card-block">
-                        <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Rent</h3>
-                      </div>
+                    <div className={ `col-3 ${Lib.THEME_CLASSES_PREFIX}sale-type-box` }>
+                      <RentIcon className={`${search_type === 'Rent' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Rent')} />
+                      <span>Rent</span>
                     </div>
-                    <div className="card col-3">
-                      <div className="card-img-top mt-4 text-center">
-                        <CommercialIcon className={`icon-group ${search_type === 'Commercial' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Commercial')} />
-                      </div>
-                      <div className="card-block">
-                        <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Commercial</h3>
-                      </div>
+                    <div className={ `col-3 ${Lib.THEME_CLASSES_PREFIX}sale-type-box` }>
+                      <CommercialIcon className={`${search_type === 'Commercial' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Commercial')} />
+                      <span>Commercial</span>
                     </div>
-                    <div className="card col-3">
-                      <div className="card-img-top mt-4 text-center">
-                        <LandIcon className={`icon-group ${search_type === 'Land' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Land')} />
-                      </div>
-                      <div className="card-block">
-                        <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Land</h3>
-                      </div>
+                    <div className={ `col-3 ${Lib.THEME_CLASSES_PREFIX}sale-type-box` }>
+                      <LandIcon className={`${search_type === 'Land' ? 'selected' : ''}`} onClick={() => this.handleSearchTypeSelect('Land')} />
+                      <span>Land</span>
                     </div>
                   </div>
                 </div>
@@ -715,20 +697,14 @@ class PropertiesModal extends Component {
                 </div>
               </div>
               <div className="modal-footer">
-                <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-md-up`}>
                   <div className="container">
-                    <button
-                      className={`${Lib.THEME_CLASSES_PREFIX}button-reset btn btn-reset`}
-                      onClick={this.resetFilters}
-                      >Reset</button>
-                    <span className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav-item-right nav-item-right`}>
-                    <a
-                      href="#"
-                      className="btn-cancel"
-                      onClick={this.handleCancel}>Cancel</a>
-                        <i>|</i>
-                    <a href="#" className="btn-apply" onClick={this.saveFilters}>Apply</a>
-                  </span>
+                    <a href="#" className="btn-reset" onClick={this.resetFilters}>Reset</a>
+                    <span className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav-item-right`}>
+                      <a href="#" className="btn-cancel" onClick={this.handleCancel}>Cancel</a>
+                      <i>|</i>
+                      <a href="#" className="btn-apply" onClick={this.saveFilters}>Apply</a>
+                    </span>
                   </div>
                 </div>
               </div>
