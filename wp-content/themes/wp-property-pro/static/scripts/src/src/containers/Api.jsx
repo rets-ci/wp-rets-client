@@ -334,6 +334,19 @@ class Api {
 
     // Send new aggregations request to getting listings count for each terms
     let paramsForListingCounts = {
+      "query": {
+        "bool": {
+          "must": [{
+            "terms": {
+              "tax_input.wpp_sale_status.listing_status_sale.name.raw": params.sale_type.map(sale_type => ['For', sale_type].join(' ')),
+            }
+          },{
+            "term": {
+              "tax_input.wpp_listing_type.listing_type.slug": params.property_type
+            }
+          }]
+        }
+      },
       "aggregations":{
         "location_city":{
           "terms":{

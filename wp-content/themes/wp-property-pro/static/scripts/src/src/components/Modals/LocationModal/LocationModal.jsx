@@ -55,11 +55,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         }
       );
     },
-    topQuery: () => {
+    topQuery: (params) => {
       dispatch(requestLocationModalPosts());
-      Api.topQuery({
+      Api.topQuery(Object.assign({
           size: Lib.TOP_AGGREGATIONS_COUNT
-        },
+        }, params),
         function (err, rows) {
           if (err) { return dispatch((err)); }
           dispatch(receiveLocationModalPosts(rows));
@@ -100,7 +100,16 @@ class LocationModal extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.open && this.props.open !== nextProps.open) {
       this.setState({ isCardsMode: true });
-      this.props.topQuery();
+
+      let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(
+        nextProps.searchType,
+        nextProps.propertyTypeOptions,
+      );
+
+      this.props.topQuery({
+        'sale_type': searchOptions.sale_type,
+        'property_type': searchOptions.property_type
+      });
     }
   }
 
@@ -181,7 +190,10 @@ class LocationModal extends Component {
       this.props.searchHandler(val, searchOptions.sale_type, searchOptions.property_type);
       this.setState({ isCardsMode: false });
     } else {
-      this.props.topQuery();
+      this.props.topQuery({
+        'sale_type': searchOptions.sale_type,
+        'property_type': searchOptions.property_type
+      });
       this.setState({ isCardsMode: true });
     }
   }
