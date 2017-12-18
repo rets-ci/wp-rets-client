@@ -137,6 +137,19 @@ export default class Map extends Component {
 
   }
 
+  convertCoordsFromEsToMap(currentGeoBounds){
+    return {
+      "ne": {
+        "lat": currentGeoBounds.ne.lat,
+        "lng": currentGeoBounds.ne.lon
+      },
+      "sw": {
+        "lat": currentGeoBounds.sw.lat,
+        "lng": currentGeoBounds.sw.lon
+      }
+    };
+  }
+
   render() {
     let {
       currentGeoBounds,
@@ -162,7 +175,7 @@ export default class Map extends Component {
         zoom = this.currentZoom;
         center = this.currentCenter;
       }else{
-        boundsOptions = fitBounds(currentGeoBounds, size);
+        boundsOptions = fitBounds(this.convertCoordsFromEsToMap(currentGeoBounds), size);
         center = boundsOptions.center;
         zoom = boundsOptions.zoom;
       }
