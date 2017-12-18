@@ -43,9 +43,9 @@ export default class Map extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    let shouldComponentUpdate = this.props.properties !== get(nextProps.props, 'properties', null) ||
-      this.props.currentGeoBounds !== get(nextProps.props, 'currentGeoBounds', null) ||
-      this.props.selectedProperty !== get(nextProps.props, 'selectedProperty');
+    let shouldComponentUpdate = this.props.properties !== get(nextProps, 'properties', null) ||
+      this.props.currentGeoBounds !== get(nextProps, 'currentGeoBounds', null) ||
+      this.props.selectedProperty !== get(nextProps, 'selectedProperty');
 
     return shouldComponentUpdate;
   }

@@ -330,7 +330,6 @@ class PropertiesModal extends Component {
     filters = removeDefaultFilters(filters, defaultFiltervalues);
     let reddoorTermObjects = Util.reddoorConvertToURLTerms(filters.term.slice(0));
     delete filters.term;
-    delete filters['selected_property'];
     delete filters[Lib.BOTTOM_RIGHT_URL_PREFIX];
     delete filters[Lib.TOP_LEFT_URL_PREFIX];
     delete filters['search_type'];

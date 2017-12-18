@@ -48,6 +48,10 @@ const searchResults = (state = defaultState, action) => {
       return Object.assign({}, state, {
         isFetching: true
       });
+    case Lib.SELECT_PROPERTY_ACTION:
+      return Object.assign({}, state, {
+        selectedProperty: action.selected
+      });
     default:
       return state
   }

@@ -252,6 +252,13 @@ export const deselectPropertyOnMap = property => {
   };
 }
 
+export const selectProperty = selected => {
+  return {
+    type: Lib.SELECT_PROPERTY_ACTION,
+    selected: selected
+  };
+}
+
 export const updateWindowStats = payload => {
   return {
     type: Lib.WINDOW_RESIZE,
