@@ -65,7 +65,6 @@ class Carousel extends Component {
 
     const desktopSwiperParams = {
       freeMode: true,
-      loop: true,
       slidesPerView: 'auto',
       spaceBetween: 5,
       preloadImages: false,
@@ -78,6 +77,7 @@ class Carousel extends Component {
     };
 
     const mobileSwiperParams = {
+      loop: true,
       spaceBetween: 30,
       preloadImages: false,
       lazyLoading: true,

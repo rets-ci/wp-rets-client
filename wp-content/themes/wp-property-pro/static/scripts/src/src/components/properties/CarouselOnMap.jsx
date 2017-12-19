@@ -61,7 +61,6 @@ export default class CarouselOnMap extends Component {
   render() {
     const { properties, isFetching } = this.props;
     const swiperParams = {
-      loop: true,
       slidesPerView: 1,
       slidesPerGroup: 1,
       spaceBetween: 0,
