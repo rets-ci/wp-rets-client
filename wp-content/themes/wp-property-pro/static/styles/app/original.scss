@@ -939,22 +939,31 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     height: 100%;
 }
 
-.propertypro-search-map-container .propertypro-mobile-bottom-navbar {
+.propertypro-search-map-section .propertypro-footer-mobile {
+    border-top: 1px solid #d2dae0;
+}
+
+.propertypro-footer-mobile {
+    z-index: 99;
     background-color: #ffffff;
-    box-shadow: 0 0.1rem 0.5rem #000;
-    padding: 0.5rem 1rem;
     width: 100%;
-}
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
 
-.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span {
-    cursor: pointer;
-    line-height: 2rem;
-    color: #a0a0a0;
-}
+    font-size: 1rem;
+    font-weight: 700;
 
-.propertypro-search-map-container .propertypro-mobile-bottom-navbar-left span.separator {
-    font-size: 18px;
-    padding: 0 1rem;
+    span {
+        line-height: 1rem;
+        color: #a0a0a0;
+    }
+
+    .propertypro-separator {
+        color: #cad3d9;
+        margin: 0 1rem;
+        line-height: 0.9375rem;
+    }
 }
 
 .propertypro-search-result-loading {

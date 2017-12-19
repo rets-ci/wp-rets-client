@@ -363,17 +363,17 @@ class MapSearchResults extends Component {
       : null
 
     const mobileNavigatorElement = (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}mobile-bottom-navbar fixed-bottom hidden-sm-up d-flex`}>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}mobile-bottom-navbar-left`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}footer-mobile fixed-bottom hidden-md-up`}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}footer-mobile__left`}>
           <span onClick={ () => openPropertiesModal(true) }>
             Filter
           </span>
-          <span className="separator">|</span>
+          <span className={`${Lib.THEME_CLASSES_PREFIX}separator`}>|</span>
           <span onClick={ () => this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay) }>
             {this.state.mapDisplay ? 'List' : 'Map'}
           </span>
         </div>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}mobile-bottom-navbar-right`}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}footer-mobile__right`}>
         </div>
       </div>
     );

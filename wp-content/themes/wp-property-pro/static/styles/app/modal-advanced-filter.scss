@@ -194,30 +194,6 @@
     line-height: 1.5rem;
 }
 
-.propertypro-filter-footernav {
-    box-shadow: 0 0 1.5rem rgba(224, 230, 234, 0.6);
-    background-color: #ffffff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: .75rem 0;
-    z-index: 99;
-    font-size: 1rem;
-    font-weight: 700;
-
-    a {
-        color: #a0a0a0;
-    }
-
-    .propertypro-filter-footernav-item-right {
-        float: right;
-        i {
-            color: #cad3d9;
-            margin: 0 0.875rem;
-        }
-    }
-}
 
 /* Extra small devices (portrait phones, less than 767px) */
 @media screen and (max-width: 47.938em) {
@@ -279,7 +255,15 @@
         }
     }
 
+    .propertypro-filter-slider h3 {
+        margin-bottom: 3rem;
+    }
+
     .propertypro-view-link {
         font-size: 0.875rem;
+    }
+
+    .propertypro-search-modal .propertypro-footer-mobile {
+        box-shadow: 0 0 0.75rem #e0e6ea;
     }
 }

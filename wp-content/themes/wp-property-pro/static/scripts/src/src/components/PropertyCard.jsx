@@ -129,10 +129,7 @@ class PropertyCard extends Component {
           size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
           location: !isEmpty(location) ? location.join(',') : ''
         })
-      : (!get(this.props.data, 'full_image', false)
-        ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)
-        : thumbnail
-      )
+      : Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)
 
     let swiperImages = [ thumbnailSrc ]
     each(gallery_images.slice(1), (e) => {
