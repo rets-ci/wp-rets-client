@@ -47,15 +47,15 @@ class LocationCard extends Component {
       },
     };
 
-    let swiperImages = (images || []).slice(0)
+    let swiperImages = (images || []).slice(0);
 
-    swiperImages.push(
+    swiperImages.unshift(
       Util.getGoogleStaticMapThumbnailURL({
         size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
         location: `${text},NC`, // @FIXME later
         zoom: 11,
       })
-    )
+    );
 
     const labelClass = classNames(
       Lib.THEME_CLASSES_PREFIX + 'label',
