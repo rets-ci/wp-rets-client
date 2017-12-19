@@ -91,12 +91,12 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
 
         $needles = array_filter($needles);
 
-        ud_get_wp_rets_client()->write_log( "detect_the_agents. Data " . json_encode( $needles ), 'info' );
+        //ud_get_wp_rets_client()->write_log( "detect_the_agents. Data " . json_encode( $needles ), 'info' );
 
         if( isset( $houzez_options['enable_multi_agents'] ) && $houzez_options['enable_multi_agents'] ) {
-          ud_get_wp_rets_client()->write_log( "detect_the_agents. Multi [enabled]", 'info' );
+          //ud_get_wp_rets_client()->write_log( "detect_the_agents. Multi [enabled]", 'info' );
         } else {
-          ud_get_wp_rets_client()->write_log( "detect_the_agents. Multi [disabled]", 'info' );
+          //ud_get_wp_rets_client()->write_log( "detect_the_agents. Multi [disabled]", 'info' );
         }
 
         delete_post_meta( $post_id, 'fave_agents' );
@@ -105,31 +105,37 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
 
         foreach( $needles as $needle ) {
           $agent_id = $this->detect_the_agent( $needle );
+
           if( $agent_id ) {
+            //ud_get_wp_rets_client()->write_log( "detect_the_agents. Detected Agent [$agent_id] by [$needle]", 'info' );
             array_push( $agent_ids, $agent_id );
             if( !isset( $houzez_options['enable_multi_agents'] ) || !$houzez_options['enable_multi_agents'] ) {
               break;
             }
+          } else {
+            //ud_get_wp_rets_client()->write_log( "detect_the_agents. Agent could NOT be detected by [$needle]", 'info' );
           }
         }
 
+        //ud_get_wp_rets_client()->write_log( "detect_the_agents. Found [" . count($agent_ids) . "] agents", 'info' );
+
         if( empty( $agent_ids ) ) {
           $agent_id = apply_filters( 'wrc_houses_theme_default_agent_id', null, $post_id, $post_data );
-          ud_get_wp_rets_client()->write_log( "detect_the_agents. Default Agent [$agent_id] is set for post [$post_id]", 'info' );
+          //ud_get_wp_rets_client()->write_log( "detect_the_agents. Default Agent [$agent_id] is set for post [$post_id]", 'info' );
           if( !empty( $agent_id ) ) {
             array_push( $agent_ids, $agent_id );
           }
         }
 
         if( !empty( $agent_ids ) ) {
-          ud_get_wp_rets_client()->write_log( "detect_the_agents. Display option [agent_info] is set for post [$post_id]", 'info' );
+          //ud_get_wp_rets_client()->write_log( "detect_the_agents. Display option [agent_info] is set for post [$post_id]", 'info' );
           update_post_meta( $post_id, 'fave_agent_display_option', 'agent_info' );
           foreach( $agent_ids as $agent_id ) {
-            ud_get_wp_rets_client()->write_log( "detect_the_agents. Assigned agent [$agent_id] to the post [$post_id]", 'info' );
+            //ud_get_wp_rets_client()->write_log( "detect_the_agents. Assigned agent [$agent_id] to the post [$post_id]", 'info' );
             add_post_meta( $post_id, 'fave_agents', $agent_id );
           }
         } else {
-          ud_get_wp_rets_client()->write_log( "detect_the_agents. Display option [none] is set for post [$post_id]", 'info' );
+          //ud_get_wp_rets_client()->write_log( "detect_the_agents. Display option [none] is set for post [$post_id]", 'info' );
           update_post_meta( $post_id, 'fave_agent_display_option', 'none' );
         }
 
@@ -154,7 +160,9 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
 
         // Try to detect the agent by post meta
 
-        $agents = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->postmeta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type='houzez_agent' ) meta_value LIKE %s", '%'. $needle . '%' ) );
+        $agents = $wpdb->get_col( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type='houzez_agent' ) AND meta_value = %s", $needle ) );
+
+        //ud_get_wp_rets_client()->write_log( "detect_the_agents. Detected by [$needle] postmeta [" . count($agents) .  "] ", 'info' );
 
         if( !empty( $agents ) && count( $agents ) == 1 ) {
           return $agents[0];
