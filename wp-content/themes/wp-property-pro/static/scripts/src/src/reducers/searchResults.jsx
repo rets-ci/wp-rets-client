@@ -6,7 +6,9 @@ let defaultState = {
   errorMessage: null,
   searchResults: [],
   totalProps: 0,
-  isFetching: false
+  isFetching: false,
+  selectedProperty: null,
+  previewOpen: false,
 };
 
 const searchResults = (state = defaultState, action) => {
@@ -20,7 +22,9 @@ const searchResults = (state = defaultState, action) => {
       } else {
         return {
           ...state,
-          isFetching: true
+          isFetching: true,
+          selectedProperty: null,
+          previewOpen: false,
         }
       }
     case Lib.RECEIVE_SEARCH_RESULTS_POSTS_ACTION:
@@ -44,10 +48,18 @@ const searchResults = (state = defaultState, action) => {
         errorMessage: action.errorMessage,
         isFetching: false
       });
-    case Lib.REQUEST_SEARCH_RESULTS_POSTS_ACTION:
-      return Object.assign({}, state, {
-        isFetching: true
-      });
+    case Lib.SELECT_PROPERTY_ACTION:
+      return {
+        ...state,
+        previewOpen: true,
+        selectedProperty: action.selected,
+      };
+    case Lib.DESELECT_PROPERTY_ACTION:
+      return {
+        ...state,
+        previewOpen: false,
+        selectedProperty: null,
+      }
     default:
       return state
   }

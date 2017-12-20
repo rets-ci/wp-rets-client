@@ -13,7 +13,7 @@ function showContentValue(data, dataReference) {
     return "old style value";
   } else {
     let value = dataReference(data);
-    if (value === null) {
+    if (value === null || value === "0") {
       // console.log(dataReference + ' is null');
       return null;
     } else if (value === false) {

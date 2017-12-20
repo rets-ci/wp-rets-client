@@ -22,6 +22,8 @@ import {
   receiveSearchResultsPostsError,
   requestAvailablePropertySubTypesForSearch,
   requestSearchResultsPosts,
+  selectProperty,
+  deselectProperty,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
   toggleUserPanel
@@ -79,6 +81,11 @@ const mapStateToProps = (state, ownProps) => {
     });
   }
 
+  let selected_property = get(state, 'searchResults.selectedProperty', null);
+  if(get(state, 'searchResults.selectedProperty._source', null)){
+    selected_property = get(state, 'searchResults.selectedProperty._source', null);
+  }
+
   return {
     availableSubTypes: get(state, 'availablePropertySubTypesForSearch.items'),
     errorMessage: state.errorMessage,
@@ -93,14 +100,15 @@ const mapStateToProps = (state, ownProps) => {
     propertyTypeOptions: propertyTypeOptions,
     results: get(state, 'searchResults.searchResults', []),
     resultsTotal: get(state, 'searchResults.totalProps', 0),
-    propertyOnPanel: state.singleProperty.propertyOnPanel,
-    panelOnMapShown: state.singleProperty.panelOnMapShown,
+    propertyOnPanel: selected_property,
+    panelOnMapShown: get(state, 'searchResults.previewOpen', false),
     queryDefaults: queryDefaults,
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     searchQueryParams: searchQueryObject,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
     termDetails: termDetails,
     isMobile: get(state, 'viewport.isMobile', false),
+    selectedProperty: get(selected_property, 'post_meta.rets_mls_number[0]', null)
   }
 };
 
@@ -183,6 +191,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     togglePropertiesModalModeInLocationModal: on => {
       dispatch(togglePropertiesModalModeInLocationModal(on));
+    },
+
+    selectProperty: (propertyId) => {
+      dispatch(selectProperty(propertyId));
+    },
+
+    deselectProperty: () => {
+      dispatch(deselectProperty());
     }
   };
 };
@@ -190,6 +206,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class MapSearchResults extends Component {
   static propTypes = {
     availableSubTypes: PropTypes.array,
+    deselectProperty: PropTypes.func.isRequired,
     doPropertiesModalSearch: PropTypes.func.isRequired,
     doSearchWithQuery: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -209,6 +226,8 @@ class MapSearchResults extends Component {
     results: PropTypes.array.isRequired,
     searchResultsErrorMessage: PropTypes.string,
     searchQueryParams: PropTypes.object.isRequired,
+    selectProperty: PropTypes.func.isRequired,
+    selectedProperty: PropTypes.string,
     termDetails: PropTypes.array.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
@@ -225,7 +244,7 @@ class MapSearchResults extends Component {
   componentDidMount() {
     let filters = this.props.searchQueryParams;
     this.applyQueryFilters(filters, this.props.queryDefaults);
-    if (this.props.displayedResults.length > 0 && !filters.selected_property && this.props.isMobile) {
+    if (this.props.displayedResults.length > 0 && !this.props.selectedProperty && this.props.isMobile) {
       let firstPropertyMLSID = get(this.props.displayedResults, '[0]._source.post_meta.rets_mls_number[0]', null);
       if (!firstPropertyMLSID) {
         console.log('first property MLS id is missing');
@@ -240,28 +259,10 @@ class MapSearchResults extends Component {
 
     // Update url without selected property for re-rendering listings list if listing was unselected
     if(get(this.props, 'panelOnMapShown', false) && !get(nextProps, 'panelOnMapShown', false)){
-
-      if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX]) {
-        filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
-        filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
-      }
-
-      if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {
-        filters['property_subtype'] = filters['property_subtype'].map(d => d.slug);
-      }
-
-      delete(filters['selected_property']);
-
-      filters = Util.customFormatToSearchObject(filters);
-      if(get(filters, 'search', null)){
-        delete(filters['search']);
-      }
-      let searchCollection = Util.searchObjectToCollection(filters);
-      let searchURL = Util.createSearchURL('/search', searchCollection);
-      this.props.history.push(searchURL);
+      this.props.deselectProperty();
     }
 
-    let anyFilterChange = !isEqual(omit(nextProps.searchQueryParams, ['selected_property']), omit(this.props.searchQueryParams, ['selected_property']));
+    let anyFilterChange = !isEqual(nextProps.searchQueryParams, this.props.searchQueryParams);
     let anyDefaultQueryChange = !isEqual(nextProps.queryDefaults, this.props.queryDefaults);
     if (anyFilterChange || anyDefaultQueryChange) {
       this.applyQueryFilters(nextProps.searchQueryParams, nextProps.queryDefaults);
@@ -298,20 +299,7 @@ class MapSearchResults extends Component {
   }
 
   updateSelectedProperty = (propertyId) => {
-    let filters = Object.assign({}, this.props.searchQueryParams);
-    filters['selected_property'] = propertyId;
-    if (filters[Lib.BOTTOM_RIGHT_URL_PREFIX] && filters[Lib.TOP_LEFT_URL_PREFIX]) {
-      filters[Lib.BOTTOM_RIGHT_URL_PREFIX] = {lat: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][0], lon: filters[Lib.BOTTOM_RIGHT_URL_PREFIX][1]};
-      filters[Lib.TOP_LEFT_URL_PREFIX] = {lat: filters[Lib.TOP_LEFT_URL_PREFIX][0], lon: filters[Lib.TOP_LEFT_URL_PREFIX][1]};
-    }
-    delete filters['search_type'];
-    if (filters['property_subtype'] && filters['property_subtype'].every(d => d.slug)) {
-      filters['property_subtype'] = filters['property_subtype'].map(d => d.slug);
-    }
-    filters = Util.customFormatToSearchObject(filters);
-    let searchCollection = Util.searchObjectToCollection(filters);
-    let searchURL = Util.createSearchURL('/search', searchCollection);
-    this.props.history.push(searchURL);
+    this.props.selectProperty(propertyId);
   }
 
   updateURIGeoCoordinates = (geoCoordinates) => {
@@ -397,7 +385,7 @@ class MapSearchResults extends Component {
         location={this.props.location}
         properties={displayedResults}
         searchByCoordinates={this.updateURIGeoCoordinates}
-        selectedProperty={searchFilters.selected_property}
+        selectedProperty={this.props.selectedProperty}
         updateSelectedProperty={this.updateSelectedProperty}
       />
     );
@@ -405,7 +393,7 @@ class MapSearchResults extends Component {
     const sliderElement = (
       <CarouselOnMap
         properties={displayedResults}
-        selectedProperty={searchFilters.selected_property}
+        selectedProperty={this.props.selectedProperty}
         onChangeSlide={this.updateSelectedProperty}
         isFetching={isFetching}
         onLoadMore={this.handleLoadMore}
@@ -439,7 +427,7 @@ class MapSearchResults extends Component {
           propertyTypeOptions={propertyTypeOptions}
           resultCount={propertiesModalResultCount}
           resultCountButtonLoading={propertiesModalResultCountIsFetching}
-          searchFilters={omit(searchFilters, ['geoCoordinates', 'selected_property'])}
+          searchFilters={omit(searchFilters, ['geoCoordinates'])}
           turnOffPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(false)}
           turnOnPropertiesModalModeInLocationModal={() => this.props.togglePropertiesModalModeInLocationModal(true)}
         />
@@ -474,7 +462,7 @@ class MapSearchResults extends Component {
                     properties={displayedResults}
                     onLoadMore={this.handleLoadMore}
                     onUpdateSelectedProperty={this.updateSelectedProperty}
-                    selectedProperty={searchFilters.selected_property}
+                    selectedProperty={this.props.selectedProperty}
                     total={this.props.resultsTotal}
                     isMobile={isMobile}
                   />

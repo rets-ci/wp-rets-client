@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
-import { deselectPropertyOnMap } from 'app_root/actions/index.jsx';
+import { deselectProperty } from 'app_root/actions/index.jsx';
 import PropertySingle from 'app_root/components/PropertySingle/PropertySingle.jsx';
 import Util from 'app_root/components/Util.jsx';
 
@@ -11,7 +11,7 @@ import Util from 'app_root/components/Util.jsx';
 class PropertyPanelOnMap extends Component {
 
   handleClose = () => {
-    this.props.deselectPropertyOnMap();
+    this.props.deselectProperty();
   }
 
   handleOpen = () => {
@@ -75,8 +75,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deselectPropertyOnMap: (property) => {
-      dispatch(deselectPropertyOnMap(property));
+    deselectProperty: (property) => {
+      dispatch(deselectProperty(property));
     }
   }
 }

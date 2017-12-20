@@ -10,7 +10,7 @@ import {
   receivePropertySingleResult,
   receivePropertySingleFetchingError,
   requestPropertySingleResult,
-  selectPropertyOnMap,
+  selectProperty,
 } from 'app_root/actions/index.jsx';
 import { Lib }      from 'app_root/lib.jsx';
 import htmlHelper   from 'app_root/helpers/htmlHelper';
@@ -24,8 +24,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    selectPropertyOnMap: (property) => {
-      dispatch(selectPropertyOnMap(property));
+    selectProperty: (property) => {
+      dispatch(selectProperty(property));
     }
   }
 }
@@ -49,7 +49,7 @@ class PropertyCardList extends Component {
       if (!property) {
         console.log('selected property was not found')
       } else {
-        this.props.selectPropertyOnMap(property._source); 
+        this.props.selectProperty(property._source);
       }
     }
   }
@@ -65,7 +65,7 @@ class PropertyCardList extends Component {
       if (!property) {
         console.log('selected property was not found')
       } else {
-        this.props.selectPropertyOnMap(property._source); 
+        this.props.selectProperty(property._source);
       }
     }
   }
@@ -89,14 +89,15 @@ class PropertyCardList extends Component {
   }
 
   handlePropertyClick = (propertyId) => {
-    this.props.onUpdateSelectedProperty(propertyId);
     const property = this.getPropertyRecordByMlsID(propertyId);
-    
+
     if (!property) {
       console.log('property was not found')
     } else {
+      this.props.onUpdateSelectedProperty(property);
+
       this.selectedPropertyOnList = propertyId;
-      this.props.selectPropertyOnMap(property._source);
+      this.props.selectProperty(property._source);
     }
   }
 

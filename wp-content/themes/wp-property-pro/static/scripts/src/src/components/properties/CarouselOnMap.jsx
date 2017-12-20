@@ -42,7 +42,7 @@ export default class CarouselOnMap extends Component {
     if (prevProps.properties.length !== this.props.properties.length) {
       const property = this.props.properties[ prevProps.properties.length ];
       if (property) {
-        this.props.onChangeSlide(get(property, '_source.post_meta.rets_mls_number[0]', null));
+        this.props.onChangeSlide(property);
       }
     }
   }
@@ -51,7 +51,7 @@ export default class CarouselOnMap extends Component {
     const { isEnd, activeIndex, previousIndex } = this.swiper;
     const property = this.props.properties[ activeIndex ];
 
-    this.props.onChangeSlide(get(property, '_source.post_meta.rets_mls_number[0]', null));
+    this.props.onChangeSlide(property);
 
     if (isEnd && activeIndex === previousIndex) {
       this.props.onLoadMore();

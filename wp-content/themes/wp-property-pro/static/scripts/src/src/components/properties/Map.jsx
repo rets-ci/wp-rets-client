@@ -43,9 +43,9 @@ export default class Map extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    let shouldComponentUpdate = this.props.properties !== get(nextProps.props, 'properties', null) ||
-      this.props.currentGeoBounds !== get(nextProps.props, 'currentGeoBounds', null) ||
-      this.props.selectedProperty !== get(nextProps.props, 'selectedProperty');
+    let shouldComponentUpdate = this.props.properties !== get(nextProps, 'properties', null) ||
+      this.props.currentGeoBounds !== get(nextProps, 'currentGeoBounds', null) ||
+      this.props.selectedProperty !== get(nextProps, 'selectedProperty');
 
     return shouldComponentUpdate;
   }
@@ -78,7 +78,7 @@ export default class Map extends Component {
         lng={p._source.wpp_location_pin.lon}
         icon={selected ? selectedIcon : defaultIcon}
         onClickHandler={() => {
-          this.props.updateSelectedProperty(propertyId)
+          this.props.updateSelectedProperty(p)
         }} />);
     });
   }
@@ -137,6 +137,19 @@ export default class Map extends Component {
 
   }
 
+  convertCoordsFromEsToMap(currentGeoBounds){
+    return {
+      "ne": {
+        "lat": currentGeoBounds.ne.lat,
+        "lng": currentGeoBounds.ne.lon
+      },
+      "sw": {
+        "lat": currentGeoBounds.sw.lat,
+        "lng": currentGeoBounds.sw.lon
+      }
+    };
+  }
+
   render() {
     let {
       currentGeoBounds,
@@ -162,7 +175,7 @@ export default class Map extends Component {
         zoom = this.currentZoom;
         center = this.currentCenter;
       }else{
-        boundsOptions = fitBounds(currentGeoBounds, size);
+        boundsOptions = fitBounds(this.convertCoordsFromEsToMap(currentGeoBounds), size);
         center = boundsOptions.center;
         zoom = boundsOptions.zoom;
       }
