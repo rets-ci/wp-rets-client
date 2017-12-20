@@ -246,6 +246,48 @@ namespace UsabilityDynamics {
         }
       }
 
+      /** Build search options array for search type dropDown at search result page */
+
+      /** Array for filters modal */
+      $property_search_options = [];
+
+      $sale_types_array = ['Rent', 'Sale'];
+
+      /** Build search options and filters modal array */
+      foreach ([
+                   'Rent',
+                   'Sale',
+                   'Land',
+                   'Commercial'
+               ] as $label) {
+
+        $sale_type = [$label];
+        if (in_array($label, $sale_types_array)){
+          $type = 'residential';
+        }
+        else {
+          $sale_type = $sale_types_array;
+          $type = strtolower($label);
+        }
+
+        /** Mapping for search type option label */
+        $search = $label === 'Sale' ? 'Buy' : $label;
+
+        /** Build option array */
+        $option = [
+            'search' => $search,
+            'property_type' => $type
+        ];
+
+        /** Include sale type just if it is not empty */
+        if($sale_type){
+          $option['listing_statuses'] = $sale_type;
+        }
+
+        $property_search_options[] = $option;
+      }
+      $params['property_search_options'] = $property_search_options;
+
       if($localize){
         return $params;
       }
@@ -279,49 +321,6 @@ namespace UsabilityDynamics {
           $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
         }
       }
-
-      /** Build search options array for search type dropDown at search result page */
-
-      /** Array for filters modal */
-      $property_search_options = [];
-
-      $sale_types_array = ['Rent', 'Sale'];
-
-      /** Build search options and filters modal array */
-      foreach ([
-                 'Rent',
-                 'Sale',
-                 'Land',
-                 'Commercial'
-               ] as $label) {
-
-        $sale_type = [$label];
-        if (in_array($label, $sale_types_array)){
-          $type = 'residential';
-        }
-        else {
-          $sale_type = $sale_types_array;
-          $type = strtolower($label);
-        }
-
-        /** Mapping for search type option label */
-        $search = $label === 'Sale' ? 'Buy' : $label;
-
-        /** Build option array */
-        $option = [
-            'search' => $search,
-            'property_type' => $type
-        ];
-
-        /** Include sale type just if it is not empty */
-        if($sale_type){
-          $option['listing_statuses'] = $sale_type;
-        }
-
-        $property_search_options[] = $option;
-      }
-
-      $params['property_search_options'] = $property_search_options;
 
       /** Plural values for listing types titles */
       $listing_subtypes_plural_values_filename = WP_CONTENT_DIR . '/static/json/listing_subtypes_plural_values.json';
