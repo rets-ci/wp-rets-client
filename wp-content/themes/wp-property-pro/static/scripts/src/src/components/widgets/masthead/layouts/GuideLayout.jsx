@@ -1,6 +1,7 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
+import renderHTML from 'react-render-html';
 
 const GuideLayout = ({widget_cell}) => {
   return (
@@ -8,12 +9,12 @@ const GuideLayout = ({widget_cell}) => {
       <div className={`${Lib.THEME_CLASSES_PREFIX}guide-header-container mx-auto text-center`}>
         {
           get(widget_cell, 'widget.fields.title', '')
-            ? <h1 className={`${Lib.THEME_CLASSES_PREFIX}guide-title`}>{widget_cell.widget.fields.title}</h1>
+            ? <h1 className={`${Lib.THEME_CLASSES_PREFIX}guide-title`}>{renderHTML(widget_cell.widget.fields.title)}</h1>
             : null
         }
         {
           get(widget_cell, 'widget.fields.subtitle', '')
-            ? <p className={`hidden-xs-down ${Lib.THEME_CLASSES_PREFIX}guide-excerpt`}>{widget_cell.widget.fields.subtitle}</p>
+            ? <p className={`hidden-xs-down ${Lib.THEME_CLASSES_PREFIX}guide-excerpt`}>{renderHTML(widget_cell.widget.fields.subtitle)}</p>
             : null
         }
       </div>

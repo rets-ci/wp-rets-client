@@ -2,6 +2,7 @@ import {Lib} from '../../../../lib.jsx';
 import React from 'react';
 import get from 'lodash/get';
 import FeatureGroup from './../components/FeatureGroup.jsx';
+import renderHTML from 'react-render-html';
 
 const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal}) => {
   return (
@@ -12,13 +13,13 @@ const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal})
             {
               get(item, 'title', null)
                 ?
-                <h2>{item.title}</h2>
+                <h2>{renderHTML(item.title)}</h2>
                 : null
             }
             {
               get(item, 'subtitle', null)
                 ?
-                <p>{item.subtitle}</p>
+                <p>{renderHTML(item.subtitle)}</p>
                 : null
             }
           </div>

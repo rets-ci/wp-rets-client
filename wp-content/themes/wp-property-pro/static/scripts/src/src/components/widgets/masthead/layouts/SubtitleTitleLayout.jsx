@@ -3,6 +3,7 @@ import Search from '../components/Search.jsx';
 import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+import renderHTML from 'react-render-html';
 
 const SubtitleTitleLayout = ({widget_cell}) => {
   return (
@@ -10,12 +11,12 @@ const SubtitleTitleLayout = ({widget_cell}) => {
       {
         get(widget_cell, 'widget.fields.subtitle', '')
           ? <p
-            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-top`}>{widget_cell.widget.fields.subtitle}</p>
+            className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-top`}>{renderHTML(widget_cell.widget.fields.subtitle)}</p>
           : null
       }
       {
         get(widget_cell, 'widget.fields.title', '')
-          ? <h1 className={Lib.THEME_CLASSES_PREFIX + "bottom-title"}>{widget_cell.widget.fields.title}</h1>
+          ? <h1 className={Lib.THEME_CLASSES_PREFIX + "bottom-title"}>{renderHTML(widget_cell.widget.fields.title)}</h1>
           : null
       }
       <Search
