@@ -85,7 +85,8 @@ class SearchContent extends Component {
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
         <button className={searchBtnClasses} onClick={self.props.openSearchModal} type="button">
-          <i className="fa fa-search"></i> {placeholder}
+          <span>{placeholder}</span>
+          <i className="fa fa-arrow-right"></i>
         </button>
       </div>
     );
