@@ -78,7 +78,7 @@ export default class Map extends Component {
         lng={p._source.wpp_location_pin.lon}
         icon={selected ? selectedIcon : defaultIcon}
         onClickHandler={() => {
-          this.props.updateSelectedProperty(propertyId)
+          this.props.updateSelectedProperty(p)
         }} />);
     });
   }

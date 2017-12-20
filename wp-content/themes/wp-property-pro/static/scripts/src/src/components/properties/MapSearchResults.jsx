@@ -23,6 +23,7 @@ import {
   requestAvailablePropertySubTypesForSearch,
   requestSearchResultsPosts,
   selectProperty,
+  deselectProperty,
   toggleMapSearchResultsLoading,
   togglePropertiesModalModeInLocationModal,
   toggleUserPanel
@@ -80,6 +81,11 @@ const mapStateToProps = (state, ownProps) => {
     });
   }
 
+  let selected_property = get(state, 'searchResults.selectedProperty', null);
+  if(get(state, 'searchResults.selectedProperty._source', null)){
+    selected_property = get(state, 'searchResults.selectedProperty._source', null);
+  }
+
   return {
     availableSubTypes: get(state, 'availablePropertySubTypesForSearch.items'),
     errorMessage: state.errorMessage,
@@ -94,15 +100,15 @@ const mapStateToProps = (state, ownProps) => {
     propertyTypeOptions: propertyTypeOptions,
     results: get(state, 'searchResults.searchResults', []),
     resultsTotal: get(state, 'searchResults.totalProps', 0),
-    propertyOnPanel: state.singleProperty.propertyOnPanel,
-    panelOnMapShown: state.singleProperty.panelOnMapShown,
+    propertyOnPanel: selected_property,
+    panelOnMapShown: get(state, 'searchResults.previewOpen', false),
     queryDefaults: queryDefaults,
     saleTypesPanelOpen: get(state, 'headerSearch.saleTypesPanelOpen', false),
     searchQueryParams: searchQueryObject,
     searchResultsErrorMessage: get(state, 'searchResults.errorMessage'),
     termDetails: termDetails,
     isMobile: get(state, 'viewport.isMobile', false),
-    selectedProperty: get(state, 'searchResults.selectedProperty', null)
+    selectedProperty: get(selected_property, 'post_meta.rets_mls_number[0]', null)
   }
 };
 
@@ -189,6 +195,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     selectProperty: (propertyId) => {
       dispatch(selectProperty(propertyId));
+    },
+
+    deselectProperty: () => {
+      dispatch(deselectProperty());
     }
   };
 };
@@ -196,6 +206,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class MapSearchResults extends Component {
   static propTypes = {
     availableSubTypes: PropTypes.array,
+    deselectProperty: PropTypes.func.isRequired,
     doPropertiesModalSearch: PropTypes.func.isRequired,
     doSearchWithQuery: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -215,6 +226,8 @@ class MapSearchResults extends Component {
     results: PropTypes.array.isRequired,
     searchResultsErrorMessage: PropTypes.string,
     searchQueryParams: PropTypes.object.isRequired,
+    selectProperty: PropTypes.func.isRequired,
+    selectedProperty: PropTypes.string,
     termDetails: PropTypes.array.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
@@ -246,7 +259,7 @@ class MapSearchResults extends Component {
 
     // Update url without selected property for re-rendering listings list if listing was unselected
     if(get(this.props, 'panelOnMapShown', false) && !get(nextProps, 'panelOnMapShown', false)){
-      this.props.selectProperty(null);
+      this.props.deselectProperty();
     }
 
     let anyFilterChange = !isEqual(nextProps.searchQueryParams, this.props.searchQueryParams);

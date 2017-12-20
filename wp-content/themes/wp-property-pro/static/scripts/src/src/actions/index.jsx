@@ -239,23 +239,16 @@ export const togglePropertiesModalModeInLocationModal = on => {
   }
 };
 
-export const selectPropertyOnMap = property => {
-  return {
-    type: Lib.SELECT_PROPERTY_ON_MAP_ACTION,
-    property,
-  };
-}
-
-export const deselectPropertyOnMap = property => {
-  return {
-    type: Lib.DESELECT_PROPERTY_ON_MAP_ACTION,
-  };
-}
-
 export const selectProperty = selected => {
   return {
     type: Lib.SELECT_PROPERTY_ACTION,
     selected: selected
+  };
+}
+
+export const deselectProperty = () => {
+  return {
+    type: Lib.DESELECT_PROPERTY_ACTION
   };
 }
 
