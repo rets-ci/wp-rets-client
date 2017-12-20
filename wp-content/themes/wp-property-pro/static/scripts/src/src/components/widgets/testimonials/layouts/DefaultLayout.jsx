@@ -2,6 +2,7 @@ import React from 'react';
 import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+import renderHTML from 'react-render-html';
 
 const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}) => {
   return (
@@ -10,7 +11,7 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
         <div className={`${Lib.THEME_CLASSES_PREFIX}testimonials-container mx-auto`} >
              {
                get(widget_cell, 'widget.fields.title', '')
-                 ? <h4>{widget_cell.widget.fields.title}</h4>
+                 ? <h4>{renderHTML(widget_cell.widget.fields.title)}</h4>
                  : null
              }
 

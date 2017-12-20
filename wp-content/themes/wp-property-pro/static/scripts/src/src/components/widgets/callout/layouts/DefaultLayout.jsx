@@ -1,6 +1,7 @@
-import React from 'react';
-import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
+import {Lib} from '../../../../lib.jsx';
+import React from 'react';
+import renderHTML from 'react-render-html';
 import Util from '../../../Util.jsx';
 
 const DefaultLayout = ({item, openFormModal}) => {
@@ -14,7 +15,7 @@ const DefaultLayout = ({item, openFormModal}) => {
               {
                 get(item, 'title', null)
                   ?
-                  <p className="navbar-brand mr-auto my-auto">{item.title}</p>
+                  <p className="navbar-brand mr-auto my-auto">{renderHTML(item.title)}</p>
                   : null
               }
               {

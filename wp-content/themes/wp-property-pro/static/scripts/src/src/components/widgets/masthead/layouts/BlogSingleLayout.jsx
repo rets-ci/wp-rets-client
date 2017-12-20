@@ -1,6 +1,7 @@
 import React from 'react';
 import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
+import renderHTML from 'react-render-html';
 
 const BlogSingleLayout = ({widget_cell}) => {
 
@@ -13,7 +14,7 @@ const BlogSingleLayout = ({widget_cell}) => {
       <header>
         {
           get(widget_cell, 'widget.fields.title', '')
-            ? <h1 className={Lib.THEME_CLASSES_PREFIX + "masthead-blog-title"}>{widget_cell.widget.fields.title}</h1>
+            ? <h1 className={Lib.THEME_CLASSES_PREFIX + "masthead-blog-title"}>{renderHTML(widget_cell.widget.fields.title)}</h1>
             : null
         }
       </header>

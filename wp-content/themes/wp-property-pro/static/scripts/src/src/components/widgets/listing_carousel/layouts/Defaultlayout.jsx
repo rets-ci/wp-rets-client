@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import PropertyCard from '../../../PropertyCard.jsx';
 import {Lib} from '../../../../lib.jsx';
 import get from 'lodash/get';
+import renderHTML from 'react-render-html';
 
 require('slick-css');
 
@@ -76,12 +77,12 @@ export default class DefaultLayout extends Component {
         <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel-info mx-auto text-center`}>
           {
             get(item, 'title', null)
-              ? <h3 className="mx-auto">{get(item, 'title')}</h3>
+              ? <h3 className="mx-auto">{renderHTML(get(item, 'title'))}</h3>
               : null
           }
           {
             get(item, 'subtitle', null)
-              ? <p>{get(item, 'subtitle')}</p>
+              ? <p>{renderHTML(get(item, 'subtitle'))}</p>
               : null
           }
         </div>
