@@ -1,0 +1,54 @@
+== Changelog ==
+
+= 0.6.7 =
+* Fixed: datetime and time fields no longer switch the time back by an hour automatically
+* Fixed: in datetime and date fields it is no longer possible to accidentally change the month by scrolling
+* Fixed: datetime and date fields better support locale special characters
+
+= 0.6.6 =
+* Fixed: select fields no longer show twice when a placeholder is specified
+
+= 0.6.5 =
+* Tweaked: updated the Select2 and Datetimepicker JavaScript plugins
+* Fixed: dropdowns no longer close immediately after opening them
+
+= 0.6.4 =
+* Fixed: WPDLib now has type "wordpress-muplugin" so that it is not loaded outside of a project
+
+= 0.6.3 =
+* Fixed: uncaught JavaScript error with datetimepicker
+
+= 0.6.2 =
+* Enhanced: WYSIWYG field experience is now more similar to the default post editor, including media and link buttons
+* Tweaked: updated the Select2 and Datetimepicker JavaScript plugins
+* Fixed: the selected value of a multiselect field is now properly displayed
+* Fixed: the `rows` attribute now works correctly for textareas and WYSIWYG
+* Fixed: updated the media picker JavaScript plugin for more flexibility and some bug fixes
+* Fixed: updated the map picker JavaScript plugin for more flexibility and some bug fixes
+
+= 0.6.1 =
+* Fixed: numeric validation of floating point numbers
+* Fixed: formatting floating point numbers more precise than 2 digits
+
+= 0.6.0 =
+* Added: new field type map (can store either address or latitude and longitude)
+* Enhanced: media field type can now alternatively store URL instead of attachment ID
+* Enhanced: options keys 'terms' and 'users' (for related objects) now accept 'any' as value (similar to 'posts')
+* Fixed: critical validation bug in WYSIWYG
+* Fixed: step validation for decimal numbers
+* Fixed: images now display correctly in media preview
+
+= 0.5.3 =
+* Enhanced: field types now accept any kind of data attributes
+* Fixed: posts and terms dropdown options now properly handle an empty value
+* Fixed: textarea field will render as a text field inside a repeatable
+* Fixed: media mime type validation now properly handles file extensions, MIME types and WP media types
+
+= 0.5.2 =
+* Fixed: fatal error in WYSIWYG field
+
+= 0.5.1 =
+* Fixed: license
+
+= 0.5.0 =
+* First stable version

@@ -1,0 +1,38 @@
+{
+  "name": "felixarntz/wpdlib",
+  "type": "wordpress-muplugin",
+  "description": "Common library for Definitely plugins for WordPress",
+  "version": "0.6.7",
+  "license": "GPL-3.0",
+  "keywords": [
+    "wordpress",
+    "library",
+    "developer",
+    "wp",
+    "definitely"
+  ],
+  "homepage": "https://github.com/felixarntz/wpdlib/",
+  "authors": [
+    {
+      "name": "Felix Arntz",
+      "email": "felix-arntz@leaves-and-love.net",
+      "homepage": "https://leaves-and-love.net",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "felix-arntz@leaves-and-love.net",
+    "issues": "https://github.com/felixarntz/wpdlib/issues"
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "autoload": {
+    "psr-4": {
+      "WPDLib\\": "inc/WPDLib/"
+    }
+  },
+  "require": {
+    "composer/installers": "~1.0"
+  }
+}

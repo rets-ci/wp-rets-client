@@ -1,0 +1,32 @@
+{
+  "name": "leavesandlove-wp-plugin-util",
+  "version": "2.0.3",
+  "description": "This is a library to initialize WordPress plugins in a proper fashion, making usual processes a lot easier to handle and adding a few useful features, for example plugin dependency management or automatic multisite-compatibility.",
+  "keywords": [
+    "wordpress"
+  ],
+  "author": {
+    "name": "Felix Arntz",
+    "email": "felix-arntz@leaves-and-love.net",
+    "url": "http://leaves-and-love.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/felixarntz/leavesandlove-wp-plugin-util.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/felixarntz/leavesandlove-wp-plugin-util/issues"
+  },
+  "license": {
+    "type": "GPL-3.0",
+    "name": "GNU General Public License v3",
+    "url": "http://www.gnu.org/licenses/gpl-3.0.html"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-wp-i18n": "~0.5.3"
+  }
+}

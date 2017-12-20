@@ -1,0 +1,193 @@
+.wpdlib-input {
+	width: 100%;
+	max-width: 500px;
+	.wpdlib-checkbox,
+	.wpdlib-radio {
+		float: left;
+		width: 48%;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		margin-left: 1%;
+		@media all and (min-width: 1280px) {
+			width: 32%;
+		}
+		&.box {
+			input {
+				display: none;
+			}
+			label {
+				display: block;
+				text-align: center;
+				cursor: default;
+			}
+			div {
+				display: block;
+				height: auto;
+				max-width: 100%;
+				padding-bottom: 56.25%;
+				cursor: pointer;
+				background-size: cover;
+				border: 4px solid #e5e5e5;
+				box-sizing: border-box;
+				&.checked {
+					border-color: #0074a2;
+				}
+			}
+		}
+
+		.wpdlib-narrow & {
+			float: none;
+			width: 100% !important;
+			margin-left: 0;
+		}
+	}
+}
+
+.meta-box-sortables {
+	.wpdlib-input-select,
+	.wpdlib-input-multiselect {
+		max-width: 500px;
+	}
+}
+
+.wpdlib-input-repeatable {
+	max-width: none !important;
+}
+
+.wpdlib-input-checkbox {
+	width: auto !important;
+}
+
+.wpdlib-input-color {
+	max-width: 100px !important;
+}
+
+.wpdlib-input-range-viewer {
+	height: 27px;
+	text-align: right;
+	& + input {
+		height: 27px;
+		vertical-align: bottom;
+	}
+}
+
+.wpdlib-input-range-viewer {
+	width: 40px;
+	margin-right: 5px;
+}
+
+.wpdlib-option-box-wrap {
+	position: relative;
+	display: inline-block;
+}
+
+.wpdlib-option-box {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	margin-top: -8px;
+	width: 32px;
+	height: 16px;
+	background-size: cover;
+}
+
+.wpdlib-option-box-text {
+	margin-left: 42px;
+}
+
+.wpdlib-input-repeatable {
+	width: 100%;
+	overflow: auto;
+}
+
+.wpdlib-repeatable-table {
+	width: 100%;
+	margin: 10px 0;
+	clear: both;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0;
+	&,
+	th,
+	td {
+		border: 1px solid #dddddd;
+	}
+	th,
+	td {
+		width: auto;
+		margin-bottom: 5px;
+		padding: 4px;
+		&.wpdlib-repeatable-number {
+			width: 25px;
+		}
+		&.wpdlib-repeatable-remove {
+			width: 80px;
+			text-align: center;
+		}
+	}
+
+	.wp-mediapicker-content-wrap,
+	.wp-mappicker-map-canvas-wrap {
+		width: 160px;
+	}
+
+	.wp-mediapicker-content {
+		.mime-type-icon {
+			margin-top: -24px;
+			height: 48px;
+			img {
+				height: 32px;
+			}
+			span {
+				height: 16px;
+				line-height: 16px;
+			}
+		}
+	}
+
+	.wpdlib-narrow & {
+		table-layout: auto;
+	}
+}
+
+.wpdlib-form-table {
+	table-layout: fixed;
+
+	.wpdlib-narrow & {
+		&,
+		> thead,
+		> tbody,
+		> tfoot {
+			display: block;
+			> tr {
+				display: block;
+				> th,
+				> td {
+					display: block;
+					margin: 0;
+					padding: 0;
+					width: auto;
+					vertical-align: middle;
+				}
+				> th {
+					padding-top: 10px;
+				}
+				> td {
+					padding-top: 4px;
+					padding-bottom: 6px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.wpdlib-input {
+		.wpdlib-checkbox,
+		.wpdlib-radio {
+			float: none;
+			width: 100% !important;
+			margin-left: 0;
+		}
+	}
+}

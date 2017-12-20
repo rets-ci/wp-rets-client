@@ -1,0 +1,54 @@
+{
+  "name": "felixarntz/options-definitely",
+  "description": "This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.",
+  "version": "0.6.7",
+  "license": "GPL-3.0",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "definitely",
+    "framework",
+    "admin",
+    "options",
+    "settings",
+    "settings screen",
+    "tabs",
+    "sections",
+    "metaboxes"
+  ],
+  "homepage": "https://wordpress.org/plugins/options-definitely/",
+  "authors": [
+    {
+      "name": "Felix Arntz",
+      "email": "felix-arntz@leaves-and-love.net",
+      "homepage": "https://leaves-and-love.net",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "felix-arntz@leaves-and-love.net",
+    "issues": "https://github.com/felixarntz/options-definitely/issues"
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "autoload": {
+    "psr-4": {
+      "WPOD\\": "inc/WPOD/"
+    },
+    "files": [
+      "inc/functions.php"
+    ]
+  },
+  "require": {
+    "composer/installers": "~1.0",
+    "felixarntz/wpdlib": "0.6.7",
+    "felixarntz/leavesandlove-wp-plugin-util": "2.0.3"
+  },
+  "extra": {
+    "installer-paths": {
+      "vendor/felixarntz/{$name}/": ["felixarntz/wpdlib"]
+    }
+  }
+}

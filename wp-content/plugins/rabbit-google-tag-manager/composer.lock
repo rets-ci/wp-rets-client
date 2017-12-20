@@ -1,0 +1,285 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "2f35ea8323659f45c017575e521b9587",
+    "packages": [
+        {
+            "name": "composer/installers",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/installers.git",
+                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/installers/zipball/9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
+                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev",
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Composer\\Installers\\Plugin",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "https://composer.github.io/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Eliasis",
+                "Hurad",
+                "ImageCMS",
+                "Kanboard",
+                "Lan Management System",
+                "MODX Evo",
+                "Mautic",
+                "Maya",
+                "OXID",
+                "Plentymarkets",
+                "Porto",
+                "RadPHP",
+                "SMF",
+                "Thelia",
+                "WolfCMS",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "eZ Platform",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
+                "installer",
+                "itop",
+                "joomla",
+                "kohana",
+                "laravel",
+                "lavalite",
+                "lithium",
+                "magento",
+                "mako",
+                "mediawiki",
+                "modulework",
+                "moodle",
+                "osclass",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "puppet",
+                "reindex",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "sydes",
+                "symfony",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
+            ],
+            "time": "2017-08-09T07:53:48+00:00"
+        },
+        {
+            "name": "felixarntz/leavesandlove-wp-plugin-util",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/felixarntz/leavesandlove-wp-plugin-util.git",
+                "reference": "8a2d3b8f430b205a5c13e206895fa107a7a91905"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/felixarntz/leavesandlove-wp-plugin-util/zipball/8a2d3b8f430b205a5c13e206895fa107a7a91905",
+                "reference": "8a2d3b8f430b205a5c13e206895fa107a7a91905",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "leavesandlove-wp-plugin-loader.php",
+                    "leavesandlove-wp-plugin.php",
+                    "leavesandlove-wp-plugin-util.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Felix Arntz",
+                    "email": "felix-arntz@leaves-and-love.net",
+                    "homepage": "http://leaves-and-love.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is a library to initialize WordPress plugins in a proper fashion, making usual processes a lot easier to handle and adding a few useful features, for example plugin dependency management or automatic multisite-compatibility.",
+            "keywords": [
+                "wordpress"
+            ],
+            "time": "2016-07-09T11:43:55+00:00"
+        },
+        {
+            "name": "felixarntz/options-definitely",
+            "version": "0.6.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/felixarntz/options-definitely.git",
+                "reference": "f8831e4b253fdc7d4b69e2ff9bf02da112a9682c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/felixarntz/options-definitely/zipball/f8831e4b253fdc7d4b69e2ff9bf02da112a9682c",
+                "reference": "f8831e4b253fdc7d4b69e2ff9bf02da112a9682c",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0",
+                "felixarntz/leavesandlove-wp-plugin-util": "2.0.3",
+                "felixarntz/wpdlib": "0.6.7"
+            },
+            "type": "wordpress-plugin",
+            "extra": {
+                "installer-paths": {
+                    "vendor/felixarntz/{$name}/": [
+                        "felixarntz/wpdlib"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "WPOD\\": "inc/WPOD/"
+                },
+                "files": [
+                    "inc/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Felix Arntz",
+                    "email": "felix-arntz@leaves-and-love.net",
+                    "homepage": "https://leaves-and-love.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.",
+            "homepage": "https://wordpress.org/plugins/options-definitely/",
+            "keywords": [
+                "Settings",
+                "admin",
+                "definitely",
+                "framework",
+                "metaboxes",
+                "options",
+                "plugin",
+                "sections",
+                "settings screen",
+                "tabs",
+                "wordpress"
+            ],
+            "time": "2016-11-23T16:04:47+00:00"
+        },
+        {
+            "name": "felixarntz/wpdlib",
+            "version": "0.6.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/felixarntz/wpdlib.git",
+                "reference": "0bc8f0380c54f64c6932e20f5aac7e3ae0b8bb3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/felixarntz/wpdlib/zipball/0bc8f0380c54f64c6932e20f5aac7e3ae0b8bb3d",
+                "reference": "0bc8f0380c54f64c6932e20f5aac7e3ae0b8bb3d",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-muplugin",
+            "autoload": {
+                "psr-4": {
+                    "WPDLib\\": "inc/WPDLib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Felix Arntz",
+                    "email": "felix-arntz@leaves-and-love.net",
+                    "homepage": "https://leaves-and-love.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Common library for Definitely plugins for WordPress",
+            "homepage": "https://github.com/felixarntz/wpdlib/",
+            "keywords": [
+                "definitely",
+                "developer",
+                "library",
+                "wordpress",
+                "wp"
+            ],
+            "time": "2016-11-23T02:48:39+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
