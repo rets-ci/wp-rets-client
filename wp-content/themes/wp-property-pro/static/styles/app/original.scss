@@ -265,13 +265,6 @@ html, body {
     text-decoration: underline;
 }
 
-.propertypro-listings .propertypro-listing-carousel .propertypro-card {
-    cursor: pointer;
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
-}
-
 .propertypro-listing-carousel {
     margin-bottom: 5rem;
 }
@@ -2622,8 +2615,4 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     .propertypro-slider-content .propertypro-slides li .propertypro-testimonial-text {
         font-size: 1rem;
     }
-}
-
-.propertypro-listing-carousel .propertypro-card {
-    margin-right: 1.25rem;
 }

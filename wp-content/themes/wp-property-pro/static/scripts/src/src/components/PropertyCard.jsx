@@ -69,6 +69,7 @@ class PropertyCard extends Component {
       sub_types,
       zip
     } = this.props.data;
+
     const swiperParams = {
       loop: true,
       preloadImages: false,
@@ -78,9 +79,6 @@ class PropertyCard extends Component {
       lazyLoadingOnTransitionStart: true,
       onInit: (swiper) => {
         this.swiper = swiper;
-        setTimeout(() => {  // need to resize images
-          this.swiper.onResize();
-        });
       },
     };
 
