@@ -2090,7 +2090,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-listing-map {
-        height: calc(100% - 3rem) !important;
         display: flex;
         flex-direction: column;
 
@@ -2102,11 +2101,13 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         #propertypro-Map {
             position: relative;
             flex: 1 1 0;
+            margin-bottom: -1.5rem;
             overflow: hidden;
         }
 
         .propertypro-listing-wrap {
             flex: 0 0 auto;
+            margin-bottom: 3rem;
         }
     }
 
