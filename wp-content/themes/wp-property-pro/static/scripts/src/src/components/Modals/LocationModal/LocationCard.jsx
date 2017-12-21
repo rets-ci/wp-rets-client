@@ -37,7 +37,7 @@ class LocationCard extends Component {
       preloadImages: false,
       lazyLoading: true,
       lazyLoadingInPrevNext: true,
-      lazyLoadingInPrevNextAmount: 3,
+      lazyLoadingInPrevNextAmount: 2,
       lazyLoadingOnTransitionStart: true,
       onInit: (swiper) => {
         this.swiper = swiper;

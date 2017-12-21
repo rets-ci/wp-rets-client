@@ -47,7 +47,7 @@ class Carousel extends Component {
   }
 
   render() {
-    let images = get(this.props, 'curatedPropertyInfo.images', []);
+    let images = get(this.props, 'curatedPropertyInfo.images', []).slice();
     let locationPin = get(this.props, 'curatedPropertyInfo.post_meta.wpp_location_pin', []);
     let lightboxImages = images.map(e => ({ src: e }));
 
@@ -74,6 +74,11 @@ class Carousel extends Component {
       spaceBetween: 5,
       preloadImages: false,
       lazyLoading: true,
+      watchSlidesProgress: true,
+      watchSlidesVisibility: true,
+      lazyLoadingInPrevNext: true,
+      lazyLoadingInPrevNextAmount: 6,
+      lazyLoadingOnTransitionStart: true,
       // Reinit swiper on update images
       rebuildOnUpdate: true,
       onInit: (swiper) => {
@@ -87,9 +92,9 @@ class Carousel extends Component {
       preloadImages: false,
       lazyLoading: true,
       lazyLoadingInPrevNext: true,
-      lazyLoadingInPrevNextAmount: 3,
-      // Reinit swiper on update images
+      lazyLoadingInPrevNextAmount: 2,
       lazyLoadingOnTransitionStart: true,
+      // Reinit swiper on update images
       rebuildOnUpdate: true,
       onInit: (swiper) => {
         this.swiper = swiper;
@@ -117,28 +122,32 @@ class Carousel extends Component {
       );
     } else {
       desktopSwiper = (
-        <Swiper {...desktopSwiperParams}>
+        <Swiper {...desktopSwiperParams} key={this.props.curatedPropertyInfo.mlsId}>
           <div className="swiper-slide" key={0} onClick={this.imageMixerClicked.bind(this, 0)}>
             <div
               className="swiper-lazy img-main"
-              style={{ backgroundImage : `url(${images[0]})` }}
-            ></div>
+              data-background={images[0]}
+            >
+              <div className="swiper-lazy-preloader"/>
+            </div>
           </div>
           { smImagesSet.map((subset, index) => (
               <div className="swiper-slide" key={index + 1}>
                 <div
                   className="swiper-lazy img-sub"
-                  style={{ backgroundImage : `url(${subset[0]})` }}
+                  data-background={subset[0]}
                   onClick={this.imageMixerClicked.bind(this, index * 2 + 1)}
-                />
-                {
-                  subset[1]
-                  ?  <div
-                        className="swiper-lazy img-sub"
-                        style={{backgroundImage: `url(${subset[1]})`}}
-                        onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
-                    />
-                  : null
+                >
+                  <div className="swiper-lazy-preloader"/>
+                </div>
+                { subset[1] &&
+                  <div
+                    className="swiper-lazy img-sub"
+                    data-background={subset[1]}
+                    onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
+                  >
+                    <div className="swiper-lazy-preloader"/>
+                  </div>
                 }
               </div>
             ))
