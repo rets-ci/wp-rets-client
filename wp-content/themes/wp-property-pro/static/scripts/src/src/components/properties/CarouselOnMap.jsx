@@ -72,7 +72,7 @@ export default class CarouselOnMap extends Component {
     };
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap hidden-sm-up`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap hidden-md-up`}>
       { !isFetching && properties.length > 0 &&
         <Swiper {...swiperParams}>
         {

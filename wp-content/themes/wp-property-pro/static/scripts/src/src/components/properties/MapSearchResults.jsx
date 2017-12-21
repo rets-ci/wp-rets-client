@@ -434,7 +434,7 @@ class MapSearchResults extends Component {
 
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters h-100`}>
           { (!isMobile || !this.state.mapDisplay) &&
-            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
+            <div className={`col-md-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-sidebar`} ref={(r) => this.listingSidebar = r}>
               { isFetching
                 ? <SearchFilterDescriptionTextPlaceholder />
                 : <SearchFilterDescriptionText
@@ -471,7 +471,7 @@ class MapSearchResults extends Component {
           }
 
           { !isMobile &&
-            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map ${!this.state.mapDisplay? 'hidden-xs-down': ''}`}>
+            <div className={`col-md-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map`}>
               { captionElement }
               { propertyPanelElement }
               { mapElement }
@@ -479,7 +479,7 @@ class MapSearchResults extends Component {
           }
 
           { isMobile &&
-            <div className={`col-sm-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map`}>
+            <div className={`col-md-6 h-100 ${Lib.THEME_CLASSES_PREFIX}listing-map`}>
               { captionElement }
               { mapElement }
               { sliderElement }
