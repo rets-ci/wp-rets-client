@@ -61,7 +61,6 @@ export default class CarouselOnMap extends Component {
   render() {
     const { properties, isFetching } = this.props;
     const swiperParams = {
-      loop: true,
       slidesPerView: 1,
       slidesPerGroup: 1,
       spaceBetween: 0,
@@ -73,7 +72,7 @@ export default class CarouselOnMap extends Component {
     };
 
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap hidden-sm-up`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}listing-wrap hidden-md-up`}>
       { !isFetching && properties.length > 0 &&
         <Swiper {...swiperParams}>
         {

@@ -696,14 +696,14 @@ class PropertiesModal extends Component {
                 </div>
               </div>
               <div className="modal-footer">
-                <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-md-up`}>
-                  <div className="container">
-                    <a href="#" className="btn-reset" onClick={this.resetFilters}>Reset</a>
-                    <span className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav-item-right`}>
-                      <a href="#" className="btn-cancel" onClick={this.handleCancel}>Cancel</a>
-                      <i>|</i>
-                      <a href="#" className="btn-apply" onClick={this.saveFilters}>Apply</a>
-                    </span>
+                <div className={`${Lib.THEME_CLASSES_PREFIX}footer-mobile fixed-bottom hidden-md-up`}>
+                  <div className={`${Lib.THEME_CLASSES_PREFIX}footer-mobile__left`}>
+                    <span className="btn-reset" onClick={this.resetFilters}>Reset</span>
+                  </div>
+                  <div className={`${Lib.THEME_CLASSES_PREFIX}footer-mobile__right`}>
+                    <span className="btn-cancel" onClick={this.handleCancel}>Cancel</span>
+                    <span className={`${Lib.THEME_CLASSES_PREFIX}separator`}>|</span>
+                    <span className="btn-apply" onClick={this.saveFilters}>Apply</span>
                   </div>
                 </div>
               </div>

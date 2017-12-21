@@ -7,7 +7,6 @@ import {Link} from 'react-router-dom';
 import each from 'lodash/each';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
 
@@ -66,17 +65,17 @@ class PropertyCard extends Component {
       post_name,
       state,
       sqft,
-      thumbnail,
       type,
       sub_types,
       zip
     } = this.props.data;
+
     const swiperParams = {
       loop: true,
       preloadImages: false,
       lazyLoading: true,
       lazyLoadingInPrevNext: true,
-      lazyLoadingInPrevNextAmount: 3,
+      lazyLoadingInPrevNextAmount: 2,
       lazyLoadingOnTransitionStart: true,
       onInit: (swiper) => {
         this.swiper = swiper;
@@ -124,20 +123,17 @@ class PropertyCard extends Component {
       classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
     }
 
-    const thumbnailSrc = isEmpty(thumbnail)
-      ? Util.getGoogleStreetViewThumbnailURL({
+    let swiperImages = (gallery_images || []).map(e =>
+      Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE)
+    );
+    if (!swiperImages.length) {
+      swiperImages = [
+        Util.getGoogleStreetViewThumbnailURL({
           size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
-          location: !isEmpty(location) ? location.join(',') : ''
+          location: Array.isArray(location) ? location.join(',') : ''
         })
-      : (!get(this.props.data, 'full_image', false)
-        ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)
-        : thumbnail
-      )
-
-    let swiperImages = [ thumbnailSrc ]
-    each(gallery_images.slice(1), (e) => {
-      swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
-    });
+      ];
+    }
 
     const cardImageBlock = (
       <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>

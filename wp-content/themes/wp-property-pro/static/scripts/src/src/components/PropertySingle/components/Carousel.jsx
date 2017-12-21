@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Lightbox from 'react-images';
 import Swiper from 'react-id-swiper';
+import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
+import Util from 'app_root/components/Util.jsx';
 
 
 class Carousel extends Component {
-  static propTypes = {
-    images: PropTypes.array
-  }
 
   constructor(props) {
     super(props);
@@ -48,13 +47,19 @@ class Carousel extends Component {
   }
 
   render() {
-    const { images } = this.props;
+    let images = get(this.props, 'curatedPropertyInfo.images', []).slice();
+    let locationPin = get(this.props, 'curatedPropertyInfo.post_meta.wpp_location_pin', []);
+    let lightboxImages = images.map(e => ({ src: e }));
 
-    let LightboxImages = images.map(i => ({
-      src: i
-    }));
+    if (!images.length) {
+      images[0] = Util.getGoogleStreetViewThumbnailURL({
+        size: Lib.PROPERTY_IMAGE_SQUARE_SIZE,
+        location: locationPin.join(',')
+      });
+      lightboxImages.push({ src: images[0]});
+    }
 
-    let smImagesSet = []
+    let smImagesSet = [];
     for (let i = 1; i < images.length; i = i + 2) {
       const subset = [ images[i] ]
       if ( i + 1 < images.length ) {
@@ -65,11 +70,15 @@ class Carousel extends Component {
 
     const desktopSwiperParams = {
       freeMode: true,
-      loop: true,
       slidesPerView: 'auto',
       spaceBetween: 5,
       preloadImages: false,
       lazyLoading: true,
+      watchSlidesProgress: true,
+      watchSlidesVisibility: true,
+      lazyLoadingInPrevNext: true,
+      lazyLoadingInPrevNextAmount: 6,
+      lazyLoadingOnTransitionStart: true,
       // Reinit swiper on update images
       rebuildOnUpdate: true,
       onInit: (swiper) => {
@@ -78,13 +87,14 @@ class Carousel extends Component {
     };
 
     const mobileSwiperParams = {
+      loop: true,
       spaceBetween: 30,
       preloadImages: false,
       lazyLoading: true,
       lazyLoadingInPrevNext: true,
-      lazyLoadingInPrevNextAmount: 3,
-      // Reinit swiper on update images
+      lazyLoadingInPrevNextAmount: 2,
       lazyLoadingOnTransitionStart: true,
+      // Reinit swiper on update images
       rebuildOnUpdate: true,
       onInit: (swiper) => {
         this.swiper = swiper;
@@ -112,28 +122,32 @@ class Carousel extends Component {
       );
     } else {
       desktopSwiper = (
-        <Swiper {...desktopSwiperParams}>
+        <Swiper {...desktopSwiperParams} key={this.props.curatedPropertyInfo.mlsId}>
           <div className="swiper-slide" key={0} onClick={this.imageMixerClicked.bind(this, 0)}>
             <div
               className="swiper-lazy img-main"
-              style={{ backgroundImage : `url(${images[0]})` }}
-            ></div>
+              data-background={images[0]}
+            >
+              <div className="swiper-lazy-preloader"/>
+            </div>
           </div>
           { smImagesSet.map((subset, index) => (
               <div className="swiper-slide" key={index + 1}>
                 <div
                   className="swiper-lazy img-sub"
-                  style={{ backgroundImage : `url(${subset[0]})` }}
+                  data-background={subset[0]}
                   onClick={this.imageMixerClicked.bind(this, index * 2 + 1)}
-                />
-                {
-                  subset[1]
-                  ?  <div
-                        className="swiper-lazy img-sub"
-                        style={{backgroundImage: `url(${subset[1]})`}}
-                        onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
-                    />
-                  : null
+                >
+                  <div className="swiper-lazy-preloader"/>
+                </div>
+                { subset[1] &&
+                  <div
+                    className="swiper-lazy img-sub"
+                    data-background={subset[1]}
+                    onClick={this.imageMixerClicked.bind(this, (index + 1) * 2)}
+                  >
+                    <div className="swiper-lazy-preloader"/>
+                  </div>
                 }
               </div>
             ))
@@ -174,10 +188,10 @@ class Carousel extends Component {
             </li>
           </ul>
         </div>
-        
+
         <Lightbox
           currentImage={this.state.currentLightboxImage}
-          images={LightboxImages}
+          images={lightboxImages}
           isOpen={this.state.lightboxIsOpen}
           onClickNext={this.onLightboxNext}
           onClickPrev={this.onLightboxPrev}
@@ -189,7 +203,6 @@ class Carousel extends Component {
 }
 
 Carousel.propTypes = {
-  images: PropTypes.array.isRequired,
   viewport: PropTypes.object.isRequired,
   fromMapView: PropTypes.bool.isRequired,
 };

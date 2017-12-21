@@ -149,31 +149,32 @@
 .propertypro-search-box {
     box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, 0.15);
     border-radius: .3125rem;
-    max-width: 45rem;
+    max-width: 32rem;
     position: relative;
 
     .propertypro-btn-search {
         height: 5rem;
         font-size: 1.5rem;
-        background-color: #ffffff;
+        background-color: #FFF;
         font-weight: 500;
-        line-height: 3.125rem;
-        display: block;
         width: 100%;
-        text-align: left;
-        padding-left: 11rem;
+        padding-left: 11.5rem;
+        padding-right: 1.5rem;
         color: rgba(139, 140, 141, 0.4);
         outline: none;
         box-shadow: none;
         cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
         &.propertypro-short-padding {
-            padding-left: .9375rem;
+            padding-left: 1.5rem;
         }
-    }
 
-    i {
-        margin-right: .5rem;
+        i {
+            margin-left: 1.5rem;
+        }
     }
 
     .propertypro-drop-search {
@@ -309,7 +310,7 @@
 
     .propertypro-search-box {
         .propertypro-btn-search {
-            padding-left: 1.25rem;
+            padding: 0 1rem;
         }
 
         .propertypro-drop-search {
@@ -393,4 +394,9 @@
         margin-bottom: 0;
         margin-top: 0;
     }
+}
+
+/* company name with nowrap style */
+span.text-nowrap {
+    font-family: inherit !important;
 }
