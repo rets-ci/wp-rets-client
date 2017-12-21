@@ -140,7 +140,7 @@ class Single extends Component {
       <div className={ `${Lib.THEME_CLASSES_PREFIX}single-container` }>
 
         <PropertyCarousel
-          images={ curatedPropertyInfo.images || [] }
+          curatedPropertyInfo={ curatedPropertyInfo }
           viewport={ viewport }
           fromMapView={ fromMapView }
         />

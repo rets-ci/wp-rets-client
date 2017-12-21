@@ -7,7 +7,6 @@ import {Link} from 'react-router-dom';
 import each from 'lodash/each';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
 import { Lib } from '../lib.jsx';
 import Util from './Util.jsx';
 
@@ -66,7 +65,6 @@ class PropertyCard extends Component {
       post_name,
       state,
       sqft,
-      thumbnail,
       type,
       sub_types,
       zip
@@ -124,17 +122,17 @@ class PropertyCard extends Component {
       classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
     }
 
-    const thumbnailSrc = isEmpty(thumbnail)
-      ? Util.getGoogleStreetViewThumbnailURL({
+    let swiperImages = (gallery_images || []).map(e =>
+      Util.getThumbnailUrlBySize(gallery_images[0], Lib.PROPERTY_LISTING_IMAGE_SIZE)
+    )
+    if (!swiperImages.length) {
+      swiperImages = [
+        Util.getGoogleStreetViewThumbnailURL({
           size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
-          location: !isEmpty(location) ? location.join(',') : ''
+          location: Array.isArray(location) ? location.join(',') : ''
         })
-      : Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)
-
-    let swiperImages = [ thumbnailSrc ]
-    each(gallery_images.slice(1), (e) => {
-      swiperImages.push(Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE))
-    });
+      ]
+    }
 
     const cardImageBlock = (
       <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>

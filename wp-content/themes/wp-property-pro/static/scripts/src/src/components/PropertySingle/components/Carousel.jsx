@@ -5,13 +5,10 @@ import Lightbox from 'react-images';
 import Swiper from 'react-id-swiper';
 
 import { Lib } from 'app_root/lib.jsx';
+import Util from 'app_root/components/Util.jsx';
 
 
 class Carousel extends Component {
-  static propTypes = {
-    images: PropTypes.array
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -48,11 +45,25 @@ class Carousel extends Component {
   }
 
   render() {
-    const { images } = this.props;
-
-    let LightboxImages = images.map(i => ({
-      src: i
+    let { address, city, state, images: gallery_images } = this.props.curatedPropertyInfo;
+    
+    let lightboxImages = (gallery_images || []).map(e => ({
+      src: e
     }));
+
+    let images = (gallery_images || []).map(e => 
+      Util.getThumbnailUrlBySize(e, Lib.PROPERTY_IMAGE_SQUARE_SIZE) 
+    )
+
+    if (!images.length) {
+      images = [
+        Util.getGoogleStreetViewThumbnailURL({
+          size: Lib.PROPERTY_IMAGE_SQUARE_SIZE,
+          location: `${address[0]}, ${city}, ${state}`
+        })
+      ];
+      lightboxImages = [images[0]]
+    }
 
     let smImagesSet = []
     for (let i = 1; i < images.length; i = i + 2) {
@@ -177,7 +188,7 @@ class Carousel extends Component {
         
         <Lightbox
           currentImage={this.state.currentLightboxImage}
-          images={LightboxImages}
+          images={lightboxImages}
           isOpen={this.state.lightboxIsOpen}
           onClickNext={this.onLightboxNext}
           onClickPrev={this.onLightboxPrev}
@@ -189,7 +200,6 @@ class Carousel extends Component {
 }
 
 Carousel.propTypes = {
-  images: PropTypes.array.isRequired,
   viewport: PropTypes.object.isRequired,
   fromMapView: PropTypes.bool.isRequired,
 };
