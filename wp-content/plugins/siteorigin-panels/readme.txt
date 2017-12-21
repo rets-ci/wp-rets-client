@@ -2,8 +2,8 @@
 Tags: page builder, responsive, widget, widgets, builder, page, admin, gallery, content, cms, pages, post, css, layout, grid
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 2.5.16
-Build time: 2017-11-22T14:19:27+02:00
+Stable tag: 2.6.0
+Build time: 2017-12-17T12:20:48+02:00
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -95,6 +95,11 @@ Page Builder is actively developed and updated, so generally I'd recommend that 
 We've tried to ensure that Page Builder is compatible with most plugin widgets. It's best to just download Page Builder and test for yourself.
 
 == Changelog ==
+
+= 2.6.0 - 17 December 2017 =
+* Load prebuilt layout JSON files found in themes!
+* Allow post types with numeric slugs.
+* Add a filter for inline styles.
 
 = 2.5.16 - 22 November 2017 =
 * Disabled the Content Cache feature until we've resolved all issues and conflicts.
