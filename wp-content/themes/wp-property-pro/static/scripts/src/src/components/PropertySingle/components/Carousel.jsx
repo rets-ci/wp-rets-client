@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Lightbox from 'react-images';
 import Swiper from 'react-id-swiper';
+import get from 'lodash/get';
 
 import { Lib } from 'app_root/lib.jsx';
 import Util from 'app_root/components/Util.jsx';
 
 
 class Carousel extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -45,27 +47,19 @@ class Carousel extends Component {
   }
 
   render() {
-    let { address, city, state, images: gallery_images } = this.props.curatedPropertyInfo;
-    
-    let lightboxImages = (gallery_images || []).map(e => ({
-      src: e
-    }));
-
-    let images = (gallery_images || []).map(e => 
-      Util.getThumbnailUrlBySize(e, Lib.PROPERTY_IMAGE_SQUARE_SIZE) 
-    )
+    let images = get(this.props, 'curatedPropertyInfo.images', []);
+    let locationPin = get(this.props, 'curatedPropertyInfo.post_meta.wpp_location_pin', []);
+    let lightboxImages = images.map(e => ({ src: e }));
 
     if (!images.length) {
-      images = [
-        Util.getGoogleStreetViewThumbnailURL({
-          size: Lib.PROPERTY_IMAGE_SQUARE_SIZE,
-          location: `${address[0]}, ${city}, ${state}`
-        })
-      ];
-      lightboxImages = [images[0]]
+      images[0] = Util.getGoogleStreetViewThumbnailURL({
+        size: Lib.PROPERTY_IMAGE_SQUARE_SIZE,
+        location: locationPin.join(',')
+      });
+      lightboxImages.push({ src: images[0]});
     }
 
-    let smImagesSet = []
+    let smImagesSet = [];
     for (let i = 1; i < images.length; i = i + 2) {
       const subset = [ images[i] ]
       if ( i + 1 < images.length ) {
@@ -185,7 +179,7 @@ class Carousel extends Component {
             </li>
           </ul>
         </div>
-        
+
         <Lightbox
           currentImage={this.state.currentLightboxImage}
           images={lightboxImages}

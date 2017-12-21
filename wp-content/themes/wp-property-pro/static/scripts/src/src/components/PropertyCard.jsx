@@ -123,15 +123,15 @@ class PropertyCard extends Component {
     }
 
     let swiperImages = (gallery_images || []).map(e =>
-      Util.getThumbnailUrlBySize(gallery_images[0], Lib.PROPERTY_LISTING_IMAGE_SIZE)
-    )
+      Util.getThumbnailUrlBySize(e, Lib.PROPERTY_LISTING_IMAGE_SIZE)
+    );
     if (!swiperImages.length) {
       swiperImages = [
         Util.getGoogleStreetViewThumbnailURL({
           size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
           location: Array.isArray(location) ? location.join(',') : ''
         })
-      ]
+      ];
     }
 
     const cardImageBlock = (
