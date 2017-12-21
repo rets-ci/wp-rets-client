@@ -90,7 +90,7 @@ namespace UsabilityDynamics {
       add_action('save_post', [$this, 'property_pro_delete_widget_posts_cache'], 10, 3);
 
       /** Build seo meta data on wp_head */
-      add_action('wp_head', [$this, 'property_pro_build_seo_meta_tags']);
+      add_action('wp_head', [$this, 'property_pro_build_seo_meta_tags'], 2);
 
       /** Disable standart seo meta data output  */
       add_filter( 'wpseo_opengraph_title', '__return_false', 10, 1 );
