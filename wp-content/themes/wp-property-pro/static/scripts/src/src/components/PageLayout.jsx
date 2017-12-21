@@ -176,6 +176,7 @@ class PageLayout extends Component {
       }
       if (get(data, 'post', null)) {
         this.props.receiveWordpressContentFetchingFunc();
+        document.title = get(data, 'page_title', '').replace(/\&amp;/g,'&');
         self.setState({
           agents: get(data, 'agents'),
           search_options: get(data, 'search_options'),
