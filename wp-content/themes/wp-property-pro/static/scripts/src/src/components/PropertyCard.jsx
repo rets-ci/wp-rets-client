@@ -79,6 +79,9 @@ class PropertyCard extends Component {
       lazyLoadingOnTransitionStart: true,
       onInit: (swiper) => {
         this.swiper = swiper;
+        setTimeout(() => {  // need to resize images
+          this.swiper.onResize();
+        });
       },
     };
 
