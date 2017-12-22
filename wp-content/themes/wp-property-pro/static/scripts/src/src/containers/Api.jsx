@@ -36,29 +36,14 @@ class Api {
       "location_neighborhood": {
         "title": "Neighborhood"
       },
-      "wpp_schools_elementary_school": {
-        "slug": "elementary_school",
-        "title": "Elementary School",
-        "field": "tax_input.elementary_school",
-        "search_field": "_search.elementary_school",
-        "old_key": "elementary-school",
-        "taxonomy": "wpp_schools"
+      "elementary-school": {
+        "title": "Elementary School"
       },
-      "wpp_schools_middle_school": {
-        "slug": "middle_school",
-        "title": "Middle School",
-        "field": "tax_input.middle_school",
-        "search_field": "_search.middle_school",
-        "old_key": "middle-school",
-        "taxonomy": "wpp_schools"
+      "middle-school": {
+        "title": "Middle School"
       },
-      "wpp_schools_high_school": {
-        "slug": "high_school",
-        "title": "High School",
-        "field": "tax_input.high_school",
-        "search_field": "_search.high_school",
-        "old_key": "high-school",
-        "taxonomy": "wpp_schools"
+      "high-school": {
+        "title": "High School"
       }
     };
   }
