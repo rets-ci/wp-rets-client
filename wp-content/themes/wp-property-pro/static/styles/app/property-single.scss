@@ -42,6 +42,9 @@
 
 .propertypro-attr-box {
   color: #333;
+  padding: 1.25rem 0;
+  margin-right: 1rem;
+  border-top: 1px solid #EAEAEA;
 
   p {
     font-size: 0.75rem;
@@ -68,14 +71,15 @@
   margin-top: -1px;
 }
 
-.propertypro-attr-box {
-  padding: 1.25rem 0;
-  margin-right: 1rem;
-  border-top: 1px solid #EAEAEA;
-}
-
 ul.card-header-tabs {
   flex-wrap: wrap;
+}
+
+@media screen and (max-width: 47.938em) {
+  .propertypro-attr-box {
+    padding: 0.75rem 0;
+    margin-right: 0;
+  }
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -189,8 +193,10 @@ ul.card-header-tabs {
       border: 0.0625rem solid #d2dae0;
       border-radius: 0.3125rem;
       display: inline-block;
-      padding: 0.625rem 0.9375rem;
+      padding: 0.5rem 1rem;
       min-width: 11.875rem;
+      font-size: 0.875rem;
+      font-weight: 500;
 
       &:hover {
         cursor: pointer;
@@ -238,6 +244,39 @@ ul.card-header-tabs {
   .propertypro-agent-contact-form-description {
     color: #8b8c8d;
     font-size: 1rem;
+    line-height: 1.85rem;
+  }
+
+  .propertypro-agent-card {
+    display: flex;
+    flex-direction: row;
+
+    img {
+      align-self: flex-start;
+      margin-right: 1.5rem;
+    }
+  }
+
+  @media screen and (max-width: 47.938em) {
+    .propertypro-agent-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      img {
+        align-self: center;
+        margin-right: 0;
+      }
+    }
+
+    .propertypro-agent-card-content {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .propertypro-agent-contact-form-content {
+      padding: 1rem;
+    }
   }
 }
 
@@ -336,6 +375,12 @@ ul.card-header-tabs {
       }
     }
   }
+
+  @media screen and (max-width: 47.938em) {
+    &.propertypro-agent-hidden.is-sticky {
+      padding: 1rem 0;
+    }
+  }
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -383,6 +428,7 @@ ul.card-header-tabs {
     width: 1.5rem;
     height: 4rem;
     border: 1px solid #E9E9E9;
+    border-bottom: none;
     background-color: #F9F9F9;
     color: #9D9D9D;
 
@@ -453,3 +499,35 @@ ul.card-header-tabs {
     }
   }
 }
+
+@media screen and (max-width: 47.938em) {
+  .propertypro-attr-tabs-header {
+    .propertypro-attr-tab {
+      min-width: 6rem;
+      padding: 0.75rem;
+    }
+
+    .swiper-button-next-custom, .swiper-button-prev-custom {
+      height: 3rem;
+    }
+  }
+
+  .propertypro-attr-tabs-content {
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  .propertypro-attr-group {
+    padding-top: 1.5rem;
+
+    .propertypro-attr-group-title {
+      padding-bottom: 1rem;
+    }
+  }
+
+  .propertypro-attr-group-content {
+    & > div {
+      padding: 0.75rem 0;
+    }
+  }
+}
+/* end of Attribute Tabs */
