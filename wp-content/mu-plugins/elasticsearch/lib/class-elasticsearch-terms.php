@@ -152,7 +152,10 @@ namespace UsabilityDynamics\WPP {
 
         $meta = get_term_meta( $_term->term_id );
 
-        $term_type = isset( $meta['term_type'] ) ? $meta['term_type'] : null;
+        $term_type = isset( $meta['term_type'][0] ) ? $meta['term_type'][0] : null;
+        if( !$term_type ) {
+          $term_type = isset( $meta['_type'][0] ) ? $meta['_type'][0] : null;
+        }
 
         $input = array_values( array_unique( array(
           str_replace( '&amp;', '&', $term['name'] ),

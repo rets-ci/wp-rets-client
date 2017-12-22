@@ -57,7 +57,7 @@ class UserPanel extends Component {
 
     return (
       <BootstrapModal
-        classes={ ["sidebar", "sidebar-right"] }
+        classes={ ['sidebar sidebar--navigation sidebar--right'] }
         id={ 'UserPanel' }
         open={ panelOpen }
         closeModal={ closeUserPanel }
@@ -76,8 +76,8 @@ class UserPanel extends Component {
                 to={ item.relative_url }
                 onClick={ item.isModal ? this.openModal.bind(this, item.modalId) : null }
               >
-                <span>{ item.icon && <img src={ item.icon } /> }</span>
-                <p>{ item.title }</p>
+                <span className={`${Lib.THEME_CLASSES_PREFIX}menu-icon`}>{ item.icon && <img src={ item.icon } /> }</span>
+                <p className={`${Lib.THEME_CLASSES_PREFIX}menu-label`}>{ item.title }</p>
               </Link>
             </div>
           )}
@@ -87,8 +87,8 @@ class UserPanel extends Component {
             <div className={`${Lib.THEME_CLASSES_PREFIX}menu__more-items`}>
               <div className={`${Lib.THEME_CLASSES_PREFIX}menu-item ${Lib.THEME_CLASSES_PREFIX}menu-item--expander`} onClick={ this.toggleMoreMenu }>
                 <a>
-                  <span className="fa fa-bars"></span>
-                  <p>More</p>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}menu-icon fa fa-bars`}></span>
+                  <p className={`${Lib.THEME_CLASSES_PREFIX}menu-label`}>More</p>
                   <span className={ isMoreOpen ? 'fa fa-caret-up' : 'fa fa-caret-down' }></span>
                 </a>
               </div>
@@ -106,8 +106,8 @@ class UserPanel extends Component {
                     to={ item.relative_url }
                     onClick={ item.isModal ? this.openModal.bind(this, item.modalId) : null }
                   >
-                    <span>{ item.icon && <img src={ item.icon } /> }</span>
-                    <p>{ item.title }</p>
+                    <span className={`${Lib.THEME_CLASSES_PREFIX}menu-icon`}>{ item.icon && <img src={ item.icon } /> }</span>
+                    <p className={`${Lib.THEME_CLASSES_PREFIX}menu-label`}>{ item.title }</p>
                   </Link>
                 </div>
               )}

@@ -9,30 +9,19 @@ const DefaultLayout = ({item, openFormModal}) => {
   return (
     <div className="container">
       <div className="row">
-        <div className={`${Lib.THEME_CLASSES_PREFIX}callout-container mx-auto`}>
-          <nav className="navbar navbar-toggleable-md">
-            <div className={Lib.THEME_CLASSES_PREFIX + "callout-items"}>
-              {
-                get(item, 'title', null)
-                  ?
-                  <p className="navbar-brand mr-auto my-auto">{renderHTML(item.title)}</p>
-                  : null
-              }
-              {
-                get(item, 'button.label', null)
-                  ?
-                  <ul className="navbar-nav">
-                    <li>
-                      <a
-                        href="#"
-                        onClick={formModalId ? ((event) => { event.preventDefault(); openFormModal(formModalId, true)}) : null}
-                         className={`btn ${Lib.THEME_CLASSES_PREFIX}btn-contact`}>{item.button.label}</a>
-                    </li>
-                  </ul>
-                  : null
-              }
-            </div>
-          </nav>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}callout-container col-12`}>
+          { get(item, 'title', null) &&
+            <div className={`${Lib.THEME_CLASSES_PREFIX}callout-title`}>{renderHTML(item.title)}</div>
+          }
+          { get(item, 'button.label', null) &&
+            <a
+              href="#"
+              onClick={formModalId ? ((event) => { event.preventDefault(); openFormModal(formModalId, true)}) : null}
+              className={`${Lib.THEME_CLASSES_PREFIX}callout-button btn`}
+            >
+              {item.button.label}
+            </a>
+          }
         </div>
       </div>
     </div>
