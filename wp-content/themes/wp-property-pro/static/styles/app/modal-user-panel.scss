@@ -1,7 +1,7 @@
 /*
  * side user panel
  */
-.sidebar {
+.propertypro-modal.sidebar {
     .modal-dialog {
         position: fixed;
         top: 0;
@@ -15,18 +15,22 @@
                 transform: translate3d(0%, 0, 0);
     }
 
-    &.sidebar--right .modal-dialog {
-        right: 0;
-        left: auto;
-    }
-
     .modal-content {
         height: 100%;
         overflow-y: auto;
         border-radius: 0;
         border: none;
     }
+}
 
+.propertypro-modal.sidebar--right {
+    .modal-dialog {
+        right: 0;
+        left: auto;
+    }
+}
+
+.propertypro-modal.sidebar--navigation {
     .modal-header {
         min-height: 3.4375rem;
         border-bottom-color: #EEEEEE;
@@ -46,9 +50,6 @@
         }
     }
 
-}
-
-.sidebar--navigation {
     .propertypro-menu-wrapper {
         display: flex;
         flex-direction: column;
@@ -126,38 +127,40 @@
 }
 
 // animations
-.propertypro-modal.sidebar--right {
-  display: block !important;
-  transition: visibility .3s ease-in-out;
+.propertypro-modal {
+    &.sidebar {
+        display: block !important;
+        transition: visibility .3s ease-in-out;
 
-  &:not(.show) {
-    visibility: hidden;
-  }
+        &:not(.show) {
+          visibility: hidden;
+        }
 
-  &.show {
-    visibility: visible;
-  }
+        &.show {
+          visibility: visible;
+        }
+    }
 
-  &.sidebar--right:not(.show) .modal-dialog {
-    transition: transform .2s ease-in-out;
-    transform: translateX(100%);
-  }
+    &.sidebar--right {
+        &:not(.show) .modal-dialog {
+            transition: transform .2s ease-in-out;
+            transform: translateX(100%);
+        }
 
-  &.sidebar--right.show .modal-dialog {
-    transition: transform .3s ease-in-out;
-    transform: translateX(0%);
-  }
+        &.show .modal-dialog {
+            transition: transform .3s ease-in-out;
+            transform: translateX(0%);
+        }
+    }
 }
 // end of animations
 
 @media screen and (max-width: 47.938em) {
-    .sidebar {
-        .modal-dialog {
-            width: 100%;
-        }
+    .propertypro-modal.sidebar .modal-dialog {
+        width: 100%;
     }
 
-    .sidebar--navigation {
+    .propertypro-modal.sidebar--navigation {
         .propertypro-menu-item {
             padding: 0 2.25rem;
         }
@@ -185,6 +188,17 @@
             span.fa {
                 font-size: 1.25rem;
             }
+        }
+    }
+
+    // animations on mobile should play from left to right
+    .propertypro-modal.sidebar--navigation {
+        &:not(.show) .modal-dialog {
+            transform: translateX(-100%);
+        }
+
+        &.show .modal-dialog {
+            transform: translateX(0%);
         }
     }
 }
