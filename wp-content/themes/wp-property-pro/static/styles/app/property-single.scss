@@ -190,7 +190,6 @@ ul.card-header-tabs {
       border-radius: 0.3125rem;
       display: inline-block;
       padding: 0.625rem 0.9375rem;
-      min-width: 11.875rem;
 
       &:hover {
         cursor: pointer;
@@ -238,6 +237,33 @@ ul.card-header-tabs {
   .propertypro-agent-contact-form-description {
     color: #8b8c8d;
     font-size: 1rem;
+  }
+
+  .propertypro-agent-card {
+    display: flex;
+    flex-direction: row;
+
+    img {
+
+    }
+  }
+
+  /* Extra small devices (portrait phones, less than 767px) */
+  @media screen and (max-width: 47.938em) {
+    .propertypro-agent-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .propertypro-agent-card-content {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .propertypro-agent-contact-form-content {
+      padding: 1rem;
+    }
   }
 }
 
@@ -413,6 +439,10 @@ ul.card-header-tabs {
   border: 1px solid #E9E9E9;
   padding: 0 2.5rem 2rem;
   margin-top: -1px;
+
+  @media screen and (max-width: 47.938em) {
+    padding: 0 1.5rem 1rem;
+  }
 }
 
 

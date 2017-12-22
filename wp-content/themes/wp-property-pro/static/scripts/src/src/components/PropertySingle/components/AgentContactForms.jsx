@@ -163,23 +163,15 @@ class AgentContactForms extends Component {
         <div className={`${Lib.THEME_CLASSES_PREFIX}agent-contact-form`}>
 
           <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card`}>
-            <div className="media">
-              <img className={`d-flex align-self-start mr-4 ${Lib.THEME_CLASSES_PREFIX}agent-photo`}
-                src={ agent.image }
-                alt="Agent photo"
-                width="100"
-              />
-              <div className={`media-body ${Lib.THEME_CLASSES_PREFIX}agent-card-content`}>
-                <h5>
-                  { agent.name }
-                </h5>
-                <p>
-                  { listingOffice }
-                </p>
-                <div>
-                  { agent.phone }
-                </div>
-              </div>
+            <img className={`${Lib.THEME_CLASSES_PREFIX}agent-photo`}
+              src={ agent.image }
+              alt="Agent photo"
+              width="100"
+            />
+            <div className={`${Lib.THEME_CLASSES_PREFIX}agent-card-content`}>
+              <h5>{ agent.name }</h5>
+              <p>{ listingOffice }</p>
+              <div>{ agent.phone }</div>
             </div>
           </div>
 
