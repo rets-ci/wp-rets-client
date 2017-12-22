@@ -46,6 +46,7 @@ namespace UsabilityDynamics {
       /** Define template for search page */
       $template = 'index';
       if(isset($path[1]) && $path[1] === 'search'){
+        add_filter( 'wp_title', [$this, 'property_pro_build_search_title'], 16, 3);
         $template = 'search';
       }
 
@@ -1090,8 +1091,6 @@ namespace UsabilityDynamics {
           return $return;
         } ) );
       }
-
-      $params[ 'post' ][ 'test' ] = $output;
       $params[ 'post' ][ 'head_tags' ] = $head_tags;
 
       return wp_json_encode($params);
@@ -1197,12 +1196,19 @@ namespace UsabilityDynamics {
     private function property_pro_prepare_seo_meta_data($post){
       global $wp;
 
+      $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
       $data = [];
 
       $frontpage_id = get_option( 'page_on_front' );
       $wpseo_social = get_option( 'wpseo_social' );
 
-      $data['title'] = wp_title( '&raquo;', false );
+      if(isset($path[1]) && $path[1] === 'search'){
+        $data['title'] = $this->property_pro_build_search_title();
+      }else{
+        $data['title'] = wp_title( '&raquo;', false );
+      }
+
       $data['description'] = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
       $data['site'] = '@' . (isset( $wpseo_social[ 'twitter_site' ] ) && $wpseo_social[ 'twitter_site' ] ? $wpseo_social[ 'twitter_site' ] : 'reddoorcompany');
       $data['image'] = isset( $wpseo_social[ 'og_default_image' ] ) && $wpseo_social[ 'og_default_image' ] ? $wpseo_social[ 'og_default_image' ] : get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
@@ -1253,6 +1259,142 @@ namespace UsabilityDynamics {
       $data['admin_id'] = $admin_id;
 
       return $data;
+    }
+
+    function property_pro_build_search_title($title = '', $separator = '', $separator_location = '' ){
+      $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+      $path_array = explode('/', $path);
+
+      $terms_array = [
+          'city',
+          'zip',
+          'county',
+          'neighborhood',
+      ];
+
+      // TITLE
+      // Count of items which can be displayed at title
+      $items_limit = 2;
+
+      $residential_sale_type_label = 'Real Estate';
+
+      // Build locations array
+      $terms = [];
+      foreach ($path_array as $path_item){
+        foreach ($terms_array as $term) {
+          if(strpos($path_item, $term . '_') !== false){
+            $terms[] = ucfirst(str_replace($term . '_', '', $path_item));
+          }
+        }
+      }
+
+      $locations = '';
+      if ($terms && count($terms) <= $items_limit) {
+        sort($terms, SORT_NATURAL);
+        $locations = join(' and ', $terms);
+      }
+
+      // If there is no selected subtypes or one of selected is 'other' then just display listing type
+      $types = '';
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, 'property-type' . '_' ) !== false ) {
+          $types = ucfirst(str_replace( 'property-type' . '_', '', $path_item ));
+          break;
+        }
+      }
+
+      $type = $types;
+
+      // Get listing subtypes array with plural values
+      $plural_values = json_decode( file_get_contents( get_template_directory_uri() . '/static/schemas/listing_subtypes_plural_values.json' ), true );
+      $subtypes = [];
+      $subtypes_slugs = [];
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, 'property-subtype_' ) !== false ) {
+          $subtype_slug = str_replace( 'property-subtype_', '', $path_item );
+          $subtypes_slugs[] = $subtype_slug;
+          $subtypes[] = $plural_values[ strtolower($type) ][ $subtype_slug ];
+        }
+      }
+
+      // Checking if using 'other' subtype
+      $exist_other_values = false;
+      foreach($subtypes_slugs as $subtype_slug){
+        if($subtype_slug === 'other'){
+          $exist_other_values = true;
+          break;
+        }
+      }
+
+      if ($subtypes && count($subtypes) <= $items_limit && !$exist_other_values) {
+        sort($subtypes, SORT_NATURAL);
+        $types = join(' and ', $subtypes);
+      }
+
+      // Checking selected sale types
+      $saleTypes = [];
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, 'sale-type_' ) !== false ) {
+          $saleTypes[] = ucfirst(str_replace( 'sale-type_', '', $path_item ));
+        }
+      }
+      if(!$saleTypes){
+        $saleTypes = [
+            'Rent',
+            'Sale'
+        ];
+      }
+
+      // Define sale type title's part
+      $saleType = '';
+      $shortSaleType = '';
+      switch (strtolower($type)) {
+        case 'residential':
+          $shortSaleType = $saleType = $residential_sale_type_label;
+          break;
+        case 'commercial':
+          $shortSaleType = $saleType = 'Commercial Real Estate';
+          if ($exist_other_values) {
+            $types = $saleType;
+          }
+          break;
+        case 'land':
+          $saleType = 'Land Real Estate';
+          $shortSaleType = 'Land';
+          if ($exist_other_values) {
+            $types = $saleType;
+          }
+          break;
+      }
+
+      // If display all sale type, then drop it
+      if (count($saleTypes) === 2) {
+        $saleType = '';
+      } else if (count($saleTypes) === 1) {
+        $saleType = join(' ', [$shortSaleType, join(' ', ['for', $saleTypes[0]])]);
+      }
+
+      // If display all sale type, then drop it
+      if (count($saleTypes) === 2 && count($subtypes) > 0) {
+        $saleType = '';
+      } else if (count($saleTypes) === 1) {
+        // Case when displayed particular sale type with listing subtype
+        if (count($subtypes) > 0 && count($subtypes) <= 2) {
+          $saleType = join(' ', [join(' ', ['for', $saleTypes[0]])]);
+        } else { //Case when displayed particular sale type without subtypes
+          $types = '';
+          $saleType = join(' ', [$shortSaleType, join(' ', ['for', $saleTypes[0]])]);
+        }
+      }
+
+      if($types){
+        $title_array = [$locations, $types, $saleType];
+      }else{
+        $title_array = [$locations, $saleType];
+      }
+
+      return join(' ', $title_array);
     }
 
     /**
