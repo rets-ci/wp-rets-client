@@ -86,9 +86,10 @@ html, body {
 }
 
 /** Layout **/
-
-.propertypro-page-layout-container-inner.propertypro-with-sale-types-panel-open {
-    overflow: hidden;
+.propertypro-page-layout-container-inner {
+    &.propertypro-with-sale-types-panel-open {
+        overflow-y: hidden;
+    }
 }
 
 /** colors **/
@@ -627,34 +628,45 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /** Callout */
 
 .propertypro-callout {
-    height: 13.75rem;
-    line-height: 13.75rem;
-    text-align: center;
-    color: #fff;
-}
+    .propertypro-callout-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 13.75rem;
+    }
 
-.propertypro-callout-container {
-    width: 53rem;
-}
+    .propertypro-callout-title {
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 2.5rem;
+        color: #FFF;
+    }
 
-.propertypro-callout-items {
-    display: flex;
-    width: 100%;
-}
+    .propertypro-callout-button {
+        background-color: #FFF;
+        font-size: 1.125rem;
+        line-height: 1.5rem;
+        font-weight: 700;
+        padding: 0.75rem 2rem;
+        margin: 0 0 0 2.5rem;
+    }
 
-.propertypro-callout p {
-    display: inline-block;
-    font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 1.5rem;
-}
+    @media screen and (max-width: 47.938em) {
+        .propertypro-callout-container {
+            flex-direction: column;
+            height: auto;
+            padding: 2.1875rem 0;
+        }
 
-.propertypro-callout .propertypro-btn-contact {
-    background-color: #ffffff;
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.5rem;
-    padding: .75rem 1.875rem;
+        .propertypro-callout-title {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .propertypro-callout-button {
+            margin: 1rem 0 0 0;
+        }
+    }
 }
 
 /** Page Footer */
@@ -2257,34 +2269,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     .propertypro-top-footer .propertypro-footer-top-menu-title,
     .propertypro-top-footer .propertypro-footer-top-menu-links {
         text-align: left;
-    }
-
-    .propertypro-callout {
-        height: auto;
-        padding: 2.1875rem 0;
-    }
-
-    .propertypro-callout .propertypro-callout-container {
-        line-height: 1.5rem;
-    }
-
-    .propertypro-callout-items {
-        display: block;
-    }
-
-    .propertypro-callout-items .navbar-nav {
-        margin-bop: 1rem;
-    }
-
-    .propertypro-callout p {
-        display: block;
-        font-size: 1.375rem;
-        line-height: 1.5rem;
-        margin-right: 0;
-    }
-
-    .propertypro-callout .btn {
-        top: 0;
     }
 
     .propertypro-post-image,
