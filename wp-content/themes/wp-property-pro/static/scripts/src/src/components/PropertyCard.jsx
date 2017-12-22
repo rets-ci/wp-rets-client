@@ -29,11 +29,13 @@ class PropertyCard extends Component {
   }
 
   handlePrevClick = (e) => {
+    e.stopPropagation();
     e.preventDefault();
     this.swiper.slidePrev();
   }
 
   handleNextClick = (e) => {
+    e.stopPropagation();
     e.preventDefault();
     this.swiper.slideNext();
   }
