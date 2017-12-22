@@ -48,12 +48,12 @@
         -moz-appearance: none;
         appearance: none;
         color: #414141;
-        background: url(/wp-content/themes/wp-property-pro/static/images/src/propertypro-caret.png) no-repeat right;
-        background-position: right 10px top 25px;
+        background: url(/wp-content/themes/wp-property-pro/static/images/src/dropdown-caret.png) no-repeat right;
+        background-position: right 0.75rem center;
         height: auto !important;
         opacity: 1;
 
-        &.gray {
+        .gray {
             background: red linear-gradient(0deg, red 0%, red 100%);
         }
     }
