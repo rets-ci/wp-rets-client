@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import HeaderDefault from 'app_root/components/Headers/HeaderDefault.jsx';
-import Masthead from '../widgets/masthead/Masthead.jsx';
-import PostCard from './components/PostCard.jsx';
-import PostContent from './components/PostContent.jsx';
-import {Lib} from '../../lib.jsx';
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
+
+import HeaderDefault from 'app_root/components/Headers/HeaderDefault.jsx';
+import Masthead from 'app_root/components/widgets/masthead/Masthead.jsx';
+import PostCard from 'app_root/components/blog/components/PostCard.jsx';
+import PostContent from 'app_root/components/blog/components/PostContent.jsx';
+import {Lib} from 'app_root/lib.jsx';
+
 
 class Single extends Component {
   static propTypes = {

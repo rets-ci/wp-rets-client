@@ -1,10 +1,12 @@
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import LoadingCircle from '../../LoadingCircle.jsx';
-import PostCard from './PostCard.jsx';
-import {Lib} from '../../../lib.jsx';
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+
+import LoadingCircle from 'app_root/components/LoadingCircle.jsx';
+import PostCard from 'app_root/components/blog/components/PostCard.jsx';
+import {Lib} from 'app_root/lib.jsx';
+
 
 class Posts extends Component {
   static propTypes = {

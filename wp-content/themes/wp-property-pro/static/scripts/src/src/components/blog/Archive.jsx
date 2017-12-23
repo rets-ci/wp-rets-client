@@ -1,15 +1,17 @@
-import FormModals from 'app_root/components/Modals/FormModals/Index.jsx';
-import HeaderDefault from '../Headers/HeaderDefault.jsx';
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import LoadingCircle from 'app_root/components/LoadingCircle.jsx';
-import Masthead from '../widgets/masthead/Masthead.jsx';
-import Subnavigation from '../widgets/subnavigation/Subnavigation.jsx';
-import Posts from './components/Posts.jsx';
 import PropTypes from 'prop-types';
-import {setBlogPosts} from '../../actions/index.jsx';
-import {Lib} from '../../lib.jsx';
+import {connect} from 'react-redux';
 import get from 'lodash/get';
+
+import LoadingCircle from 'app_root/components/LoadingCircle.jsx';
+import FormModals from 'app_root/components/Modals/FormModals/Index.jsx';
+import HeaderDefault from 'app_root/components/Headers/HeaderDefault.jsx';
+import Masthead from 'app_root/components/widgets/masthead/Masthead.jsx';
+import Subnavigation from 'app_root/components/widgets/subnavigation/Subnavigation.jsx';
+import Posts from 'app_root/components/blog/components/Posts.jsx';
+import {setBlogPosts} from 'app_root/actions/index.jsx';
+import {Lib} from 'app_root/lib.jsx';
+
 
 const mapStateToProps = (state) => {
   return {
