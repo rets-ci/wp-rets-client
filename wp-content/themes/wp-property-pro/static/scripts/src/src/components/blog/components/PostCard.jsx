@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
-import Util from '../../Util.jsx';
-import {Lib} from '../../../lib.jsx';
+import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+
+import Util from 'app_root/components/Util.jsx';
+import {Lib} from 'app_root/lib.jsx';
+
 
 class PostCard extends Component {
 
   render() {
-    let {
+    const {
       title,
       excerpt,
       image_src,
@@ -17,8 +20,15 @@ class PostCard extends Component {
       url,
       relative_url
     } = this.props.data;
+
+    const cardClass = classNames(
+      Lib.BLOG_CARD_GRID_CLASS,
+      'col-12',
+      `${Lib.THEME_CLASSES_PREFIX}post-item`,
+    )
+
     return (
-      <section className={`col-12 col-md-6 ${Lib.THEME_CLASSES_PREFIX}post-item border-0`}>
+      <section className={cardClass}>
         <div className={`card-img-top ${Lib.THEME_CLASSES_PREFIX}post-image`}>
           <a href={url} title={title} onClick={(e) => {
             e.preventDefault();

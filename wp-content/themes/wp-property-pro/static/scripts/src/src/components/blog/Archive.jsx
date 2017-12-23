@@ -94,7 +94,7 @@ class ArchiveContent extends Component {
             {
               !this.state.loading
               ? <Posts posts={this.props.posts} allowPagination={this.props.allowPagination} loadMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
-                : <div className="m-auto"> <LoadingCircle /></div>
+              : <div className="m-auto"><LoadingCircle /></div>
             }
 
           </div>
