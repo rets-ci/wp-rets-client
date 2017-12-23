@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 
 class Posts extends Component {
   static propTypes = {
-    seeMoreHandler: PropTypes.func.isRequired,
+    loadMoreHandler: PropTypes.func.isRequired,
     categoryId: PropTypes.number.isRequired
   };
 
@@ -23,16 +23,14 @@ class Posts extends Component {
     }
   }
 
-  seeMore(e, categoryId) {
+  handleLoadMore = (e) => {
     e.preventDefault();
 
-    this.setState({loading: true});
-    this.props.seeMoreHandler(this.props.posts.length, categoryId, this.props.posts);
+    this.setState({ loading: true });
+    this.props.loadMoreHandler(this.props.posts.length, this.props.categoryId, this.props.posts);
   }
 
   render() {
-    let self = this;
-
     let posts = get(this.props, 'posts', []);
     let groups = [];
 
@@ -79,7 +77,7 @@ class Posts extends Component {
                 {this.state.loading ?
                   <LoadingCircle />
                   :
-                  <a href="#" onClick={(e) => self.seeMore.bind(this)(e, this.props.categoryId)}
+                  <a href="#" onClick={this.handleLoadMore}
                      className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}load-more-link`}>Load More</a>
                 }
               </div>

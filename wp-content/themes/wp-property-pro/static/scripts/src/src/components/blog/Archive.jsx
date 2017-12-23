@@ -57,17 +57,15 @@ class ArchiveContent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {loading: true};
+    this.state = { loading: true };
   }
 
   componentDidMount() {
     let content = get(this.props.post, 'blog_content', {});
 
-    let self = this;
-
     // Initial get posts
     this.props.getPosts(0, get(content, 'category_id', 0), this.props.posts, () => {
-      self.setState({
+      this.setState({
         loading: false
       });
     });
@@ -93,7 +91,7 @@ class ArchiveContent extends Component {
                           currentUrl={get(this.props.post, 'post_url', '')}/>
             {
               !this.state.loading
-              ? <Posts posts={this.props.posts} allowPagination={this.props.allowPagination} seeMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
+              ? <Posts posts={this.props.posts} allowPagination={this.props.allowPagination} loadMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
                 : <div className="m-auto"> <LoadingCircle /></div>
             }
 

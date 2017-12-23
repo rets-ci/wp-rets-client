@@ -18,7 +18,7 @@ class PostCard extends Component {
       relative_url
     } = this.props.data;
     return (
-      <section className={`col-6 ${Lib.THEME_CLASSES_PREFIX}post-item border-0`}>
+      <section className={`col-12 col-md-6 ${Lib.THEME_CLASSES_PREFIX}post-item border-0`}>
         <div className={`card-img-top ${Lib.THEME_CLASSES_PREFIX}post-image`}>
           <a href={url} title={title} onClick={(e) => {
             e.preventDefault();
