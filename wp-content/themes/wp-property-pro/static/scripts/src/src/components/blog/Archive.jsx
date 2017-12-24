@@ -83,22 +83,17 @@ class ArchiveContent extends Component {
 
     return (
       <div>
-        <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-default row no-gutters`}>
+        <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-default`}>
           <HeaderDefault historyPush={history.push} openUserPanel={openUserPanel} openLoginModal={openLoginModal} />
         </section>
-        <div className="container-fluid">
-          <div className="row">
-            <Masthead widget_cell={get(content, 'masthead')}/>
-            <Subnavigation widget_cell={get(content, 'subnavigation')}
-                          currentUrl={get(this.props.post, 'post_url', '')}/>
-            {
-              !this.state.loading
-              ? <Posts posts={this.props.posts} allowPagination={this.props.allowPagination} loadMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')}/>
-              : <div className="m-auto"><LoadingCircle /></div>
-            }
-
-          </div>
-        </div>
+        <Masthead widget_cell={get(content, 'masthead')} />
+        <Subnavigation widget_cell={get(content, 'subnavigation')}
+                      currentUrl={get(this.props.post, 'post_url', '')} />
+        { this.state.loading
+            ? <div className="m-auto"><LoadingCircle /></div>
+            : <Posts posts={this.props.posts} allowPagination={this.props.allowPagination}
+                loadMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')} />
+        }
       </div>
     )
   }

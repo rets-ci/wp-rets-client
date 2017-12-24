@@ -53,7 +53,7 @@ class Single extends Component {
                         </div>
                     }
                   </div>
-                  <div className="row">
+                  <div className={`${Lib.THEME_CLASSES_PREFIX}posts-wrapper row`}>
                   { relatedPosts.map(post =>
                       <PostCard data={post} key={post.ID} />
                   )}

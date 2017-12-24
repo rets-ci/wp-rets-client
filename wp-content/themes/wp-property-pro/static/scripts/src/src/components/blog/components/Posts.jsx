@@ -39,7 +39,7 @@ class Posts extends Component {
       <section className={Lib.THEME_CLASSES_PREFIX + "blog-posts"}>
         <div className="container">
 
-          <div className="row">
+          <div className={`${Lib.THEME_CLASSES_PREFIX}posts-wrapper row`}>
             { posts.map(post =>
                 <PostCard data={post} key={post.ID} />
             )}

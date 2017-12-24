@@ -24,31 +24,34 @@ class PostCard extends Component {
     const cardClass = classNames(
       Lib.BLOG_CARD_GRID_CLASS,
       'col-12',
-      `${Lib.THEME_CLASSES_PREFIX}post-item`,
+      `${Lib.THEME_CLASSES_PREFIX}post-card`,
     )
+
+    const bgStyle = { backgroundImage: `url(${image_src})`}
 
     return (
       <section className={cardClass}>
-        <div className={`card-img-top ${Lib.THEME_CLASSES_PREFIX}post-image`}>
-          <a href={url} title={title} onClick={(e) => {
+        <a className={`${Lib.THEME_CLASSES_PREFIX}post__image`}
+          style={bgStyle}
+          href={url}
+          title={title}
+          onClick={(e) => {
             e.preventDefault();
             this.props.history.push(relative_url);
-          }
-          }>
-            <img src={image_src} alt={isEmpty(image_alt) ? image_title : image_alt} className="img-fluid"/>
+          }}
+        />
+
+        <div>
+          <a className={`${Lib.THEME_CLASSES_PREFIX}post__title`}
+            href={url}
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.history.push(relative_url);
+            }}
+          >
+            {title}
           </a>
-        </div>
-        <div className="card-block p-0">
-          <header className={Lib.THEME_CLASSES_PREFIX+"post-header"}>
-            <h5 className={`card-title ${Lib.THEME_CLASSES_PREFIX}post-title`}>
-              <a href={url} onClick={(e) => {
-                e.preventDefault();
-                this.props.history.push(relative_url);
-              }
-              }>{title}</a>
-            </h5>
-          </header>
-          <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}post-card-text`}>{excerpt}</p>
+          <p className={`${Lib.THEME_CLASSES_PREFIX}post__text`}>{excerpt}</p>
         </div>
       </section>
     );
