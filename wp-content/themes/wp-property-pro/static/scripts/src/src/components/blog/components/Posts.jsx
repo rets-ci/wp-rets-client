@@ -47,7 +47,7 @@ class Posts extends Component {
 
           { this.props.allowPagination &&
             <div className="row">
-              <div className={`${Lib.THEME_CLASSES_PREFIX}load-more mx-auto`}>
+              <div className={`${Lib.THEME_CLASSES_PREFIX}load-more col-12 col-md-4 mx-auto`}>
                 { this.state.loading
                     ? <LoadingCircle />
                     : <a href="#" onClick={this.handleLoadMore}

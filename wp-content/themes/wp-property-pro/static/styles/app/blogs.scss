@@ -4,7 +4,11 @@
 
 .propertypro-blog-posts,
 .propertypro-related-posts {
-    padding: 6rem 0 7.5rem;
+    padding: 5rem 0 8rem;
+}
+
+.propertypro-blog-posts {
+    min-height: 50rem;
 }
 
 .propertypro-posts-wrapper {
@@ -25,232 +29,202 @@
     }
 
     .propertypro-post__title {
-        margin: 1.5rem 1.5rem 1.5rem 0;
-        font-size: 1.6rem;
-        line-height: 2.5rem;
+        display: block;
+        margin: 3rem 2.5rem 2rem 0;
+        font-size: 2rem;
+        line-height: 3rem;
         font-weight: 700;
     }
 
     .propertypro-post__text {
         color: #8b8c8d;
         font-size: 1.125rem;
-        line-height: 1.875rem;
+        font-weight: 500;
+        line-height: 2.25rem;
     }
 }
 
-.propertypro-load-more {
-    margin-top: 2.5rem;
-}
+.propertypro-blog-posts {
+    .propertypro-load-more {
+        margin-top: 2.5rem;
 
-.propertypro-load-more .propertypro-load-more-link {
-    border-radius: .2rem;
-    line-height: 2.5rem;
-    width: 25rem;
-    height: 3.75rem;
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #ffffff;
-    box-shadow: none;
+        .btn {
+            border-radius: 3px;
+            line-height: 2.5rem;
+            width: 100%;
+            height: 3.75rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #FFF;
+        }
+    }
 }
 
 .propertypro-share-post {
     width: 12.875rem;
     margin: auto;
+
+    .propertypro-share-post-link {
+        width: 3.625rem;
+        height: 3.625rem;
+        display: inline-block;
+        margin-right: .9375rem;
+        text-align: center;
+        float: left;
+        line-height: 3.875rem;
+    }
+
+    a > i {
+        color: #fff;
+        font-size: 1.5rem;
+    }
+
+    a:last-child {
+        margin-right: 0;
+    }
+
+    .propertypro-facebook {
+        line-height: 4rem;
+        background-color: #3a5a98;
+    }
+
+    .propertypro-share-post .propertypro-twitter {
+        background-color: #1a97ce;
+    }
+
+    .propertypro-share-post .propertypro-linkedin {
+        background-color: #388ba9;
+    }
 }
 
-.propertypro-share-post .propertypro-share-post-link {
-    width: 3.625rem;
-    height: 3.625rem;
-    display: inline-block;
-    margin-right: .9375rem;
-    text-align: center;
-    float: left;
-    line-height: 3.875rem;
-}
 
-.propertypro-share-post a:last-child {
-    margin-right: 0;
-}
+.propertypro-related-posts {
+    .propertypro-more-posts {
+        padding-bottom: 5rem;
+        width: 100%;
 
-.propertypro-share-post a i {
-    color: #fff;
-    font-size: 1.5rem;
-}
-
-.propertypro-share-post .propertypro-facebook {
-    line-height: 4rem;
-    background-color: #3a5a98;
-}
-
-.propertypro-share-post .propertypro-twitter {
-    background-color: #1a97ce;
-}
-
-.propertypro-share-post .propertypro-linkedin {
-    background-color: #388ba9;
-}
-
-.propertypro-more-posts {
-    padding-bottom: 5rem;
-    width: 100%;
-}
-
-.propertypro-more-posts h4 {
-    font-size: 2rem;
-    font-weight: 400;
-    line-height: 3rem;
+        h4 {
+            font-size: 2rem;
+            font-weight: 400;
+            line-height: 3rem;
+        }
+    }
 }
 
 .propertypro-post-content {
     margin-top: 4rem;
+
+    .propertypro-post-content-container {
+        max-width: 60rem;
+        border-bottom: .125rem solid #d2dae0;
+        padding-bottom: 8rem;
+    }
+
+    h2 {
+        line-height: 3rem;
+        margin-bottom: .50em;
+        font-weight: 700;
+    }
+
+    p {
+        line-height: 2rem;
+        color: #8b8c8d;
+        font-size: 1.10rem;
+        margin-bottom: 2em;
+    }
+
+    a {
+        color: #8b8c8d;
+    }
+
+    img {
+        margin: 3rem 0;
+        max-width: 100%;
+    }
 }
 
-.propertypro-post-content .propertypro-post-content-container {
-    max-width: 60rem;
-    border-bottom: .125rem solid #d2dae0;
-    padding-bottom: 8rem;
-}
-
-.propertypro-post-content h2 {
-    line-height: 3rem;
-    margin-bottom: .50em;
-    font-weight: 700;
-}
-
-.propertypro-post-content p {
-    line-height: 2rem;
-    color: #8b8c8d;
-    font-size: 1.10rem;
-    margin-bottom: 2em;
-}
-
-.propertypro-post-content a {
-    color: #8b8c8d;
-}
-
-.propertypro-post-content img {
-    margin: 3rem 0;
-    max-width: 100%;
-}
 
 @media screen and (max-width: 47.938em) {
-    .propertypro-blog-posts .post__title,
-    .propertypro-related-posts .post__title {
-        font-size: 1.5rem;
-        line-height: 1.3;
-        margin: 1.5625rem 0;
+
+    .propertypro-blog-posts,
+    .propertypro-related-posts {
+        padding: 2rem 0;
     }
 
-    .propertypro-more-posts {
+    .propertypro-blog-posts {
+        min-height: 30rem;
+    }
+
+    .propertypro-posts-wrapper {
+        margin: 0 -15px;
+    }
+
+    .propertypro-post-card {
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+
+        .propertypro-post__title {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .propertypro-post__text {
+            font-size: 0.75rem;
+            line-height: 1.25rem;
+        }
+    }
+
+    .propertypro-related-posts .propertypro-more-posts {
         padding: 4rem 0;
+
+        h4 {
+            font-size: 1.625rem;
+        }
     }
 
-    .propertypro-more-posts h3 {
-        font-size: 1.625rem;
+    .propertypro-blog-posts .propertypro-load-more {
+        margin-top: 0;
+
+        .btn {
+            line-height: 1.5rem;
+            height: 2.5rem;
+            font-size: 1rem;
+        }
     }
 
-    .propertypro-post-content h2 {
-        font-size: 1.75rem;
-        line-height: 2.5rem;
-    }
+    .propertypro-post-content {
+        h2 {
+            font-size: 1.75rem;
+            line-height: 2.5rem;
+        }
 
-    .propertypro-post-content p {
-        line-height: 1.75rem;
-        font-size: 1.050rem;
-    }
-}
-
-@media screen and (max-width: 62.000em) {
-    .propertypro-blog-posts .propertypro-post__title,
-    .propertypro-related-posts .propertypro-post__title {
-        font-size: 1.4rem;
-    }
-
-    .propertypro-blog-posts p, .propertypro-related-posts p {
-        font-size: 1rem;
-    }
-
-    .propertypro-blog-posts-row .propertypro-post-item:first-child {
-        margin-right: 1rem;
-    }
-
-    .propertypro-blog-posts-row .propertypro-post-item:last-child {
-        margin-left: 1rem;
-    }
-}
-
-/* Extra small devices (portrait phones, less than 640px) */
-@media screen and (max-width: 40.000em) {
-    .propertypro-blog-posts .post-item, .propertypro-related-posts .post-item {
-        margin-bottom: 3.75rem;
-    }
-
-    .propertypro-blog-posts .propertypro-post__title,
-    .propertypro-related-posts .propertypro-post__title,
-    .propertypro-blog-posts .propertypro-post__text,
-    .propertypro-related-posts .propertypro-post__text {
-        margin: .5rem;
-    }
-
-    .propertypro-post-content .propertypro-post-content-container {
-        margin: .5rem !important;
-    }
-
-    .propertypro-blog-posts-row {
-        margin-bottom: 0;
-    }
-
-    .propertypro-blog-posts-row .propertypro-post-item {
-        margin-bottom: 1rem;
-    }
-
-    .propertypro-blog-posts-row .propertypro-post-item:first-child {
-        margin-right: 0;
-    }
-
-    .propertypro-blog-posts-row .propertypro-post-item:last-child {
-        margin-left: 0;
-    }
-}
-
-/* Extra small devices (portrait phones, less than 576px) */
-@media screen and (max-width: 35.938em) {
-     .propertypro-more-posts {
-        padding: 2.1875rem 0;
+        p {
+            line-height: 1.75rem;
+            font-size: 1.050rem;
+        }
     }
 
     .propertypro-share-post {
         width: 9.375rem;
-    }
 
-    .propertypro-share-post .propertypro-share-post-link {
-        width: 2.625rem;
-        height: 2.625rem;
-        margin-right: .625rem;
-        line-height: 2.875rem;
-    }
+        .propertypro-share-post-link {
+            width: 2.625rem;
+            height: 2.625rem;
+            margin-right: .625rem;
+            line-height: 2.875rem;
+        }
 
-    .propertypro-share-post a:last-child {
-        margin-right: 0;
-    }
+        a > i {
+            font-size: 1.125rem;
+        }
 
-    .propertypro-share-post a i {
-        font-size: 1.125rem;
-    }
+        a:last-child {
+            margin-right: 0;
+        }
 
-    .propertypro-share-post .propertypro-facebook {
-        line-height: 2.875rem;
-    }
-}
-
-/* Extra small devices (portrait phones, less than 440px) */
-@media screen and (max-width: 28.125em) {
-    .propertypro-blog-posts .propertypro-load-more {
-        display: flex;
-        width: 100%;
-    }
-
-    .propertypro-blog-posts, .propertypro-related-posts {
-        padding: 0;
+        .propertypro-facebook {
+            line-height: 2.875rem;
+        }
     }
 }

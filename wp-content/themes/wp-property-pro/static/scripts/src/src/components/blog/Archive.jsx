@@ -90,7 +90,7 @@ class ArchiveContent extends Component {
         <Subnavigation widget_cell={get(content, 'subnavigation')}
                       currentUrl={get(this.props.post, 'post_url', '')} />
         { this.state.loading
-            ? <div className="m-auto"><LoadingCircle /></div>
+            ? <div className={`${Lib.THEME_CLASSES_PREFIX}blog-posts d-flex justify-content-center align-items-center`}><LoadingCircle /></div>
             : <Posts posts={this.props.posts} allowPagination={this.props.allowPagination}
                 loadMoreHandler={this.props.getPosts} categoryId={get(content, 'category_id')} />
         }
