@@ -10,14 +10,10 @@ const BlogSingleLayout = ({widget_cell}) => {
     twitterLink = 'https://twitter.com/home?' + encodeURIComponent('status=' + get(widget_cell, 'widget.fields.post_title') + ' ' + get(widget_cell, 'widget.fields.post_url')).replace(/'/g, "%27").replace(/"/g, "%22");
 
   return (
-    <div className={`container ${Lib.THEME_CLASSES_PREFIX}masthead-container`}>
-      <header>
-        {
-          get(widget_cell, 'widget.fields.title', '')
-            ? <h1 className={Lib.THEME_CLASSES_PREFIX + "masthead-blog-title"}>{renderHTML(widget_cell.widget.fields.title)}</h1>
-            : null
-        }
-      </header>
+    <div className={`${Lib.THEME_CLASSES_PREFIX}masthead-container mx-auto`}>
+      { get(widget_cell, 'widget.fields.title', '') &&
+        <h1 className={Lib.THEME_CLASSES_PREFIX + "masthead-blog-title"}>{renderHTML(widget_cell.widget.fields.title)}</h1>
+      }
       <div className={`${Lib.THEME_CLASSES_PREFIX}share-post clearfix`}>
         {
           get(widget_cell, 'widget.fields.post_url', null)
