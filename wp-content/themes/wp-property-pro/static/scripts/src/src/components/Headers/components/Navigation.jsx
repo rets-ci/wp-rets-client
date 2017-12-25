@@ -1,8 +1,11 @@
 import React from 'react';
-import {Lib} from 'app_root/lib.jsx';
+import {Link} from 'react-router-dom';
 import get from 'lodash/get';
 
-const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
+import {Lib} from 'app_root/lib.jsx';
+
+
+const Navigation = ({ openUserPanel, openLoginModal }) => (
   <nav className={`navbar navbar-toggleable-md ${Lib.THEME_CLASSES_PREFIX}navigation-navbar`}>
     <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-items mx-3`}>
       {
@@ -13,12 +16,9 @@ const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
           </a>
           : null
       }
-      <a className={`${Lib.THEME_CLASSES_PREFIX}navigation-logo-container d-flex align-items-center mr-auto`}
-         href={get(bundle, 'site_url', '')}
-         onClick={(eve) => {
-           eve.preventDefault();
-           historyPush('')
-         }} title={get(bundle, 'site_name', '')}>
+      <Link to="/" title={get(bundle, 'site_name', '')} 
+        className={`${Lib.THEME_CLASSES_PREFIX}navigation-logo-container d-flex align-items-center mr-auto`}
+      >
         {
           get(bundle, 'logos.horizontal_logo', null)
             ? <img src={bundle.logos.horizontal_logo} alt={get(bundle, 'site_name', '')}
@@ -31,7 +31,8 @@ const Navigation = ({historyPush, openUserPanel, openLoginModal}) => (
                    className={`hidden-md-up ${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>
             : null
         }
-      </a>
+      </Link>
+
       <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
         <li className="nav-item mr-3">
           <a href="#" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}login-box`} onClick={openLoginModal}>Login</a>
