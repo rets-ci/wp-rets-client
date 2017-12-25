@@ -1565,7 +1565,7 @@ button.swiper-pagination-bullet {
     .propertypro-masthead .propertypro-masthead-container h1 {
       word-wrap: break-word; }
   .propertypro-masthead-blog-title {
-    font-size: 2.5rem; }
+    font-size: 2rem; }
   .propertypro-article-masthead {
     position: static;
     height: 100vh; }
@@ -3032,6 +3032,156 @@ p.propertypro-gentle-error {
 .propertypro-form-confirmation-paragraph {
   color: #8b8c8d; }
 
+/*-----------------------------------------------------------------------------------*/
+/*  Blog
+/*-----------------------------------------------------------------------------------*/
+.propertypro-blog-posts {
+  padding: 5rem 0 8rem;
+  min-height: 50rem; }
+
+.propertypro-posts-wrapper {
+  margin: 0 -3rem; }
+
+.propertypro-post-card {
+  margin-bottom: 5.625rem;
+  padding: 0 3rem; }
+  .propertypro-post-card .propertypro-post__image {
+    display: block;
+    width: 100%;
+    height: 0;
+    padding-bottom: 63.63%;
+    background-position: center center;
+    background-size: cover; }
+  .propertypro-post-card .propertypro-post__title {
+    display: block;
+    margin: 3rem 2.5rem 2rem 0;
+    font-size: 2rem;
+    line-height: 3rem;
+    font-weight: 700; }
+  .propertypro-post-card .propertypro-post__text {
+    color: #8b8c8d;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 2.25rem; }
+
+.propertypro-blog-posts .propertypro-load-more {
+  margin-top: 2.5rem; }
+  .propertypro-blog-posts .propertypro-load-more .btn {
+    border-radius: 3px;
+    line-height: 2.5rem;
+    width: 100%;
+    height: 3.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #FFF; }
+
+.propertypro-share-post {
+  width: 12.875rem;
+  margin: auto; }
+  .propertypro-share-post .propertypro-share-post-link {
+    width: 3.625rem;
+    height: 3.625rem;
+    display: inline-block;
+    margin-right: .9375rem;
+    text-align: center;
+    float: left;
+    line-height: 3.875rem; }
+  .propertypro-share-post a > i {
+    color: #fff;
+    font-size: 1.5rem; }
+  .propertypro-share-post a:last-child {
+    margin-right: 0; }
+  .propertypro-share-post .propertypro-facebook {
+    line-height: 4rem;
+    background-color: #3a5a98; }
+  .propertypro-share-post .propertypro-share-post .propertypro-twitter {
+    background-color: #1a97ce; }
+  .propertypro-share-post .propertypro-share-post .propertypro-linkedin {
+    background-color: #388ba9; }
+
+.propertypro-related-posts .propertypro-more-posts {
+  padding-top: 5rem;
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 3rem; }
+
+.propertypro-related-posts .propertypro-posts-wrapper {
+  padding-top: 5rem; }
+
+.propertypro-post-content {
+  max-width: 60rem;
+  border-bottom: 2px solid #d2dae0;
+  padding-top: 4rem;
+  padding-bottom: 4rem; }
+  .propertypro-post-content h2 {
+    line-height: 3rem;
+    margin-bottom: 2.5rem;
+    font-weight: 700; }
+  .propertypro-post-content p {
+    line-height: 2rem;
+    color: #8b8c8d;
+    font-size: 1.125rem;
+    margin-bottom: 2em; }
+  .propertypro-post-content a {
+    color: #8b8c8d; }
+  .propertypro-post-content img {
+    margin: 3rem 0;
+    max-width: 100%; }
+
+@media screen and (max-width: 47.938em) {
+  .propertypro-blog-posts {
+    padding: 2rem 0; }
+  .propertypro-blog-posts {
+    min-height: 30rem; }
+  .propertypro-posts-wrapper {
+    margin: 0 -15px; }
+  .propertypro-post-card {
+    margin-bottom: 2rem;
+    padding: 0 1rem; }
+    .propertypro-post-card .propertypro-post__title {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      margin: 1rem 0; }
+    .propertypro-post-card .propertypro-post__text {
+      font-size: 0.75rem;
+      line-height: 1.25rem; }
+  .propertypro-related-posts .propertypro-more-posts {
+    padding-top: 2.5rem;
+    font-size: 1rem;
+    line-height: 2rem; }
+  .propertypro-related-posts .propertypro-posts-wrapper {
+    padding: 2.5rem 0; }
+  .propertypro-blog-posts .propertypro-load-more {
+    margin-top: 0; }
+    .propertypro-blog-posts .propertypro-load-more .btn {
+      line-height: 1.5rem;
+      height: 2.5rem;
+      font-size: 1rem; }
+  .propertypro-post-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem; }
+    .propertypro-post-content h2 {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      margin: 1rem 0; }
+    .propertypro-post-content p {
+      font-size: 0.75rem;
+      line-height: 1.25rem; }
+  .propertypro-share-post {
+    width: 9.375rem; }
+    .propertypro-share-post .propertypro-share-post-link {
+      width: 2.625rem;
+      height: 2.625rem;
+      margin-right: .625rem;
+      line-height: 2.875rem; }
+    .propertypro-share-post a > i {
+      font-size: 1.125rem; }
+    .propertypro-share-post a:last-child {
+      margin-right: 0; }
+    .propertypro-share-post .propertypro-facebook {
+      line-height: 2.875rem; } }
+
 /* @TODO split this file into components */
 /**
  * Theme Name: PropertyPro
@@ -3927,110 +4077,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
   height: 1rem; }
 
 /*-----------------------------------------------------------------------------------*/
-/*  Blog
-/*-----------------------------------------------------------------------------------*/
-.propertypro-blog-posts, .propertypro-related-posts {
-  padding: 6rem 0 7.5rem; }
-
-.propertypro-related-posts .propertypro-post-item {
-  margin-bottom: 5.625rem;
-  display: block; }
-
-.propertypro-blog-posts-row {
-  margin-bottom: 5rem; }
-
-.propertypro-blog-posts .propertypro-post-header, .propertypro-related-posts .propertypro-post-header {
-  margin: 1.5rem 1.5rem 1.5rem 0; }
-
-.propertypro-blog-posts .propertypro-post-title, .propertypro-related-posts .propertypro-post-title {
-  font-size: 1.6rem;
-  line-height: 2.5rem;
-  font-weight: 700; }
-
-.propertypro-blog-posts p, .propertypro-related-posts p {
-  color: #8b8c8d;
-  font-size: 1.125rem;
-  line-height: 1.875rem; }
-
-.propertypro-load-more {
-  margin-top: 2.5rem; }
-
-.propertypro-load-more .propertypro-load-more-link {
-  border-radius: .2rem;
-  line-height: 2.5rem;
-  width: 25rem;
-  height: 3.75rem;
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #ffffff;
-  box-shadow: none; }
-
-.propertypro-share-post {
-  width: 12.875rem;
-  margin: auto; }
-
-.propertypro-share-post .propertypro-share-post-link {
-  width: 3.625rem;
-  height: 3.625rem;
-  display: inline-block;
-  margin-right: .9375rem;
-  text-align: center;
-  float: left;
-  line-height: 3.875rem; }
-
-.propertypro-share-post a:last-child {
-  margin-right: 0; }
-
-.propertypro-share-post a i {
-  color: #fff;
-  font-size: 1.5rem; }
-
-.propertypro-share-post .propertypro-facebook {
-  line-height: 4rem;
-  background-color: #3a5a98; }
-
-.propertypro-share-post .propertypro-twitter {
-  background-color: #1a97ce; }
-
-.propertypro-share-post .propertypro-linkedin {
-  background-color: #388ba9; }
-
-.propertypro-more-posts {
-  padding-bottom: 5rem;
-  width: 100%; }
-
-.propertypro-more-posts h4 {
-  font-size: 2rem;
-  font-weight: 400;
-  line-height: 3rem; }
-
-.propertypro-post-content {
-  margin-top: 4rem; }
-
-.propertypro-post-content .propertypro-post-content-container {
-  max-width: 60rem;
-  border-bottom: .125rem solid #d2dae0;
-  padding-bottom: 10rem; }
-
-.propertypro-post-content h2 {
-  line-height: 3rem;
-  margin-bottom: .50em;
-  font-weight: 700; }
-
-.propertypro-post-content p {
-  line-height: 2rem;
-  color: #8b8c8d;
-  font-size: 1.10rem;
-  margin-bottom: 2em; }
-
-.propertypro-post-content a {
-  color: #8b8c8d; }
-
-.propertypro-post-content img {
-  margin: 3rem 0;
-  max-width: 100%; }
-
-/*-----------------------------------------------------------------------------------*/
 /*  Guide
 /*-----------------------------------------------------------------------------------*/
 .propertypro-guide-container {
@@ -4555,20 +4601,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: 0; }
   .propertypro-subnavigation.propertypro-subnavigation-text-layout {
     overflow: hidden; }
-  .propertypro-blog-posts .post-title, .propertypro-related-posts .post-title {
-    font-size: 1.5rem;
-    line-height: 1.3;
-    margin: 1.5625rem 0; }
-  .propertypro-more-posts {
-    padding: 4rem 0; }
-  .propertypro-more-posts h3 {
-    font-size: 1.625rem; }
-  .propertypro-post-content h2 {
-    font-size: 1.75rem;
-    line-height: 2.5rem; }
-  .propertypro-post-content p {
-    line-height: 1.75rem;
-    font-size: 1.050rem; }
   .propertypro-guide-container .propertypro-guide-head {
     height: 80vh; }
   .propertypro-article-content h2 {
@@ -4611,10 +4643,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
   .propertypro-find-home-type li {
     padding: 0 1.5rem; }
   .propertypro-subnavigation-container {
-    width: 100%; }
-  .propertypro-blog-posts .propertypro-post-title,
-  .propertypro-related-posts .propertypro-post-title {
-    line-height: 2rem; } }
+    width: 100%; } }
 
 @media (min-width: 40em) and (max-width: 62em) {
   .propertypro-top-footer .propertypro-footer-top-menu-title {
@@ -4652,15 +4681,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
   .propertypro-subnavigation.propertypro-subnavigation-icon-layout .propertypro-subnavigation-container {
     width: 100%; }
   .propertypro-subnavigation .propertypro-subnavigation-container ul li {
-    border-bottom: none; }
-  .propertypro-blog-posts .propertypro-post-title, .propertypro-related-posts .propertypro-post-title {
-    font-size: 1.4rem; }
-  .propertypro-blog-posts p, .propertypro-related-posts p {
-    font-size: 1rem; }
-  .propertypro-blog-posts-row .propertypro-post-item:first-child {
-    margin-right: 1rem; }
-  .propertypro-blog-posts-row .propertypro-post-item:last-child {
-    margin-left: 1rem; } }
+    border-bottom: none; } }
 
 /* Extra small devices (portrait phones, less than 640px) */
 @media screen and (max-width: 40em) {
@@ -4743,27 +4764,9 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     margin: 0; }
   .propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background {
     min-height: 20rem; }
-  .propertypro-blog-posts .post-item, .propertypro-related-posts .post-item {
-    margin-bottom: 3.75rem; }
   .propertypro-top-footer .propertypro-footer-top-menu-title,
   .propertypro-top-footer .propertypro-footer-top-menu-links {
     text-align: left; }
-  .propertypro-post-image,
-  .propertypro-blog-posts .propertypro-post-header,
-  .propertypro-related-posts .propertypro-post-header,
-  .propertypro-blog-posts .propertypro-post-card-text,
-  .propertypro-related-posts .propertypro-post-card-text {
-    margin: .5rem; }
-  .propertypro-post-content .propertypro-post-content-container {
-    margin: .5rem !important; }
-  .propertypro-blog-posts-row {
-    margin-bottom: 0; }
-  .propertypro-blog-posts-row .propertypro-post-item {
-    margin-bottom: 1rem; }
-  .propertypro-blog-posts-row .propertypro-post-item:first-child {
-    margin-right: 0; }
-  .propertypro-blog-posts-row .propertypro-post-item:last-child {
-    margin-left: 0; }
   .propertypro-image-mixer {
     min-height: 20rem; } }
 
@@ -4795,21 +4798,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
   .propertypro-load-more .propertypro-load-more-link {
     width: 100%;
     height: 3.75rem; }
-  .propertypro-more-posts {
-    padding: 2.1875rem 0; }
-  .propertypro-share-post {
-    width: 9.375rem; }
-  .propertypro-share-post .propertypro-share-post-link {
-    width: 2.625rem;
-    height: 2.625rem;
-    margin-right: .625rem;
-    line-height: 2.875rem; }
-  .propertypro-share-post a:last-child {
-    margin-right: 0; }
-  .propertypro-share-post a i {
-    font-size: 1.125rem; }
-  .propertypro-share-post .propertypro-facebook {
-    line-height: 2.875rem; }
   .propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img {
     min-height: 20rem; }
   .propertypro-listing-wrap {
@@ -4864,12 +4852,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     font-size: .85rem; }
   ul.propertypro-listing-info-box li {
     padding: 0 .625rem;
-    font-size: .90rem; }
-  .propertypro-blog-posts .propertypro-load-more {
-    display: flex;
-    width: 100%; }
-  .propertypro-blog-posts, .propertypro-related-posts {
-    padding: 0; } }
+    font-size: .90rem; } }
 
 /* Extra small devices (portrait phones, less than 360px) */
 @media screen and (max-width: 22.5em) {
