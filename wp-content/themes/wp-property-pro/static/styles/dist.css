@@ -1360,7 +1360,8 @@ button.swiper-pagination-bullet {
 .propertypro-masthead {
   background-size: cover !important;
   position: relative;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  border-radius: 0; }
   .propertypro-masthead .propertypro-masthead-container {
     position: relative;
     z-index: 1;
@@ -1847,7 +1848,8 @@ span.text-nowrap {
   border-radius: .625rem;
   border-color: #d2dae0;
   opacity: 0.99;
-  margin-bottom: 1px; }
+  margin-bottom: 1px;
+  box-sizing: border-box; }
 
 .propertypro-card-img {
   position: relative;
