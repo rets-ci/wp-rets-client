@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import HeaderDefault from 'app_root/components/Headers/HeaderDefault.jsx';
-import Masthead from '../widgets/masthead/Masthead.jsx';
-import PostCard from './components/PostCard.jsx';
-import PostContent from './components/PostContent.jsx';
-import {Lib} from '../../lib.jsx';
+import PropTypes from 'prop-types';
+import renderHTML from 'react-render-html';
 import get from 'lodash/get';
+
+import HeaderDefault from 'app_root/components/Headers/HeaderDefault.jsx';
+import Masthead from 'app_root/components/widgets/masthead/Masthead.jsx';
+import PostCard from 'app_root/components/blog/components/PostCard.jsx';
+import {Lib} from 'app_root/lib.jsx';
+
 
 class Single extends Component {
   static propTypes = {
@@ -20,73 +22,47 @@ class Single extends Component {
       openLoginModal
     } = this.props;
 
-    let posts = get(this.props.post, 'related_posts', []);
-    let groups = [];
-
-    if (posts) {
-      let postsGroup = [];
-      posts.map((post) => {
-        postsGroup.push(post);
-
-        if (postsGroup.length === Lib.BLOG_POSTS_PER_ROW) {
-          groups.push(postsGroup);
-          postsGroup = [];
-        }
-      });
-    }
+    const categoryTitle = get(this.props, 'post.category_title')
+    const relatedPosts = get(this.props, 'post.related_posts', []);
 
     return (
       <div>
         <section
-          className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-default row no-gutters`}>
+          className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-default row no-gutters`}
+        >
           <HeaderDefault historyPush={history.push} openUserPanel={openUserPanel} openLoginModal={openLoginModal}/>
         </section>
-        <div className="container-fluid">
-          <div className="row">
-            <article>
-              {
-                get(this.props.post, 'widgets.masthead', null)
-                  ? <Masthead widget_cell={get(this.props.post, 'widgets.masthead')}/>
-                  : null
-              }
-              {
-                get(this.props.post, 'content', null)
-                  ? <PostContent content={this.props.post.content}/>
-                  : null
-              }
-            </article>
-            {
-              get(this.props.post, 'related_posts', []).length
-                ?
-                <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
-                  <div className="container">
-                    <div className="row">
-                      {
-                        get(this.props.post, 'category_title', null) && get(this.props.post, 'related_posts', []).length
-                          ? <div className={`${Lib.THEME_CLASSES_PREFIX}more-posts text-center`}>
-                            <h4>More {this.props.post.category_title} Articles</h4>
-                          </div>
-                          : null
-                      }
-                    </div>
-                    <div className="row">
-                      {
-                        groups.map((g, group_index) => {
-                            let groupPosts = g.map((p, i) =>
-                              <PostCard data={p} key={i}/>
-                            );
-                            return (<div className={`card-deck ${Lib.THEME_CLASSES_PREFIX}blog-posts-row`}
-                                         key={group_index}>{groupPosts}</div>);
-                          }
-                        )
-                      }
-                    </div>
+
+        { get(this.props.post, 'widgets.masthead', null) &&
+            <Masthead widget_cell={get(this.props.post, 'widgets.masthead')}/>
+        }
+        { get(this.props.post, 'content', null) &&
+            <section className="container">
+              <div className="row"><div className="col-12">
+                  <div className={`mx-auto ${Lib.THEME_CLASSES_PREFIX}post-content`}>
+                    {renderHTML(get(this.props.post, 'content'))}
                   </div>
-                </section>
-                : null
-            }
-          </div>
-        </div>
+              </div></div>
+            </section>
+        }
+
+        { relatedPosts.length &&
+          <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
+            <div className="container">
+              { categoryTitle &&
+                  <h3 className={`${Lib.THEME_CLASSES_PREFIX}more-posts text-center`}>
+                    {`More ${categoryTitle} Articles`}
+                  </h3>
+              }
+              <div className={`${Lib.THEME_CLASSES_PREFIX}posts-wrapper row`}>
+              { relatedPosts.map(post =>
+                  <PostCard data={post} key={post.ID} />
+              )}
+              </div>
+            </div>
+          </section>
+        }
+
       </div>
     )
   }
