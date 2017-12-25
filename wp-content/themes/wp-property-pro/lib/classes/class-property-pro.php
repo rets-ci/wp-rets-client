@@ -36,6 +36,15 @@ namespace UsabilityDynamics {
     /** @var  Customizer */
     private $customizer;
 
+    /** @var bool */
+    private $isSearchPage = false;
+
+    /** @var string */
+    private $no_min_text = 'No Min';
+
+    /** @var string */
+    private $no_max_text = 'No Max';
+
     public function __construct()
     {
 
@@ -46,7 +55,25 @@ namespace UsabilityDynamics {
       /** Define template for search page */
       $template = 'index';
       if(isset($path[1]) && $path[1] === 'search'){
-        add_filter( 'wp_title', [$this, 'property_pro_build_search_title'], 16, 3);
+
+        $this->isSearchPage = true;
+
+        /** Override meta title with dynamic title */
+        if( class_exists( 'WPSEO_Frontend' ) ) {
+          add_filter( 'wpseo_title', function () {
+            return $this->property_pro_build_search_title_and_description()[ 'title' ];
+          }, 100 );
+        } else {
+          add_filter( 'wp_title', function ( $title ) {
+            return $this->property_pro_build_search_title_and_description()[ 'title' ];
+          }, 16 );
+        }
+
+        /** Override meta description with dynamic description */
+        add_filter( 'wpseo_metadesc', function ( $description ) {
+          return $this->property_pro_build_search_title_and_description()[ 'description' ];
+        }, 100, 1 );
+
         $template = 'search';
       }
 
@@ -1196,14 +1223,12 @@ namespace UsabilityDynamics {
     private function property_pro_prepare_seo_meta_data($post){
       global $wp;
 
-      $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
       $data = [];
 
       $frontpage_id = get_option( 'page_on_front' );
       $wpseo_social = get_option( 'wpseo_social' );
 
-      if(isset($path[1]) && $path[1] === 'search'){
+      if($this->isSearchPage){
         $data['title'] = $this->property_pro_build_search_title();
       }else{
         $data['title'] = wp_title( '&raquo;', false );
@@ -1261,19 +1286,15 @@ namespace UsabilityDynamics {
       return $data;
     }
 
-    function property_pro_build_search_title($title = '', $separator = '', $separator_location = '' ){
-      $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    function property_pro_build_search_title_and_description() {
+      $path = parse_url( $_SERVER[ 'REQUEST_URI' ], PHP_URL_PATH );
 
-      $path_array = explode('/', $path);
-
-      $terms_array = [
-          'city',
-          'zip',
-          'county',
-          'neighborhood',
-      ];
+      $path_array = explode( '/', $path );
 
       // TITLE
+
+      $terms_array = [ 'city', 'zip', 'county', 'neighborhood', ];
+
       // Count of items which can be displayed at title
       $items_limit = 2;
 
@@ -1281,25 +1302,25 @@ namespace UsabilityDynamics {
 
       // Build locations array
       $terms = [];
-      foreach ($path_array as $path_item){
+      foreach ($path_array as $path_item) {
         foreach ($terms_array as $term) {
-          if(strpos($path_item, $term . '_') !== false){
-            $terms[] = ucfirst(str_replace($term . '_', '', $path_item));
+          if( strpos( $path_item, $term . '_' ) !== false ) {
+            $terms[] = ucfirst( str_replace( $term . '_', '', $path_item ) );
           }
         }
       }
 
       $locations = '';
-      if ($terms && count($terms) <= $items_limit) {
-        sort($terms, SORT_NATURAL);
-        $locations = join(' and ', $terms);
+      if( $terms && count( $terms ) <= $items_limit ) {
+        sort( $terms, SORT_NATURAL );
+        $locations = join( ' and ', $terms );
       }
 
       // If there is no selected subtypes or one of selected is 'other' then just display listing type
       $types = '';
       foreach ($path_array as $path_item) {
         if( strpos( $path_item, 'property-type' . '_' ) !== false ) {
-          $types = ucfirst(str_replace( 'property-type' . '_', '', $path_item ));
+          $types = ucfirst( str_replace( 'property-type' . '_', '', $path_item ) );
           break;
         }
       }
@@ -1314,87 +1335,245 @@ namespace UsabilityDynamics {
         if( strpos( $path_item, 'property-subtype_' ) !== false ) {
           $subtype_slug = str_replace( 'property-subtype_', '', $path_item );
           $subtypes_slugs[] = $subtype_slug;
-          $subtypes[] = $plural_values[ strtolower($type) ][ $subtype_slug ];
+          $subtypes[] = $plural_values[ strtolower( $type ) ][ $subtype_slug ];
         }
       }
 
       // Checking if using 'other' subtype
       $exist_other_values = false;
-      foreach($subtypes_slugs as $subtype_slug){
-        if($subtype_slug === 'other'){
+      foreach ($subtypes_slugs as $subtype_slug) {
+        if( $subtype_slug === 'other' ) {
           $exist_other_values = true;
           break;
         }
       }
 
-      if ($subtypes && count($subtypes) <= $items_limit && !$exist_other_values) {
-        sort($subtypes, SORT_NATURAL);
-        $types = join(' and ', $subtypes);
+      if( $subtypes && count( $subtypes ) <= $items_limit && !$exist_other_values ) {
+        sort( $subtypes, SORT_NATURAL );
+        $types = join( ' and ', $subtypes );
       }
 
       // Checking selected sale types
       $saleTypes = [];
       foreach ($path_array as $path_item) {
         if( strpos( $path_item, 'sale-type_' ) !== false ) {
-          $saleTypes[] = ucfirst(str_replace( 'sale-type_', '', $path_item ));
+          $saleTypes[] = ucfirst( str_replace( 'sale-type_', '', $path_item ) );
         }
       }
-      if(!$saleTypes){
-        $saleTypes = [
-            'Rent',
-            'Sale'
-        ];
+      if( !$saleTypes ) {
+        $saleTypes = [ 'Rent', 'Sale' ];
       }
 
       // Define sale type title's part
       $saleType = '';
       $shortSaleType = '';
-      switch (strtolower($type)) {
+      switch (strtolower( $type )) {
         case 'residential':
           $shortSaleType = $saleType = $residential_sale_type_label;
           break;
         case 'commercial':
           $shortSaleType = $saleType = 'Commercial Real Estate';
-          if ($exist_other_values) {
+          if( $exist_other_values ) {
             $types = $saleType;
           }
           break;
         case 'land':
           $saleType = 'Land Real Estate';
           $shortSaleType = 'Land';
-          if ($exist_other_values) {
+          if( $exist_other_values ) {
             $types = $saleType;
           }
           break;
       }
 
       // If display all sale type, then drop it
-      if (count($saleTypes) === 2) {
+      if( count( $saleTypes ) === 2 ) {
         $saleType = '';
-      } else if (count($saleTypes) === 1) {
-        $saleType = join(' ', [$shortSaleType, join(' ', ['for', $saleTypes[0]])]);
+      } else if( count( $saleTypes ) === 1 ) {
+        $saleType = join( ' ', [ $shortSaleType, join( ' ', [ 'for', $saleTypes[ 0 ] ] ) ] );
       }
 
       // If display all sale type, then drop it
-      if (count($saleTypes) === 2 && count($subtypes) > 0) {
+      if( count( $saleTypes ) === 2 && count( $subtypes ) > 0 ) {
         $saleType = '';
-      } else if (count($saleTypes) === 1) {
+      } else if( count( $saleTypes ) === 1 ) {
         // Case when displayed particular sale type with listing subtype
-        if (count($subtypes) > 0 && count($subtypes) <= 2) {
-          $saleType = join(' ', [join(' ', ['for', $saleTypes[0]])]);
+        if( count( $subtypes ) > 0 && count( $subtypes ) <= 2 ) {
+          $saleType = join( ' ', [ join( ' ', [ 'for', $saleTypes[ 0 ] ] ) ] );
         } else { //Case when displayed particular sale type without subtypes
           $types = '';
-          $saleType = join(' ', [$shortSaleType, join(' ', ['for', $saleTypes[0]])]);
+          $saleType = join( ' ', [ $shortSaleType, join( ' ', [ 'for', $saleTypes[ 0 ] ] ) ] );
         }
       }
 
-      if($types){
-        $title_array = [$locations, $types, $saleType];
-      }else{
-        $title_array = [$locations, $saleType];
+      if( $types ) {
+        $title_array = [ $locations, $types, $saleType ];
+      } else {
+        $title_array = [ $locations, $saleType ];
       }
 
-      return join(' ', $title_array);
+      $title = join( ' ', $title_array );
+
+
+      // DESCRIPTION
+
+      // Build description start
+      $description_start = 'Found';
+
+      // Determine prices
+      $start_price = 0;
+      $to_price = 0;
+      $price_url_label = 'price_';
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, $price_url_label ) !== false ) {
+          if( $prices_string = str_replace( $price_url_label, '', $path_item ) ) {
+            $prices = explode( ',', $prices_string );
+            $start_price = isset( $prices[ 0 ] ) ? $prices[ 0 ] : 0;
+            $to_price = isset( $prices[ 1 ] ) ? $prices[ 1 ] : 0;
+          }
+          break;
+        }
+      }
+
+      // Build price part
+      $_price = '';
+      if( $start_price && $to_price && !($to_price === $this->no_max_text && $start_price === $this->no_min_text) ) {
+        $_price .= ' priced';
+        if( $to_price === $this->no_max_text ) {
+          $_price .= ' no less than ' . $this->property_pro_format_price( $start_price ) . ' ';
+        } elseif( $start_price === $this->no_min_text ) {
+          $_price .= ' no more than ' . $this->property_pro_format_price( $to_price ) . ' ';
+        } else {
+          $_price .= ' between ' . $this->property_pro_format_price( $start_price ) . ' and ' . $this->property_pro_format_price( $to_price );
+        }
+      }
+
+      // Determine bedrooms
+      $bedrooms = 0;
+      $bedrooms_url_label = 'bedrooms_';
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, $bedrooms_url_label ) !== false ) {
+          $bedrooms = str_replace( $bedrooms_url_label, '', $path_item );
+          break;
+        }
+      }
+
+      // Build bedrooms part
+      $_bedrooms = '';
+      if( $bedrooms ) {
+        $_bedrooms .= ' at least ' . $bedrooms . ' ' . ($bedrooms === '1' ? 'bedroom' : 'bedrooms');
+      }
+
+      // Determine bathrooms
+      $bathrooms = 0;
+      $bathrooms_url_label = 'bedrooms_';
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, $bathrooms_url_label ) !== false ) {
+          $bathrooms = str_replace( $bathrooms_url_label, '', $path_item );
+          break;
+        }
+      }
+
+      // Build bathrooms part
+      $_bathrooms = '';
+      if( $bathrooms ) {
+        if( $_bedrooms ) {
+          $_bathrooms .= ',';
+        }
+        $_bathrooms .= ' at least ' . $bathrooms . ' ' . ($bathrooms === '1' ? 'bathroom' : 'bathrooms');
+      }
+
+      // Determine SQFT
+      $start_sqft = 0;
+      $to_sqft = 0;
+      $sqft_url_label = 'bedrooms_';
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, $sqft_url_label ) !== false ) {
+          if( $sqft_string = str_replace( $sqft_url_label, '', $path_item ) ) {
+            $sqft = explode( ',', $sqft_string );
+            $start_sqft = isset( $sqft[ 0 ] ) ? $sqft[ 0 ] : 0;
+            $to_sqft = isset( $sqft[ 1 ] ) ? $sqft[ 1 ] : 0;
+          }
+          break;
+        }
+      }
+
+      // Build sqft part
+      $position = 'start';
+      if( $_bedrooms || $_bathrooms ) {
+        $position = 'middle';
+      }
+      $_sqft = $this->property_pro_determine_sqft( [ 'start_sqft' => $start_sqft, 'to_sqft' => $to_sqft, ], $position );
+
+      // Determine SQFT
+      $start_acres = 0;
+      $to_acres = 0;
+      $acres_url_label = 'acres_';
+      foreach ($path_array as $path_item) {
+        if( strpos( $path_item, $acres_url_label ) !== false ) {
+          if( $acres_string = str_replace( $acres_url_label, '', $path_item ) ) {
+            $acres = explode( ',', $acres_string );
+            $start_acres = isset( $acres[ 0 ] ) ? $acres[ 0 ] : 0;
+            $to_acres = isset( $acres[ 1 ] ) ? $acres[ 1 ] : 0;
+          }
+          break;
+        }
+      }
+
+      // Build acres part
+      $_acres = '';
+      if( $start_acres && $to_acres && !($to_acres === $this->no_max_text && $start_acres === $this->no_min_text) ) {
+        if( $_bedrooms || $_bathrooms || $_sqft ) {
+          $_acres = ', and';
+        }
+        if( $to_acres === $this->no_max_text ) {
+          $_acres .= ' at least ' . $this->property_pro_format_acres( $start_acres ) . ' acres';
+        } elseif( $start_acres === $this->no_min_text ) {
+          $_acres .= ' at most ' . $this->property_pro_format_acres( $to_acres ) . ' acres';
+        } else {
+          $_acres .= ' between ' . $this->property_pro_format_acres( $start_acres ) . ' and ' . $this->property_pro_format_acres( $to_acres ) . ' acres';
+        }
+      }
+
+      // Use an "and" after the last comma.
+      if( !$_acres ) {
+        if( $_sqft ) {
+          $position = 'end';
+          if( !$_bathrooms && !$_bedrooms ) {
+            $position = 'start';
+          }
+          $_sqft = $this->property_pro_determine_sqft( [ 'start_sqft' => $start_sqft, 'to_sqft' => $to_sqft, ], $position );
+        } else if( $_bathrooms ) {
+          $_bathrooms = str_replace( ',', ', and', $_bathrooms );
+        }
+      }
+
+      // For residential filter without subtypes sale type is 'homes'
+      if( $shortSaleType === $residential_sale_type_label && !count( $subtypes ) ) {
+        $saleType = str_replace( $residential_sale_type_label, 'homes', $saleType );
+      }
+
+      // Added 'listings' to sale type or property type/subtype for commercial and land listings
+      if( in_array( $type, [ 'land', 'commercial' ] ) ) {
+        if( $types ) {
+          $types .= ' listings';
+        } else {
+          if( count( $saleTypes ) === 1 ) {
+            // Case when displayed particular sale type with listing subtype
+            if( count( $subtypes ) > 0 && count( $subtypes ) <= 2 ) {
+              $saleType = join( ' ', [ join( ' ', [ 'listings', 'for', $saleTypes[ 0 ] ] ) ] );
+            } else { //Case when displayed particular sale type without subtypes
+              $saleType = join( ' ', [ $shortSaleType, 'listings', join( ' ', [ 'for', $saleTypes[ 0 ] ] ) ] );
+            }
+          } else {
+            $saleType .= ' listings';
+          }
+        }
+      }
+
+      $description = $description_start . ($types ? ' ' . strtolower( $types ) : '') . ($saleType ? ' ' . strtolower( $saleType ) : '') . ($locations ? ' in ' . $locations : '') . $_price . (($_bedrooms || $_bathrooms) ? ' that have' . $_bedrooms . $_bathrooms : '') . $_sqft . $_acres . '.';
+
+      return [ 'title' => $title, 'description' => $description, ];
     }
 
     /**
@@ -1406,14 +1585,73 @@ namespace UsabilityDynamics {
 
       $seo_data = $this->property_pro_prepare_seo_meta_data( $post );
 
-      echo '<meta property="og:type" content="' . $seo_data[ 'og_type' ] . '" data-react-helmet="true" /> '."\n";
-      echo '<meta property="og:title" content="' . $seo_data[ 'title' ] . '" data-react-helmet="true" />'."\n";
-      echo '<meta property="og:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />'."\n";
-      echo '<meta property="og:url" content="' . $seo_data['og_url'] . '" data-react-helmet="true" />'."\n";
-      echo '<meta property="og:site_name" content="' . $seo_data['og_site_name'] . '" data-react-helmet="true" />'."\n";
-      echo '<meta property="fb:admins" content="' . $seo_data[ 'admin_id' ] . '" data-react-helmet="true" />'."\n";
-      echo '<meta name="twitter:card" content="' . $seo_data[ 'twitter_card_type' ] . '" data-react-helmet="true" />'."\n";
-      echo '<meta name="twitter:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />'."\n";
+      echo '<meta property="og:type" content="' . $seo_data[ 'og_type' ] . '" data-react-helmet="true" /> ' . "\n";
+      echo '<meta property="og:title" content="' . $seo_data[ 'title' ] . '" data-react-helmet="true" />' . "\n";
+      echo '<meta property="og:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />' . "\n";
+      echo '<meta property="og:url" content="' . $seo_data[ 'og_url' ] . '" data-react-helmet="true" />' . "\n";
+      echo '<meta property="og:site_name" content="' . $seo_data[ 'og_site_name' ] . '" data-react-helmet="true" />' . "\n";
+      echo '<meta property="fb:admins" content="' . $seo_data[ 'admin_id' ] . '" data-react-helmet="true" />' . "\n";
+      echo '<meta name="twitter:card" content="' . $seo_data[ 'twitter_card_type' ] . '" data-react-helmet="true" />' . "\n";
+      echo '<meta name="twitter:description" content="' . $seo_data[ 'description' ] . '" data-react-helmet="true" />' . "\n";
+    }
+
+    /**
+     * Determine SQFT part for meta title and description
+     *
+     * @param $sqft
+     * @param $position
+     * @return string
+     */
+    private function property_pro_determine_sqft( $sqft, $position ) {
+      $_sqft = '';
+      if( $sqft[ 'start_sqft' ] && $sqft[ 'to_sqft' ] && !($sqft[ 'to_sqft' ] === $this->no_max_text && $sqft[ 'start_sqft' ] === $this->no_min_text) ) {
+        if( $position === 'end' ) {
+          $_sqft = ', and';
+        } elseif( $position === 'middle' ) {
+          $_sqft = ',';
+        }
+        if( $sqft[ 'to_sqft' ] === $this->no_max_text ) {
+          $_sqft .= ' at least ' . $this->property_pro_format_sqft( $sqft[ 'start_sqft' ] ) . ' SQFT';
+        } else if( $sqft[ 'start_sqft' ] === $this->no_min_text ) {
+          $_sqft .= ' at most ' . $this->property_pro_format_sqft( $sqft[ 'to_sqft' ] ) . ' SQFT';
+        } else {
+          $_sqft .= ' between ' . $this->property_pro_format_sqft( $sqft[ 'start_sqft' ] ) . ' and ' . $this->property_pro_format_sqft( $sqft[ 'to_sqft' ] ) . ' SQFT';
+        }
+      }
+
+      return $_sqft;
+    }
+
+    /**
+     * Formatting price for meta tags
+     *
+     * @param $price
+     * @return string
+     */
+    private function property_pro_format_price( $price ) {
+
+      setlocale( LC_MONETARY, 'en_US.UTF-8' );
+      return money_format( '%.1n', $price );
+    }
+
+    /**
+     * Formatting sqft for meta tags
+     *
+     * @param $sqft
+     * @return string
+     */
+    private function property_pro_format_sqft( $sqft ) {
+      return number_format( $sqft, 1, ',' );
+    }
+
+    /**
+     * Formatting acres for meta tags
+     *
+     * @param $acres
+     * @return string
+     */
+    private function property_pro_format_acres( $acres ) {
+      return number_format( $acres, 2, '.' );
     }
 
   }
