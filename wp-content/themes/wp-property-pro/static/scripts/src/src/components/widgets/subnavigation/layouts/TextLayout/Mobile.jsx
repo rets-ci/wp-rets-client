@@ -1,14 +1,17 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
-import {Lib} from '../../../../../lib.jsx';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import Util from '../../../../Util.jsx';
+import throttle from 'lodash/throttle';
+
+import { Lib } from 'app_root/lib.jsx';
+import Util from 'app_root/components/Util.jsx';
+
 
 class Mobile extends Component {
   static propTypes = {
-    historyPush: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired,
     currentUrl: PropTypes.string.isRequired,
     dropDownOpen: PropTypes.bool.isRequired,
@@ -21,7 +24,8 @@ class Mobile extends Component {
     this.state = {
       buttonDisplay: false
     };
-    this.handleScroll = this.handleScroll.bind(this);
+
+    this.handleScroll = throttle(this.handleScroll, 1000);
   }
 
   componentDidMount() {
@@ -32,38 +36,28 @@ class Mobile extends Component {
     window.removeEventListener('scroll', this.handleScroll, true);
   }
 
-
-  handleScroll(event) {
+  handleScroll = (event) => {
     let scrollTop = get(event, 'srcElement.body.scrollTop', get(event, 'pageY', 0));
 
-    if (scrollTop <= Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && get(this.state, 'buttonDisplay', false)) {
+    if (scrollTop <= Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && this.state.buttonDisplay) {
       this.setState({buttonDisplay: false});
-    } else if (scrollTop > Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && !get(this.state, 'buttonDisplay', false)) {
+    } else if (scrollTop > Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && !this.state.buttonDisplay) {
       this.setState({buttonDisplay: true});
     }
   }
 
-  handleClickOutside(evt) {
+  handleClickOutside = evt => {
     this.props.handleChange(false);
   }
 
-  selectOption(eve, url) {
-    eve.preventDefault();
-
-    this.props.historyPush(url);
-  }
-
-  handleChange(open) {
+  handleChange = open => {
     this.props.handleChange(open);
   }
 
   render() {
-
     let {
       openFormModal
     } = this.props;
-
-    let self = this;
 
     let btn = {};
     let links = [];
@@ -82,50 +76,42 @@ class Mobile extends Component {
       }
     }
 
-    if(isEmpty(selectedOption) && !isEmpty(links)){
+    if (isEmpty(selectedOption) && !isEmpty(links)) {
       selectedOption = get(links, '0.title', '')
     }
 
     let selectedOptionClasses = `${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile-selected-option ${Lib.THEME_CLASSES_PREFIX}display`;
-    if(this.props.dropDownOpen){
+    if (this.props.dropDownOpen) {
       selectedOptionClasses = `${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile-selected-option ${Lib.THEME_CLASSES_PREFIX}hide`;
     }
 
     return (
       <div className={`hidden-md-up ${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile`}>
-        <div className={selectedOptionClasses}
-             onClick={() => self.handleChange.bind(this)(!this.props.dropDownOpen)}>
+        <div className={selectedOptionClasses} onClick={() => this.handleChange(!this.props.dropDownOpen)}>
           {selectedOption}
           <i className={this.props.dropDownOpen ? "fa fa-angle-up" : "fa fa-angle-down"}></i>
         </div>
         <ul className={Lib.THEME_CLASSES_PREFIX + (this.props.dropDownOpen ? 'display' : 'hide')}>
-          {links.map((l, i) => {
-              let linkClasses = selectedOption === get(l, 'title') ? Lib.THEME_CLASSES_PREFIX + 'active' : '';
-              if (selectedOption === get(l, 'title')) {
-                return (<li onClick={this.props.dropDownOpen && i === 0 ? () => self.handleChange.bind(this)(!this.props.dropDownOpen) : null} key={i}>
-                  <a href={get(l, 'url')} className={linkClasses}
-                     onClick={(eve) => self.selectOption.bind(this)(eve, get(l, 'relative_url'))}>{l.title}</a>
-                  {this.props.dropDownOpen && i === 0 ?
-                    <i className={"fa fa-angle-up"}></i> : null}
-                </li>)
-              }
-              else {
-                return (<li onClick={this.props.dropDownOpen && i === 0 ? () => self.handleChange.bind(this)(!this.props.dropDownOpen) : null} key={i}>
-                  <a href={get(l, 'url')}
-                     onClick={(eve) => self.selectOption.bind(this)(eve, get(l, 'relative_url'))}>{l.title}</a>
-                  {this.props.dropDownOpen && i === 0 ?
-                    <i className={"fa fa-angle-up"}></i> : null}
-                </li>)
-              }
-
-            }
-          )}
+          { links.map((link, i) => {
+              let linkClasses = selectedOption === get(link, 'title') ? Lib.THEME_CLASSES_PREFIX + 'active' : '';
+              return (
+                <li key={i}
+                  onClick={this.props.dropDownOpen && i === 0 ? () => this.handleChange(!this.props.dropDownOpen) : null}
+                >
+                  <Link className={linkClasses} to={get(link, 'relative_url', '/')}>{link.title}</Link>
+                  { this.props.dropDownOpen && i === 0 &&
+                    <i className={"fa fa-angle-up"}></i>
+                  }
+                </li>
+              )
+            })
+          }
         </ul>
-        {
-          isEmpty(btn)
-            ? null
-            :
-            <a href={btn.url} onClick={btn.formModalId ? ((event) => { event.preventDefault(); openFormModal(btn.formModalId, true)}) : null} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn ${get(this.state, 'buttonDisplay', false) === false ? Lib.THEME_CLASSES_PREFIX+'hide' : ''}`}>{btn.title}</a>
+        { !isEmpty(btn) &&
+            <a href={btn.url}
+              onClick={btn.formModalId ? ((event) => { event.preventDefault(); openFormModal(btn.formModalId, true)}) : null}
+              className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn ${this.state.buttonDisplay === false ? Lib.THEME_CLASSES_PREFIX+'hide' : ''}`}
+            >{btn.title}</a>
         }
       </div>
     );
