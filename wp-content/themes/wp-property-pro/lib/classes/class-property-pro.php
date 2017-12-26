@@ -167,7 +167,7 @@ namespace UsabilityDynamics {
       // Exclude SO font flex
       wp_deregister_style( 'siteorigin-panels-front' );
 
-      $params = $this->property_pro_get_base_info(true);
+      $params = $this->property_pro_get_base_info();
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
        * now host value in theme composer.json
@@ -185,7 +185,7 @@ namespace UsabilityDynamics {
       wp_enqueue_script('admin_script', $this->_scriptsDir . '/admin/admin.js', [], null, true);
     }
 
-    private function property_pro_get_base_info($localize = false)
+    private function property_pro_get_base_info()
     {
 
       $blog_post_id = get_option('page_for_posts');
@@ -316,8 +316,11 @@ namespace UsabilityDynamics {
       }
       $params['property_search_options'] = $property_search_options;
 
-      if($localize){
-        return $params;
+      /** Plural values for listing types titles */
+      $listing_subtypes_plural_values_filename = get_template_directory() . '/static/schemas/listing_subtypes_plural_values.json';
+      if(file_exists($listing_subtypes_plural_values_filename)){
+        $listing_subtypes_plural_values = file_get_contents($listing_subtypes_plural_values_filename);
+        $params['listing_subtypes_plural_values'] = json_decode($listing_subtypes_plural_values, true);
       }
 
       $params['agents'] = array_map(function($user){
@@ -348,13 +351,6 @@ namespace UsabilityDynamics {
         if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
           $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
         }
-      }
-
-      /** Plural values for listing types titles */
-      $listing_subtypes_plural_values_filename = WP_CONTENT_DIR . '/static/json/listing_subtypes_plural_values.json';
-      if(file_exists($listing_subtypes_plural_values_filename)){
-        $listing_subtypes_plural_values = file_get_contents($listing_subtypes_plural_values_filename);
-        $params['listing_subtypes_plural_values'] = json_decode($listing_subtypes_plural_values, true);
       }
 
       return $params;
@@ -1229,12 +1225,14 @@ namespace UsabilityDynamics {
       $wpseo_social = get_option( 'wpseo_social' );
 
       if($this->isSearchPage){
-        $data['title'] = $this->property_pro_build_search_title();
+        $dynamic_data = $this->property_pro_build_search_title_and_description();
+        $data['title'] = $dynamic_data['title'];
+        $data['description'] = $dynamic_data['description'];
       }else{
         $data['title'] = wp_title( '&raquo;', false );
       }
 
-      $data['description'] = get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
+      $data['description'] = isset($data['description']) ? $data['description'] : (get_the_excerpt( $post ) ? get_the_excerpt( $post ) : get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true ));
       $data['site'] = '@' . (isset( $wpseo_social[ 'twitter_site' ] ) && $wpseo_social[ 'twitter_site' ] ? $wpseo_social[ 'twitter_site' ] : 'reddoorcompany');
       $data['image'] = isset( $wpseo_social[ 'og_default_image' ] ) && $wpseo_social[ 'og_default_image' ] ? $wpseo_social[ 'og_default_image' ] : get_post_meta( $frontpage_id, '_yoast_wpseo_opengraph-image', true );
       $data['og_url'] = home_url( $wp->request );
@@ -1318,9 +1316,10 @@ namespace UsabilityDynamics {
 
       // If there is no selected subtypes or one of selected is 'other' then just display listing type
       $types = '';
+      $property_type_label = 'property-type_';
       foreach ($path_array as $path_item) {
-        if( strpos( $path_item, 'property-type' . '_' ) !== false ) {
-          $types = ucfirst( str_replace( 'property-type' . '_', '', $path_item ) );
+        if( strpos( $path_item, $property_type_label ) !== false ) {
+          $types = ucfirst( str_replace( $property_type_label, '', $path_item ) );
           break;
         }
       }
@@ -1331,9 +1330,10 @@ namespace UsabilityDynamics {
       $plural_values = json_decode( file_get_contents( get_template_directory_uri() . '/static/schemas/listing_subtypes_plural_values.json' ), true );
       $subtypes = [];
       $subtypes_slugs = [];
+      $property_subtype_label = 'property-subtype_';
       foreach ($path_array as $path_item) {
-        if( strpos( $path_item, 'property-subtype_' ) !== false ) {
-          $subtype_slug = str_replace( 'property-subtype_', '', $path_item );
+        if( strpos( $path_item, $property_subtype_label ) !== false ) {
+          $subtype_slug = str_replace( $property_subtype_label, '', $path_item );
           $subtypes_slugs[] = $subtype_slug;
           $subtypes[] = $plural_values[ strtolower( $type ) ][ $subtype_slug ];
         }
@@ -1348,16 +1348,17 @@ namespace UsabilityDynamics {
         }
       }
 
-      if( $subtypes && count( $subtypes ) <= $items_limit && !$exist_other_values ) {
+      if( count( $subtypes ) <= $items_limit && !$exist_other_values ) {
         sort( $subtypes, SORT_NATURAL );
         $types = join( ' and ', $subtypes );
       }
 
       // Checking selected sale types
       $saleTypes = [];
+      $property_sale_type_label = 'sale-type_';
       foreach ($path_array as $path_item) {
-        if( strpos( $path_item, 'sale-type_' ) !== false ) {
-          $saleTypes[] = ucfirst( str_replace( 'sale-type_', '', $path_item ) );
+        if( strpos( $path_item, $property_sale_type_label ) !== false ) {
+          $saleTypes[] = ucfirst( str_replace( $property_sale_type_label, '', $path_item ) );
         }
       }
       if( !$saleTypes ) {
@@ -1387,13 +1388,6 @@ namespace UsabilityDynamics {
       }
 
       // If display all sale type, then drop it
-      if( count( $saleTypes ) === 2 ) {
-        $saleType = '';
-      } else if( count( $saleTypes ) === 1 ) {
-        $saleType = join( ' ', [ $shortSaleType, join( ' ', [ 'for', $saleTypes[ 0 ] ] ) ] );
-      }
-
-      // If display all sale type, then drop it
       if( count( $saleTypes ) === 2 && count( $subtypes ) > 0 ) {
         $saleType = '';
       } else if( count( $saleTypes ) === 1 ) {
@@ -1401,7 +1395,6 @@ namespace UsabilityDynamics {
         if( count( $subtypes ) > 0 && count( $subtypes ) <= 2 ) {
           $saleType = join( ' ', [ join( ' ', [ 'for', $saleTypes[ 0 ] ] ) ] );
         } else { //Case when displayed particular sale type without subtypes
-          $types = '';
           $saleType = join( ' ', [ $shortSaleType, join( ' ', [ 'for', $saleTypes[ 0 ] ] ) ] );
         }
       }
@@ -1414,22 +1407,21 @@ namespace UsabilityDynamics {
 
       $title = join( ' ', $title_array );
 
-
       // DESCRIPTION
 
       // Build description start
       $description_start = 'Found';
 
       // Determine prices
-      $start_price = 0;
-      $to_price = 0;
+      $start_price = $this->no_min_text;
+      $to_price = $this->no_max_text;
       $price_url_label = 'price_';
       foreach ($path_array as $path_item) {
         if( strpos( $path_item, $price_url_label ) !== false ) {
           if( $prices_string = str_replace( $price_url_label, '', $path_item ) ) {
             $prices = explode( ',', $prices_string );
-            $start_price = isset( $prices[ 0 ] ) ? $prices[ 0 ] : 0;
-            $to_price = isset( $prices[ 1 ] ) ? $prices[ 1 ] : 0;
+            $start_price = isset( $prices[ 0 ] ) && !empty($prices[ 0 ]) ? $prices[ 0 ] : $this->no_min_text;
+            $to_price = isset( $prices[ 1 ] ) && !empty($prices[ 1 ]) ? $prices[ 1 ] : $this->no_max_text;
           }
           break;
         }
@@ -1437,12 +1429,12 @@ namespace UsabilityDynamics {
 
       // Build price part
       $_price = '';
-      if( $start_price && $to_price && !($to_price === $this->no_max_text && $start_price === $this->no_min_text) ) {
+      if( !($to_price === $this->no_max_text && $start_price === $this->no_min_text) ) {
         $_price .= ' priced';
         if( $to_price === $this->no_max_text ) {
-          $_price .= ' no less than ' . $this->property_pro_format_price( $start_price ) . ' ';
+          $_price .= ' no less than ' . $this->property_pro_format_price( $start_price );
         } elseif( $start_price === $this->no_min_text ) {
-          $_price .= ' no more than ' . $this->property_pro_format_price( $to_price ) . ' ';
+          $_price .= ' no more than ' . $this->property_pro_format_price( $to_price );
         } else {
           $_price .= ' between ' . $this->property_pro_format_price( $start_price ) . ' and ' . $this->property_pro_format_price( $to_price );
         }
@@ -1466,7 +1458,7 @@ namespace UsabilityDynamics {
 
       // Determine bathrooms
       $bathrooms = 0;
-      $bathrooms_url_label = 'bedrooms_';
+      $bathrooms_url_label = 'bathrooms_';
       foreach ($path_array as $path_item) {
         if( strpos( $path_item, $bathrooms_url_label ) !== false ) {
           $bathrooms = str_replace( $bathrooms_url_label, '', $path_item );
@@ -1484,15 +1476,15 @@ namespace UsabilityDynamics {
       }
 
       // Determine SQFT
-      $start_sqft = 0;
-      $to_sqft = 0;
-      $sqft_url_label = 'bedrooms_';
+      $start_sqft = $this->no_min_text;
+      $to_sqft = $this->no_max_text;
+      $sqft_url_label = 'sqft_';
       foreach ($path_array as $path_item) {
         if( strpos( $path_item, $sqft_url_label ) !== false ) {
           if( $sqft_string = str_replace( $sqft_url_label, '', $path_item ) ) {
             $sqft = explode( ',', $sqft_string );
-            $start_sqft = isset( $sqft[ 0 ] ) ? $sqft[ 0 ] : 0;
-            $to_sqft = isset( $sqft[ 1 ] ) ? $sqft[ 1 ] : 0;
+            $start_sqft = isset( $sqft[ 0 ] ) && !empty($sqft[ 0 ]) ? $sqft[ 0 ] : $this->no_min_text;
+            $to_sqft = isset( $sqft[ 1 ] ) && !empty($sqft[ 1 ]) ? $sqft[ 1 ] : $this->no_max_text;
           }
           break;
         }
@@ -1506,15 +1498,15 @@ namespace UsabilityDynamics {
       $_sqft = $this->property_pro_determine_sqft( [ 'start_sqft' => $start_sqft, 'to_sqft' => $to_sqft, ], $position );
 
       // Determine SQFT
-      $start_acres = 0;
-      $to_acres = 0;
+      $start_acres = $this->no_min_text;
+      $to_acres = $this->no_max_text;
       $acres_url_label = 'acres_';
       foreach ($path_array as $path_item) {
         if( strpos( $path_item, $acres_url_label ) !== false ) {
           if( $acres_string = str_replace( $acres_url_label, '', $path_item ) ) {
             $acres = explode( ',', $acres_string );
-            $start_acres = isset( $acres[ 0 ] ) ? $acres[ 0 ] : 0;
-            $to_acres = isset( $acres[ 1 ] ) ? $acres[ 1 ] : 0;
+            $start_acres = isset( $acres[ 0 ] ) && !empty( $acres[ 0 ] ) ? $acres[ 0 ] : $this->no_min_text;
+            $to_acres = isset( $acres[ 1 ] ) && !empty( $acres[ 1 ] ) ? $acres[ 1 ] : $this->no_max_text;
           }
           break;
         }
@@ -1522,7 +1514,7 @@ namespace UsabilityDynamics {
 
       // Build acres part
       $_acres = '';
-      if( $start_acres && $to_acres && !($to_acres === $this->no_max_text && $start_acres === $this->no_min_text) ) {
+      if( ($start_acres || $to_acres) && !($to_acres === $this->no_max_text && $start_acres === $this->no_min_text) ) {
         if( $_bedrooms || $_bathrooms || $_sqft ) {
           $_acres = ', and';
         }
@@ -1573,7 +1565,7 @@ namespace UsabilityDynamics {
 
       $description = $description_start . ($types ? ' ' . strtolower( $types ) : '') . ($saleType ? ' ' . strtolower( $saleType ) : '') . ($locations ? ' in ' . $locations : '') . $_price . (($_bedrooms || $_bathrooms) ? ' that have' . $_bedrooms . $_bathrooms : '') . $_sqft . $_acres . '.';
 
-      return [ 'title' => $title, 'description' => $description, ];
+      return [ 'title' => $title, 'description' => $description ];
     }
 
     /**
@@ -1604,7 +1596,7 @@ namespace UsabilityDynamics {
      */
     private function property_pro_determine_sqft( $sqft, $position ) {
       $_sqft = '';
-      if( $sqft[ 'start_sqft' ] && $sqft[ 'to_sqft' ] && !($sqft[ 'to_sqft' ] === $this->no_max_text && $sqft[ 'start_sqft' ] === $this->no_min_text) ) {
+      if( ($sqft[ 'start_sqft' ] || $sqft[ 'to_sqft' ]) && !($sqft[ 'to_sqft' ] === $this->no_max_text && $sqft[ 'start_sqft' ] === $this->no_min_text) ) {
         if( $position === 'end' ) {
           $_sqft = ', and';
         } elseif( $position === 'middle' ) {
@@ -1630,8 +1622,7 @@ namespace UsabilityDynamics {
      */
     private function property_pro_format_price( $price ) {
 
-      setlocale( LC_MONETARY, 'en_US.UTF-8' );
-      return money_format( '%.1n', $price );
+      return '$' . number_format( $price, 0, '.', ',');;
     }
 
     /**
@@ -1641,7 +1632,7 @@ namespace UsabilityDynamics {
      * @return string
      */
     private function property_pro_format_sqft( $sqft ) {
-      return number_format( $sqft, 1, ',' );
+      return number_format( $sqft, 1);
     }
 
     /**
@@ -1651,7 +1642,7 @@ namespace UsabilityDynamics {
      * @return string
      */
     private function property_pro_format_acres( $acres ) {
-      return number_format( $acres, 2, '.' );
+      return number_format( $acres, 2);
     }
 
   }
