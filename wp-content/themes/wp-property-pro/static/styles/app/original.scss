@@ -1750,9 +1750,9 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         z-index: 999;
         width: 100%;
         left: 0;
-        height: 5rem;
+        height: 3.75rem;
         margin: 0 !important;
-        line-height: 5rem !important;
+        line-height: 3.75rem !important;
         padding: 0 !important;
     }
 
@@ -1816,13 +1816,20 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 80vh;
     }
 
+    .propertypro-article-content {
+        padding: 2rem 1rem 4rem;
+    }
+
     .propertypro-article-content h2 {
-        font-size: 2rem;
-        line-height: 2.5rem;
+        font-size: 1.25rem;
+        line-height: 2rem;
+        margin: 1rem 0;
     }
 
     .propertypro-article-content p {
-        font-size: 1.2rem
+        font-size: 1rem;
+        line-height: 1.75rem;
+        margin-bottom: 2rem;
     }
 
     .propertypro-category-card .propertypro-category-card-content, .propertypro-article-card .propertypro-article-card-content {
