@@ -71,7 +71,7 @@ export const Lib = {
   AJAX_GET_POSTS_ACTION: "get_posts",
   QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
   SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
-  BLOG_POSTS_PER_ROW: 2,
+  BLOG_CARD_GRID_CLASS: 'col-md-6',
   LOCATION_MODAL_REQUESTS_DELAY: 1000,
   GOOGLE_STREETVIEW_URL: 'https://maps.googleapis.com/maps/api/streetview',
   GOOGLE_STATICMAP_URL: 'https://maps.googleapis.com/maps/api/staticmap',
