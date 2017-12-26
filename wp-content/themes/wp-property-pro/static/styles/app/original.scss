@@ -106,18 +106,21 @@ html, body {
     z-index: 2;
 }
 
-.propertypro-login-box, .propertypro-login-box:visited {
+.propertypro-login-box {
     background: transparent;
-    border-radius: .1875rem;
-    border: .0625rem solid rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
     outline: none;
     color: #fff;
     box-shadow: none;
+    font-weight: 700;
+    padding: 0.5rem 1.75rem;
 }
 
 .propertypro-navigation-cotrols {
     margin: auto 0;
     flex-direction: inherit;
+    align-items: center;
 }
 
 .propertypro-navigation-navbar {
@@ -1148,10 +1151,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     border-width: .125rem;
     border-color: rgba(255, 255, 255, .2);
     background: none;
-    line-height: 1.5rem;
     font-size: .875rem;
-    padding-left: .9375rem;
-    padding-right: .9375rem;
+    line-height: 1.5rem;
+    font-weight: 700;
+    padding: 0.5rem 1.25rem;
     margin-top: .625rem;
 }
 
@@ -1795,10 +1798,9 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-login-box {
-        border-radius: .1875rem;
-        font-weight: 700;
         font-size: 0.75rem;
-        padding: 0.4rem 1rem;
+        line-height: 0.75rem;
+        padding: 0.5rem 0.75rem;
     }
 
     .propertypro-navigation-logo-container {
@@ -1961,6 +1963,9 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-guide-toolbar .propertypro-btn-back-to-home {
         margin-top: 0;
+        font-size: 0.75rem;
+        line-height: 0.75rem;
+        padding: 0.5rem 0.75rem;
     }
 
     .propertypro-guide-toolbar > .navbar {
