@@ -19,6 +19,8 @@
   flex: 0 0 auto;
   height: 5rem;
   padding: 0;
+  @include propertypro-box-shadow(0px, 1px);
+  border-bottom: none;
 
   & > .propertypro-logo {
     padding: 0 2.5rem;
@@ -60,6 +62,7 @@
     background-color: #e9eff3;
     overflow: auto;
     padding: 0;
+    border-top: 1px solid $propertypro-border-color;
 }
 
 .propertypro-search-modal .propertypro-close-panel {

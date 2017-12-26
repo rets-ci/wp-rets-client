@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {withRouter} from 'react-router';
+import {Link} from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -32,25 +32,16 @@ class PostCard extends Component {
 
     return (
       <div className={cardClass}>
-        <a className={`${Lib.THEME_CLASSES_PREFIX}post__image`}
+        <Link className={`${Lib.THEME_CLASSES_PREFIX}post__image`}
           style={bgStyle}
-          href={url}
-          title={title}
-          onClick={(e) => {
-            e.preventDefault();
-            this.props.history.push(relative_url);
-          }}
+          to={relative_url}
         />
 
-        <a className={`${Lib.THEME_CLASSES_PREFIX}post__title`}
-          href={url}
-          onClick={(e) => {
-            e.preventDefault();
-            this.props.history.push(relative_url);
-          }}
+        <Link className={`${Lib.THEME_CLASSES_PREFIX}post__title`}
+          to={relative_url}
         >
           {title}
-        </a>
+        </Link>
 
         <div className={`${Lib.THEME_CLASSES_PREFIX}post__text`}>
           {renderHTML(excerpt)}
@@ -62,9 +53,6 @@ class PostCard extends Component {
 
 PostCard.propTypes = {
   data: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
 };
 
-export default withRouter(PostCard);
+export default PostCard;
