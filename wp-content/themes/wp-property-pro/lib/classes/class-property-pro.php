@@ -1546,7 +1546,7 @@ namespace UsabilityDynamics {
       }
 
       // Added 'listings' to sale type or property type/subtype for commercial and land listings
-      if( in_array( $type, [ 'land', 'commercial' ] ) ) {
+      if( in_array( strtolower($type), [ 'land', 'commercial' ] ) ) {
         if( $types ) {
           $types .= ' listings';
         } else {
