@@ -1,6 +1,9 @@
 import React from 'react';
-import {Lib} from '../../lib.jsx';
+import {Link} from 'react-router-dom';
 import get from 'lodash/get';
+
+import {Lib} from 'app_root/lib.jsx';
+
 
 const HeaderGuide = ({historyPush}) => {
 
@@ -11,10 +14,7 @@ const HeaderGuide = ({historyPush}) => {
         {
           get(bundle, 'template_url', null)
             ?
-            <a className="navbar-brand mr-auto" href={get(bundle, 'site_url', '')} onClick={(eve) => {
-              eve.preventDefault();
-              historyPush('/');
-            }}>
+            <Link to="/" className="navbar-brand mr-auto">
               {
                 get(bundle, 'logos.horizontal_logo', null)
                   ? <img src={bundle.logos.horizontal_logo} alt={get(bundle, 'site_name')}
@@ -27,7 +27,7 @@ const HeaderGuide = ({historyPush}) => {
                          className={`hidden-md-up ${Lib.THEME_CLASSES_PREFIX}logo ${Lib.THEME_CLASSES_PREFIX}square-logo`}/>
                   : null
               }
-            </a>
+            </Link>
             : null
         }
         {
@@ -35,13 +35,10 @@ const HeaderGuide = ({historyPush}) => {
             ?
             <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
               <li className="nav-item">
-                <a href={bundle.site_url} onClick={(eve) => {<the></the>
-                  eve.preventDefault();
-                  historyPush('/');
-                }} className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}btn-back-to-home`}>
+                <Link to="/" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}btn-back-to-home`}>
                   <fa className="fa fa-arrow-left"></fa>
                   <span className={Lib.THEME_CLASSES_PREFIX+"btn-back-to-home-content"}>Return Home</span>
-                </a>
+                </Link>
               </li>
             </ul>
             : null
@@ -51,4 +48,5 @@ const HeaderGuide = ({historyPush}) => {
     </section>
   );
 };
+
 export default HeaderGuide;

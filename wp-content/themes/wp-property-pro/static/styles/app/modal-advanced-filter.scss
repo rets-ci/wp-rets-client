@@ -18,33 +18,46 @@
       animation: bounceInDown .3s .5s ease-in-out forwards;
     }
   }
+
+  .propertypro-modal-header {
+    @include propertypro-box-shadow(0px, 1px);
+    border-bottom: none;
+  }
+
+  .modal-body {
+    border-top: 1px solid $propertypro-border-color;
+  }
+
+  .modal-content {
+    border: none;
+  }
 }
 // -- END of animations --
 
 .propertypro-advanced-filter {
-    display: block;
+  display: block;
 }
 
 .propertypro-advanced-filter .propertypro-search-modal-box > div {
-    padding-bottom: 9.375rem;
+  padding-bottom: 9.375rem;
 }
 
 .propertypro-advanced-filter form {
-    width: 100%;
+  width: 100%;
 }
 
 .propertypro-advanced-filter form i {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .propertypro-search-modal .propertypro-modal-header form .propertypro-tag i {
-    color: #000;
+  color: #000;
 }
 
 .propertypro-advanced-filter form .propertypro-advanced-filter-form-button-group {
-    float: right;
-    width: 16.5625rem;
-    height: 3.125rem;
+  float: right;
+  width: 16.5625rem;
+  height: 3.125rem;
 }
 
 .propertypro-advanced-filter .propertypro-search-modal-submit-button {
@@ -54,216 +67,219 @@
 }
 
 .propertypro-advanced-filter form a.propertypro-btn-disabled {
-    border-color: #d6dee3 !important;
-    background-color: #d6dee3 !important;
-    color: #b6bec4;
+  border-color: #d6dee3 !important;
+  background-color: #d6dee3 !important;
+  color: #b6bec4;
 }
 
 .propertypro-advanced-filter .propertypro-search-modal-box {
-    height: 91vh;
-    overflow: auto;
-    padding: 2.1875rem 0 5rem;
-    background-color: #e9eff3;
+  height: 91vh;
+  overflow: auto;
+  padding: 2.1875rem 0 5rem;
+  background-color: #e9eff3;
 }
 
 .propertypro-advanced-filter form .button-group .btn-primary {
-    float: right;
+  float: right;
 }
 
 .propertypro-advanced-filter form .btn {
-    font-size: .95rem;
+  font-size: .95rem;
 }
 
 .propertypro-bs-tags-box .propertypro-tag, .propertypro-filter-section .propertypro-tag {
-    border-radius: .3125rem;
-    border: .0625rem solid #d2dae0;
-    background-color: rgba(237, 242, 245, 0.5);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 2rem;
-    color: #414141;
-    padding: .5em .8em;
-    cursor: pointer;
+  border-radius: .3125rem;
+  border: .0625rem solid #d2dae0;
+  background-color: rgba(237, 242, 245, 0.5);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 2rem;
+  color: #414141;
+  padding: .5em .8em;
+  cursor: pointer;
 }
 
 .propertypro-filter-section .propertypro-tag {
-    /*line-height: 2.5rem;
-    border-radius: .3125rem;
-    margin-right: .30em;
-    margin-bottom: .5rem;*/
+  /*line-height: 2.5rem;
+  border-radius: .3125rem;
+  margin-right: .30em;
+  margin-bottom: .5rem;*/
 }
 
 .propertypro-filter-section .propertypro-tag.selected {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 .propertypro-bs-tags-box .propertypro-tag i, .propertypro-filter-section-button i {
-    position: relative;
-    font-size: 0.625rem;
-    left: auto;
-    top: -.125rem;
-    margin: 0 .3125rem 0 0;
-    color: #000;
-    cursor: pointer;
+  position: relative;
+  font-size: 0.625rem;
+  left: auto;
+  top: -.125rem;
+  margin: 0 .3125rem 0 0;
+  color: #000;
+  cursor: pointer;
 }
 
 .propertypro-bs-tags-box input {
-    border: none;
-    box-shadow: none;
-    outline: none;
-    background-color: transparent;
-    padding: 0 .375rem;
-    margin: 0;
-    width: 50%;
-    max-width: 25rem;
-    line-height: 2.5rem;
-    color: rgba(139, 140, 141, 0.4);
-    font-size: 1.40rem;
-    font-weight: 500
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0 .375rem;
+  margin: 0;
+  width: 50%;
+  max-width: 25rem;
+  line-height: 2.5rem;
+  color: rgba(139, 140, 141, 0.4);
+  font-size: 1.40rem;
+  font-weight: 500
 }
 
 .propertypro-advanced-filter .propertypro-button-reset {
-    font-size: 0.9375rem;
-    font-weight: 500;
-    line-height: 3.125rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 3.125rem;
 }
 
 .propertypro-filter-section {
-    margin-bottom: 4rem;
+  margin-bottom: 4rem;
 }
 
 .propertypro-filter-section h3 {
-    font-size: 1.5rem;
-    font-weight: 400;
-    line-height: 1.5rem;
-    margin-bottom: 1em;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  margin-bottom: 1em;
 }
 
 .propertypro-filter-section h3 span {
-    color: rgba(139, 140, 141, 0.6);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1rem;
+  color: rgba(139, 140, 141, 0.6);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1rem;
 }
 
 .propertypro-filter-section .propertypro-filter-section-button {
-    border: .0625rem solid #d2dae0;
-    font-size: 1.10rem;
-    font-weight: 500;
-    background-color: rgba(237, 242, 245, 0.5);
-    color: #414141;
-    border-radius: .3125rem;
-    line-height: 1.75rem;
-    margin-right: .30em;
-    margin-bottom: .5rem;
+  border: .0625rem solid #d2dae0;
+  font-size: 1.10rem;
+  font-weight: 500;
+  background-color: rgba(237, 242, 245, 0.5);
+  color: #414141;
+  border-radius: .3125rem;
+  line-height: 1.75rem;
+  margin-right: .30em;
+  margin-bottom: .5rem;
 }
 
 .propertypro-filter-section .propertypro-filter-section-button:focus {
-    outline: none;
-    box-shadow: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .propertypro-filter-section .propertypro-filter-section-button:hover {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .propertypro-filter-section .btn-primary.selected {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .propertypro-filter-section .btn-primary span {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 .propertypro-filter-section.propertypro-filter-section-price,
 .propertypro-filter-section.propertypro-filter-section-total-size {
-    width: 100%;
+  width: 100%;
 }
 
 .propertypro-filter-slider {
-    margin-bottom: 3.7rem;
+  margin-bottom: 3.7rem;
 }
 
 .propertypro-filter-slider h3 {
-    margin-bottom: 3rem;
+  margin-bottom: 3rem;
 }
 
 .propertypro-view-link {
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.5rem;
 }
 
 
 /* Extra small devices (portrait phones, less than 767px) */
 @media screen and (max-width: 47.938em) {
-    .propertypro-sale-types-panel-mobile {
-        .propertypro-sale-type-box {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-right: 1px solid #cad3d9;
-            padding: 1rem 0 0.875rem 0;
+  .propertypro-sale-types-panel-mobile {
+    border-bottom: 1px solid #cad3d9;
 
-            &:last-child {
-                border-right: none;
-            }
-        }
+    .propertypro-sale-type-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid #cad3d9;
+      padding: 1rem 0 0.875rem 0;
 
-        svg {
-            fill: #8b8c8d;
-            width: 1.25rem;
-            height: 1.25rem;
-
-            &.selected {
-                fill: #d03528;
-            }
-        }
-
-        span {
-            color: rgba(139, 140, 141, 0.6);
-            opacity: 0.6;
-            font-size: 0.625rem;
-            font-weight: 500;
-            margin-top: 0.75rem;
-        }
+      &:last-child {
+        border-right: none;
+      }
     }
 
-    .propertypro-filter-section {
-        margin-bottom: 3rem;
+    svg {
+      fill: #8b8c8d;
+      width: 1.25rem;
+      height: 1.25rem;
 
-        h3 {
-            font-size: 0.875rem;
-            line-height: 1rem;
-            margin-bottom: 1.125rem;
-
-            span {
-                font-size: 0.625rem;
-                line-height: 0.625rem;
-            }
-        }
-
-        .btn-primary {
-            font-size: 1rem;
-            line-height: 1.125rem;
-            border-radius: 2.5px;
-        }
-
-        .propertypro-tag {
-            line-height: 1.75rem;
-        }
+      &.selected {
+        fill: #d03528;
+      }
     }
 
-    .propertypro-filter-slider h3 {
-        margin-bottom: 3rem;
+    span {
+      color: rgba(139, 140, 141, 0.6);
+      opacity: 0.6;
+      font-size: 0.625rem;
+      font-weight: 500;
+      margin-top: 0.75rem;
+    }
+  }
+
+  .propertypro-filter-section {
+    margin-bottom: 3rem;
+
+    h3 {
+      font-size: 0.875rem;
+      line-height: 1rem;
+      margin-bottom: 1.125rem;
+
+      span {
+        font-size: 0.625rem;
+        line-height: 0.625rem;
+      }
     }
 
-    .propertypro-view-link {
-        font-size: 0.875rem;
+    .btn-primary {
+      font-size: 1rem;
+      line-height: 1.125rem;
+      border-radius: 2.5px;
     }
 
-    .propertypro-search-modal .propertypro-footer-mobile {
-        box-shadow: 0 0 0.75rem #e0e6ea;
+    .propertypro-tag {
+      line-height: 1.75rem;
     }
+  }
+
+  .propertypro-filter-slider h3 {
+    margin-bottom: 3rem;
+  }
+
+  .propertypro-view-link {
+    font-size: 0.875rem;
+  }
+
+  .propertypro-search-modal .propertypro-footer-mobile {
+    box-shadow: 0 0 0.75rem #e0e6ea;
+    border-top: 1px solid #cad3d9;
+  }
 }

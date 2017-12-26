@@ -9,7 +9,7 @@ const DefaultLayout = ({browserHistoryPush, formModalOpen, item, openFormModal})
     <div className={Lib.THEME_CLASSES_PREFIX + "widget-tour"}>
       <div className="container-fluid">
         <div className="row">
-          <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle mx-auto text-center`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle col-12 text-center`}>
             {
               get(item, 'title', null)
                 ?

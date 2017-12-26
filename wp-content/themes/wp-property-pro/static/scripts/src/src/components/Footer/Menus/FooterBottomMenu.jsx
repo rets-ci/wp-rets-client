@@ -1,16 +1,19 @@
 import React from 'react';
-import {Lib} from '../../../lib.jsx';
 import get  from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import Util from 'app_root/components/Util.jsx';
 
-const FooterBottomMenu = ({historyPush, menu, openFormModal}) => {
+import Util from 'app_root/components/Util.jsx';
+import {Lib} from 'app_root/lib.jsx';
+
+
+const FooterBottomMenu = ({ historyPush, menu, openFormModal }) => {
   let menu_items = get(menu, 'items', []).map(d => {
     if (d.classes.filter(d => d.indexOf(Lib.FORM_MODAL_PREFIX_ACTION) >= 0).length) {
       d['formModalId'] = Util.getFormModalIdFromCSSClass(d.classes);
     }
     return d;
   });
+
   return (
     <div className="col-md-12 col-lg-7">
       {
