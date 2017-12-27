@@ -486,7 +486,7 @@ class PropertiesModal extends Component {
               {search_type && price.start && price.to ?
                 <Price saleType={search_type} start={price.start}
                       to={price.to}
-                      handleOnClick={this.handlePriceSelect.bind(this)}/>
+                      handleOnClick={this.handlePriceSelect}/>
                 : null}
             </div>
             <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
