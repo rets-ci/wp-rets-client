@@ -190,10 +190,15 @@ class PropertiesModal extends Component {
 
   handleSearchTypeSelect = (searchType) => {
     let searchOptions = Util.getSearchDataFromPropertyTypeOptionsBySearchType(searchType, this.props.propertyTypeOptions);
-    let property_type = searchOptions.property_type;
-    let sale_type = searchOptions.sale_type;
+    const {
+      property_type,
+      sale_type
+    } = searchOptions;
+
     let searchTypeArray = Util.createSearchTypeArrayParams(property_type, sale_type);
-    let searchTypeObject = searchTypeArray.reduce((a, b) => { a[b.key] = b.values[0]; return a; }, {});
+    let searchTypeObject = searchTypeArray.reduce((a, b) => { a[b.key] = b.values; return a; }, {});
+    searchTypeObject['search_type'] = searchType;
+
     let filters = Object.assign({}, this.state.filters, searchTypeObject);
     this.setState({filters: filters});
   }
@@ -486,7 +491,7 @@ class PropertiesModal extends Component {
               {search_type && price.start && price.to ?
                 <Price saleType={search_type} start={price.start}
                       to={price.to}
-                      handleOnClick={this.handlePriceSelect.bind(this)}/>
+                      handleOnClick={this.handlePriceSelect}/>
                 : null}
             </div>
             <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
