@@ -768,12 +768,10 @@ namespace UsabilityDynamics {
 
       list($posts, $found_posts) = $this->property_pro_get_blog_posts($args);
 
-      echo wp_json_encode([
-        'posts' => $posts,
-        'allowPagination' => $found_posts > 0
-      ]);
-
-      wp_die();
+      wp_send_json([
+          'posts' => $posts,
+          'allowPagination' => $found_posts > 0
+      ], 200);
     }
 
 
@@ -1116,6 +1114,7 @@ namespace UsabilityDynamics {
       }
       $params[ 'post' ][ 'head_tags' ] = $head_tags;
 
+      @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
       return wp_json_encode($params);
     }
 
