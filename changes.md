@@ -6,6 +6,7 @@
 * Added `wrc::manage_property::before_update` action to XMLRPC class.
 * Added [/wp-json/wp-rets-client/v1/cleanupProcess] endpoint. It recalculates terms counts.
 * Deleting and trashing of property requires rets_id (MLS ID) instead of post ID.
+* Wrapped all xmlrpc/wp-rest responses to `UsabilityDynamics\WPRETSC\XMLRPC::send` method.
 * Cleaned up XMLRPC class.
 
 #### 0.3.6

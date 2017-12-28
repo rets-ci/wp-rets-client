@@ -346,7 +346,6 @@ namespace UsabilityDynamics\WPRETSC {
         if( is_wp_error( $response ) ) {
           $response = array(
             'ok' => false,
-            'version' => ud_get_wp_rets_client()->get_version(),
             'error' => $response->get_error_message(),
           );
         } else if( !is_array( $response ) ) {
@@ -394,7 +393,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data = self::parseRequest( $request_data );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          return $post_data;
+          return self::send($post_data);
         }
 
         // handle wp-json reqests
@@ -448,7 +447,7 @@ namespace UsabilityDynamics\WPRETSC {
 
           ud_get_wp_rets_client()->write_log( "Using query [" . $_queries['all'] . "] to get index list." );
 
-          return $_result;
+          return self::send($_result);
         }
 
         $_query = array(
@@ -508,14 +507,14 @@ namespace UsabilityDynamics\WPRETSC {
 
         }
 
-        return array(
+        return self::send( array(
           'ok' => true,
           'per_page' => $post_data[ 'per_page' ],
           'schedule' => $post_data[ 'schedule_id' ],
           'total' => intval( $query->found_posts ),
           'data' => $_listings,
           'time' => timer_stop()
-        );
+        ) );
 
       }
 
@@ -531,13 +530,13 @@ namespace UsabilityDynamics\WPRETSC {
           'cache' => false
         ));
 
-        return array(
+        return self::send( array(
           'ok' => true,
           'kind' => isset($_GET['kind']) ? $_GET['kind'] : '',
           'message' => 'There are [' . count( $_stats['terms'] ) . '] schedules with [' . $_stats['total'] . '] total listings.',
           'data' => $_stats['data'],
           'time' => timer_stop()
-        );
+        ) );
 
       }
 
@@ -594,7 +593,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $post_data = self::parseRequest( $args );
         if( !empty( $post_data['error'] ) ) {
-          return $post_data;
+          return self::send($post_data);
         }
 
         $_response = self::send(array(
@@ -626,7 +625,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         // Send response to wherever.
-        return $_response;
+        return self::send($_response);
 
       }
 
@@ -665,7 +664,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data = self::parseRequest( $args );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          return $post_data;
+          return self::send($post_data);
         }
 
         do_action('wrc::manage_property::before_update');
@@ -693,7 +692,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( !empty( $post_data[ 'meta_input' ][ 'rets_id' ] ) ) {
           $post_data[ 'ID' ] = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'meta_input' ][ 'rets_id' ] );
         } else {
-          return array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data );
+          return self::send(array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data ));
         }
 
         $_new_post_status = $post_data[ 'post_status' ];
@@ -738,11 +737,11 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( 'wp_insert_post error <pre>' . print_r( $_post_id, true ) . '</pre>', 'error' );
           //ud_get_wp_rets_client()->write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>', 'error' );
 
-          return array(
+          return self::send(array(
             "ok" => false,
             "message" => "Unable to insert post.",
             "error" => $_post_id->get_error_message()
-          );
+          ));
         }
 
         // Insert all the terms and creates taxonomies.
@@ -819,12 +818,12 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->flush_cache( $_post_id );
 
-        return array(
+        return self::send(array(
           "ok" => true,
           "post_id" => $_post_id,
           "post" => get_post( $_post_id ),
           "permalink" => isset( $_permalink ) ? $_permalink : null
-        );
+        ));
 
       }
 
@@ -842,7 +841,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data = self::parseRequest( $args );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          return $post_data;
+          return self::send($post_data);
         }
 
         do_action('wrc::manage_property::before_update');
@@ -865,7 +864,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         if( !isset( $post_data[ 'ID' ] ) ) {
-          return array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data );
+          return self::send(array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data ));
         }
 
         // update import time
@@ -908,13 +907,13 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->flush_cache( $post_data[ 'ID' ] );
 
-        return array(
+        return self::send(array(
           "ok" => true,
           "post_id" => $post_data[ 'ID' ],
           //"post" => get_post( $post_data[ 'ID' ] ),
           "permalink" => get_the_permalink( $post_data[ 'ID' ] ),
           "time" => timer_stop()
-        );
+        ));
 
       }
 
@@ -932,7 +931,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data = self::parseRequest( $args );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          return $post_data;
+          return self::send($post_data);
         }
 
         do_action('wrc::manage_property::before_update');
@@ -961,7 +960,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( !empty( $post_data[ 'meta_input' ][ 'rets_id' ] ) ) {
           $post_data[ 'ID' ] = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'meta_input' ][ 'rets_id' ] );
         } else {
-          return array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data );
+          return self::send(array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data ));
         }
 
         $_new_post_status = isset( $post_data[ 'post_status' ] ) ? $post_data[ 'post_status' ] : 'publish';
@@ -1011,11 +1010,11 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( 'wp_insert_post error <pre>' . print_r( $_post_id, true ) . '</pre>', 'error' );
           ud_get_wp_rets_client()->write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>', 'error' );
 
-          return array(
+          return self::send(array(
             "ok" => false,
             "message" => "Unable to insert post.",
             "error" => $_post_id->get_error_message()
-          );
+          ));
         }
 
         // Insert all the terms and creates taxonomies.
@@ -1098,7 +1097,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->flush_cache( $_post_id );
 
-        return $_response;
+        return self::send($_response);
 
       }
 
@@ -1118,7 +1117,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data = self::parseRequest( $args );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          return $post_data;
+          return self::send($post_data);
         }
 
         if( method_exists( $args, 'get_param' ) ) {
@@ -1170,7 +1169,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'Completed [wpp.getProperty] request.', 'debug' );
 
-        return $_resposne;
+        return self::send($_resposne);
 
       }
 
@@ -1187,7 +1186,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $data = self::parseRequest( $args );
         if( !empty( $wp_xmlrpc_server->error ) ) {
-          return $data;
+          return self::send($data);
         }
 
         $response = array(
@@ -1209,7 +1208,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( !$wrc_rets_id || !is_numeric( $post_id ) ) {
           ud_get_wp_rets_client()->write_log(  'No Post ID detected', 'info' );
           $response['ok'] = false;
-          return $response;
+          return self::send($response);
         }
 
         /**
@@ -1254,7 +1253,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->flush_cache( $post_id );
 
-        return $response;
+        return self::send($response);
 
       }
 
@@ -1273,7 +1272,7 @@ namespace UsabilityDynamics\WPRETSC {
         $data = self::parseRequest( $args );
 
         if( !empty( $wp_xmlrpc_server->error ) ) {
-          return $data;
+          return self::send($data);
         }
 
         $response = array(
@@ -1295,7 +1294,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( !$post_id || !is_numeric( $post_id ) ) {
           ud_get_wp_rets_client()->write_log(  'No post ID detected', 'info' );
           $response['ok'] = false;
-          return $response;
+          return self::send($response);
         }
 
         ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id].", 'info' );
@@ -1312,7 +1311,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->flush_cache( $post_id );
 
-        return $response;
+        return self::send($response);
 
       }
 
@@ -1328,7 +1327,7 @@ namespace UsabilityDynamics\WPRETSC {
         $data = self::parseRequest( $args );
 
         if( !empty( $wp_xmlrpc_server->error ) ) {
-          return $data;
+          return self::send($data);
         }
 
         $response = array(
@@ -1349,12 +1348,12 @@ namespace UsabilityDynamics\WPRETSC {
         if( !$post_id || !is_numeric( $post_id ) ) {
           ud_get_wp_rets_client()->write_log(  'No post ID provided for mls id:' . $data['id'] , 'info' );
           $response['ok'] = false;
-          return $response;
+          return self::send($response);
         }
 
         ud_get_wp_rets_client()->write_log( 'Returned post_id:' . $post_id, 'info' );
 
-        return $response;
+        return self::send($response);
 
       }
 
@@ -1372,7 +1371,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
           ud_get_wp_rets_client()->write_log( 'Failed [wpp.insertMedia] request.', 'debug' );
-          return $post_data;
+          return self::send($post_data);
         }
 
         if( is_callable( array( $args, 'get_param' ) ) ) {
@@ -1406,10 +1405,10 @@ namespace UsabilityDynamics\WPRETSC {
 
         $_result = Utility::insert_media( $post_id, $post_data[ '_media' ] );
 
-        return array(
+        return self::send(array(
           'ok' => true,
           'result' => $_result
-        );
+        ));
 
       }
 
@@ -1424,7 +1423,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $data = self::parseRequest( $args );
         if( !empty( $wp_xmlrpc_server->error ) ) {
-          return $data;
+          return self::send($data);
         }
 
         ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
@@ -1450,7 +1449,7 @@ namespace UsabilityDynamics\WPRETSC {
         ud_get_wp_rets_client()->write_log( $log, 'debug' );
 
         if( empty( $_duplicates ) ) {
-          return $response;
+          return self::send($response);
         } else {
           $response[ 'total' ] = count( $_duplicates );
         }
@@ -1538,7 +1537,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'wpp.removeDuplicatedMLS Done', 'info' );
 
-        return $response;
+        return self::send($response);
 
       }
 
