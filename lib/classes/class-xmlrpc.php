@@ -346,6 +346,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( is_wp_error( $response ) ) {
           $response = array(
             'ok' => false,
+            'version' => ud_get_wp_rets_client()->get_version(),
             'error' => $response->get_error_message(),
           );
         } else if( !is_array( $response ) ) {
@@ -354,6 +355,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $response = wp_parse_args( $response, array(
           'ok' => true,
+          'version' => ud_get_wp_rets_client()->get_version(),
           'error' => null,
           'message' => null,
           'data' => array()
@@ -597,6 +599,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $_response = self::send(array(
           "ok" => true,
+          "version" => ud_get_wp_rets_client()->get_version(),
           "home_url" => home_url(),
           "blog_id" => get_current_blog_id(),
           "themeName" => wp_get_theme()->get( 'Name' ),
@@ -1192,18 +1195,19 @@ namespace UsabilityDynamics\WPRETSC {
           "request" => $data
         );
 
-        $post_id = 0;
         if( is_numeric( $data ) ) {
-          $post_id = $data;
-        } else if( !empty( $data[ 'id' ] ) ) {
-          $post_id = $data[ 'id' ];
+          $wrc_rets_id = $data;
+        } else if( !empty( $data[ 'rets_id' ] ) ) {
+          $wrc_rets_id = $data[ 'rets_id' ];
           ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
         }
 
+        $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $wrc_rets_id );
+
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.deleteProperty].', 'info' );
 
-        if( !$post_id || !is_numeric( $post_id ) ) {
-          ud_get_wp_rets_client()->write_log(  'No post ID provided', 'info' );
+        if( !$wrc_rets_id || !is_numeric( $post_id ) ) {
+          ud_get_wp_rets_client()->write_log(  'No Post ID detected', 'info' );
           $response['ok'] = false;
           return $response;
         }
@@ -1214,9 +1218,6 @@ namespace UsabilityDynamics\WPRETSC {
         // wp_defer_term_counting( true );
 
         ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
-
-        // We need it to flush custom object cache
-        $wrc_rets_id = get_post_meta( $post_id, 'rets_id', true );
 
         do_action( 'wrc_before_property_deleted', $post_id );
 
@@ -1247,7 +1248,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         }
 
-        ud_get_wp_rets_client()->write_log( "Finished removing [$post_id].", "info" );
+        ud_get_wp_rets_client()->write_log( "Finished removing [$post_id].  MLS ID [$wrc_rets_id]", "info" );
 
         $response['time' ] = timer_stop();
 
@@ -1264,7 +1265,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @return array
        */
       public function rpc_trash_property( $args ) {
-        global $wp_xmlrpc_server, $wpdb;
+        global $wp_xmlrpc_server, $wpdb, $wrc_rets_id;
 
         add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
         add_filter( 'ep_sync_delete_permissions_bypass', '__return_true', 99, 2 );
@@ -1280,19 +1281,19 @@ namespace UsabilityDynamics\WPRETSC {
           "request" => $data
         );
 
-        $post_id = 0;
-
         if( is_numeric( $data ) ) {
-          $post_id = $data;
-        } else if( !empty( $data[ 'id' ] ) ) {
-          $post_id = $data[ 'id' ];
+          $wrc_rets_id = $data;
+        } else if( !empty( $data[ 'rets_id' ] ) ) {
+          $wrc_rets_id = $data[ 'rets_id' ];
           ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
         }
+
+        $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $wrc_rets_id );
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.trashProperty]. Post id: ' . $post_id, 'info' );
 
         if( !$post_id || !is_numeric( $post_id ) ) {
-          ud_get_wp_rets_client()->write_log(  'No post ID provided', 'info' );
+          ud_get_wp_rets_client()->write_log(  'No post ID detected', 'info' );
           $response['ok'] = false;
           return $response;
         }
@@ -1305,7 +1306,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( $wpdb->last_error, 'info' );
 
-        ud_get_wp_rets_client()->write_log( "Property [$post_id] trashed.", 'info' );
+        ud_get_wp_rets_client()->write_log( "Property [$post_id] trashed. MLS ID [$wrc_rets_id]", 'info' );
 
         $response['time' ] = timer_stop();
 
