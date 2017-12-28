@@ -346,6 +346,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( is_wp_error( $response ) ) {
           $response = array(
             'ok' => false,
+            'version' => ud_get_wp_rets_client()->get_version(),
             'error' => $response->get_error_message(),
           );
         } else if( !is_array( $response ) ) {
