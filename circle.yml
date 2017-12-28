@@ -1,21 +1,29 @@
 machine:
-  timezone:
-    America/New_York
   node:
-    version: v0.11.13
+    version: 0.10.28
   php:
     version: 5.3.3
-  services:
-    - mysql
 
-  hosts:
-    reddoorcompany.com: 127.0.0.1
-    www.reddoorcompany.com: 127.0.0.1
-  environment:
-    NODE_ENV: ${CIRCLE_BRANCH}
-    PHP_ENV: ${CIRCLE_BRANCH}
-    WP_ENV: ${CIRCLE_BRANCH}
+database:
+  override:
+    - mysql -u ubuntu circle_test < ./test/php/db-setup.sql
 
+dependencies:
+  pre:
+    - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
+    
 test:
   override:
-    - echo "No tests."
+    - grunt testscrutinizer
+    #- grunt testcodeclimate
+    
+deployment:
+  production:
+    branch: master 
+    commands:
+      - sh build.sh
+      
+notify:
+  webhooks:
+    - url: https://api.usabilitydynamics.com/audits/v1/update
+    

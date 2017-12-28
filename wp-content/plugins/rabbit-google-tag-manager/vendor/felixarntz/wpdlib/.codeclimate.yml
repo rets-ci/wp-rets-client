@@ -1,7 +1,0 @@
-languages:
-   PHP: true
-   JavaScript: true
-exclude_paths:
-- "vendor/*"
-- "assets/vendor/*"
-- "node_modules/*"

@@ -1,203 +1,51 @@
 {
-  "name": "usabilitydynamics/www.reddoorcompany.com",
-  "type": "wordpress-site",
-  "description": "A wpCloud/Site.",
-  "scripts": {
-    "post-merge": "bash wp-content/static/scripts/post-merge.sh"
+  "name": "usabilitydynamics/wp-rets-client",
+  "type": "wordpress-plugin",
+  "minimum-stability": "dev",
+  "homepage": "https://usabilitydynamics.com",
+  "author": {
+    "name": "UsabilityDynamics, Inc.",
+    "url": "https://usabilitydynamics.com"
   },
+  "require": {
+      "php": ">=5.3",
+      "usabilitydynamics/lib-utility": "0.3.7",
+      "usabilitydynamics/lib-wp-bootstrap": "1.2.1",
+      "usabilitydynamics/lib-wp-saas-util": "1.0.5"
+    },
   "repositories": [
     {
       "type": "composer",
       "url": "https://repository.usabilitydynamics.com"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usabilitydynamics/wp-rets-client.git"
+  },
+  "autoload": {
+    "classmap": [ "lib/classes", "lib/connectors" ],
+    "files": [ "loader.php" ]
+  },
+  "archive": {
+    "exclude": [
+      "node_modules",
+      ".gitignore",
+      "test",
+      "circle.yml",
+      "composer.lock",
+      "gruntfile.js",
+      "package.json"
+    ]
+  },
   "extra": {
-    "settings_develop-v3-andy": {
-      "wp_debug_log": true,
-      "wp_debug_display": true,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "WP_PROPERTY_LAYOUTS": true,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_develop-v3-maxim": {
-      "EP_INDEX_NAME": "rdc-develop-v3-maxim",
-      "db_name": "develop-v3-maxim",
-      "MEMCACHED_DISABLED": true,
-      "wp_debug_log": true,
-      "wp_debug_display": true,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "WP_PROPERTY_LAYOUTS": true,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_develop-v3-local": {
-      "wp_debug_log": true,
-      "wp_debug_display": true,
-      "wp_siteurl": "http://www.reddoorcompany.loc",
-      "wp_home": "http://www.reddoorcompany.loc",
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "cloudfront_disabled": true,
-      "memcached_disabled": true,
-      "WP_PROPERTY_LAYOUTS": true,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_latest-v3": {
-      "wp_debug_log": true,
-      "wp_debug_display": true,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "WP_PROPERTY_LAYOUTS": false,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_latest-v3-1": {
-      "wp_debug_log": true,
-      "wp_debug_display": true,
-      "wp_siteurl": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3-1.c.rabbit.ci",
-      "wp_home": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3-1.c.rabbit.ci",
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "wp_memcached_servers": "127.0.0.1:11211",
-      "WP_PROPERTY_LAYOUTS": true,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_develop-dmitry": {
-      "wp_debug_log": true,
-      "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "WP_PROPERTY_LAYOUTS": false,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_develop-v3-ash": {
-      "wp_debug_log": true,
-      "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "WP_PROPERTY_LAYOUTS": false,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_develop-v3-rumen": {
-      "wp_debug_log": true,
-      "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "WP_PROPERTY_LAYOUTS": false,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": false
-    },
-    "settings_production-v2": {
-      "db_name": "production-v2"
-    },
-    "settings_production-v3": {
-      "db_name": "production-v3"
-    },
-    "settings_production-hotfix": {
-      "wp_debug_log": true,
-      "wp_debug_display": true,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "db_name": "production-v3"
-    },
-    "settings": {
-      "QM_DB_EXPENSIVE": 0.90,
-      "QM_HIDE_SELF": true,
-      "WPP_FEATURE_FLAG_SETTINGS_V2": true,
-      "WP_PROPERTY_SETTINGS_SEARCH": true,
-      "WPP_FEATURE_FLAG_WPP_LISTING_STATUS": true,
-      "WPP_FEATURE_FLAG_WPP_LISTING_TYPE": true,
-      "WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY": false,
-      "WPP_FEATURE_FLAG_WPP_LISTING_LOCATION": false,
-      "WP_PROPERTY_FLAG_WPP_LISTING_LABEL": true,
-      "WPP_FEATURE_FLAG_WPP_SCHOOLS": true,
-      "WPP_FEATURE_FLAG_WPP_LISTING_POLICY": true,
-      "WP_PROPERTY_FIELD_ALIAS": true,
-      "WPP_FEATURE_FLAG_SETTINGS_BACKUPS": true,
-      "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": true,
-      "WPP_FEATURE_FLAG_WPP_ROOMS": true,
-      "WPP_FEATURE_FLAG_DISABLE_EDITOR": true,
-      "WP_PROPERTY_RESPONSIVE_SLIDESHOW": true,
-      "WP_PROPERTY_LAYOUTS": false,
-      "WP_PROPERTY_FLAG_ENABLE_AGENTS": true,
-      "WP_PROPERTY_FLAG_ENABLE_SUPERMAP": true,
-      "WP_PROPERTY_LEGACY_ATTRIBUTE_INPUT_TYPES": false,
-      "WP_PROPERTY_LEGACY_META_ATTRIBUTES": false,
-      "WPP_FEATURE_FLAG_WPP_CATEGORICAL": false,
-      "WP_PROPERTY_FLAG_ENABLE_TERMS": true,
-      "RETSCI_FEATURE_FLAG": true,
-      "WP_PROPERTY_FLAG_ENABLE_LEGACY_TAXONOMIES": false,
-      "WP_PROPERTY_SETUP_ASSISTANT": false,
-      "__WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": true,
-      "RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET": true,
-      "WP_HTTP_BLOCK_EXTERNAL": true,
-      "WP_ACCESSIBLE_HOSTS": "api.wpcloud.io,realty-ci-api-realty-ci-production.c.rabbit.ci,api.realty.ci,c.rabbit.ci,www.usabilitydynamics.com,,api.usabilitydynamics.com,api.rets.ci,api.wordpress.org,downloads.wordpress.org",
-      "_UD_RETSCI_AJAX_API_URL": "https://rets-ci-api-rets-ci-v0-5-0.c.rabbit.ci/",
-      "_WPP_API_URL_STANDARDS": "https://usabilitydynamics-node-product-api-staging.c.rabbit.ci/property/standard/v1",
-      "wp_siteurl": "https://www.reddoorcompany.com",
-      "wp_home": "https://www.reddoorcompany.com",
-      "wp_debug": true,
-      "wp_debug_log": true,
-      "DISABLE_WP_CRON": true,
-      "wp_rets_ci": true,
-      "wp_debug_display": false,
-      "wp_debug_console": false,
-      "WP_MEMORY_LIMIT": "3072M",
-      "RDC_RECAPTCHA_KEY": "6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5",
-      "RDC_RECAPTCHA_SECRET": "6Lfn7xIUAAAAAHtv6LS1QgU01y68PjellGSb4cKD",
-      "wp_memcached_servers": "client-cluster-1:23038,client-cluster-2:23038,client-cluster-3:23038",
-      "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
-      "RETS_ID_KEY": "rets_id",
-      "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
-      "EP_HOST": "https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100",
-      "wp_cache": true,
-      "concatenate_scripts": false,
-      "sunrise": false,
-      "multisite": false,
-      "empty_trash_days": 60,
-      "alternate_wp_cron": false,
-      "wp_cron_lock_timeout": 0,
-      "wp": {
-        "upstream_automatic_push": true,
-        "upstream_debug": false,
-        "post_revisions": 30,
-        "media_trash": true,
-        "allow_repair": true,
-        "force_ssl_admin": true,
-        "force_ssl_login": true,
-        "auto_core_update": false,
-        "AUTO_UPDATE_CORE": false,
-        "use_themes": true
+    "saasProduct": "prod_ADfpGniA1kxNep",
+    "schemas": {
+      "dependencies" : {
+        "modules": {},
+        "plugins": []
       },
-      "AUTOMATIC_UPDATER_DISABLED": true,
-      "db": {
-        "name": "latest-v3",
-        "user": "rdc",
-        "password": "wpcvdvwyocbhnrfj",
-        "host": "sql.wpcloud.io:13097",
-        "read": 5,
-        "write": 5,
-        "charset": "utf8",
-        "collate": "utf8_general_ci"
-      }
+      "licenses" : {}
     }
-  },
-  "config": {
-    "preferred-install": "dist",
-    "github-protocols": [
-      "ssh"
-    ],
-    "vendor-dir": "wp-vendor",
-    "bin-dir": "wp-vendor/bin",
-    "optimize-autoloader": true,
-    "docker": {
-      "scripts": {
-        "start": [ "bash wp-content/static/bin/install.sh" ]
-      }
-    }
-  },
-  "require": {
-    "php": "~5.3",
-    "composer/installers": "~1.0"
-  },
-  "require-dev": {
-    "squizlabs/php_codesniffer": "~2.0",
-    "phpunit/phpunit": "~3.7"
-  },
-  "keywords": [
-    "wordpress",
-    "wpcloud.io"
-  ],
-  "minimum-stability": "dev",
-  "license": "proprietary"
+  }
 }
