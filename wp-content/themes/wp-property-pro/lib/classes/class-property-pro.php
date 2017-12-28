@@ -130,6 +130,7 @@ namespace UsabilityDynamics {
       add_filter( 'wpseo_output_twitter_card', '__return_false', 10, 1 );
 
       /** Do not output site origin styles to front-end */
+      remove_action('wp_head', 'siteorigin_widget_print_styles');
       remove_action('wp_footer', 'siteorigin_widget_print_styles');
 
       /** Add ajax actions */
