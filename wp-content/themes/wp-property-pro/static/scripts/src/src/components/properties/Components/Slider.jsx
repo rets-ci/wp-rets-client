@@ -1,6 +1,8 @@
-import {Lib} from '../../../lib.jsx';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import {Lib} from '../../../lib.jsx';
 
 let noUiSlider = require('nouislider');
 require('nouislider/distribute/nouislider.css');
@@ -40,6 +42,9 @@ class Slider extends Component {
     };
 
     let percentages = [20, 40, 60, 80];
+    if (this.props.isMobile) {
+      percentages = [50];
+    }
 
     let filterPips = (value, type) => {
       if (value === min || value === max) {
@@ -104,9 +109,7 @@ class Slider extends Component {
     if (nextProps.min !== this.props.min || nextProps.max !== this.props.max) {
       this.sliderElement.noUiSlider.destroy();
       this.createNoUiSlider(nextProps);
-
     }
-    
   }
 
   render() {
@@ -116,6 +119,10 @@ class Slider extends Component {
       </div>
     );
   }
-};
+}
 
-export default Slider;
+const mapStateToProps = (state) => ({
+  isMobile: state.viewport.isMobile
+});
+
+export default connect(mapStateToProps)(Slider);
