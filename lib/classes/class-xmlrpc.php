@@ -129,7 +129,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         //
         $_methods[ 'wpp.getPostIdByMlsId' ]     = array( $this, 'rpc_get_post_id_by_mls_id' );
-        $_methods[ 'wpp.removeDuplicatedMLS' ]  = array( $this, 'rpc_remove_duplicated_mls' );
+        $_methods[ 'wpp.removeDuplicates' ]     = array( $this, 'rpc_remove_duplicated_mls' );
         $_methods[ 'wpp.modifiedHistogram' ]    = array( $this, 'rpc_get_modified_histogram' );
 
         // Property management
@@ -1195,19 +1195,31 @@ namespace UsabilityDynamics\WPRETSC {
           "request" => $data
         );
 
-        if( is_numeric( $data ) ) {
-          $wrc_rets_id = $data;
+        $post_id = 0;
+
+        if( !empty( $data[ 'post_id' ] ) ) {
+          $post_id = $data[ 'post_id' ];
+          $wrc_rets_id = get_post_meta( $post_id, 'rets_id', true );
         } else if( !empty( $data[ 'rets_id' ] ) ) {
           $wrc_rets_id = $data[ 'rets_id' ];
-          ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
+          $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $wrc_rets_id );
+          /**
+           * It's normal behaviour to not detect post ID when we know only MLS ID,
+           * because the MLS property may not fetch poller's filter and, as fact, does not exist in WordPress at all
+           * so we just break here without any error.
+           * peshkov@UD
+           */
+          if( !is_numeric( $post_id ) ){
+            return self::send($response);
+          }
         }
 
-        $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $wrc_rets_id );
+        ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.deleteProperty].', 'info' );
 
         if( !$wrc_rets_id || !is_numeric( $post_id ) ) {
-          ud_get_wp_rets_client()->write_log(  'No Post ID detected', 'info' );
+          ud_get_wp_rets_client()->write_log(  'No Post found', 'info' );
           $response['ok'] = false;
           return self::send($response);
         }
@@ -1281,14 +1293,26 @@ namespace UsabilityDynamics\WPRETSC {
           "request" => $data
         );
 
-        if( is_numeric( $data ) ) {
-          $wrc_rets_id = $data;
+        $post_id = 0;
+
+        if( !empty( $data[ 'post_id' ] ) ) {
+          $post_id = $data[ 'post_id' ];
+          $wrc_rets_id = get_post_meta( $post_id, 'rets_id', true );
         } else if( !empty( $data[ 'rets_id' ] ) ) {
           $wrc_rets_id = $data[ 'rets_id' ];
-          ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
+          $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $wrc_rets_id );
+          /**
+           * It's normal behaviour to not detect post ID when we know only MLS ID,
+           * because the MLS property may not fetch poller's filter and, as fact, does not exist in WordPress at all
+           * so we just break here without any error.
+           * peshkov@UD
+           */
+          if( !is_numeric( $post_id ) ){
+            return self::send($response);
+          }
         }
 
-        $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $wrc_rets_id );
+        ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.trashProperty]. Post id: ' . $post_id, 'info' );
 
