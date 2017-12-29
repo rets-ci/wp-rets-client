@@ -1186,6 +1186,9 @@ namespace UsabilityDynamics\WPRETSC {
         add_filter( 'ep_sync_delete_permissions_bypass', '__return_true', 99, 2 );
 
         $data = self::parseRequest( $args );
+
+        ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
+
         if( !empty( $wp_xmlrpc_server->error ) ) {
           return self::send($data);
         }
@@ -1194,6 +1197,8 @@ namespace UsabilityDynamics\WPRETSC {
           "ok" => true,
           "request" => $data
         );
+
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.deleteProperty].', 'info' );
 
         $post_id = 0;
 
@@ -1210,13 +1215,10 @@ namespace UsabilityDynamics\WPRETSC {
            * peshkov@UD
            */
           if( !is_numeric( $post_id ) ){
+            ud_get_wp_rets_client()->write_log( "No post found by MLS ID [$wrc_rets_id]. Ignoring [wpp.deleteProperty] request.", 'info' );
             return self::send($response);
           }
         }
-
-        ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
-
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.deleteProperty].', 'info' );
 
         if( !$wrc_rets_id || !is_numeric( $post_id ) ) {
           ud_get_wp_rets_client()->write_log(  'No Post found', 'info' );
@@ -1284,6 +1286,8 @@ namespace UsabilityDynamics\WPRETSC {
 
         $data = self::parseRequest( $args );
 
+        ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
+
         if( !empty( $wp_xmlrpc_server->error ) ) {
           return self::send($data);
         }
@@ -1308,11 +1312,10 @@ namespace UsabilityDynamics\WPRETSC {
            * peshkov@UD
            */
           if( !is_numeric( $post_id ) ){
+            ud_get_wp_rets_client()->write_log( "No post found by MLS ID [$wrc_rets_id]. Ignoring [wpp.trashProperty] request.", 'info' );
             return self::send($response);
           }
         }
-
-        ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.trashProperty]. Post id: ' . $post_id, 'info' );
 
