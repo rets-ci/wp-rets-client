@@ -1406,8 +1406,8 @@ namespace UsabilityDynamics\WPRETSC {
 
           $post_data = wp_parse_args($post_data, array_filter(array(
             'post_id' => $args->get_param( 'post_id' ),
-            'mls_number' => $args->get_param( 'mls_number' ),
-            'media' => $args->get_param( 'media' )
+            'rets_id' => $args->get_param( 'rets_id' ),
+            '_media' => $args->get_param( 'media' )
           )));
 
         };
@@ -1420,9 +1420,9 @@ namespace UsabilityDynamics\WPRETSC {
           $post_id = $post_data['ID' ];
         }
 
-        // try go get post_id by mls_number, if it spassed
+        // try go get post_id by mls_number, if it passed
         if( !$post_id ) {
-          $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'mls_number' ] );
+          $post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'rets_id' ] );
         }
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.insertMedia] request for ['  . $post_id . '].', 'info' );
