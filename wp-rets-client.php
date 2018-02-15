@@ -2,9 +2,9 @@
 /**
  * Plugin Name: WP-RETS Client
  * Plugin URI: https://usabilitydynamics.com
- * Description: WordPress Client for RETS.CI Service. Imports and synchronizes Properties data via XML-RPC. Requires plugin WP-Property: Importer.
+ * Description: WordPress Client for RETS.CI Service. Imports and synchronizes Properties data via XML-RPC/WP-REST.
  * Author: Usability Dynamics, Inc.
- * Version: 0.3.7
+ * Version: 0.3.7.1
  * Text Domain: wp_rets_client
  * Author URI: http://usabilitydynamics.com
  *

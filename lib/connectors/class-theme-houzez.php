@@ -80,6 +80,14 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
        */
       public function detect_the_agents( $post_id, $post_data ) {
 
+        // We MUST break if meta_input.fave_agents was not provided in request!
+        // Because, in other case, we will try to detect the already detected agent, and, of course,
+        // the agent will not be found and the correct agent(s) will be replaced with the default one!
+        // peshkov@UDX
+        if( !isset( $post_data[ 'meta_input' ][ 'fave_agents' ] ) ) {
+          return;
+        }
+
         $houzez_options = get_option( 'houzez_options' );
 
         $needles = trim( get_post_meta( $post_id, 'fave_agents', true ) );
