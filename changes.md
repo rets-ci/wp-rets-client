@@ -1,5 +1,5 @@
 #### 0.3.7.1
-* Fixed the bug with replacing fave_agents with default value on updating already existing property.
+* Fixed the bug in Houzez theme connector with replacing fave_agents with default value on updating already existing property.
 
 #### 0.3.7
 * Added compatibility with Houzez theme.
