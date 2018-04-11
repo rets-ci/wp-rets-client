@@ -1,3 +1,6 @@
+#### 0.3.9
+* Libraries updated.
+
 #### 0.3.8
 * Fixed the bug in Houzez theme connector with replacing fave_agents with default value on updating already existing property.
 * Fixed the bug with detecting the Houzez agent when agent's meta value, which is used to detect the agent, is stored in few postmeta fields.
