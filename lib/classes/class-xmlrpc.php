@@ -860,7 +860,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         //if( !empty( $post_data[ 'ID' ] ) ) {}
 
-        if( !isset( $post_data[ 'ID' ] ) && !empty( $post_data[ 'meta_input' ][ 'rets_id' ] ) ) {
+        if( isset( $post_data[ 'meta_input' ][ 'rets_id' ] ) && !empty( $post_data[ 'meta_input' ][ 'rets_id' ] ) ){
           $post_data[ 'ID' ] = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'meta_input' ][ 'rets_id' ] );
         }
 
