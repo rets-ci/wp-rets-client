@@ -1,3 +1,10 @@
+#### 0.3.9
+* Libraries updated.
+
+#### 0.3.8
+* Fixed the bug in Houzez theme connector with replacing fave_agents with default value on updating already existing property.
+* Fixed the bug with detecting the Houzez agent when agent's meta value, which is used to detect the agent, is stored in few postmeta fields.
+
 #### 0.3.7
 * Added compatibility with Houzez theme.
 * Added compatibility with Real Homes theme.
@@ -5,7 +12,7 @@
 * Added WP-CLI `wp retsci` commands.
 * Added `wrc::manage_property::before_update` action to XMLRPC class.
 * Added [/wp-json/wp-rets-client/v1/cleanupProcess] endpoint. It recalculates terms counts.
-* Deleting and trashing of property requires rets_id (MLS ID) instead of post ID.
+* Deleting and trashing of property requires rets_id (MLS ID) instead of post ID ( post ID is optional now ).
 * Wrapped all xmlrpc/wp-rest responses to `UsabilityDynamics\WPRETSC\XMLRPC::send` method.
 * Cleaned up XMLRPC class.
 

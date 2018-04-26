@@ -80,6 +80,14 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
        */
       public function detect_the_agents( $post_id, $post_data ) {
 
+        // We MUST break if meta_input.fave_agents was not provided in request!
+        // Because, in other case, we will try to detect the already detected agent, and, of course,
+        // the agent will not be found and the correct agent(s) will be replaced with the default one!
+        // peshkov@UDX
+        if( !isset( $post_data[ 'meta_input' ][ 'fave_agents' ] ) ) {
+          return;
+        }
+
         $houzez_options = get_option( 'houzez_options' );
 
         $needles = trim( get_post_meta( $post_id, 'fave_agents', true ) );
@@ -154,6 +162,11 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
 
         $agents = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='houzez_agent' AND post_title LIKE %s", '%'. $needle . '%' ) );
 
+        // Be sure, IDs are unique!!!!
+        if( !empty( $agents ) ) {
+          $agents = array_unique( $agents );
+        }
+
         if( !empty( $agents ) && count( $agents ) == 1 ) {
           return $agents[0];
         }
@@ -161,6 +174,11 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
         // Try to detect the agent by post meta
 
         $agents = $wpdb->get_col( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type='houzez_agent' ) AND meta_value = %s", $needle ) );
+
+        // Be sure, IDs are unique!!!!
+        if( !empty( $agents ) ) {
+          $agents = array_unique( $agents );
+        }
 
         //ud_get_wp_rets_client()->write_log( "detect_the_agents. Detected by [$needle] postmeta [" . count($agents) .  "] ", 'info' );
 
