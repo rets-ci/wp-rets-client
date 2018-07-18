@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
+class ComposerStaticInitcbe325583e6c68b44faccf883fdd013c
 {
     public static $files = array (
         'aa33d7d08765e2232d2271599fc1e7eb' => __DIR__ . '/../..' . '/loader.php',
@@ -14,8 +14,29 @@ class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
         'UsabilityDynamics\\Job' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-job.php',
         'UsabilityDynamics\\Loader' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-loader.php',
         'UsabilityDynamics\\SAAS_UTIL\\Register' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-saas-util/lib/classes/class-wp-saas-util.php',
+        'UsabilityDynamics\\Settings' => __DIR__ . '/..' . '/usabilitydynamics/lib-settings/lib/class-settings.php',
         'UsabilityDynamics\\Structure' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-structure.php',
         'UsabilityDynamics\\Term' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-term.php',
+        'UsabilityDynamics\\UI\\Field' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/class-field.php',
+        'UsabilityDynamics\\UI\\Field_Checkbox' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-checkbox.php',
+        'UsabilityDynamics\\UI\\Field_Checkbox_Advanced' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-checkbox-advanced.php',
+        'UsabilityDynamics\\UI\\Field_Checkbox_List' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-checkbox-list.php',
+        'UsabilityDynamics\\UI\\Field_Date' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-date.php',
+        'UsabilityDynamics\\UI\\Field_Datetime' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-datetime.php',
+        'UsabilityDynamics\\UI\\Field_Multiple' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/class-field-multiple.php',
+        'UsabilityDynamics\\UI\\Field_Post' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-post.php',
+        'UsabilityDynamics\\UI\\Field_Radio' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-radio.php',
+        'UsabilityDynamics\\UI\\Field_Range' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-range.php',
+        'UsabilityDynamics\\UI\\Field_Readonly' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-readonly.php',
+        'UsabilityDynamics\\UI\\Field_Select' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-select.php',
+        'UsabilityDynamics\\UI\\Field_Select_Advanced' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-select-advanced.php',
+        'UsabilityDynamics\\UI\\Field_Taxonomy' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-taxonomy.php',
+        'UsabilityDynamics\\UI\\Field_Text' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-text.php',
+        'UsabilityDynamics\\UI\\Field_Time' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-time.php',
+        'UsabilityDynamics\\UI\\Field_User' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/fields/class-user.php',
+        'UsabilityDynamics\\UI\\Page' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/class-page.php',
+        'UsabilityDynamics\\UI\\Settings' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/class-settings.php',
+        'UsabilityDynamics\\UI\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/class-utility.php',
         'UsabilityDynamics\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-utility.php',
         'UsabilityDynamics\\Utility\\Guid_Fix' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
         'UsabilityDynamics\\WPRETSC\\Ajax' => __DIR__ . '/../..' . '/lib/classes/class-ajax.php',
@@ -49,7 +70,7 @@ class ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit141741f8b2c9db05f75dc36e804cc8fc::$classMap;
+            $loader->classMap = ComposerStaticInitcbe325583e6c68b44faccf883fdd013c::$classMap;
 
         }, null, ClassLoader::class);
     }
