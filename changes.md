@@ -1,3 +1,6 @@
+#### 0.3.10
+* Added metabox for debugging the property on Edit Property page for WP-Property plugin. 
+
 #### 0.3.9
 * Libraries updated.
 
