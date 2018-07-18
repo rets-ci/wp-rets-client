@@ -34,6 +34,7 @@ return array(
     'UsabilityDynamics\\UI\\Utility' => $vendorDir . '/usabilitydynamics/lib-ui/lib/class-utility.php',
     'UsabilityDynamics\\Utility' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-utility.php',
     'UsabilityDynamics\\Utility\\Guid_Fix' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
+    'UsabilityDynamics\\WPRETSC\\Admin' => $baseDir . '/lib/classes/class-admin.php',
     'UsabilityDynamics\\WPRETSC\\Ajax' => $baseDir . '/lib/classes/class-ajax.php',
     'UsabilityDynamics\\WPRETSC\\Bootstrap' => $baseDir . '/lib/classes/class-bootstrap.php',
     'UsabilityDynamics\\WPRETSC\\Connectors\\Houzez' => $baseDir . '/lib/connectors/class-theme-houzez.php',

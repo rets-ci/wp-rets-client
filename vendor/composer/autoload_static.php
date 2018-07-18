@@ -39,6 +39,7 @@ class ComposerStaticInitcbe325583e6c68b44faccf883fdd013c
         'UsabilityDynamics\\UI\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-ui/lib/class-utility.php',
         'UsabilityDynamics\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-utility.php',
         'UsabilityDynamics\\Utility\\Guid_Fix' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
+        'UsabilityDynamics\\WPRETSC\\Admin' => __DIR__ . '/../..' . '/lib/classes/class-admin.php',
         'UsabilityDynamics\\WPRETSC\\Ajax' => __DIR__ . '/../..' . '/lib/classes/class-ajax.php',
         'UsabilityDynamics\\WPRETSC\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
         'UsabilityDynamics\\WPRETSC\\Connectors\\Houzez' => __DIR__ . '/../..' . '/lib/connectors/class-theme-houzez.php',
