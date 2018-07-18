@@ -749,6 +749,8 @@ namespace UsabilityDynamics\WPRETSC {
         if( !isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ] ) {
           Utility::insert_property_terms( $_post_id, $_post_data_tax_input, $post_data );
           do_action( 'wrc::manage_property::taxonomies', $_post_data_tax_input, $options );
+        } else {
+          ud_get_wp_rets_client()->write_log( "Skipping to insert taxonomies terms for post [" . $_post_id . "] since [skipTermUpdates] option is enabled.", 'debug' );
         }
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
@@ -893,6 +895,8 @@ namespace UsabilityDynamics\WPRETSC {
           Utility::insert_property_terms( $post_data[ 'ID' ], $post_data[ 'tax_input' ], $post_data );
           do_action( 'wrc::manage_property::taxonomies', $post_data[ 'tax_input' ], $options );
           ud_get_wp_rets_client()->write_log( 'Updated terms.', 'debug' );
+        } else {
+          ud_get_wp_rets_client()->write_log( "Skipping to insert taxonomies terms for post [" . $post_data[ 'ID' ] . "] since [skipTermUpdates] option is enabled or [tax_input] data not provided.", 'debug' );
         }
 
         ud_get_wp_rets_client()->write_log( 'Property update finished, clearing cache.', 'debug' );
@@ -1022,6 +1026,8 @@ namespace UsabilityDynamics\WPRETSC {
         if( !isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ] ) {
           Utility::insert_property_terms( $_post_id, $_post_data_tax_input, $post_data );
           do_action( 'wrc::manage_property::taxonomies', $_post_data_tax_input, $options );
+        } else {
+          ud_get_wp_rets_client()->write_log( "Skipping to insert taxonomies terms for post [" . $_post_id . "] since [skipTermUpdates] option is enabled.", 'debug' );
         }
 
         if( !isset( $options[ 'skipMediaUpdate' ] ) || !$options[ 'skipMediaUpdate' ] ) {
