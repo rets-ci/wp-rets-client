@@ -1008,7 +1008,16 @@ namespace UsabilityDynamics\WPRETSC {
        */
       static public function _update_terms_counts_helper( $terms, $query ) {
         $error = null;
-        $term_ids = is_array($terms) ? array_column( $terms, 'term_taxonomy_id' ) : array();
+        $term_ids = array();
+        if( is_array($terms) ) {
+          foreach( $terms as $term ) {
+            if( is_object($term) && isset($term->term_taxonomy_id) ) {
+              array_push($term_ids, $term->term_taxonomy_id);
+            } else if ( is_array($term) && isset($term['term_taxonomy_id']) ) {
+              array_push($term_ids, $term['term_taxonomy_id']);
+            }
+          }
+        }
         $taxonomy = isset( $query[ 'taxonomy' ] ) ? $query[ 'taxonomy' ] : null;
 
         if( count( $term_ids ) < 1 ) {
