@@ -19,10 +19,11 @@ namespace UsabilityDynamics\WPRETSC\Connectors {
        */
       public function __construct() {
 
-        add_action( 'wrc::manage_property::before_update', function () {
-          remove_filter( 'save_post', 'rabbit_save_post_purging_handler', 50 );
-        } );
-
+        if(class_exists('RabbitLoaderInvalidation')){
+          add_action( 'wrc::manage_property::before_update', function () {
+            remove_action( 'save_post', array( 'RabbitLoaderInvalidation', 'rabbit_save_post_purging_handler' ), 50 );
+          } );
+        }
       }
     }
 
