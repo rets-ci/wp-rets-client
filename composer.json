@@ -9,11 +9,11 @@
   },
   "require": {
       "php": ">=5.3",
-      "usabilitydynamics/lib-ui": "0.3.5",
-      "usabilitydynamics/lib-utility": "0.3.7",
-      "usabilitydynamics/lib-settings": "0.2.3",
-      "usabilitydynamics/lib-wp-bootstrap": "1.2.3",
-      "usabilitydynamics/lib-wp-saas-util": "1.0.6"
+      "usabilitydynamics/lib-ui": "~0.3.5",
+      "usabilitydynamics/lib-utility": "~0.3.7",
+      "usabilitydynamics/lib-settings": "~0.2.3",
+      "usabilitydynamics/lib-wp-bootstrap": "~1.2.4",
+      "usabilitydynamics/lib-wp-saas-util": "~1.0.6"
     },
   "repositories": [
     {

@@ -1,31 +1,39 @@
 [
     {
-        "name": "usabilitydynamics/lib-utility",
-        "version": "0.3.7",
-        "version_normalized": "0.3.7.0",
+        "name": "usabilitydynamics/lib-settings",
+        "version": "0.2.3",
+        "version_normalized": "0.2.3.0",
         "source": {
             "type": "git",
-            "url": "git@github.com:UsabilityDynamics/lib-utility",
-            "reference": "0.3.7"
+            "url": "git@github.com:UsabilityDynamics/lib-settings",
+            "reference": "0.2.3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/UsabilityDynamics/lib-utility/archive/0.3.7.zip",
-            "reference": "0.3.7",
+            "url": "https://github.com/UsabilityDynamics/lib-settings/archive/0.2.3.zip",
+            "reference": "0.2.3",
             "shasum": null
         },
+        "require": {
+            "usabilitydynamics/lib-utility": "~0.3"
+        },
         "require-dev": {
-            "phpunit/phpunit": "4.1.*"
+            "justinrainbow/json-schema": "1.1.*"
         },
         "type": "library",
         "extra": {
-            "installer-name": "lib-utility",
             "component": {
-                "name": "utility",
                 "scripts": [
-                    "scripts/*.js"
+                    "static/scripts/settings.js"
+                ],
+                "templates": [
+                    "static/views/new-installation.xhtml"
+                ],
+                "files": [
+                    "static/schemas/settings.json"
                 ]
-            }
+            },
+            "installer-name": "lib-settings"
         },
         "installation-source": "dist",
         "autoload": {
@@ -56,10 +64,9 @@
                 "role": "Developer"
             }
         ],
+        "homepage": "http://github.com/usabilitydynamics/lib-settings",
         "keywords": [
-            "job",
-            "process",
-            "utility"
+            "settings"
         ]
     },
     {
@@ -137,40 +144,32 @@
         ]
     },
     {
-        "name": "usabilitydynamics/lib-settings",
-        "version": "0.2.3",
-        "version_normalized": "0.2.3.0",
+        "name": "usabilitydynamics/lib-utility",
+        "version": "0.3.7",
+        "version_normalized": "0.3.7.0",
         "source": {
             "type": "git",
-            "url": "git@github.com:UsabilityDynamics/lib-settings",
-            "reference": "0.2.3"
+            "url": "git@github.com:UsabilityDynamics/lib-utility",
+            "reference": "0.3.7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/UsabilityDynamics/lib-settings/archive/0.2.3.zip",
-            "reference": "0.2.3",
+            "url": "https://github.com/UsabilityDynamics/lib-utility/archive/0.3.7.zip",
+            "reference": "0.3.7",
             "shasum": null
         },
-        "require": {
-            "usabilitydynamics/lib-utility": "~0.3"
-        },
         "require-dev": {
-            "justinrainbow/json-schema": "1.1.*"
+            "phpunit/phpunit": "4.1.*"
         },
         "type": "library",
         "extra": {
+            "installer-name": "lib-utility",
             "component": {
+                "name": "utility",
                 "scripts": [
-                    "static/scripts/settings.js"
-                ],
-                "templates": [
-                    "static/views/new-installation.xhtml"
-                ],
-                "files": [
-                    "static/schemas/settings.json"
+                    "scripts/*.js"
                 ]
-            },
-            "installer-name": "lib-settings"
+            }
         },
         "installation-source": "dist",
         "autoload": {
@@ -201,24 +200,25 @@
                 "role": "Developer"
             }
         ],
-        "homepage": "http://github.com/usabilitydynamics/lib-settings",
         "keywords": [
-            "settings"
+            "job",
+            "process",
+            "utility"
         ]
     },
     {
         "name": "usabilitydynamics/lib-wp-bootstrap",
-        "version": "1.2.3",
-        "version_normalized": "1.2.3.0",
+        "version": "1.2.4",
+        "version_normalized": "1.2.4.0",
         "source": {
             "type": "git",
             "url": "git@github.com:UsabilityDynamics/lib-wp-bootstrap",
-            "reference": "1.2.3"
+            "reference": "1.2.4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/UsabilityDynamics/lib-wp-bootstrap/archive/1.2.3.zip",
-            "reference": "1.2.3",
+            "url": "https://github.com/UsabilityDynamics/lib-wp-bootstrap/archive/1.2.4.zip",
+            "reference": "1.2.4",
             "shasum": null
         },
         "require": {
